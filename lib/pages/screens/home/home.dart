@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:youtext_app/core/size/size.dart';
 import 'package:youtext_app/core/themes/theme_extensions.dart';
+import 'package:youtext_app/pages/screens/home/category/category_screen.dart';
+import 'package:youtext_app/pages/screens/home/product/product_detail_page.dart';
 
 import '../../../core/assets.dart';
 import '../../../core/colors/color.dart';
 import '../../widget_small/product/product_card.dart';
+import '../shopping_cart_page/shopping_cart_page.dart';
 class HomePage extends StatelessWidget {
   final List<Map<String, String>> categories = [
     {'name': 'Máy móc và thiết bị may', 'image':  Asset.bgImageCategory},
@@ -79,9 +82,9 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  const Icon(Icons.shopping_cart_outlined,color: Styles.light,),
+                  InkWell(onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) => const ShoppingCartPage(),)),child: const Icon(Icons.shopping_cart_outlined,color: Styles.light,)),
                   const SizedBox(width: 10),
-                  const Icon(Icons.message_outlined,color: Styles.light,),
+                  Image.asset(Asset.iconMessage,width: context.width*0.06,),
                   // Image.asset(Asset.iconMessage),
                 ],
               ),
@@ -118,26 +121,29 @@ class HomePage extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundImage: AssetImage(categories[index]['image']!),
-                        ),
-                        const SizedBox(height: 5),
-                        SizedBox(
-                          width: context.width*0.2,
-                          child: Text(
-                            categories[index]['name']!,
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: context.theme.textTheme.titleSmall,
+                  return GestureDetector(
+                    onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) => CategoryScreen(category:categories[index]['name']),)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundImage: AssetImage(categories[index]['image']!),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 5),
+                          SizedBox(
+                            width: context.width*0.2,
+                            child: Text(
+                              categories[index]['name']!,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: context.theme.textTheme.titleSmall,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -168,7 +174,9 @@ class HomePage extends StatelessWidget {
               ),
               itemCount: products.length,
               itemBuilder: (context, index) {
-                return ProductCard(product: products[index]);
+                return GestureDetector(onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailPage(product: products[index]),));
+                },child: ProductCard(product: products[index]));
               },
             ),
           ],

@@ -10,22 +10,16 @@ class CusButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(15),
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      width: context.width,
+    return  Container(
       alignment: Alignment.center,
+      padding: EdgeInsets.all(Styles.defaultPadding),
+      margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-          borderRadius: Styles.defaultBorderRadius,
+          borderRadius: BorderRadius.circular(10),
           color: color
       ),
-      child: Text(
-        text,
-        style: context.theme.textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Styles.light
-        ),
-      ),
+      child: Text(text, style: context.theme.textTheme.headlineMedium?.copyWith(
+          fontWeight: FontWeight.bold,color: Styles.light)),
     );
   }
 }
