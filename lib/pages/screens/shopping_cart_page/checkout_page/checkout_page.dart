@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:youtext_app/core/size/size.dart';
 import 'package:youtext_app/core/themes/theme_extensions.dart';
+import 'package:youtext_app/pages/screens/shopping_cart_page/payment_method_screen/cardInput_app.dart';
 import 'package:youtext_app/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
 
 import '../../../../core/assets.dart';
@@ -148,7 +149,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
               isBold: true,
             ),
             const Spacer(),
-            const CusButton(text:"Thanh toán",color:Styles.blue),
+            InkWell(onTap: () {
+            },child: const CusButton(text:"Thanh toán",color:Styles.blue)),
           ],
         ),
       ),

@@ -30,85 +30,126 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true,
       // ),
       debugShowCheckedModeBanner: false,
-      // home: HomePage(),
-      home: const PaymentMethodScreen(),
+      home: HomePage(),
+      // home: const CheckoutPage(),
+      // home: const SearchPage(),
     );
   }
 }
-// class PaymentMethodScreen extends StatefulWidget {
-//   const PaymentMethodScreen({super.key});
+// class SearchPage extends StatefulWidget {
+//   const SearchPage({super.key});
 //
 //   @override
-//   _PaymentMethodScreenState createState() => _PaymentMethodScreenState();
+//   _SearchPageState createState() => _SearchPageState();
 // }
 //
-// class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
-//   int _selectedCardIndex = 0; // Default selected card index
+// class _SearchPageState extends State<SearchPage> {
+//   List<String> recentSearches = ['Vải áo thun', 'Vải áo sơ mi', 'Vải áo khoác'];
 //
-//   List<Map<String, String>> savedCards = [
-//     {'type': 'VISA', 'number': '**** **** **** 2512', 'isDefault': 'true'},
-//     {'type': 'MasterCard', 'number': '**** **** **** 5421', 'isDefault': 'false'},
-//     {'type': 'VISA', 'number': '**** **** **** 2512', 'isDefault': 'false'},
-//   ];
+//   // This method removes a single recent search item
+//   void removeSearchItem(int index) {
+//     setState(() {
+//       recentSearches.removeAt(index);
+//     });
+//   }
+//
+//   // This method clears all recent searches
+//   void clearAllSearches() {
+//     setState(() {
+//       recentSearches.clear();
+//     });
+//   }
 //
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Styles.blue,
-//         centerTitle: true,
-//         leading: InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.arrow_back_ios,color: Styles.light,)),
-//         title: Text('Phương thức thanh toán',style: context.theme.textTheme.titleMedium?.copyWith(
-//           fontWeight: FontWeight.bold,
-//           color: Styles.light,
-//         ),),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(15.0),
-//         child: Column(
-//           children: [
-//             // Saved Cards List
-//             Expanded(
-//               child: ListView.builder(
-//                 itemCount: savedCards.length,
-//                 itemBuilder: (context, index) {
-//                   var card = savedCards[index];
-//                   return CardOption(
-//                     cardType: card['type']!,
-//                     cardNumber: card['number']!,
-//                     isSelected: _selectedCardIndex == index,
-//                     isDefault: card['isDefault'] == 'true',
-//                     onTap: () {
-//                       setState(() {
-//                         _selectedCardIndex = index;
-//                       });
-//                     },
-//                   );
-//                 },
-//               ),
+//       body: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         mainAxisAlignment: MainAxisAlignment.start,
+//         children: [
+//           Container(
+//             padding: EdgeInsets.only(
+//                 top: MediaQuery.of(context).padding.top+10,
+//                 left: MediaQuery.of(context).padding.left+10,
+//                 right: MediaQuery.of(context).padding.right+10,
+//                 bottom: 15
 //             ),
-//             // Add New Card Button
-//             Container(
-//               alignment: Alignment.center,
-//               padding: const EdgeInsets.all(5),
-//               decoration: BoxDecoration(borderRadius:BorderRadius.circular(16),border: Border.all( width: 1,color: Styles.grey)),
-//               child: TextButton.icon(
-//                 onPressed: () {
-//                   // Handle adding a new card
-//                 },
-//                 icon: const Icon(Icons.add, color: Colors.black87),
-//                 label: Text('Thêm thẻ mới',style: context.theme.textTheme.titleMedium?.copyWith( ),),
-//               ),
+//             color: Styles.blue,
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: TextField(
+//                     decoration: InputDecoration(
+//                       hintText: 'Tìm kiếm',
+//                       border: OutlineInputBorder(
+//                           borderRadius: BorderRadius.circular(25),
+//                           borderSide: BorderSide.none
+//                       ),
+//                       hintStyle: const TextStyle(color: Colors.grey),
+//                       prefixIcon: const Icon(Icons.search,color: Colors.grey,),
+//                       filled: true,
+//                       fillColor: Colors.white,
+//                     ),
+//                   ),
+//                 ),
+//                 const SizedBox(width: 10),
+//                 InkWell(onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) => const ShoppingCartPage(),)),child: const Icon(Icons.shopping_cart_outlined,color: Styles.light,)),
+//                 const SizedBox(width: 10),
+//                 Image.asset(Asset.iconMessage,width: context.width*0.06,),
+//                 // Image.asset(Asset.iconMessage),
+//               ],
 //             ),
-//             const SizedBox(height: 20),
-//             // Save Button
-//             const CusButton(text:"Lưu",color:Styles.blue),
-//
-//           ],
-//         ),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 20),
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Text(
+//                   'Recent Searches',
+//                   style: context.theme.textTheme.headlineSmall?.copyWith(
+//                     fontWeight: FontWeight.bold
+//                   ),
+//                 ),
+//                 TextButton(
+//                   onPressed: clearAllSearches,
+//                   child: Text(
+//                     'Xóa tất cả' ,
+//                     style: context.theme.textTheme.titleMedium?.copyWith(
+//                   ),),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           ListView.builder(
+//             itemCount: recentSearches.length,
+//             physics: const NeverScrollableScrollPhysics(),
+//             primary: true,
+//             shrinkWrap: true,
+//             padding: EdgeInsets.zero,
+//             itemBuilder: (context, index) {
+//               return ListTile(
+//                 title: Row(
+//                   children: [
+//                     Text(recentSearches[index],style: context.theme.textTheme.headlineSmall,),
+//                     const Spacer(),
+//                     IconButton(
+//                       icon: const Icon(Icons.close),
+//                       onPressed: () {
+//                         removeSearchItem(index);
+//                       },
+//                     )
+//                   ],
+//                 ),
+//                 subtitle: const Divider(),
+//               );
+//             },
+//           ),
+//         ],
 //       ),
 //     );
 //   }
 // }
 
-// Card Option Widget
+
+

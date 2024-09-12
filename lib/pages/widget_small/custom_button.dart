@@ -18,7 +18,7 @@ class CusButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           color: color
       ),
-      child: Text(text, style: context.theme.textTheme.headlineMedium?.copyWith(
+      child: Text(text, style: context.theme.textTheme.headlineSmall?.copyWith(
           fontWeight: FontWeight.bold,color: Styles.light)),
     );
   }

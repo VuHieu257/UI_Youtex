@@ -49,7 +49,7 @@ class CardOption extends StatelessWidget {
                   children: [
                     Text('$cardType $cardNumber', style: TextStyle(fontSize: 16)),
                     if (isDefault)
-                      Text('Default', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                      const Text('Default', style: TextStyle(fontSize: 12, color: Colors.grey)),
                   ],
                 ),
               ],
