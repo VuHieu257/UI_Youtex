@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:youtext_app/core/themes/theme_extensions.dart';
-import 'package:youtext_app/pages/screens/shopping_cart_page/checkout_page/checkout_page.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../core/colors/color.dart';
 import '../../../../main.dart';
 import '../../../widget_small/card_option.dart';
 import '../../../widget_small/custom_button.dart';
+import '../checkout_page/checkout_page.dart';
 class PaymentMethodScreen extends StatefulWidget {
   const PaymentMethodScreen({super.key});
 
@@ -68,7 +68,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                   // Handle adding a new card
                 },
                 icon: const Icon(Icons.add, color: Colors.black87),
-                label: Text('Thêm thẻ mới',style: context.theme.textTheme.titleMedium?.copyWith( ),),
+                label: Text('Thêm thẻmới',style: context.theme.textTheme.titleMedium?.copyWith( ),),
               ),
             ),
             const SizedBox(height: 20),

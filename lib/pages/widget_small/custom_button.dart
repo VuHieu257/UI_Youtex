@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:youtext_app/core/size/size.dart';
-import 'package:youtext_app/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import '../../core/colors/color.dart';
 
 class CusButton extends StatelessWidget {

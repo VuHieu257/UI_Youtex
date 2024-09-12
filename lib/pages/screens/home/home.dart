@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:youtext_app/core/size/size.dart';
-import 'package:youtext_app/core/themes/theme_extensions.dart';
-import 'package:youtext_app/pages/screens/home/category/category_screen.dart';
-import 'package:youtext_app/pages/screens/home/product/product_detail_page.dart';
-
+import 'package:ui_youtex/core/size/size.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/pages/screens/home/product/product_detail_page.dart';
 import '../../../core/assets.dart';
 import '../../../core/colors/color.dart';
 import '../../widget_small/product/product_card.dart';
 import '../shopping_cart_page/shopping_cart_page.dart';
+import 'category/category_screen.dart';
 class HomePage extends StatelessWidget {
   final List<Map<String, String>> categories = [
     {'name': 'Máy móc và thiết bị may', 'image':  Asset.bgImageCategory},

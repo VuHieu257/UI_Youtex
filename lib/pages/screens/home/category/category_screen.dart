@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:youtext_app/core/size/size.dart';
-import 'package:youtext_app/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
+import '../../../../core/size/size.dart';
 import '../../../widget_small/product/product_card.dart';
 import '../../shopping_cart_page/shopping_cart_page.dart';
 

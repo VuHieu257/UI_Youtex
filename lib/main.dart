@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:youtext_app/core/colors/color.dart';
-import 'package:youtext_app/core/size/size.dart';
-import 'package:youtext_app/core/themes/theme_extensions.dart';
-import 'package:youtext_app/pages/screens/home/category/category_screen.dart';
-import 'package:youtext_app/pages/screens/home/home.dart';
-import 'package:youtext_app/pages/screens/shopping_cart_page/checkout_page/checkout_page.dart';
-import 'package:youtext_app/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
-import 'package:youtext_app/pages/screens/shopping_cart_page/shopping_cart_page.dart';
-import 'package:youtext_app/pages/widget_small/custom_button.dart';
+import 'package:ui_youtex/pages/screens/home/adress/adress_add_screen.dart';
+import 'package:ui_youtex/pages/screens/home/adress/adress_screen.dart';
+import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
+
 
 import 'core/assets.dart';
 import 'core/themes/theme_data.dart';
@@ -31,7 +26,7 @@ class MyApp extends StatelessWidget {
       // ),
       debugShowCheckedModeBanner: false,
       // home: HomePage(),
-      home: const PaymentMethodScreen(),
+      home:   AddressScreen(),
     );
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:youtext_app/core/size/size.dart';
-import 'package:youtext_app/core/themes/theme_extensions.dart';
-import 'package:youtext_app/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
+import 'package:ui_youtex/core/size/size.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/custom_button.dart';
 import '../../../widget_small/payment.dart';
 import '../../../widget_small/payment_method_button.dart';
+import '../payment_method_screen/payment_method_screen.dart';
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
 
