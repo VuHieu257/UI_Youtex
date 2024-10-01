@@ -31,9 +31,7 @@ class MyAppThemes {
         fontWeight: FontWeight.bold,
       ),
     ),
-    // brightness: Brightness.light,
       scaffoldBackgroundColor: Styles.light,
-      // scrollbarTheme: Styles.scrollbarTheme,
     iconTheme: const IconThemeData(
       color: Styles.dark, // Replace `AppsColor.dark` with your defined color.
     ),

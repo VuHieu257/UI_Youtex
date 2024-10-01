@@ -1,7 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:ui_youtex/pages/screens/home/adress/adress_add_screen.dart';
-import 'package:ui_youtex/pages/screens/home/adress/adress_screen.dart';
-import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
+ 
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:youtext_app/core/colors/color.dart';
+import 'package:youtext_app/core/size/size.dart';
+import 'package:youtext_app/core/themes/theme_extensions.dart';
+import 'package:youtext_app/pages/screens/home/search_page/search_page.dart';
+import 'package:youtext_app/pages/screens/message/group_chat_settings/group_chat_settings.dart';
+import 'package:youtext_app/pages/screens/message/message.dart';
+import 'package:youtext_app/pages/screens/message/new_chat_screen.dart';
 
 
 import 'core/assets.dart';
@@ -25,80 +30,204 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true,
       // ),
       debugShowCheckedModeBanner: false,
-      // home: HomePage(),
-      home:   AddressScreen(),
+
+      home: const GroupChatSettings(),
+      // home: const ManagerMemberScreen(),
+      // home: const ChatScreen(),
+      // home: const SearchPage(),
     );
   }
 }
-// class PaymentMethodScreen extends StatefulWidget {
-//   const PaymentMethodScreen({super.key});
+
+// class MessageListPage extends StatelessWidget {
+//   final List<String> messages = ["Message 1", "Message 2", "Message 3"];
 //
-//   @override
-//   _PaymentMethodScreenState createState() => _PaymentMethodScreenState();
-// }
-//
-// class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
-//   int _selectedCardIndex = 0; // Default selected card index
-//
-//   List<Map<String, String>> savedCards = [
-//     {'type': 'VISA', 'number': '**** **** **** 2512', 'isDefault': 'true'},
-//     {'type': 'MasterCard', 'number': '**** **** **** 5421', 'isDefault': 'false'},
-//     {'type': 'VISA', 'number': '**** **** **** 2512', 'isDefault': 'false'},
-//   ];
+//   MessageListPage({super.key});
 //
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         backgroundColor: Styles.blue,
-//         centerTitle: true,
-//         leading: InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.arrow_back_ios,color: Styles.light,)),
-//         title: Text('Phương thức thanh toán',style: context.theme.textTheme.titleMedium?.copyWith(
-//           fontWeight: FontWeight.bold,
-//           color: Styles.light,
-//         ),),
+//         title: Text('Messages'),
+//         backgroundColor: Colors.blueAccent,
 //       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(15.0),
-//         child: Column(
-//           children: [
-//             // Saved Cards List
-//             Expanded(
-//               child: ListView.builder(
-//                 itemCount: savedCards.length,
-//                 itemBuilder: (context, index) {
-//                   var card = savedCards[index];
-//                   return CardOption(
-//                     cardType: card['type']!,
-//                     cardNumber: card['number']!,
-//                     isSelected: _selectedCardIndex == index,
-//                     isDefault: card['isDefault'] == 'true',
-//                     onTap: () {
-//                       setState(() {
-//                         _selectedCardIndex = index;
-//                       });
-//                     },
+//       body: ListView.builder(
+//         itemCount: messages.length,
+//         itemBuilder: (context, index) {
+//           return Slidable(
+//             actionPane: const SlidableDrawerActionPane(), // Old API version
+//             actionExtentRatio: 0.25,
+//             child: ListTile(
+//               leading: CircleAvatar(
+//                 backgroundColor: Colors.blueAccent,
+//                 child: Text(messages[index][0]),
+//               ),
+//               title: Text(messages[index]),
+//               subtitle: Text("Swipe left for actions"),
+//             ),
+//             secondaryActions: <Widget>[
+//               IconSlideAction(
+//                 caption: 'Notify',
+//                 color: Colors.black,
+//                 icon: Icons.notifications,
+//                 onTap: () {
+//                   ScaffoldMessenger.of(context).showSnackBar(
+//                     SnackBar(content: Text('Notification for ${messages[index]}')),
 //                   );
 //                 },
 //               ),
-//             ),
-//             // Add New Card Button
-//             Container(
-//               alignment: Alignment.center,
-//               padding: const EdgeInsets.all(5),
-//               decoration: BoxDecoration(borderRadius:BorderRadius.circular(16),border: Border.all( width: 1,color: Styles.grey)),
-//               child: TextButton.icon(
-//                 onPressed: () {
-//                   // Handle adding a new card
+//               IconSlideAction(
+//                 caption: 'Delete',
+//                 color: Colors.red,
+//                 icon: Icons.delete,
+//                 onTap: () {
+//                   ScaffoldMessenger.of(context).showSnackBar(
+//                     SnackBar(content: Text('${messages[index]} deleted')),
+//                   );
 //                 },
-//                 icon: const Icon(Icons.add, color: Colors.black87),
-//                 label: Text('Thêm thẻ mới',style: context.theme.textTheme.titleMedium?.copyWith( ),),
 //               ),
-//             ),
-//             const SizedBox(height: 20),
-//             // Save Button
-//             const CusButton(text:"Lưu",color:Styles.blue),
+//             ],
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+
 //
+// class MyApp extends StatefulWidget {
+//   const MyApp({
+//     Key? key,
+//   }) : super(key: key);
+//
+//   @override
+//   State<MyApp> createState() => _MyAppState();
+// }
+//
+// class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
+//   late final controller = SlidableController(this);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Slidable Example',
+//       home: Scaffold(
+//         body: ListView(
+//           children: [
+//             Slidable(
+//               // Specify a key if the Slidable is dismissible.
+//               key: const ValueKey(0),
+//               // The start action pane is the one at the left or the top side.
+//               startActionPane: ActionPane(
+//                 // A motion is a widget used to control how the pane animates.
+//                 motion: const ScrollMotion(),
+//                 // A pane can dismiss the Slidable.
+//                 dismissible: DismissiblePane(onDismissed: () {}),
+//
+//                 // All actions are defined in the children parameter.
+//                 children: const [
+//                   // A SlidableAction can have an icon and/or a label.
+//                   SlidableAction(
+//                     onPressed: doNothing,
+//                     backgroundColor: Color(0xFFFE4A49),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.delete,
+//                     label: 'Delete',
+//                   ),
+//                   SlidableAction(
+//                     onPressed: doNothing,
+//                     backgroundColor: Color(0xFF21B7CA),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.share,
+//                     label: 'Share',
+//                   ),
+//                 ],
+//               ),
+//               // The end action pane is the one at the right or the bottom side.
+//               endActionPane: ActionPane(
+//                 motion: const ScrollMotion(),
+//                 children: [
+//                   SlidableAction(
+//                     // An action can be bigger than the others.
+//                     flex: 2,
+//                     onPressed: (_) => controller.openEndActionPane(),
+//                     backgroundColor: const Color(0xFF7BC043),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.archive,
+//                     label: 'Archive',
+//                   ),
+//                   SlidableAction(
+//                     onPressed: (_) => controller.close(),
+//                     backgroundColor: const Color(0xFF0392CF),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.save,
+//                     label: 'Save',
+//                   ),
+//                 ],
+//               ),
+//
+//               // The child of the Slidable is what the user sees when the
+//               // component is not dragged.
+//               child: const ListTile(title: Text('Slide me')),
+//             ),
+//             Slidable(
+//               controller: controller,
+//               // Specify a key if the Slidable is dismissible.
+//               key: const ValueKey(1),
+//
+//               // The start action pane is the one at the left or the top side.
+//               startActionPane: const ActionPane(
+//                 // A motion is a widget used to control how the pane animates.
+//                 motion: ScrollMotion(),
+//
+//                 // All actions are defined in the children parameter.
+//                 children: [
+//                   // A SlidableAction can have an icon and/or a label.
+//                   SlidableAction(
+//                     onPressed: doNothing,
+//                     backgroundColor: Color(0xFFFE4A49),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.delete,
+//                     label: 'Delete',
+//                   ),
+//                   SlidableAction(
+//                     onPressed: doNothing,
+//                     backgroundColor: Color(0xFF21B7CA),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.share,
+//                     label: 'Share',
+//                   ),
+//                 ],
+//               ),
+//
+//               // The end action pane is the one at the right or the bottom side.
+//               endActionPane: ActionPane(
+//                 motion: const ScrollMotion(),
+//                 dismissible: DismissiblePane(onDismissed: () {}),
+//                 children: const [
+//                   SlidableAction(
+//                     // An action can be bigger than the others.
+//                     flex: 2,
+//                     onPressed: doNothing,
+//                     backgroundColor: Color(0xFF7BC043),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.archive,
+//                     label: 'Archive',
+//                   ),
+//                   SlidableAction(
+//                     onPressed: doNothing,
+//                     backgroundColor: Color(0xFF0392CF),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.save,
+//                     label: 'Save',
+//                   ),
+//                 ],
+//               ),
+//
+//               // The child of the Slidable is what the user sees when the
+//               // component is not dragged.
+//               child: const ListTile(title: Text('Slide me')),
+//             ),
 //           ],
 //         ),
 //       ),
@@ -106,4 +235,35 @@ class MyApp extends StatelessWidget {
 //   }
 // }
 
-// Card Option Widget
+class ChatBubble extends StatelessWidget {
+  final String message;
+  final bool isMe;
+
+  const ChatBubble({super.key, required this.message, required this.isMe});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isMe ? Colors.lightBlueAccent.shade100.withOpacity(0.5) : Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: SizedBox(
+          width: context.width*0.65,
+          child: Text(
+            message,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+

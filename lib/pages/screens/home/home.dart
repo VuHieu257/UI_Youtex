@@ -1,8 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:ui_youtex/core/size/size.dart';
-import 'package:ui_youtex/core/themes/theme_extensions.dart';
-import 'package:ui_youtex/pages/screens/home/product/product_detail_page.dart';
-import '../../../core/assets.dart';
+ 
+import 'package:youtext_app/core/size/size.dart';
+import 'package:youtext_app/core/themes/theme_extensions.dart';
+import 'package:youtext_app/pages/screens/home/category/category_screen.dart';
+import 'package:youtext_app/pages/screens/home/product/product_detail_page.dart';
+import 'package:youtext_app/pages/screens/home/search_page/search_page.dart';
+
+ import '../../../core/assets.dart';
 import '../../../core/colors/color.dart';
 import '../../widget_small/product/product_card.dart';
 import '../shopping_cart_page/shopping_cart_page.dart';
@@ -67,6 +70,9 @@ class HomePage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextField(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchPage(),));
+                      },
                       decoration: InputDecoration(
                         hintText: 'Tìm kiếm',
                         border: OutlineInputBorder(
