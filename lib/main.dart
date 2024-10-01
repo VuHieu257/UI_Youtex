@@ -1,13 +1,13 @@
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:youtext_app/core/colors/color.dart';
 import 'package:youtext_app/core/size/size.dart';
 import 'package:youtext_app/core/themes/theme_extensions.dart';
-import 'package:youtext_app/pages/screens/home/category/category_screen.dart';
-import 'package:youtext_app/pages/screens/home/home.dart';
-import 'package:youtext_app/pages/screens/shopping_cart_page/checkout_page/checkout_page.dart';
-import 'package:youtext_app/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
-import 'package:youtext_app/pages/screens/shopping_cart_page/shopping_cart_page.dart';
-import 'package:youtext_app/pages/widget_small/custom_button.dart';
+import 'package:youtext_app/pages/screens/home/search_page/search_page.dart';
+import 'package:youtext_app/pages/screens/message/group_chat_settings/group_chat_settings.dart';
+import 'package:youtext_app/pages/screens/message/message.dart';
+import 'package:youtext_app/pages/screens/message/new_chat_screen.dart';
 
 import 'core/assets.dart';
 import 'core/themes/theme_data.dart';
@@ -30,126 +30,239 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true,
       // ),
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
-      // home: const CheckoutPage(),
+      home: const GroupChatSettings(),
+      // home: const ManagerMemberScreen(),
+      // home: const ChatScreen(),
       // home: const SearchPage(),
     );
   }
 }
-// class SearchPage extends StatefulWidget {
-//   const SearchPage({super.key});
+
+// class MessageListPage extends StatelessWidget {
+//   final List<String> messages = ["Message 1", "Message 2", "Message 3"];
 //
-//   @override
-//   _SearchPageState createState() => _SearchPageState();
-// }
-//
-// class _SearchPageState extends State<SearchPage> {
-//   List<String> recentSearches = ['Vải áo thun', 'Vải áo sơ mi', 'Vải áo khoác'];
-//
-//   // This method removes a single recent search item
-//   void removeSearchItem(int index) {
-//     setState(() {
-//       recentSearches.removeAt(index);
-//     });
-//   }
-//
-//   // This method clears all recent searches
-//   void clearAllSearches() {
-//     setState(() {
-//       recentSearches.clear();
-//     });
-//   }
+//   MessageListPage({super.key});
 //
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       body: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         mainAxisAlignment: MainAxisAlignment.start,
-//         children: [
-//           Container(
-//             padding: EdgeInsets.only(
-//                 top: MediaQuery.of(context).padding.top+10,
-//                 left: MediaQuery.of(context).padding.left+10,
-//                 right: MediaQuery.of(context).padding.right+10,
-//                 bottom: 15
+//       appBar: AppBar(
+//         title: Text('Messages'),
+//         backgroundColor: Colors.blueAccent,
+//       ),
+//       body: ListView.builder(
+//         itemCount: messages.length,
+//         itemBuilder: (context, index) {
+//           return Slidable(
+//             actionPane: const SlidableDrawerActionPane(), // Old API version
+//             actionExtentRatio: 0.25,
+//             child: ListTile(
+//               leading: CircleAvatar(
+//                 backgroundColor: Colors.blueAccent,
+//                 child: Text(messages[index][0]),
+//               ),
+//               title: Text(messages[index]),
+//               subtitle: Text("Swipe left for actions"),
 //             ),
-//             color: Styles.blue,
-//             child: Row(
-//               children: [
-//                 Expanded(
-//                   child: TextField(
-//                     decoration: InputDecoration(
-//                       hintText: 'Tìm kiếm',
-//                       border: OutlineInputBorder(
-//                           borderRadius: BorderRadius.circular(25),
-//                           borderSide: BorderSide.none
-//                       ),
-//                       hintStyle: const TextStyle(color: Colors.grey),
-//                       prefixIcon: const Icon(Icons.search,color: Colors.grey,),
-//                       filled: true,
-//                       fillColor: Colors.white,
-//                     ),
-//                   ),
-//                 ),
-//                 const SizedBox(width: 10),
-//                 InkWell(onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) => const ShoppingCartPage(),)),child: const Icon(Icons.shopping_cart_outlined,color: Styles.light,)),
-//                 const SizedBox(width: 10),
-//                 Image.asset(Asset.iconMessage,width: context.width*0.06,),
-//                 // Image.asset(Asset.iconMessage),
-//               ],
-//             ),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 20),
-//             child: Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 Text(
-//                   'Recent Searches',
-//                   style: context.theme.textTheme.headlineSmall?.copyWith(
-//                     fontWeight: FontWeight.bold
-//                   ),
-//                 ),
-//                 TextButton(
-//                   onPressed: clearAllSearches,
-//                   child: Text(
-//                     'Xóa tất cả' ,
-//                     style: context.theme.textTheme.titleMedium?.copyWith(
-//                   ),),
-//                 ),
-//               ],
-//             ),
-//           ),
-//           ListView.builder(
-//             itemCount: recentSearches.length,
-//             physics: const NeverScrollableScrollPhysics(),
-//             primary: true,
-//             shrinkWrap: true,
-//             padding: EdgeInsets.zero,
-//             itemBuilder: (context, index) {
-//               return ListTile(
-//                 title: Row(
-//                   children: [
-//                     Text(recentSearches[index],style: context.theme.textTheme.headlineSmall,),
-//                     const Spacer(),
-//                     IconButton(
-//                       icon: const Icon(Icons.close),
-//                       onPressed: () {
-//                         removeSearchItem(index);
-//                       },
-//                     )
-//                   ],
-//                 ),
-//                 subtitle: const Divider(),
-//               );
-//             },
-//           ),
-//         ],
+//             secondaryActions: <Widget>[
+//               IconSlideAction(
+//                 caption: 'Notify',
+//                 color: Colors.black,
+//                 icon: Icons.notifications,
+//                 onTap: () {
+//                   ScaffoldMessenger.of(context).showSnackBar(
+//                     SnackBar(content: Text('Notification for ${messages[index]}')),
+//                   );
+//                 },
+//               ),
+//               IconSlideAction(
+//                 caption: 'Delete',
+//                 color: Colors.red,
+//                 icon: Icons.delete,
+//                 onTap: () {
+//                   ScaffoldMessenger.of(context).showSnackBar(
+//                     SnackBar(content: Text('${messages[index]} deleted')),
+//                   );
+//                 },
+//               ),
+//             ],
+//           );
+//         },
 //       ),
 //     );
 //   }
 // }
 
+//
+// class MyApp extends StatefulWidget {
+//   const MyApp({
+//     Key? key,
+//   }) : super(key: key);
+//
+//   @override
+//   State<MyApp> createState() => _MyAppState();
+// }
+//
+// class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
+//   late final controller = SlidableController(this);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Slidable Example',
+//       home: Scaffold(
+//         body: ListView(
+//           children: [
+//             Slidable(
+//               // Specify a key if the Slidable is dismissible.
+//               key: const ValueKey(0),
+//               // The start action pane is the one at the left or the top side.
+//               startActionPane: ActionPane(
+//                 // A motion is a widget used to control how the pane animates.
+//                 motion: const ScrollMotion(),
+//                 // A pane can dismiss the Slidable.
+//                 dismissible: DismissiblePane(onDismissed: () {}),
+//
+//                 // All actions are defined in the children parameter.
+//                 children: const [
+//                   // A SlidableAction can have an icon and/or a label.
+//                   SlidableAction(
+//                     onPressed: doNothing,
+//                     backgroundColor: Color(0xFFFE4A49),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.delete,
+//                     label: 'Delete',
+//                   ),
+//                   SlidableAction(
+//                     onPressed: doNothing,
+//                     backgroundColor: Color(0xFF21B7CA),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.share,
+//                     label: 'Share',
+//                   ),
+//                 ],
+//               ),
+//               // The end action pane is the one at the right or the bottom side.
+//               endActionPane: ActionPane(
+//                 motion: const ScrollMotion(),
+//                 children: [
+//                   SlidableAction(
+//                     // An action can be bigger than the others.
+//                     flex: 2,
+//                     onPressed: (_) => controller.openEndActionPane(),
+//                     backgroundColor: const Color(0xFF7BC043),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.archive,
+//                     label: 'Archive',
+//                   ),
+//                   SlidableAction(
+//                     onPressed: (_) => controller.close(),
+//                     backgroundColor: const Color(0xFF0392CF),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.save,
+//                     label: 'Save',
+//                   ),
+//                 ],
+//               ),
+//
+//               // The child of the Slidable is what the user sees when the
+//               // component is not dragged.
+//               child: const ListTile(title: Text('Slide me')),
+//             ),
+//             Slidable(
+//               controller: controller,
+//               // Specify a key if the Slidable is dismissible.
+//               key: const ValueKey(1),
+//
+//               // The start action pane is the one at the left or the top side.
+//               startActionPane: const ActionPane(
+//                 // A motion is a widget used to control how the pane animates.
+//                 motion: ScrollMotion(),
+//
+//                 // All actions are defined in the children parameter.
+//                 children: [
+//                   // A SlidableAction can have an icon and/or a label.
+//                   SlidableAction(
+//                     onPressed: doNothing,
+//                     backgroundColor: Color(0xFFFE4A49),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.delete,
+//                     label: 'Delete',
+//                   ),
+//                   SlidableAction(
+//                     onPressed: doNothing,
+//                     backgroundColor: Color(0xFF21B7CA),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.share,
+//                     label: 'Share',
+//                   ),
+//                 ],
+//               ),
+//
+//               // The end action pane is the one at the right or the bottom side.
+//               endActionPane: ActionPane(
+//                 motion: const ScrollMotion(),
+//                 dismissible: DismissiblePane(onDismissed: () {}),
+//                 children: const [
+//                   SlidableAction(
+//                     // An action can be bigger than the others.
+//                     flex: 2,
+//                     onPressed: doNothing,
+//                     backgroundColor: Color(0xFF7BC043),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.archive,
+//                     label: 'Archive',
+//                   ),
+//                   SlidableAction(
+//                     onPressed: doNothing,
+//                     backgroundColor: Color(0xFF0392CF),
+//                     foregroundColor: Colors.white,
+//                     icon: Icons.save,
+//                     label: 'Save',
+//                   ),
+//                 ],
+//               ),
+//
+//               // The child of the Slidable is what the user sees when the
+//               // component is not dragged.
+//               child: const ListTile(title: Text('Slide me')),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
+class ChatBubble extends StatelessWidget {
+  final String message;
+  final bool isMe;
+
+  const ChatBubble({super.key, required this.message, required this.isMe});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isMe ? Colors.lightBlueAccent.shade100.withOpacity(0.5) : Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: SizedBox(
+          width: context.width*0.65,
+          child: Text(
+            message,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 

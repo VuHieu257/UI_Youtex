@@ -20,6 +20,7 @@ class Asset {
   static const String iconMastercard = '$_icon/icon_mastercard.png';
 
   static const String bgSlider = '$_img/slider.png';
+  static const String bgCardMessage = '$_img/Rectangle 5119.png';
   static const String bgImageProduct = '$_img/home_product.png';
   static const String bgImageCategory = '$_img/category.png';
   static const String bgImageAvatar = '$_img/anh-gai-dep-de-thuong-k7-k8-2k7-2k8_100015595.jpg';
