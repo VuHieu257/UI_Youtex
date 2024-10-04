@@ -4,6 +4,7 @@ import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/custom_button.dart';
 import '../../shopping_cart_page/checkout_page/checkout_page.dart';
+import 'adress_add_screen.dart';
 
 class AddressScreen extends StatefulWidget {
   @override
@@ -77,7 +78,7 @@ class _AddressScreenState extends State<AddressScreen> {
             ),
             const SizedBox(height: 20),
             // Save Button
-            InkWell(onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) => const CheckoutPage(),)),child: const CusButton(text:"Lưu thay đổi",color:Styles.blue)),
+            InkWell(onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) =>   AddAddressScreen(),)),child: const CusButton(text:"Lưu thay đổi",color:Styles.blue)),
           ],
         ),
       ),

@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/pages/screens/fanpage/avatar/Setting/SettingsPage.dart';
+import 'package:ui_youtex/pages/screens/fanpage/avatar/ava_anhbia.dart';
+import 'package:ui_youtex/pages/screens/fanpage/avatar/profile_fangape.dart';
+import 'package:ui_youtex/pages/screens/fanpage/fanpage-description.dart';
+import 'package:ui_youtex/pages/screens/fanpage/fanpage.dart';
+import 'package:ui_youtex/pages/screens/fanpage/fanpage_infor.dart';
+import 'package:ui_youtex/pages/screens/fanpage/name_fanpage.dart';
 import 'package:ui_youtex/pages/screens/home/adress/adress_add_screen.dart';
 import 'package:ui_youtex/pages/screens/home/adress/adress_screen.dart';
+import 'package:ui_youtex/pages/screens/home/group_chat/group_chat_view.dart';
+import 'package:ui_youtex/pages/screens/home/group_chat/search_message.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
-
+import 'package:ui_youtex/pages/screens/shopping_cart_page/shopping_cart_page.dart';
 
 import 'core/assets.dart';
 import 'core/themes/theme_data.dart';
@@ -26,7 +35,7 @@ class MyApp extends StatelessWidget {
       // ),
       debugShowCheckedModeBanner: false,
       // home: HomePage(),
-      home:   AddressScreen(),
+      home: ShoppingCartPage(),
     );
   }
 }

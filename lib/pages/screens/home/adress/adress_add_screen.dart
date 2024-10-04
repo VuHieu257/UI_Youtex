@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/size/size.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../core/assets.dart';
+import '../../../../core/colors/color.dart';
+import '../../../widget_small/custom_button.dart';
 
 class AddAddressScreen extends StatefulWidget {
   @override
@@ -17,14 +20,13 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Thêm địa chỉ'),
-        backgroundColor: Colors.blue,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        backgroundColor: Styles.blue,
+        centerTitle: true,
+        leading: InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.arrow_back_ios,color: Styles.light,)),
+        title: Text('Thêm Địa Chỉ',style: context.theme.textTheme.titleMedium?.copyWith(
+          fontWeight: FontWeight.bold,
+          color: Styles.light,
+        ),),
       ),
       body: Column(
         children: [
@@ -92,16 +94,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 // Nút thêm địa chỉ
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Thực hiện logic thêm địa chỉ tại đây
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      padding: EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    child: Text("Thêm"),
-                  ),
+                  child: const CusButton(text:"Thêm",color:Styles.blue),
                 ),
               ],
             ),
