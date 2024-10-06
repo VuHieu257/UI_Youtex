@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
-import '../../../../core/colors/color.dart';
-import '../../../widget_small/custom_button.dart';
-import '../../shopping_cart_page/checkout_page/checkout_page.dart';
+import '../../../../../core/assets.dart';
+import '../../../../../core/colors/color.dart';
+import '../../../../widget_small/custom_button.dart';
 import 'adress_add_screen.dart';
-
 class AddressScreen extends StatefulWidget {
   @override
   _AddressScreenState createState() => _AddressScreenState();

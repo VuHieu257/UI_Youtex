@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
-import '../../../../core/assets.dart';
-import '../../../../core/colors/color.dart';
-import '../../../widget_small/custom_button.dart';
+import '../../../../../core/assets.dart';
+import '../../../../../core/colors/color.dart';
+import '../../../../widget_small/custom_button.dart';
+import '../../../shopping_cart_page/payment_method_screen/payment_method_screen.dart';
+
 
 class AddAddressScreen extends StatefulWidget {
   @override
@@ -22,7 +24,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       appBar: AppBar(
         backgroundColor: Styles.blue,
         centerTitle: true,
-        leading: InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.arrow_back_ios,color: Styles.light,)),
+        leading: InkWell(onTap: () => Navigator.pop(context),child: Icon(Icons.arrow_back_ios,color: Styles.light,)),
         title: Text('Thêm Địa Chỉ',style: context.theme.textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.bold,
           color: Styles.light,
@@ -92,9 +94,12 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 ),
                 SizedBox(height: 16),
                 // Nút thêm địa chỉ
-                SizedBox(
-                  width: double.infinity,
-                  child: const CusButton(text:"Thêm",color:Styles.blue),
+                InkWell(
+                  onTap: ()=>  Navigator.push(context, MaterialPageRoute(builder: (context) =>   PaymentMethodScreen(),)),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: const CusButton(text:"Thêm",color:Styles.blue),
+                  ),
                 ),
               ],
             ),
