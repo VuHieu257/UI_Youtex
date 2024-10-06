@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:youtext_app/core/themes/theme_extensions.dart';
-import '../../../core/assets.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
+ import '../../../core/assets.dart';
 import '../../../core/colors/color.dart';
 import '../../widget_small/widget.dart';
 class MessagesScreen extends StatelessWidget {

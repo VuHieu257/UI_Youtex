@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:youtext_app/core/size/size.dart';
-import 'package:youtext_app/core/themes/theme_extensions.dart';
-import 'package:youtext_app/pages/screens/shopping_cart_page/checkout_page/checkout_page.dart';
+import 'package:ui_youtex/core/size/size.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../core/assets.dart';
 import '../../../core/colors/color.dart';
 import '../../widget_small/custom_button.dart';
 import '../../widget_small/product/product_cart.dart';
+import 'checkout_page/checkout_page.dart';
 class ShoppingCartPage extends StatefulWidget {
   const ShoppingCartPage({super.key});
 

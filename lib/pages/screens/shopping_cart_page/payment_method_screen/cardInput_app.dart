@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:youtext_app/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/custom_button.dart';
+import '../../home/add_success/add_success.dart';
+import '../../home/search_page/search_page.dart';
 class CardInputApp extends StatelessWidget {
   const CardInputApp({super.key});
 
@@ -74,7 +76,20 @@ class CardInputApp extends StatelessWidget {
             const SizedBox(height: 40.0),
             // Save Button
             const Spacer(),
-            const CusButton(text:"Thanh toán",color:Styles.blue),
+            InkWell(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const CardAddedSuccessDialog();
+                  },
+                );
+              },
+              child: const CusButton(text: "Thanh toán", color: Styles.blue),
+            ),
+
+
+
           ],
         ),
       ),

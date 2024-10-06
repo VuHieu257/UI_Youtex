@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:youtext_app/core/colors/color.dart';
-import 'package:youtext_app/core/size/size.dart';
+import 'package:ui_youtex/core/size/size.dart';
 
 import '../../core/assets.dart';
+import '../../core/colors/color.dart';
 
 void customShowBottomSheet(BuildContext context) {
   showModalBottomSheet(
@@ -39,8 +39,8 @@ void customShowBottomSheet(BuildContext context) {
             Container(
               margin: EdgeInsets.symmetric(horizontal: context.width*0.3),
               height: 5,
-              width: context.width*0.3,decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              width: context.width*0.3,decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               color: Styles.grey
             ),),
             ListTile(

@@ -1,4 +1,4 @@
-name: youtext_app
+name: ui_youtex
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.1
+  sdk: ^3.3.4
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_slidable: ^3.1.1
   emoji_picker_flutter: ^1.1.2
+  google_fonts: ^6.2.1
 #  flutter_sound: ^9.16.0
 #  permission_handler: ^11.3.1
 

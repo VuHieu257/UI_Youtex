@@ -8,6 +8,7 @@ class Asset {
   static const String _icon = 'assets/icon';
 
   static const String bgLogo = '$_img/logo.png';
+  static const String bgAvatar = '$_img/avatar.png';
 
   static const String bgSigin = '$_img/img_sigin.png';
   static const String iconFb = '$_img/fb_icon.png';
@@ -18,13 +19,15 @@ class Asset {
 
   static const String iconVisa = '$_icon/icon_visa.png';
   static const String iconMastercard = '$_icon/icon_mastercard.png';
-
+  static const String bgMap = '$_img/Map.png';
   static const String bgSlider = '$_img/slider.png';
   static const String bgCardMessage = '$_img/Rectangle 5119.png';
   static const String bgImageProduct = '$_img/home_product.png';
   static const String bgImageCategory = '$_img/category.png';
   static const String bgImageAvatar = '$_img/anh-gai-dep-de-thuong-k7-k8-2k7-2k8_100015595.jpg';
 
+  static const String bg_ava = '$_img/1523107190ffd3b67f393f0636a7ecc7.jpg';
+  static const String bg_ava_ = '$_img/5432689438a0de5026c27269c380ba9e.jpg';
 
 
   // ---------------------------------------------------------------------------

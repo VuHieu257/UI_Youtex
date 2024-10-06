@@ -1,7 +1,8 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:youtext_app/core/size/size.dart';
-import 'package:youtext_app/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/core/size/size.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
+
 
 import '../../../../core/assets.dart';
 import '../../../../main.dart';
