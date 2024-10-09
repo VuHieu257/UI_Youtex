@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/pages/screens/home/home.dart';
+import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
+import 'package:ui_youtex/pages/screens/member_Vip/member_plan_prenium.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
 
 import 'package:ui_youtex/pages/splash/Welcome/welcome.dart';
@@ -15,7 +17,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
         '/home': (context) => HomePage(),
+        '/memberVip': (context) => FreeTrialTimeline(),
       },
     );
   }

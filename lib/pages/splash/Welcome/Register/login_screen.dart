@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/core/colors/color.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -13,6 +14,7 @@ class LoginScreen extends StatelessWidget {
             Image.asset(
               'assets/images/Vector 1.png',
               width: MediaQuery.sizeOf(context).width,
+              height: MediaQuery.sizeOf(context).height / 3.2,
               fit: BoxFit.cover,
             ),
 
@@ -21,34 +23,34 @@ class LoginScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     "Đăng nhập",
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Colors.green,
+                      color: Color(0xFFBE005B99),
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 10),
-                  Text(
+                  const SizedBox(height: 10),
+                  const Text(
                     "Đăng nhập bằng tài khoản của bạn",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
 
                   // Form Email và Mật khẩu
                   TextField(
                     decoration: InputDecoration(
-                      hintStyle: TextStyle(color: Color(0xFFBEBEBE)),
+                      hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
                       prefixIcon: Icon(
                         Icons.email,
-                        color: Color(0xFF3F8512),
+                        color: Color(0xFFBE005B99),
                       ),
                       hintText: "Email",
                       filled: true,
-                      fillColor: Color(0xFFA4F86E).withOpacity(0.3),
+                      fillColor: Color(0xFFEEFBFF),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8)),
                     ),
@@ -59,12 +61,12 @@ class LoginScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.lock_clock_outlined,
-                        color: Color(0xFF3F8512),
+                        color: Color(0xFFBE005B99),
                       ),
-                      hintStyle: TextStyle(color: Color(0xFFBEBEBE)),
+                      hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
                       hintText: "Mật khẩu",
                       filled: true,
-                      fillColor: Color(0xFFA4F86E).withOpacity(0.3),
+                      fillColor: Color(0xFFEEFBFF),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8)),
                     ),
@@ -75,8 +77,10 @@ class LoginScreen extends StatelessWidget {
                   Row(
                     children: [
                       Checkbox(
+                          focusColor: Color(0xFF00B2F6),
+                          activeColor: Color(0xFF00B2F6),
                           shape: CircleBorder(),
-                          value: false,
+                          value: true,
                           onChanged: (value) {}),
                       Text("Ghi nhớ tài khoản"),
                       Spacer(),
@@ -84,7 +88,7 @@ class LoginScreen extends StatelessWidget {
                         onPressed: () {},
                         child: Text(
                           "Quên mật khẩu?",
-                          style: TextStyle(color: Color(0xFFA4F86E)),
+                          style: TextStyle(color: Color(0xFF00B2F6)),
                         ),
                       ),
                     ],
@@ -96,16 +100,19 @@ class LoginScreen extends StatelessWidget {
                     width: MediaQuery.sizeOf(context).width,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/home');
+                        Navigator.pushNamed(context, '/memberVip');
                       },
                       child: Text(
                         "Đăng nhập",
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                          color: Styles.light,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: Color(0xFFA4F86E),
+                        backgroundColor: Color(0xFF00B2F6),
                       ),
                     ),
                   ),
@@ -122,7 +129,7 @@ class LoginScreen extends StatelessWidget {
                         },
                         child: Text(
                           "Đăng ký",
-                          style: TextStyle(color: Colors.green),
+                          style: TextStyle(color: Color(0xFF00B2F6)),
                         ),
                       ),
                     ],

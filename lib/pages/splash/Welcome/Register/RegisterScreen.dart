@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/core/colors/color.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -18,7 +19,7 @@ class RegisterScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: Colors.green,
+                color: Color(0xFF005B99),
               ),
               textAlign: TextAlign.center,
             ),
@@ -33,14 +34,14 @@ class RegisterScreen extends StatelessWidget {
             // Form Họ và tên, Email, Mật khẩu
             TextField(
               decoration: InputDecoration(
-                hintStyle: TextStyle(color: Color(0xFFBEBEBE)),
+                hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
                 prefixIcon: Icon(
                   Icons.person,
-                  color: Color(0xFF3F8512),
+                  color: Color(0xFF005B99),
                 ),
                 hintText: "Họ và tên",
                 filled: true,
-                fillColor: Color(0xFFA4F86E).withOpacity(0.3),
+                fillColor: Color(0xFFEEFBFF),
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
@@ -48,14 +49,14 @@ class RegisterScreen extends StatelessWidget {
             SizedBox(height: 15),
             TextField(
               decoration: InputDecoration(
-                hintStyle: TextStyle(color: Color(0xFFBEBEBE)),
+                hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
                 prefixIcon: Icon(
                   Icons.email,
-                  color: Color(0xFF3F8512),
+                  color: Color(0xFF005B99),
                 ),
                 hintText: "Email",
                 filled: true,
-                fillColor: Color(0xFFA4F86E).withOpacity(0.3),
+                fillColor: Color(0xFFEEFBFF),
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
@@ -64,14 +65,14 @@ class RegisterScreen extends StatelessWidget {
             TextField(
               obscureText: true,
               decoration: InputDecoration(
-                hintStyle: TextStyle(color: Color(0xFFBEBEBE)),
+                hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
                 prefixIcon: Icon(
                   Icons.lock_clock_outlined,
-                  color: Color(0xFF3F8512),
+                  color: Color(0xFF005B99),
                 ),
                 hintText: "Mật khẩu",
                 filled: true,
-                fillColor: Color(0xFFA4F86E).withOpacity(0.3),
+                fillColor: Color(0xFFEEFBFF),
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
@@ -80,14 +81,14 @@ class RegisterScreen extends StatelessWidget {
             TextField(
               obscureText: true,
               decoration: InputDecoration(
-                hintStyle: TextStyle(color: Color(0xFFBEBEBE)),
+                hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
                 prefixIcon: Icon(
                   Icons.lock_clock_outlined,
-                  color: Color(0xFF3F8512),
+                  color: Color(0xFF005B99),
                 ),
                 hintText: "Nhập lại mật khẩu",
                 filled: true,
-                fillColor: Color(0xFFA4F86E).withOpacity(0.3),
+                fillColor: Color(0xFFEEFBFF),
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
@@ -98,7 +99,9 @@ class RegisterScreen extends StatelessWidget {
             Row(
               children: [
                 Checkbox(
-                    shape: CircleBorder(), value: false, onChanged: (value) {}),
+                    activeColor: Color(0xFF00B2F6),
+                    value: true,
+                    onChanged: (value) {}),
                 Text("Đồng ý với điều khoản sử dụng"),
               ],
             ),
@@ -111,11 +114,14 @@ class RegisterScreen extends StatelessWidget {
                 onPressed: () {},
                 child: Text(
                   "Đăng Ký",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Styles.light,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
                 ),
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Color(0xFFA4F86E),
+                  backgroundColor: Color(0xFF00B2F6),
                 ),
               ),
             ),
@@ -164,7 +170,7 @@ class RegisterScreen extends StatelessWidget {
                   },
                   child: Text(
                     "Đăng nhập",
-                    style: TextStyle(color: Colors.green),
+                    style: TextStyle(color: Color(0xFF00B2F6)),
                   ),
                 ),
               ],
