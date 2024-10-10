@@ -44,7 +44,7 @@ class BottomMusicPlayer extends StatelessWidget {
             int index = entry.key;
             String title = entry.value;
             return _buildOptionTile(context, title, index);
-          }).toList(),
+          }),
         ],
       ),
     );

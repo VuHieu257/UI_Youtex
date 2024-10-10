@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/core/colors/color.dart';
 
 class WelcomeScreen4 extends StatelessWidget {
   final VoidCallback onPressed;
@@ -49,7 +50,7 @@ class WelcomeScreen4 extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.black, // Màu chữ trên nút
+                color: Styles.light, // Màu chữ trên nút
               ),
             ),
           ),

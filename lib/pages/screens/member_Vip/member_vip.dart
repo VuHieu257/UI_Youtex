@@ -1,217 +1,196 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:ui_youtex/core/colors/color.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
+import 'package:ui_youtex/pages/screens/home/home.dart';
+import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
+import 'package:ui_youtex/pages/screens/member_Vip/member_plan_vip.dart';
+import 'package:ui_youtex/pages/screens/member_Vip/member_plan_prenium.dart';
 
-class MemberVip extends StatefulWidget {
-  @override
-  _MemberVipState createState() => _MemberVipState();
-}
+import '../../../core/assets.dart';
 
-class _MemberVipState extends State<MemberVip>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  String selectedPlan = "12 Months Trial";
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
+class MembershipScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
-        title: Text(
-          "Gói Hội Viên YOUTEXT",
-          style: GoogleFonts.roboto(
-            textStyle: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-        ),
-        centerTitle: true,
-        bottom: TabBar(
-          controller: _tabController,
-          labelStyle: GoogleFonts.roboto(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-          unselectedLabelStyle: GoogleFonts.roboto(
-            fontSize: 16,
-          ),
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.grey,
-          indicatorColor: Colors.white,
-          tabs: [
-            Tab(text: "VIP"),
-            Tab(text: "Premium"),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          buildPlanContent("VIP"),
-          buildPlanContent("Premium"),
-        ],
-      ),
-    );
-  }
-
-  Widget buildPlanContent(String planType) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "$planType Plans",
-              style: GoogleFonts.roboto(
-                textStyle: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              "Upgrade or downgrade your plan with ease",
-              style: GoogleFonts.roboto(fontSize: 16),
-            ),
-            SizedBox(height: 20),
-            // Plans
-            buildPlanCard(
-              "12 Months",
-              "7 days free trial",
-              "55,99 € billed annually after trial",
-              "4,67 €/month",
-              planValue: "12 Months Trial",
-            ),
-            buildPlanCard(
-              "12 Months",
-              "BEST VALUE",
-              "43,99 € billed annually",
-              "3,67 €/month",
-              badgeColor: Colors.blue,
-              planValue: "12 Months Standard",
-            ),
-            buildPlanCard(
-              "3 Months",
-              "",
-              "23,49 € billed every 3 months",
-              "7,83 €/month",
-              planValue: "3 Months",
-            ),
-            SizedBox(height: 20),
-            // Subscribe Button (giữ nguyên)
-            Center(
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.green, Colors.blueAccent],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                    backgroundColor: Colors.transparent,
-                    shadowColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: Text(
-                    "Subscribe Now",
-                    style: GoogleFonts.roboto(
-                      textStyle: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Styles.light,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            // What you'll get with PRO (giữ nguyên)
-            buildProFeaturesSection(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildPlanCard(String title, String badge, String billing, String price,
-      {Color badgeColor = Colors.orange, required String planValue}) {
-    bool isSelected = selectedPlan == planValue;
-
-    return InkWell(
-      onTap: () {
-        setState(() {
-          selectedPlan = planValue;
-        });
-      },
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.blue[50],
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: isSelected ? Colors.blue : Colors.transparent,
-                width: 2,
-              ),
-            ),
-            margin: EdgeInsets.only(bottom: 12),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.black),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  padding: EdgeInsets.zero,
+                  alignment: Alignment.bottomLeft,
+                ),
+                Column(
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: badge.isNotEmpty ? 10 : 0),
-                          Text(
-                            title,
-                            style: GoogleFonts.roboto(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            billing,
-                            style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              color: Colors.black54,
-                            ),
-                          ),
-                        ],
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Membership',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
                       ),
+                      textAlign: TextAlign.center,
                     ),
-                    Text(
-                      price,
-                      style: GoogleFonts.roboto(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.blue[700],
+                    const SizedBox(height: 16),
+                    Column(
+                      children: [
+                        _buildPlanCard(
+                          title: 'User Bình Thường',
+                          price: 'Miễn phí',
+                          features: [
+                            _buildFeature(
+                              icon: Icons.check_circle_outline,
+                              text: 'Sử dụng các tính năng cơ bản của app',
+                            ),
+                            _buildFeature(
+                              icon: Icons.people_outline,
+                              text: 'Tạo nhóm (tối đa 5 người/nhóm)',
+                            ),
+                          ],
+                          onTap: null, // Không điều hướng cho gói miễn phí
+                          showInterest: false,
+                        ),
+                        const SizedBox(height: 16),
+                        _buildPlanCard(
+                          title: 'VIP',
+                          features: [
+                            _buildFeature(
+                              icon: Icons.block_outlined,
+                              text: 'Không có quảng cáo',
+                            ),
+                            _buildFeature(
+                              icon: Icons.file_download_outlined,
+                              text: 'Tải xuống nhật ký (10 bộ/tháng)',
+                            ),
+                            _buildFeature(
+                              icon: Icons.edit_outlined,
+                              text:
+                                  'Tuỳ chỉnh giao diện cơ bản (thay đổi thông tin người dùng)',
+                            ),
+                            _buildFeature(
+                              icon: Icons.security,
+                              text: 'Bảo hiểm đơn hàng - Buff Youtex',
+                            ),
+                            _buildFeature(
+                              icon: Icons.people_outline,
+                              text: 'Quản lý nhân viên (tối đa 10 tài khoản)',
+                            ),
+                          ],
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    VipPlanScreen(), // Link to VIP page
+                              ),
+                            );
+                          },
+                          showInterest: true,
+                          context: context, // Pass context here
+                        ),
+                        const SizedBox(height: 16),
+                        _buildPlanCard(
+                          title: 'Premium',
+                          features: [
+                            _buildFeature(
+                              icon: Icons.block_outlined,
+                              text: 'Không có quảng cáo',
+                            ),
+                            _buildFeature(
+                              icon: Icons.star_border,
+                              text: 'Biểu tượng Premium',
+                            ),
+                            _buildFeature(
+                              icon: Icons.emoji_events_outlined,
+                              text: 'Truy cập nội dung độc quyền',
+                            ),
+                            _buildFeature(
+                              icon: Icons.file_download_outlined,
+                              text: 'Tải xuống nhật ký không giới hạn',
+                            ),
+                            _buildFeature(
+                              icon: Icons.people_outline,
+                              text:
+                                  'Quản lý nhân viên không giới hạn tài khoản',
+                            ),
+                            _buildFeature(
+                              icon: Icons.security,
+                              text: 'Bảo hiểm đơn hàng - Buff Youtex',
+                            ),
+                            _buildFeature(
+                              icon: Icons.post_add,
+                              text: 'Hỗ trợ đăng bài quảng cáo (10 bài/tháng)',
+                            ),
+                            _buildFeature(
+                              icon: Icons.campaign,
+                              text: 'Hỗ trợ marketing cao cấp',
+                            ),
+                          ],
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    PremiumPlanScreen(), // Link to Premium page
+                              ),
+                            );
+                          },
+                          showInterest: true,
+                          context: context, // Pass context here
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      height: MediaQuery.sizeOf(context).height / 14,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xFF218FF2), // Light blue
+                            Color(0xFF13538C), // Dark blue
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return HomePage();
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: const Text(
+                          'Start 7-Day Free Trial',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -219,80 +198,207 @@ class _MemberVipState extends State<MemberVip>
               ],
             ),
           ),
-          if (badge.isNotEmpty)
-            Positioned(
-              top: -10,
-              left: 20,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                decoration: BoxDecoration(
-                  color: badgeColor,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 2,
-                  ),
-                ),
-                child: Text(
-                  badge,
-                  style: GoogleFonts.roboto(
-                    color: Colors.white,
-                    fontSize: 12,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlanCard({
+    required String title,
+    String? price,
+    required List<Widget> features,
+    bool showInterest = false,
+    BuildContext? context, // Add context here to use in the showDialog
+    VoidCallback? onTap, // Add onTap function to handle card click
+  }) {
+    return GestureDetector(
+      onTap: onTap, // Detect taps and navigate
+
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.9),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-              ),
+                if (showInterest)
+                  GestureDetector(
+                    onTap: () {
+                      if (title == 'VIP') {
+                        _showVipBenefitsPopup(context!);
+                      } else if (title == 'Premium') {
+                        _showPremiumBenefitsPopup(context!);
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF2196F3),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Text(
+                        'Quyền Lợi',
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ),
+                  ),
+              ],
             ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildProFeaturesSection() {
-    return Container(
-      padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.blueAccent, Colors.purpleAccent],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+            if (price != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                price,
+                style: const TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+            const SizedBox(height: 16),
+            ...features,
+          ],
         ),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "WHAT YOU'LL GET WITH PRO",
-            style: GoogleFonts.roboto(
-                fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 10),
-          buildProFeatureItem("Unlimited swipes"),
-          buildProFeatureItem("Get paid projects by listing your services"),
-          buildProFeatureItem("Revamp your profile with more videos & tracks"),
-          buildProFeatureItem("Advanced search features"),
-          buildProFeatureItem("Keep 100% of royalties with Distribution"),
-          buildProFeatureItem("+ All Pro features"),
-        ],
       ),
     );
   }
 
-  Widget buildProFeatureItem(String feature) {
+  Widget _buildFeature({required IconData icon, required String text}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          Icon(Icons.check_circle, color: Colors.white),
-          SizedBox(width: 10),
+          Icon(icon, size: 20, color: Colors.grey[600]),
+          const SizedBox(width: 12),
           Expanded(
             child: Text(
-              feature,
-              style: GoogleFonts.roboto(color: Colors.white, fontSize: 16),
+              text,
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 14,
+              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showVipBenefitsPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Quyền lợi gói VIP'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildFeature(
+                  icon: Icons.check,
+                  text: 'Sử dụng tất cả tính năng của User Bình Thường.'),
+              _buildFeature(
+                  icon: Icons.add_shopping_cart,
+                  text: 'Tạo mall riêng và buôn bán các mặt hàng.'),
+              _buildFeature(
+                  icon: Icons.security,
+                  text: 'Bảo hiểm đơn hàng - Buff Youtex.'),
+              _buildFeature(
+                  icon: Icons.account_circle,
+                  text:
+                      'Quản lý cửa hàng: Giá cả, chương trình khuyến mãi, doanh thu.'),
+              _buildFeature(
+                  icon: Icons.people_outline,
+                  text: 'Quản lý nhân viên (giới hạn tối đa 10 tài khoản).'),
+              _buildFeature(
+                  icon: Icons.group, text: 'Tạo nhóm (tối đa 30 người/nhóm).'),
+              _buildFeature(
+                  icon: Icons.star,
+                  text:
+                      'Tham gia chương trình "Dấu chân Youtex" để xây dựng uy tín.'),
+              _buildFeature(
+                  icon: Icons.mark_email_read,
+                  text:
+                      'Hỗ trợ đăng bài quảng cáo cho mall: Team marketing hỗ trợ viết tối đa 2 bài PR/tháng.'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Đóng'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showPremiumBenefitsPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Quyền lợi gói Premium'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildFeature(
+                  icon: Icons.check, text: 'Tất cả quyền lợi của gói VIP.'),
+              _buildFeature(
+                  icon: Icons.security,
+                  text: 'Bảo hiểm đơn hàng - Buff Youtex'),
+              _buildFeature(
+                  icon: Icons.post_add,
+                  text: 'Hỗ trợ đăng bài quảng cáo (10 bài/tháng)'),
+              _buildFeature(
+                  icon: Icons.campaign, text: 'Hỗ trợ marketing cao cấp'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Đóng'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+// Thay thế bằng một widget phù hợp cho dùng thử miễn phí
+class FreeTrialTimeline extends StatelessWidget {
+  const FreeTrialTimeline({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Thời gian dùng thử')),
+      body: const Center(
+        child: Text('Thông tin về thời gian dùng thử ở đây!'),
       ),
     );
   }
