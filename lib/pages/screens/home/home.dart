@@ -60,7 +60,11 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+<<<<<<< HEAD
               height: MediaQuery.of(context).size.height /9,
+=======
+              height: MediaQuery.of(context).size.height / 12,
+>>>>>>> origin
               padding: EdgeInsets.only(
                   top: MediaQuery.of(context).padding.top + 10,
                   left: MediaQuery.of(context).padding.left + 10,

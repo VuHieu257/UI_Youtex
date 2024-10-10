@@ -5,7 +5,10 @@ import 'package:ui_youtex/pages/screens/home/home.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_plan_prenium.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
+<<<<<<< HEAD
 import 'package:ui_youtex/pages/splash/Welcome/Register/forgotPass_Screen.dart';
+=======
+>>>>>>> origin
 
 import 'package:ui_youtex/pages/splash/Welcome/welcome.dart';
 import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
@@ -40,10 +43,13 @@ class MyApp extends StatelessWidget {
         '/register': (context) => RegisterScreen(),
         '/home': (context) => HomePage(),
         '/memberVip': (context) => FreeTrialTimeline(),
+<<<<<<< HEAD
         '/CustomNavBar': (context) => CustomNavBar(),
         '/Forgot': (context) => ForgotScreen(),
 
 
+=======
+>>>>>>> origin
       },
     );
   }

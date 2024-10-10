@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../../../core/assets.dart';
+<<<<<<< HEAD
 import '../../screens/home/home.dart';
 import '../../screens/message/message.dart';
 import '../../screens/shopping_cart_page/shopping_cart_page.dart';
 import '../../screens/user/user_profile/user_profile.dart';
 import '../../screens/user/user_selection_screen/user_selection_screen.dart';
+=======
+>>>>>>> origin
 
 class CustomNavBar extends StatefulWidget {
   const CustomNavBar({super.key});
@@ -18,19 +21,33 @@ class CustomNavBar extends StatefulWidget {
 class _CustomNavBarState extends State<CustomNavBar> {
 
   int _selectedIndex = 0;
+<<<<<<< HEAD
   final List<Widget> _screens = [
       HomePage(),
     const ShoppingCartPage(),
     const MessagesScreen(),
     const ProfileScreen(),
   ];
+=======
+>>>>>>> origin
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       body: IndexedStack(
         index: _selectedIndex,
         children: _screens, // Hiển thị màn hình tương ứng với tab được chọn
+=======
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Text('Selected Index: $_selectedIndex'),
+          ),
+        ],
+>>>>>>> origin
       ),
       bottomNavigationBar:
       Container(
