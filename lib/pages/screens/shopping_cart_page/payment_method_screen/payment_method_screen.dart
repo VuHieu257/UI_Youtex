@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:youtext_app/core/themes/theme_extensions.dart';
-import 'package:youtext_app/pages/screens/shopping_cart_page/checkout_page/checkout_page.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../core/colors/color.dart';
-import '../../../../main.dart';
 import '../../../widget_small/card_option.dart';
 import '../../../widget_small/custom_button.dart';
+import '../checkout_page/checkout_page.dart';
+import 'cardInput_app.dart';
+
 class PaymentMethodScreen extends StatefulWidget {
   const PaymentMethodScreen({super.key});
 
@@ -28,11 +29,17 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
       appBar: AppBar(
         backgroundColor: Styles.blue,
         centerTitle: true,
-        leading: InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.arrow_back_ios,color: Styles.light,)),
-        title: Text('Phương thức thanh toán',style: context.theme.textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: Styles.light,
-        ),),
+        leading: InkWell(
+          onTap: () => Navigator.pop(context),
+          child: const Icon(Icons.arrow_back_ios, color: Styles.light),
+        ),
+        title: Text(
+          'Phương thức thanh toán',
+          style: context.theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: Styles.light,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -59,21 +66,46 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
               ),
             ),
             // Add New Card Button
-            Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(borderRadius:BorderRadius.circular(16),border: Border.all( width: 1,color: Styles.grey)),
-              child: TextButton.icon(
-                onPressed: () {
-                  // Handle adding a new card
-                },
-                icon: const Icon(Icons.add, color: Colors.black87),
-                label: Text('Thêm thẻ mới',style: context.theme.textTheme.titleMedium?.copyWith( ),),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CardInputApp(),
+                  ),
+                );
+              },
+              child: Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(13),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(width: 1, color: Styles.grey),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.add, color: Colors.black87),
+                    Text(
+                      'Thêm thẻ mới',
+                      style: context.theme.textTheme.titleMedium?.copyWith(),
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 20),
             // Save Button
-            InkWell(onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) => const CheckoutPage(),)),child: const CusButton(text:"Lưu",color:Styles.blue)),
+            InkWell(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CardInputApp(),
+                ),
+              ),
+              child: const CusButton(text: "Lưu", color: Styles.blue),
+            ),
           ],
         ),
       ),

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:youtext_app/core/colors/color.dart';
-import 'package:youtext_app/core/size/size.dart';
-import 'package:youtext_app/core/themes/theme_extensions.dart';
-import 'package:youtext_app/pages/screens/home/category/category_screen.dart';
-import 'package:youtext_app/pages/screens/home/home.dart';
-import 'package:youtext_app/pages/screens/shopping_cart_page/checkout_page/checkout_page.dart';
-import 'package:youtext_app/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
-import 'package:youtext_app/pages/screens/shopping_cart_page/shopping_cart_page.dart';
-import 'package:youtext_app/pages/widget_small/custom_button.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:ui_youtex/core/size/size.dart';
+import 'package:ui_youtex/pages/screens/home/home.dart';
+import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
+import 'package:ui_youtex/pages/screens/member_Vip/member_plan_prenium.dart';
+import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
+import 'package:ui_youtex/pages/splash/Welcome/Register/forgotPass_Screen.dart';
+
+import 'package:ui_youtex/pages/splash/Welcome/welcome.dart';
+import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 
 import 'core/assets.dart';
 import 'core/themes/theme_data.dart';
+import 'pages/splash/Welcome/Register/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +21,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,85 +31,54 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true,
       // ),
       debugShowCheckedModeBanner: false,
+
       // home: HomePage(),
-      home: const PaymentMethodScreen(),
+      home: const CustomNavBar(),
+      // home: WelcomeApp(),
+      routes: {
+        '/login': (context) => LoginScreen(),
+        '/register': (context) => RegisterScreen(),
+        '/home': (context) => HomePage(),
+        '/memberVip': (context) => FreeTrialTimeline(),
+        '/CustomNavBar': (context) => CustomNavBar(),
+        '/Forgot': (context) => ForgotScreen(),
+
+
+      },
     );
   }
 }
-// class PaymentMethodScreen extends StatefulWidget {
-//   const PaymentMethodScreen({super.key});
-//
-//   @override
-//   _PaymentMethodScreenState createState() => _PaymentMethodScreenState();
-// }
-//
-// class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
-//   int _selectedCardIndex = 0; // Default selected card index
-//
-//   List<Map<String, String>> savedCards = [
-//     {'type': 'VISA', 'number': '**** **** **** 2512', 'isDefault': 'true'},
-//     {'type': 'MasterCard', 'number': '**** **** **** 5421', 'isDefault': 'false'},
-//     {'type': 'VISA', 'number': '**** **** **** 2512', 'isDefault': 'false'},
-//   ];
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Styles.blue,
-//         centerTitle: true,
-//         leading: InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.arrow_back_ios,color: Styles.light,)),
-//         title: Text('Phương thức thanh toán',style: context.theme.textTheme.titleMedium?.copyWith(
-//           fontWeight: FontWeight.bold,
-//           color: Styles.light,
-//         ),),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(15.0),
-//         child: Column(
-//           children: [
-//             // Saved Cards List
-//             Expanded(
-//               child: ListView.builder(
-//                 itemCount: savedCards.length,
-//                 itemBuilder: (context, index) {
-//                   var card = savedCards[index];
-//                   return CardOption(
-//                     cardType: card['type']!,
-//                     cardNumber: card['number']!,
-//                     isSelected: _selectedCardIndex == index,
-//                     isDefault: card['isDefault'] == 'true',
-//                     onTap: () {
-//                       setState(() {
-//                         _selectedCardIndex = index;
-//                       });
-//                     },
-//                   );
-//                 },
-//               ),
-//             ),
-//             // Add New Card Button
-//             Container(
-//               alignment: Alignment.center,
-//               padding: const EdgeInsets.all(5),
-//               decoration: BoxDecoration(borderRadius:BorderRadius.circular(16),border: Border.all( width: 1,color: Styles.grey)),
-//               child: TextButton.icon(
-//                 onPressed: () {
-//                   // Handle adding a new card
-//                 },
-//                 icon: const Icon(Icons.add, color: Colors.black87),
-//                 label: Text('Thêm thẻ mới',style: context.theme.textTheme.titleMedium?.copyWith( ),),
-//               ),
-//             ),
-//             const SizedBox(height: 20),
-//             // Save Button
-//             const CusButton(text:"Lưu",color:Styles.blue),
-//
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
-// Card Option Widget
+class ChatBubble extends StatelessWidget {
+  final String message;
+  final bool isMe;
+
+  const ChatBubble({super.key, required this.message, required this.isMe});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: isMe
+              ? Colors.lightBlueAccent.shade100.withOpacity(0.5)
+              : Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: SizedBox(
+          width: context.width * 0.65,
+          child: Text(
+            message,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

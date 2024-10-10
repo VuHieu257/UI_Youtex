@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:youtext_app/core/size/size.dart';
+import 'package:ui_youtex/core/size/size.dart';
 
 import '../../core/colors/color.dart';
 // class CustomMusic extends StatelessWidget {
