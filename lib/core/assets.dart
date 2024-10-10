@@ -16,6 +16,9 @@ class Asset {
   static const String iconIp = '$_img/ip_icon.png';
   static const String iconCart = '$_icon/icon_cart.png';
   static const String iconMessage = '$_icon/icon_message.png';
+  static const String iconHome = '$_icon/icon_home.png';
+  static const String iconMarket = '$_icon/icon_market.png';
+  static const String iconMessage1 = '$_icon/icon1_message.png';
 
   static const String iconVisa = '$_icon/icon_visa.png';
   static const String iconMastercard = '$_icon/icon_mastercard.png';

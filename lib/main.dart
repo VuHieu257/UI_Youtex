@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/pages/screens/home/home.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
@@ -6,7 +7,9 @@ import 'package:ui_youtex/pages/screens/member_Vip/member_plan_prenium.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
 
 import 'package:ui_youtex/pages/splash/Welcome/welcome.dart';
+import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 
+import 'core/assets.dart';
 import 'core/themes/theme_data.dart';
 import 'pages/splash/Welcome/Register/login_screen.dart';
 
@@ -29,7 +32,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       // home: HomePage(),
-      home: WelcomeApp(),
+      home: const CustomNavBar(),
+      // home: WelcomeApp(),
       routes: {
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
