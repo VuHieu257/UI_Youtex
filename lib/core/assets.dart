@@ -9,6 +9,11 @@ class Asset {
 
   static const String bgLogo = '$_img/logo.png';
   static const String bgAvatar = '$_img/avatar.png';
+  static const String bgCustomer1 = '$_img/customer1.png';
+  static const String bgCustomer2 = '$_img/customer2.png';
+  static const String bgCustomer3 = '$_img/customer3.png';
+  static const String bgCustomer4 = '$_img/customer4.png';
+  static const String bgCustomer5 = '$_img/customer5.png';
 
   static const String bgSigin = '$_img/img_sigin.png';
   static const String iconFb = '$_img/fb_icon.png';
@@ -16,9 +21,9 @@ class Asset {
   static const String iconIp = '$_img/ip_icon.png';
   static const String iconCart = '$_icon/icon_cart.png';
   static const String iconMessage = '$_icon/icon_message.png';
-  static const String iconHome = '$_icon/icon_home.png';
-  static const String iconMarket = '$_icon/icon_market.png';
-  static const String iconMessage1 = '$_icon/icon1_message.png';
+  static const String iconHome = '$_icon/home.png';
+  static const String iconMarket = '$_icon/market.png';
+  static const String iconMessage1 = '$_icon/message.png';
 
   static const String iconVisa = '$_icon/icon_visa.png';
   static const String iconMastercard = '$_icon/icon_mastercard.png';
