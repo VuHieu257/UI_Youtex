@@ -108,43 +108,41 @@ class RegisterScreen extends StatelessWidget {
             SizedBox(height: 20),
 
             // Nút Đăng ký
-<<<<<<< HEAD
-            Container(
-              width: double.infinity,
-              height: MediaQuery.sizeOf(context).height / 14,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [
-                    Color(0xFF218FF2), // Light blue
-                    Color(0xFF13538C), // Dark blue
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/memberVip'
-                      '');
-
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  shadowColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: const Text(
-                  'Đăng Ký',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-=======
+            // Container(
+            //   width: double.infinity,
+            //   height: MediaQuery.sizeOf(context).height / 14,
+            //   decoration: BoxDecoration(
+            //     gradient: const LinearGradient(
+            //       colors: [
+            //         Color(0xFF218FF2), // Light blue
+            //         Color(0xFF13538C), // Dark blue
+            //       ],
+            //       begin: Alignment.centerLeft,
+            //       end: Alignment.centerRight,
+            //     ),
+            //     borderRadius: BorderRadius.circular(30),
+            //   ),
+            //   child: ElevatedButton(
+            //     onPressed: () {
+            //       Navigator.pushNamed(context, '/memberVip'
+            //           '');
+            //
+            //     },
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: Colors.transparent,
+            //       elevation: 0,
+            //       shadowColor: Colors.transparent,
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(30),
+            //       ),
+            //     ),
+            //     child: const Text(
+            //       'Đăng Ký',
+            //       style: TextStyle(
+            //         color: Colors.white,
+            //         fontSize: 16,
+            //         fontWeight: FontWeight.bold,
+            //       ),
             SizedBox(
               width: MediaQuery.sizeOf(context).width,
               child: ElevatedButton(
@@ -159,7 +157,6 @@ class RegisterScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 16),
                   backgroundColor: Color(0xFF00B2F6),
->>>>>>> origin
                 ),
               ),
             ),

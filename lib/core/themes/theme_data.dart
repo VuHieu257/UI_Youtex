@@ -32,7 +32,7 @@ class MyAppThemes {
       ),
     ),
       scaffoldBackgroundColor: Styles.light,
-    iconTheme: const IconThemeData(
+      iconTheme: const IconThemeData(
       color: Styles.dark, // Replace `AppsColor.dark` with your defined color.
     ),
     focusColor: Styles.blue, // Replace `AppsColor.blue` with your defined color.

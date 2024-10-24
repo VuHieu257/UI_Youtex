@@ -20,8 +20,10 @@ class Asset {
   static const String iconGg = '$_img/gg_icon.png';
   static const String iconIp = '$_img/ip_icon.png';
   static const String iconCart = '$_icon/icon_cart.png';
+  static const String iconHand = '$_icon/icon_hand.png';
   static const String iconMessage = '$_icon/icon_message.png';
   static const String iconHome = '$_icon/home.png';
+  static const String iconLive = '$_icon/signal-stream.png';
   static const String iconMarket = '$_icon/market.png';
   static const String iconMessage1 = '$_icon/message.png';
 

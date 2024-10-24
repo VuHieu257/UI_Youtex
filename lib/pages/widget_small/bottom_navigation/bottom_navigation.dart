@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../../../core/assets.dart';
-<<<<<<< HEAD
 import '../../screens/home/home.dart';
+import '../../screens/home/home_mall.dart';
 import '../../screens/message/message.dart';
 import '../../screens/shopping_cart_page/shopping_cart_page.dart';
 import '../../screens/user/user_profile/user_profile.dart';
 import '../../screens/user/user_selection_screen/user_selection_screen.dart';
-=======
->>>>>>> origin
 
 class CustomNavBar extends StatefulWidget {
   const CustomNavBar({super.key});
@@ -21,33 +19,20 @@ class CustomNavBar extends StatefulWidget {
 class _CustomNavBarState extends State<CustomNavBar> {
 
   int _selectedIndex = 0;
-<<<<<<< HEAD
   final List<Widget> _screens = [
-      HomePage(),
-    const ShoppingCartPage(),
+    const HomePage(),
+    HomeMall(),
     const MessagesScreen(),
     const ProfileScreen(),
   ];
-=======
->>>>>>> origin
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
       body: IndexedStack(
         index: _selectedIndex,
         children: _screens, // Hiển thị màn hình tương ứng với tab được chọn
-=======
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Text('Selected Index: $_selectedIndex'),
-          ),
-        ],
->>>>>>> origin
       ),
       bottomNavigationBar:
       Container(
@@ -67,8 +52,9 @@ class _CustomNavBarState extends State<CustomNavBar> {
         child: GNav(
           color: Colors.grey[800],
           activeColor: Colors.blue,
+          hoverColor: Colors.blue.shade100,
           tabBackgroundColor: Colors.blue.shade100.withOpacity(0.5),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           duration: const Duration(milliseconds: 800),
           selectedIndex: _selectedIndex,
           onTabChange: (index) {
@@ -79,17 +65,8 @@ class _CustomNavBarState extends State<CustomNavBar> {
           tabs: [
             GButton(
               icon:  Icons.home_outlined,
-              leading: Container(
-                height: 16,
-                width: 16,
-                margin: const EdgeInsets.symmetric(horizontal: 5),
-                // decoration: const BoxDecoration(
-                // image: DecorationImage(image: AssetImage(Asset.iconHome),fit: BoxFit.contain),
-                // color: Colors.white
-                // ),
-                child: Image.asset(Asset.iconHome,color: _selectedIndex == 0? Colors.blue:Colors.grey[800],),
-              ),
-              text: 'Home',
+              leading: Image.asset(Asset.iconHome,color: _selectedIndex == 0? Colors.blue:Colors.grey[800],fit: BoxFit.fitHeight,height: 20,width: 20,),
+              text: 'Trang chủ',
               iconColor: Colors.transparent, // Làm icon trở nên vô hình
             ),
             GButton(
@@ -99,9 +76,20 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 height: 16,
                 width: 16,
                 margin: const EdgeInsets.symmetric(horizontal: 5),
-                child: Image.asset(Asset.iconMarket,color: _selectedIndex == 1? Colors.blue:Colors.grey[800],),
+                child: Image.asset(Asset.iconMarket,color: _selectedIndex == 1? Colors.blue:Colors.grey[800],fit: BoxFit.fitHeight,height: 20,width: 20,),
               ),
-              text: 'Marketplace',
+              text: 'Mall',
+              iconColor: Colors.transparent, //
+            ),
+            GButton(
+              icon: Icons.notifications_none,
+              backgroundColor: Colors.red.shade200.withOpacity(0.3),
+              leading: Container(
+                height: 16,
+                width: 16,
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                child: Image.asset(Asset.iconLive,color: _selectedIndex == 1? Colors.red:Colors.red,fit: BoxFit.fitHeight,height: 20,width: 20,),
+              ),
               iconColor: Colors.transparent, //
             ),
             GButton(
@@ -111,31 +99,55 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 height: 16,
                 width: 16,
                 margin: const EdgeInsets.symmetric(horizontal: 5),
-                child: Image.asset(Asset.iconMessage1,color: _selectedIndex == 2? Colors.blue:Colors.grey[800],),
+                child: Image.asset(Asset.iconMessage1,color: _selectedIndex == 2? Colors.blue:Colors.grey[800],fit: BoxFit.fitHeight,height: 20,width: 20,),
               ),
-              text: 'Message',
+              text: 'Tin Nhắn',
               iconColor: Colors.transparent, //
             ),
             const GButton(
               // iconMarket
               icon: Icons.notifications_none,
-              leading: Padding(
-                padding: EdgeInsets.symmetric(horizontal:5.0),
-                child: CircleAvatar(
-                  radius: 15,
-                  backgroundImage:AssetImage(Asset.bgImageAvatar) ,
-                ),
+              leading: CircleAvatar(
+                radius: 15,
+                backgroundImage:AssetImage(Asset.bgImageAvatar) ,
               ),
-              // leading: Container(
-              //   height: 16,
-              //   width: 16,
-              //   margin: const EdgeInsets.symmetric(horizontal: 5),
-              //   child: Image.asset(Asset.bgImageAvatar,color: _selectedIndex == 3? Colors.blue:Colors.grey[800],),
-              // ),
-              text: 'User',
               iconColor: Colors.transparent, //
             ),
           ],
+          // tabs: const [
+          //   GButton(
+          //     icon:  Icons.home_outlined,
+          //     text: 'Trang chủ',
+          //   ),
+          //   GButton(
+          //     icon:  Icons.home_outlined,
+          //     text: 'Trang chủ',
+          //   ),
+          //   GButton(
+          //     // iconMarket
+          //     icon: Icons.notifications_none,
+          //     text: 'Mall',
+          //   ),
+          //   GButton(
+          //     // iconMarket
+          //     icon: Icons.notifications_none,
+          //     text: 'Tin Nhắn',
+          //   ),
+          //   // GButton(
+          //   //   // iconMarket
+          //   //   icon: Icons.notifications_none,
+          //   //   text: 'Tin Nhắn',
+          //   // ),
+          //   GButton(
+          //     // iconMarket
+          //     icon: Icons.notifications_none,
+          //     leading: CircleAvatar(
+          //       radius: 15,
+          //       backgroundImage:AssetImage(Asset.bgImageAvatar) ,
+          //     ),
+          //     iconColor: Colors.transparent, //
+          //   ),
+          // ],
         ),
       ),
     );

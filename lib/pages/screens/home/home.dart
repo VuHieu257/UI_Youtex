@@ -1,225 +1,277 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
-import 'package:ui_youtex/pages/screens/home/product/product_detail_page.dart';
-import 'package:ui_youtex/pages/screens/home/search_page/search_page.dart';
 
 import '../../../core/assets.dart';
-import '../../../core/colors/color.dart';
-import '../../widget_small/product/product_card.dart';
-import '../shopping_cart_page/shopping_cart_page.dart';
-import 'category/category_screen.dart';
-
 class HomePage extends StatelessWidget {
-  final List<Map<String, String>> categories = [
-    {'name': 'Máy móc và thiết bị may', 'image': Asset.bgImageCategory},
-    {'name': 'Vải và nguyên liệu', 'image': Asset.bgImageCategory},
-    {'name': 'Dụng cụ may', 'image': Asset.bgImageCategory},
-    {'name': 'Hệ thống hỗ trợ', 'image': Asset.bgImageCategory},
-  ];
-
-  final List<Map<String, dynamic>> products = [
-    {
-      'name': 'Máy May Một Kim',
-      'price': '123.000',
-      'image': Asset.bgImageProduct,
-      'rating': 4.5,
-      'sales': 63
-    },
-    {
-      'name': 'Vải Cotton May Áo Phông',
-      'price': '123.000',
-      'image': Asset.bgImageProduct,
-      'rating': 5,
-      'sales': 63
-    },
-    {
-      'name': 'Máy May Một Kim',
-      'price': '123.000',
-      'image': Asset.bgImageProduct,
-      'rating': 4,
-      'sales': 63
-    },
-    {
-      'name': 'Vải Cotton May Áo',
-      'price': '123.000',
-      'image': Asset.bgImageProduct,
-      'rating': 5,
-      'sales': 63
-    },
-  ];
-
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: AppBar(
+        title: Row(
           children: [
-            Container(
-<<<<<<< HEAD
-              height: MediaQuery.of(context).size.height /9,
-=======
-              height: MediaQuery.of(context).size.height / 12,
->>>>>>> origin
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).padding.top + 10,
-                  left: MediaQuery.of(context).padding.left + 10,
-                  right: MediaQuery.of(context).padding.right + 10,
-                  bottom: 15),
-              color: Styles.blue,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SearchPage(),
-                            ));
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Tìm kiếm',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide.none),
-                        hintStyle: const TextStyle(color: Colors.grey),
-                        prefixIcon: const Icon(
-                          Icons.search,
-                          color: Colors.grey,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  InkWell(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ShoppingCartPage(),
-                          )),
-                      child: const Icon(
-                        Icons.shopping_cart_outlined,
-                        color: Styles.light,
-                      )),
-                  const SizedBox(width: 10),
-                  Image.asset(
-                    Asset.iconMessage,
-                    width: context.width * 0.06,
-                  ),
-                  // Image.asset(Asset.iconMessage),
-                ],
-              ),
-            ),
-            // Banner Image
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: context.width * 0.4,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  image: const DecorationImage(
-                    image: AssetImage(Asset.bgSlider),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-
-            // Category Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                'Danh mục',
-                style: context.theme.textTheme.headlineMedium
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
-            ),
-            Container(
-              height: context.width * 0.32,
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CategoryScreen(
-                              category: categories[index]['name']),
-                        )),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundImage:
-                                AssetImage(categories[index]['image']!),
-                          ),
-                          const SizedBox(height: 5),
-                          SizedBox(
-                            width: context.width * 0.2,
-                            child: Text(
-                              categories[index]['name']!,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: context.theme.textTheme.titleSmall,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-
-            // Product Section Title
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                'Sản phẩm',
-                style: context.theme.textTheme.headlineMedium
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
-            ),
-
-            // Product Grid
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(10),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 0.75,
-              ),
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ProductDetailPage(product: products[index]),
-                          ));
-                    },
-                    child: ProductCard(product: products[index]));
-              },
+            Image.asset(
+              Asset.bgLogo,
+              height: 40,
             ),
           ],
         ),
+        actions: [
+          CircleAvatar(backgroundColor: Colors.grey.shade300,child: Icon(Icons.search)),
+          const SizedBox(width: 10),
+          CircleAvatar(backgroundColor: Colors.grey.shade300,child: Icon(Icons.notifications_none)),
+          const SizedBox(width: 10),
+        ],
+      ),
+      body: ListView(
+        padding: EdgeInsets.all(16.0),
+        children: [
+          // Section 1: "Doanh nghiệp nổi bật"
+          Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Doanh nghiệp nổi bật',
+                  style: context.theme.textTheme.headlineLarge,
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  height: 120,
+                  padding: EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(offset: Offset(4, 4),color: Colors.grey,blurRadius: 6)
+                      ]
+                  ),
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: const [
+                      FeaturedCompanyCard(
+                        imageUrl: Asset.bgCustomer1,
+                        title: 'Vinatex',
+                      ),
+                      FeaturedCompanyCard(
+                        imageUrl: Asset.bgCustomer2,
+                        title: 'Viet Thang',
+                      ),
+                      FeaturedCompanyCard(
+                        imageUrl: Asset.bgCustomer3,
+                        title: 'Viet Tien',
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
+          // Section 2: "Thương hiệu dệt may Việt 2024"
+          const Card(
+            child: Column(
+              children: [
+                PostCard(
+                  imageUrl: Asset.bgCustomer4,
+                  title: 'THƯƠNG HIỆU DỆT MAY VIỆT 2024',
+                  description: '..........................................................',
+                  isRow: true,
+                ),
+                SizedBox(height: 10),
+                PostCard(
+                  imageUrl: Asset.bgCustomer5,
+                  title: 'KHAI TRƯƠNG CHI NHÁNH THỨ 10',
+                  description: '......................................................................................................................................................................',
+                  isRow: false,
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
+          // Section 4: "Bài đăng nổi bật"
+          const Text(
+            'Bài đăng nổi bật',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          const SizedBox(height: 10),
+          const HighlightedPostCard(
+            imageUrl: Asset.bgCustomer4,
+            title: 'KỶ NIỆM 10 NĂM THÀNH LẬP HẢI ANH',
+            description: 'Kỷ niệm 10 năm của công ty...',
+            actions: ['Xem thêm', 'Nhận quà'],
+          ),
+          const SizedBox(height: 10),
+          const HighlightedPostCard(
+            imageUrl: Asset.bgCustomer4,
+            title: 'CHUNG TAY CÙNG VINID XÂY TRƯỜNG MỚI',
+            description: 'Cùng chung tay với VinID để xây trường mới...',
+            actions: ['Xem thêm', 'Nhận quà'],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FeaturedCompanyCard extends StatelessWidget {
+  final String imageUrl;
+  final String title;
+
+  const FeaturedCompanyCard({super.key, required this.imageUrl, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(offset: Offset(4, 4),color: Colors.grey,blurRadius: 6)
+                  ]
+              ), child: Image.asset(imageUrl, height: 40,fit: BoxFit.contain,)),
+          const SizedBox(height: 10),
+          Text(
+            title,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PostCard extends StatelessWidget {
+  final String imageUrl;
+  final String title;
+  final String description;
+  final bool isRow;
+
+  const PostCard({super.key, required this.imageUrl, required this.title, required this.description,required this.isRow});
+
+  @override
+  Widget build(BuildContext context) {
+    return isRow!=true?Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(imageUrl, fit: BoxFit.contain, height: 150, width: double.infinity),
+          Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 10),
+          Text(description),
+        ],
+      ),
+    )
+        :Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Image.asset(imageUrl, fit: BoxFit.contain, height: 150, width: 150),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(width: 150,child: Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+              const SizedBox(height: 10),
+              SizedBox(width: 150,child: Text(description)),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class HighlightedPostCard extends StatelessWidget {
+  final String imageUrl;
+  final String title;
+  final String description;
+  final List<String> actions;
+
+  const HighlightedPostCard({super.key,
+    required this.imageUrl,
+    required this.title,
+    required this.description,
+    required this.actions,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(imageUrl, fit: BoxFit.cover, height: 150, width: 150),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 160,child: Text(title,style: context.theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold
+                    ),)),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(image: AssetImage(imageUrl),fit: BoxFit.fill),
+                              boxShadow: const [
+                                BoxShadow(offset: Offset(4, 4),color: Colors.grey,blurRadius: 6)
+                              ]
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          children: [
+                            SizedBox(
+                              width: 130,
+                              child: Text("Tập đoàn VinGroup",style: context.theme.textTheme.titleMedium?.copyWith(),),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    // Row(
+                    //   children: actions
+                    //       .map(
+                    //         (action) => Padding(
+                    //       padding: const EdgeInsets.only(right: 8.0),
+                    //       child: ElevatedButton(
+                    //         onPressed: () {},
+                    //         child: Text(action),
+                    //       ),
+                    //     ),
+                    //   )
+                    //       .toList(),
+                    // )
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(description,style: context.theme.textTheme.titleMedium?.copyWith(),),
+          ),
+        ],
       ),
     );
   }

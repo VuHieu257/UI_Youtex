@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
-import 'package:ui_youtex/pages/screens/home/home.dart';
+import 'package:ui_youtex/pages/screens/home/home_mall.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_plan_vip.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_plan_prenium.dart';
@@ -171,7 +171,7 @@ class MembershipScreen extends StatelessWidget {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return HomePage();
+                              return HomeMall();
                             },
                           );
                         },

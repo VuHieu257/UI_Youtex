@@ -85,12 +85,8 @@ class LoginScreen extends StatelessWidget {
                       Text("Ghi nhớ tài khoản"),
                       Spacer(),
                       TextButton(
-<<<<<<< HEAD
                         onPressed: () {Navigator.pushNamed(context, '/Forgot');},
-=======
-                        onPressed: () {},
->>>>>>> origin
-                        child: Text(
+                        child: const Text(
                           "Quên mật khẩu?",
                           style: TextStyle(color: Color(0xFF00B2F6)),
                         ),
@@ -99,8 +95,6 @@ class LoginScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
 
-                  // Nút Đăng nhập
-<<<<<<< HEAD
                   Container(
                     width: double.infinity,
                     height: MediaQuery.sizeOf(context).height / 14,
@@ -133,32 +127,24 @@ class LoginScreen extends StatelessWidget {
                         'Đăng Nhập',
                         style: TextStyle(
                           color: Colors.white,
-=======
-                  SizedBox(
-                    width: MediaQuery.sizeOf(context).width,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/memberVip');
-                      },
-                      child: Text(
-                        "Đăng nhập",
-                        style: TextStyle(
-                          color: Styles.light,
->>>>>>> origin
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-<<<<<<< HEAD
-=======
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: Color(0xFF00B2F6),
-                      ),
->>>>>>> origin
+                  // SizedBox(
+                  //   width: MediaQuery.sizeOf(context).width,
+                  //   child: ElevatedButton(
+                  //     onPressed: () {
+                  //       Navigator.pushNamed(context, '/memberVip');
+                  //     },
+                  //     child: Text(
+                  //       "Đăng nhập",
+                  //       style: TextStyle(
+                  //         color: Styles.light,
+                  //         fontSize: 16,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //     ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                    )
+                  ),
 
                   // Điều hướng đến màn hình Đăng ký
                   Row(
