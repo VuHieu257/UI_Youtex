@@ -1,4 +1,3 @@
- 
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/first_welcome.dart';
@@ -23,13 +22,13 @@ class _WelcomeAppState extends State<WelcomeApp> {
             onPressed: () => _controller.nextPage(
                 duration: Duration(milliseconds: 300), curve: Curves.easeIn)),
         WelcomeScreen2(
-            title: "Cà Phê Thơm Ngon, Điểm Tích Trọn",
-            subtitle: "Uống Một Ly, Tích Một Điểm",
+            title: " ",
+            subtitle: " ",
             onPressed: () => _controller.nextPage(
                 duration: Duration(milliseconds: 300), curve: Curves.easeIn)),
         WelcomeScreen3(
-            title: "Cà Phê Mỗi Ngày, Niềm Vui Trọn Vẹn",
-            subtitle: "Thưởng Thức & Tích Lũy",
+            title: " ",
+            subtitle: " ",
             onPressed: () => _controller.nextPage(
                 duration: Duration(milliseconds: 300), curve: Curves.easeIn)),
         WelcomeScreen4(

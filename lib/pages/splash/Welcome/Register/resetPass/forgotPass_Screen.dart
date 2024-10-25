@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 
-class LoginScreen extends StatelessWidget {
+class ForgotScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Hình ảnh trên cùng
             Image.asset(
               'assets/images/Vector 1.png',
               width: MediaQuery.sizeOf(context).width,
-              height: MediaQuery.sizeOf(context).height / 3.2,
+              height: MediaQuery.sizeOf(context).height / 2.2,
               fit: BoxFit.cover,
             ),
 
@@ -24,7 +22,7 @@ class LoginScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const Text(
-                    "Đăng nhập",
+                    "Forgot Password",
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -33,12 +31,17 @@ class LoginScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    "Đăng nhập bằng tài khoản của bạn",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
+                  Row(
+                    children: [
+                      const Text(
+                        "Enter your email",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 10),
 
                   // Form Email và Mật khẩu
                   TextField(
@@ -55,46 +58,7 @@ class LoginScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8)),
                     ),
                   ),
-                  SizedBox(height: 15),
-                  TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.lock_clock_outlined,
-                        color: Color(0xFFBE005B99),
-                      ),
-                      hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
-                      hintText: "Mật khẩu",
-                      filled: true,
-                      fillColor: Color(0xFFEEFBFF),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                    ),
-                  ),
-                  SizedBox(height: 15),
 
-                  // Checkbox ghi nhớ tài khoản
-                  Row(
-                    children: [
-                      Checkbox(
-                          focusColor: Color(0xFF00B2F6),
-                          activeColor: Color(0xFF00B2F6),
-                          shape: CircleBorder(),
-                          value: true,
-                          onChanged: (value) {}),
-                      Text("Ghi nhớ tài khoản"),
-                      Spacer(),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/Forgot');
-                        },
-                        child: Text(
-                          "Quên mật khẩu?",
-                          style: TextStyle(color: Color(0xFF00B2F6)),
-                        ),
-                      ),
-                    ],
-                  ),
                   SizedBox(height: 20),
 
                   // Nút Đăng nhập
@@ -114,10 +78,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context,
-                            '/CustomNavBar'
-                            '');
+                        Navigator.pushNamed(context, '/OTP');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
@@ -128,7 +89,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       child: const Text(
-                        'Đăng Nhập',
+                        'Send Code',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -143,13 +104,13 @@ class LoginScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Bạn chưa có tài khoản? "),
+                      Text("Already have account?   "),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/register');
+                          Navigator.pushNamed(context, '/login');
                         },
                         child: Text(
-                          "Đăng ký",
+                          "Sign in",
                           style: TextStyle(color: Color(0xFF00B2F6)),
                         ),
                       ),

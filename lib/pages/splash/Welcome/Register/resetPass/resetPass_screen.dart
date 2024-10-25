@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 
-class ForgotScreen extends StatelessWidget {
+class ResetpassScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
-           children: [
+          children: [
             // Hình ảnh trên cùng
             Image.asset(
               'assets/images/Vector 1.png',
@@ -20,10 +21,9 @@ class ForgotScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-
                 children: [
                   const Text(
-                    "Forgot Password",
+                    "Set New Password",
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -35,32 +35,64 @@ class ForgotScreen extends StatelessWidget {
                   Row(
                     children: [
                       const Text(
-                        "Enter your email",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        "Password",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.left,
                       ),
                     ],
                   ),
                   const SizedBox(height: 10),
 
-                  // Form Email và Mật khẩu
+                  // Trường mật khẩu
                   TextField(
+                    obscureText: true, // Che mật khẩu
                     decoration: InputDecoration(
                       hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
                       prefixIcon: Icon(
-                        Icons.email,
-                        color: Color(0xFFBE005B99),
+                        Icons.lock,
+                        color: Color(0xFFBE005B99), // Icon khóa cho mật khẩu
                       ),
-                      hintText: "Email",
+                      hintText: "******",
                       filled: true,
                       fillColor: Color(0xFFEEFBFF),
                       border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
+                  const SizedBox(height: 10),
 
+                  Row(
+                    children: [
+                      const Text(
+                        "Confirm password",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
 
-
+                  // Trường xác nhận mật khẩu
+                  TextField(
+                    obscureText: true, // Che mật khẩu
+                    decoration: InputDecoration(
+                      hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
+                      prefixIcon: Icon(
+                        Icons.lock,
+                        color: Color(0xFFBE005B99), // Icon khóa cho mật khẩu
+                      ),
+                      hintText: "******",
+                      filled: true,
+                      fillColor: Color(0xFFEEFBFF),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   SizedBox(height: 20),
 
                   // Nút Đăng nhập
@@ -80,9 +112,10 @@ class ForgotScreen extends StatelessWidget {
                     ),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/home'
+                        Navigator.pushNamed(
+                            context,
+                            '/Resetpass'
                             '');
-
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
@@ -93,7 +126,7 @@ class ForgotScreen extends StatelessWidget {
                         ),
                       ),
                       child: const Text(
-                        'Send Code',
+                        'Continue',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -108,14 +141,13 @@ class ForgotScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Already have account?   "),
                       GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(context, '/login');
                         },
                         child: Text(
-                          "Sign in",
-                          style: TextStyle(color: Color(0xFF00B2F6)),
+                          "<- Back to Login",
+                          style: TextStyle(),
                         ),
                       ),
                     ],

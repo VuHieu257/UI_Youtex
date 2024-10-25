@@ -108,8 +108,7 @@ class RegisterScreen extends StatelessWidget {
             SizedBox(height: 20),
 
             // Nút Đăng ký
-<<<<<<< HEAD
-            Container(
+             Container(
               width: double.infinity,
               height: MediaQuery.sizeOf(context).height / 14,
               decoration: BoxDecoration(
@@ -144,22 +143,7 @@ class RegisterScreen extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
-=======
-            SizedBox(
-              width: MediaQuery.sizeOf(context).width,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text(
-                  "Đăng Ký",
-                  style: TextStyle(
-                      color: Styles.light,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Color(0xFF00B2F6),
->>>>>>> origin
+
                 ),
               ),
             ),
