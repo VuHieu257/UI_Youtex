@@ -8,14 +8,14 @@ import '../../../widget_small/custom_button.dart';
 import '../checkout_page/checkout_page.dart';
 import 'cardInput_app.dart';
 
-class PaymentMethodScreen extends StatefulWidget {
-  const PaymentMethodScreen({super.key});
+class PaymentMethodPayScreen extends StatefulWidget {
+  const PaymentMethodPayScreen({super.key});
 
   @override
   _PaymentMethodScreenState createState() => _PaymentMethodScreenState();
 }
 
-class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
+class _PaymentMethodScreenState extends State<PaymentMethodPayScreen> {
   int _selectedCardIndex = 0; // Default selected card index
 
   List<Map<String, String>> savedCards = [
@@ -109,7 +109,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const CardInputApppay(),
+                  builder: (context) => const CardInputApp(),
                 ),
               ),
               child: const CusButton(text: "Save", color: Styles.blue),

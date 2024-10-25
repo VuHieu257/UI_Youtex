@@ -14,6 +14,8 @@ class Styles {
   static const Color blueIcon = Color(0xFF0393CD); // Example blue color, replace with your desired color
   static const Color blueLight = Color(0xFFD0F0FD); // Example blue color, replace with your desired color
   static const Color error = Color(0xFFB00020); // Error color, used for validation or error messages
+  static const Color nearPrimary = Color(0xff113A71); // Example color, replace with your primary color
+  static const Color nearBlue = Color(0xffECF5FF); // Example blue color, replace with your desired color
 
   static double defaultPadding = 20.0;
 

@@ -68,6 +68,7 @@ class VipPlanScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       // Handle button press
+                      Navigator.pushNamed(context, '/MembershipPaymentScreen');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF1976D2),

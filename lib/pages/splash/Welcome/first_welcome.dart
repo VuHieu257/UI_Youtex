@@ -28,7 +28,7 @@ class WelcomeScreen1 extends StatelessWidget {
               radius: 25,
               backgroundColor: Colors.white,
               child: IconButton(
-                icon: Icon(Icons.arrow_forward_ios, color: Colors.green),
+                icon: Icon(Icons.arrow_forward_ios, color: Colors.blue),
                 onPressed: onPressed,
               ),
             ),

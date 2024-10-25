@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'dart:core';
+import 'package:ui_youtex/core/assets.dart';
+import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/home/home.dart';
-import 'package:ui_youtex/pages/screens/home/home_mall.dart';
+import 'package:ui_youtex/pages/screens/home/homepage.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
-import 'package:ui_youtex/pages/screens/member_Vip/member_plan_prenium.dart';
-import 'package:ui_youtex/pages/screens/shopping_cart_page/information_order/information_order.dart';
-import 'package:ui_youtex/pages/screens/shopping_cart_page/order_managment/order_management_screen.dart';
+import 'package:ui_youtex/pages/screens/member_Vip/member_packagePayment.dart';
+import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen%20copy.dart';
+import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
-import 'package:ui_youtex/pages/splash/Welcome/Register/forgotPass_Screen.dart';
-
+import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/forgotPass_Screen.dart';
+import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassDone_screen.dart';
+import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassOtp_screen.dart';
+import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPass_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/welcome.dart';
+
 import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 
-import 'core/assets.dart';
-import 'core/colors/color.dart';
 import 'core/themes/theme_data.dart';
 import 'pages/splash/Welcome/Register/login_screen.dart';
 
@@ -36,11 +40,9 @@ class MyApp extends StatelessWidget {
       // ),
       debugShowCheckedModeBanner: false,
 
-      home: const FriendListScreen(),
-      // home: const OrderManagementScreen(),
-      // home: const CustomNavBar(),
-      // home: const HistoryOrder(),
-      // home: WelcomeApp(),
+      // home: HomePage(),
+      home: WelcomeApp(),
+      // home: MembershipPaymentScreen(),
       routes: {
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
@@ -48,8 +50,12 @@ class MyApp extends StatelessWidget {
         '/memberVip': (context) => FreeTrialTimeline(),
         '/CustomNavBar': (context) => CustomNavBar(),
         '/Forgot': (context) => ForgotScreen(),
-
-
+        '/OTP': (context) => OTPScreen(),
+        '/Reset': (context) => ResetpassScreen(),
+        '/Resetpass': (context) => ResetpassdoneScreen(),
+        '/MembershipPaymentScreen': (context) => MembershipPaymentScreen(),
+        '/PaymentMethodScreen': (context) => PaymentMethodScreen(),
+        '/PaymentMethodPayScreen': (context) => PaymentMethodPayScreen(),
       },
     );
   }
@@ -79,223 +85,9 @@ class ChatBubble extends StatelessWidget {
           child: Text(
             message,
             style: const TextStyle(
-              color: Colors.black,
+              color: Styles.light,
               fontSize: 16,
             ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-class FriendListScreen extends StatelessWidget {
-  const FriendListScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading:const Icon(Icons.arrow_back,color: Styles.nearPrimary,),
-        title: Column(
-          children: [
-            Text('Bạn bè',style: context.theme.textTheme.headlineLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Styles.nearPrimary
-            ),),
-            Divider(indent: context.width*0.15,endIndent: context.width*0.15,),
-          ],
-        ),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    margin: const EdgeInsets.symmetric(horizontal: 10),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: const Color(0xffF3F3F3),
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          offset: const Offset(0, 4),
-                          blurRadius: 4,
-                        ),
-                      ],
-                    ),
-                    child: const TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Tìm kiếm bạn bè',
-                        prefixIcon: Icon(Icons.search),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  )
-                  ,
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const FilterModal();
-                        },
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8),
-                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.25),
-                                offset: const Offset(0, 4),
-                                blurRadius: 4
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(18),color: const Color(0xffF3F3F3)),
-                      child:const Icon(Icons.group_add_outlined),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const FilterModal();
-                        },
-                      );
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 8),
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.25),
-                                offset: const Offset(0, 4),
-                                blurRadius: 4
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(18),color: const Color(0xffF3F3F3)),
-                      child:const Icon(Icons.filter_alt_outlined),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return const FriendCard();
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class FriendCard extends StatelessWidget {
-  const FriendCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Card(
-        color: const Color(0xffF3F3F3),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Container(
-                height: context.width*0.15,
-                width: context.width*0.15,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  image: DecorationImage(image: AssetImage(Asset.bgImageAvatar),fit: BoxFit.cover)
-                ),
-              ),
-              const SizedBox(width: 10),
-              // Thông tin bạn bè
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Nguyễn Văn A',
-                     style: context.theme.textTheme.titleMedium?.copyWith(
-                       fontWeight: FontWeight.bold
-                     ),
-                    ),
-                    Text(
-                      'Member ID: 19191818245',
-                      style: context.theme.textTheme.titleMedium?.copyWith(
-                        fontSize: 10
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(right: 10),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.25),
-                        offset: const Offset(0, 4),
-                        blurRadius: 4
-                    )
-                  ],
-                  color: Styles.blue,
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                ),
-                child: Text(
-                  'Nhắn tin',
-                  style: context.theme.textTheme.titleSmall?.copyWith(
-                    color: Colors.white
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.25),
-                        offset: const Offset(0, 4),
-                        blurRadius: 4
-                    )
-                  ],
-                  color: const Color(0xffFF6B6B),
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                ),
-                child: Text(
-                  'Nhắn tin',
-                  style: context.theme.textTheme.titleSmall?.copyWith(
-                      color: Colors.white
-                  ),
-                ),
-              )
-            ],
           ),
         ),
       ),

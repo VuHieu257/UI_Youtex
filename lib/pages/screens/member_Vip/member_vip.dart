@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
-import 'package:ui_youtex/pages/screens/home/home_mall.dart';
+import 'package:ui_youtex/pages/screens/home/home.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_plan_vip.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_plan_prenium.dart';
+import 'package:ui_youtex/pages/splash/Welcome/Register/login_screen.dart';
 
 import '../../../core/assets.dart';
 
@@ -171,7 +172,7 @@ class MembershipScreen extends StatelessWidget {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return HomeMall();
+                              return LoginScreen();
                             },
                           );
                         },
@@ -184,7 +185,7 @@ class MembershipScreen extends StatelessWidget {
                           ),
                         ),
                         child: const Text(
-                          'Start 7-Day Free Trial',
+                          'Choose Plan',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
