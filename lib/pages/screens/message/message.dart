@@ -14,7 +14,7 @@ class MessagesScreen extends StatelessWidget {
         backgroundColor: Styles.blue,
         centerTitle: true,
         leading: InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.settings_suggest_outlined,color: Styles.light,)),
-        title: Text('Message',style: context.theme.textTheme.headlineSmall?.copyWith(
+        title: Text('Message',style: context.theme.textTheme.headlineMedium?.copyWith(
           fontWeight: FontWeight.bold,
           color: Styles.light,
         ),),

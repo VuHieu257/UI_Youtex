@@ -4,6 +4,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import '../../../core/assets.dart';
 import '../../screens/home/home.dart';
 import '../../screens/home/home_mall.dart';
+import '../../screens/live/live.dart';
 import '../../screens/message/message.dart';
 import '../../screens/shopping_cart_page/shopping_cart_page.dart';
 import '../../screens/user/user_profile/user_profile.dart';
@@ -13,7 +14,7 @@ class CustomNavBar extends StatefulWidget {
   const CustomNavBar({super.key});
 
   @override
-  _CustomNavBarState createState() => _CustomNavBarState();
+  State<CustomNavBar> createState() => _CustomNavBarState();
 }
 
 class _CustomNavBarState extends State<CustomNavBar> {
@@ -22,8 +23,9 @@ class _CustomNavBarState extends State<CustomNavBar> {
   final List<Widget> _screens = [
     const HomePage(),
     HomeMall(),
+    const LiveScreen(),
     const MessagesScreen(),
-    const ProfileScreen(),
+    ProfileScreen(),
   ];
 
 
@@ -32,7 +34,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
     return Scaffold(
       body: IndexedStack(
         index: _selectedIndex,
-        children: _screens, // Hiển thị màn hình tương ứng với tab được chọn
+        children: _screens,
       ),
       bottomNavigationBar:
       Container(

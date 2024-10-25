@@ -1,32 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/pages/screens/message/friend_list_scrren.dart';
 import 'package:ui_youtex/pages/screens/user/user_profile/user_profile_settings.dart';
 import 'package:ui_youtex/pages/screens/voucher/voucher_view.dart';
 
+import '../../../../core/colors/color.dart';
 import '../../../oder_manager/oder_manager_view.dart';
 
 class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header với ảnh và thông tin người dùng
-                Container(
-                  padding:
-                      EdgeInsets.only(top: 48, left: 16, right: 16, bottom: 16),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Color(0xFF1E3799), Color(0xFF4A69BD)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+              height: context.height*0.15,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF040435),
+                    Color(0xFF040435),
+                    Color(0xFF113A71),
+                    Color(0xFF1E37C5),
+                    Color(0xff3EB0FF),
+                    Color(0xffDAF5FF),
+                  ],
+                ),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap:() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AccountSettingsScreen()),
+                          );
+                        },
+                        child: const CircleAvatar(
+                          backgroundColor: Styles.greyLight,
+                          child: Icon(Icons.settings, color: Colors.white),
+                        ),
+                      ),
+                      IconButton(
+                        icon:
+                        const Icon(Icons.notifications, color: Colors.white),
+                        onPressed: () {},
+                      ),
+                    ],
                   ),
-                  child: Row(
+                  Row(
                     children: [
                       CircleAvatar(
                         radius: 32,
@@ -39,7 +73,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +81,7 @@ class ProfileScreen extends StatelessWidget {
                             Row(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 6, vertical: 2),
                                   decoration: BoxDecoration(
                                     color: Colors.amber,
@@ -111,162 +145,140 @@ class ProfileScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Row(
-                        children: [
-                          IconButton(
-                              icon: Icon(Icons.settings, color: Colors.white),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          AccountSettingsScreen()),
-                                );
-                              }),
-                          IconButton(
-                            icon:
-                                Icon(Icons.notifications, color: Colors.white),
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
                     ],
                   ),
-                ),
+                ],
+              ),
+            ),
 
-                // Nội dung khác
-
-                // Đơn hàng Section
-                Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Đơn hàng',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Xem thêm',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        'Đơn hàng',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      SizedBox(height: 8),
-                      SizedBox(height: 8),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      OrderManagementScreen()));
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                              child: _buildOrderStatusItem(
-                                  Icons.access_time, 'Chờ xác nhận', true),
-                            ),
-                            Expanded(
-                              child: _buildOrderStatusItem(
-                                  Icons.inventory_2, 'Chờ giao hàng'),
-                            ),
-                            Expanded(
-                              child: _buildOrderStatusItem(
-                                  Icons.local_shipping, 'Đã giao'),
-                            ),
-                            Expanded(
-                              child: _buildOrderStatusItem(
-                                  Icons.cancel_outlined, 'Đã hủy'),
-                            ),
-                          ],
+                      TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Xem thêm',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
-
-                // Menu Items
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildMenuItem(
-                        Icons.local_offer,
-                        'Mã giảm giá',
-                        context: context,
-                        color: Colors.blue[700],
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => VoucherScreen())),
-                      ),
-                      _buildMenuItem(Icons.share, 'Chia sẻ App',
-                          context: context, color: Colors.blue[700]),
-                      _buildMenuItem(
-                        Icons.shopping_bag,
-                        'Mall của tôi',
-                        context: context,
-                        color: Colors.blue[700],
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => VoucherScreen())),
-                      ),
-                      _buildMenuItem(Icons.language, 'Ngôn ngữ/Language',
-                          context: context,
-                          subtitle: 'Tiếng Việt',
-                          color: Colors.blue[700]),
-                      _buildMenuItem(
-                        Icons.people,
-                        'Bạn bè',
-                        context: context,
-                        color: Colors.blue[700],
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FriendListScreen())),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Hỗ trợ
-                Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text(
-                    'Hỗ trợ',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  SizedBox(height: 8),
+                  SizedBox(height: 8),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  OrderManagementScreen()));
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: _buildOrderStatusItem(
+                              Icons.access_time, 'Chờ xác nhận', true),
+                        ),
+                        Expanded(
+                          child: _buildOrderStatusItem(
+                              Icons.inventory_2, 'Chờ giao hàng'),
+                        ),
+                        Expanded(
+                          child: _buildOrderStatusItem(
+                              Icons.local_shipping, 'Đã giao'),
+                        ),
+                        Expanded(
+                          child: _buildOrderStatusItem(
+                              Icons.cancel_outlined, 'Đã hủy'),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: _buildMenuItem(Icons.headset_mic, 'Trung tâm trợ giúp',
-                      context: context, color: Colors.blue[700]),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+
+            // Menu Items
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildMenuItem(
+                    Icons.local_offer,
+                    'Mã giảm giá',
+                    context: context,
+                    color: Colors.blue[700],
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VoucherScreen())),
+                  ),
+                  _buildMenuItem(Icons.share, 'Chia sẻ App',
+                      context: context, color: Colors.blue[700]),
+                  _buildMenuItem(
+                    Icons.shopping_bag,
+                    'Mall của tôi',
+                    context: context,
+                    color: Colors.blue[700],
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VoucherScreen())),
+                  ),
+                  _buildMenuItem(Icons.language, 'Ngôn ngữ/Language',
+                      context: context,
+                      subtitle: 'Tiếng Việt',
+                      color: Colors.blue[700]),
+                  _buildMenuItem(
+                    Icons.people,
+                    'Bạn bè',
+                    context: context,
+                    color: Colors.blue[700],
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FriendListScreen())),
+                  ),
+                ],
+              ),
+            ),
+
+            // Hỗ trợ
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'Hỗ trợ',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: _buildMenuItem(Icons.headset_mic, 'Trung tâm trợ giúp',
+                  context: context, color: Colors.blue[700]),
+            ),
+          ],
+        ),
       ),
     );
   }
