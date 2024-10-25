@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/pages/oder_manager/oder_manager_screen.dart';
+import 'package:ui_youtex/pages/screens/shopping_cart_page/information_order/delivery_information/delivery_information.dart';
 
 class OrderManagementScreen extends StatelessWidget {
   final List<Map<String, dynamic>> orders = [
@@ -215,12 +217,21 @@ class OrderManagementScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Text(
-                      'Xem tình trạng',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    OrderManagementScreen1()));
+                      },
+                      child: Text(
+                        'Xem tình trạng',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ],

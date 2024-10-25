@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/pages/screens/message/friend_list_scrren.dart';
 import 'package:ui_youtex/pages/screens/user/user_profile/user_profile_settings.dart';
 import 'package:ui_youtex/pages/screens/voucher/voucher_view.dart';
 
@@ -205,18 +206,42 @@ class ProfileScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildMenuItem(Icons.local_offer, 'Mã giảm giá',
-                          context: context, color: Colors.blue[700]),
+                      _buildMenuItem(
+                        Icons.local_offer,
+                        'Mã giảm giá',
+                        context: context,
+                        color: Colors.blue[700],
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => VoucherScreen())),
+                      ),
                       _buildMenuItem(Icons.share, 'Chia sẻ App',
                           context: context, color: Colors.blue[700]),
-                      _buildMenuItem(Icons.shopping_bag, 'Mall của tôi',
-                          context: context, color: Colors.blue[700]),
+                      _buildMenuItem(
+                        Icons.shopping_bag,
+                        'Mall của tôi',
+                        context: context,
+                        color: Colors.blue[700],
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => VoucherScreen())),
+                      ),
                       _buildMenuItem(Icons.language, 'Ngôn ngữ/Language',
                           context: context,
                           subtitle: 'Tiếng Việt',
                           color: Colors.blue[700]),
-                      _buildMenuItem(Icons.people, 'Bạn bè',
-                          context: context, color: Colors.blue[700]),
+                      _buildMenuItem(
+                        Icons.people,
+                        'Bạn bè',
+                        context: context,
+                        color: Colors.blue[700],
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FriendListScreen())),
+                      ),
                     ],
                   ),
                 ),
@@ -285,8 +310,14 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItem(IconData icon, String title,
-      {String? subtitle, Color? color, required BuildContext context}) {
+  Widget _buildMenuItem(
+    IconData icon,
+    String title, {
+    String? subtitle,
+    Color? color,
+    required BuildContext context,
+    Function()? onTap, // thêm tham số onTap
+  }) {
     return Container(
       margin: EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
@@ -314,10 +345,7 @@ class ProfileScreen extends StatelessWidget {
             : null,
         trailing: Icon(Icons.chevron_right, color: Colors.grey[400]),
         dense: true,
-        onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => VoucherScreen()));
-        },
+        onTap: onTap, // gọi hàm onTap
       ),
     );
   }
