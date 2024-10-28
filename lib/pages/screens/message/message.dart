@@ -13,13 +13,23 @@ class MessagesScreen extends StatelessWidget {
       appBar:AppBar(
         backgroundColor: Styles.blue,
         centerTitle: true,
-        leading: InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.settings_suggest_outlined,color: Styles.light,)),
+        leading: InkWell(
+            // onTap: () => Navigator.pop(context),
+            onTap: () {
+
+            },
+            child: const Icon(Icons.settings_suggest_outlined,color: Styles.light,)),
         title: Text('Message',style: context.theme.textTheme.headlineMedium?.copyWith(
           fontWeight: FontWeight.bold,
           color: Styles.light,
         ),),
         actions: [
-          InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.edit_note_rounded,color: Styles.light,)),
+          InkWell(
+              // onTap: () => Navigator.pop(context),
+              onTap: () {
+
+              },
+              child: const Icon(Icons.edit_note_rounded,color: Styles.light,)),
         ],
       ),
       body: Column(
@@ -42,15 +52,12 @@ class MessagesScreen extends StatelessWidget {
             child: ListView(
               children: [
                 Slidable(
-                  // Specify a key if the Slidable is dismissible.
                   key: const ValueKey(0),
-                  // The end action pane is the one at the right or the bottom side.
                   endActionPane: ActionPane(
                     motion: const ScrollMotion(),
                     dismissible: DismissiblePane(onDismissed: () {}),
                     children:   [
                        SlidableAction(
-                        // An action can be bigger than the others.
                         flex: 1,
                         // onPressed: (context) => customShowReportSheet(context),
                         onPressed: (context) => customShowBlockSheet(context),
@@ -72,8 +79,6 @@ class MessagesScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // The child of the Slidable is what the user sees when the
-                  // component is not dragged.
                   child:  _buildMessageTile("Martin Randolph", "You: What's man!", "9:40 AM", "3"),
                 ),
                 _buildMessageTile("Andrew Parker", "You: Ok, thanks!", "9:25 AM"),
@@ -113,8 +118,8 @@ class MessagesScreen extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(height: 5),
-          Text(name, style: TextStyle(fontSize: 12)),
+          const SizedBox(height: 5),
+          Text(name, style: const TextStyle(fontSize: 12)),
         ],
       ),
     );

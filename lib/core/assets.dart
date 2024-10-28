@@ -9,6 +9,7 @@ class Asset {
 
   static const String bgLogo = '$_img/logo.png';
   static const String bgAvatar = '$_img/avatar.png';
+  static const String bgAvatar1 = '$_img/images_users.png';
   static const String bgCustomer1 = '$_img/customer1.png';
   static const String bgCustomer2 = '$_img/customer2.png';
   static const String bgCustomer3 = '$_img/customer3.png';
@@ -19,6 +20,8 @@ class Asset {
   static const String iconFb = '$_img/fb_icon.png';
   static const String iconGg = '$_img/gg_icon.png';
   static const String iconIp = '$_img/ip_icon.png';
+  static const String iconPremium = '$_icon/image 2061.png';
+  static const String iconPremium1 = '$_img/icon_king.png';
   static const String iconCart = '$_icon/icon_cart.png';
   static const String iconHand = '$_icon/icon_hand.png';
   static const String iconMessage = '$_icon/icon_message.png';
@@ -37,6 +40,7 @@ class Asset {
   static const String bgCardMessage = '$_img/Rectangle 5119.png';
   static const String bgImageProduct = '$_img/home_product.png';
   static const String bgImageCategory = '$_img/category.png';
+  static const String bgImagePremium = '$_img/background_users.png';
   static const String bgImageAvatar =
       '$_img/anh-gai-dep-de-thuong-k7-k8-2k7-2k8_100015595.jpg';
 
