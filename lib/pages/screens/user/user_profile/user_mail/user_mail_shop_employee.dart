@@ -12,7 +12,11 @@ class EmployeeListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.arrow_back, color: Styles.nearPrimary),
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(Icons.arrow_back, color: Styles.nearPrimary)),
         title: Column(
           children: [
             Text(

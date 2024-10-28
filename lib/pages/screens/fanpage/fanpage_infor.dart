@@ -91,7 +91,8 @@ class SectionTitle extends StatelessWidget {
 class CustomTextField extends StatelessWidget {
    final String hintText;
 
-  const CustomTextField({super.key,   required this.hintText});
+
+  const CustomTextField({  required this.hintText, required String label});
 
   @override
   Widget build(BuildContext context) {

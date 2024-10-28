@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/core/colors/color.dart';
+import 'package:ui_youtex/pages/screens/user/user_profile/user_mail/user_mail_shop_analyst_view.dart';
+import 'package:ui_youtex/pages/screens/user/user_profile/user_mail/user_mail_shop_product.dart';
+import 'package:ui_youtex/pages/screens/user/user_profile/user_profile_settings.dart';
 
 class ShopOverviewScreen extends StatelessWidget {
   const ShopOverviewScreen({super.key});
@@ -6,24 +10,44 @@ class ShopOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1E3799),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () {},
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF1E3799), Color(0xFF4A69BD)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.settings, color: Colors.white),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AccountSettingsScreen()),
+                  );
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.person_outline, color: Colors.white),
+                onPressed: () {},
+              ),
+            ],
+
+          ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings_outlined, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.person_outline, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -53,7 +77,7 @@ class UserInfoHeader extends StatelessWidget {
       child: Row(
         children: [
           CircleAvatar(
-            radius: 25,
+            radius: 30,
             backgroundColor: Colors.white,
             child: Image.asset(
               'assets/images/images_users.png',
@@ -395,34 +419,55 @@ class SalesToolsSection extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(16),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Công cụ bán hàng',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SalesAnalysisScreen()));
+            },
+            child: const Text(
+              'Xem chi tiết phân tích bán hàng',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: Styles.blue,
+              ),
             ),
           ),
-          const SizedBox(height: 12),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              childAspectRatio: 1,
-            ),
-            itemCount: tools.length,
-            itemBuilder: (context, index) {
-              final tool = tools[index];
-              return SalesToolCard(
-                icon: tool['icon'],
-                label: tool['label'],
-                route: tool['route'],
-              );
-            },
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Công cụ bán hàng',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(height: 12),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  childAspectRatio: 1,
+                ),
+                itemCount: tools.length,
+                itemBuilder: (context, index) {
+                  final tool = tools[index];
+                  return SalesToolCard(
+                    icon: tool['icon'],
+                    label: tool['label'],
+                    route: tool['route'],
+                  );
+                },
+              ),
+            ],
+
           ),
         ],
       ),
