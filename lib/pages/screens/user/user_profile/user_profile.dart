@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/pages/screens/message/friend_list_scrren.dart';
+import 'package:ui_youtex/pages/screens/user/user_profile/user_mail/user_mail_details_shop.dart';
 import 'package:ui_youtex/pages/screens/user/user_profile/user_mail/user_mail_view.dart';
 import 'package:ui_youtex/pages/screens/user/user_profile/user_profile_settings.dart';
 import 'package:ui_youtex/pages/screens/voucher/voucher_view.dart';
@@ -227,7 +228,7 @@ class ProfileScreen extends StatelessWidget {
                         onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MailScreen())),
+                                builder: (context) => MaildetailsScreen())),
                       ),
                       _buildMenuItem(Icons.language, 'Ngôn ngữ/Language',
                           context: context,

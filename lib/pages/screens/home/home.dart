@@ -4,6 +4,7 @@ import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/home/product/product_detail_page.dart';
 import 'package:ui_youtex/pages/screens/home/search_page/search_page.dart';
+import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/shopping_cart_details_page.dart';
 
 import '../../../core/assets.dart';
 import '../../../core/colors/color.dart';
@@ -55,13 +56,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-               height: MediaQuery.of(context).size.height /9,
-
+              height: MediaQuery.of(context).size.height / 9,
               padding: EdgeInsets.only(
                   top: MediaQuery.of(context).padding.top + 10,
                   left: MediaQuery.of(context).padding.left + 10,
@@ -99,17 +99,24 @@ class HomePage extends StatelessWidget {
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ShoppingCartPage(),
+                            builder: (context) =>
+                                const ShoppingCartPagedetails(),
                           )),
                       child: const Icon(
-                        Icons.shopping_cart_outlined,
+                        Icons.search,
                         color: Styles.light,
                       )),
                   const SizedBox(width: 10),
-                  Image.asset(
-                    Asset.iconMessage,
-                    width: context.width * 0.06,
-                  ),
+                  InkWell(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ShoppingCartPage(),
+                          )),
+                      child: const Icon(
+                        Icons.shopping_cart_rounded,
+                        color: Styles.light,
+                      )),
                   // Image.asset(Asset.iconMessage),
                 ],
               ),

@@ -1,125 +1,103 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/pages/screens/message/friend_list_scrren.dart';
-import 'package:ui_youtex/pages/screens/user/user_profile/user_mail/user_mail_shop_employee.dart';
-import 'package:ui_youtex/pages/screens/user/user_profile/user_mail/user_mail_shop_view.dart';
-import 'package:ui_youtex/pages/screens/user/user_profile/user_profile_settings.dart';
-import 'package:ui_youtex/pages/screens/voucher/voucher_view.dart';
-import '../../../../oder_manager/oder_manager_view.dart';
+import 'package:ui_youtex/core/colors/color.dart';
 
-class MailScreen extends StatelessWidget {
+class MallInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            UserInfoHeader(),
-            RevenueSection(),
-            SettingsSection(),
-          ],
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: Text('Thông tin Mall', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: Container(
+        decoration: _buildGradientBackground(),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              SizedBox(height: 100),
+              MallInfoButton(
+                  title: 'Thông tin doanh nghiệp',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BusinessInfoScreen()));
+                  }),
+              SizedBox(height: 16),
+              MallInfoButton(
+                  title: 'Giấy tờ',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DocumentInfoScreen()));
+                  }),
+              SizedBox(height: 16),
+              MallInfoButton(
+                  title: 'Ngân hàng',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BankInfoScreen()));
+                  }),
+              SizedBox(height: 16),
+              MallInfoButton(
+                  title: 'Mô tả shop',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ShopDescriptionScreen()));
+                  }),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class UserInfoHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFF1E3799), Color(0xFF4A69BD)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(16),
-        ),
-      ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 32,
-            backgroundColor: Colors.white,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(32),
-              child: Image.asset(
-                'assets/images/images_users.png',
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Vải Hải Anh',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text(
-                      'Đơn hoàn tất 91.00%',
-                      style: TextStyle(
-                        color: Colors.greenAccent,
-                        fontSize: 14,
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    Text(
-                      'Khiếu nại 2.00%',
-                      style: TextStyle(
-                        color: Colors.redAccent,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.settings, color: Colors.white),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AccountSettingsScreen()),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
+BoxDecoration _buildGradientBackground() {
+  return BoxDecoration(
+    gradient: LinearGradient(
+      colors: [Color(0xFF13538C), Color(0xFF218FF2)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+  );
 }
 
-class RevenueSection extends StatelessWidget {
+class MallInfoButton extends StatelessWidget {
+  final String title;
+  final VoidCallback onTap;
+
+  MallInfoButton({required this.title, required this.onTap});
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16),
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.symmetric(vertical: 18, horizontal: 16),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 4,
-              offset: Offset(0, 2),
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 10,
+              offset: Offset(0, 5),
             ),
           ],
         ),
@@ -127,20 +105,13 @@ class RevenueSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Tổng doanh thu',
+              title,
               style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[800]),
             ),
-            Text(
-              '160.100.111 đ',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-              ),
-            ),
+            Icon(Icons.arrow_forward_ios, color: Colors.grey[800], size: 18),
           ],
         ),
       ),
@@ -148,93 +119,260 @@ class RevenueSection extends StatelessWidget {
   }
 }
 
-class SettingsSection extends StatelessWidget {
+class BusinessInfoScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: _buildTransparentAppBar(context, 'Thông tin doanh nghiệp'),
+      body: Container(
+        decoration: _buildGradientBackground(),
+        child: _buildFormContent(
+          context, // Truyền context vào đây
+          [
+            CustomTextField(label: 'Mã số thuế doanh nghiệp'),
+            CustomTextField(label: 'Địa chỉ đăng ký kinh doanh'),
+            CustomTextField(label: 'Số giấy phép kinh doanh'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DocumentInfoScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: _buildTransparentAppBar(context, 'Giấy tờ'),
+      body: Container(
+        decoration: _buildGradientBackground(),
+        child: _buildFormContent(
+            context, // Truyền context vào đây
+            [
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: 'Loại giấy tờ (CCCD/CMND/Hộ Chiếu)',
+                  labelStyle: TextStyle(
+                    color: Colors.white, // Đổi thành màu bạn muốn
+                  ),
+                ),
+                items: ['CCCD', 'CMND', 'Hộ Chiếu'].map((String value) {
+                  return DropdownMenuItem<String>(
+                      value: value, child: Text(value));
+                }).toList(),
+                onChanged: (newValue) {},
+              ),
+              CustomTextField(label: 'Số giấy tờ'),
+              CustomTextField(label: 'Ảnh giấy tờ (mặt trước)'),
+              CustomTextField(label: 'Ảnh giấy tờ (mặt sau)'),
+            ]),
+      ),
+    );
+  }
+}
+
+class BankInfoScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: _buildTransparentAppBar(context, 'Ngân hàng'),
+      body: Container(
+        decoration: _buildGradientBackground(),
+        child: _buildFormContent(
+            context, // Truyền context vào đây
+            [
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                    labelText: 'Tên ngân hàng',
+                    labelStyle: TextStyle(color: Colors.white)),
+                items: ['Vietcombank', 'ACB', 'TPBank'].map((String value) {
+                  return DropdownMenuItem<String>(
+                      value: value, child: Text(value));
+                }).toList(),
+                onChanged: (value) {},
+              ),
+              CustomTextField(label: 'Số tài khoản ngân hàng'),
+              CustomTextField(label: 'Thẻ tín dụng hoặc thẻ ghi nợ (nếu có)'),
+            ]),
+      ),
+    );
+  }
+}
+
+class ShopDescriptionScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: _buildTransparentAppBar(context, 'Mô tả shop'),
+      body: Container(
+        decoration: _buildGradientBackground(),
+        child: _buildFormContent(
+            context, // Truyền context vào đây
+            [
+              CustomTextField(label: 'Mô tả shop', maxLines: 4),
+            ]),
+      ),
+    );
+  }
+}
+
+PreferredSizeWidget _buildTransparentAppBar(
+    BuildContext context, String title) {
+  return AppBar(
+    title: Text(title, style: TextStyle(color: Colors.white)),
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    leading: IconButton(
+      icon: Icon(Icons.arrow_back, color: Colors.white),
+      onPressed: () => Navigator.pop(context),
+    ),
+  );
+}
+
+Widget _buildFormContent(BuildContext context, List<Widget> fields) {
+  return Padding(
+    padding: const EdgeInsets.all(16.0),
+    child: Column(
+      children: [
+        SizedBox(height: 100),
+        Expanded(
+          child: Column(
+            children: [
+              ...fields,
+              Spacer(),
+            ],
+          ),
+        ),
+        Container(
+          width: double.infinity,
+          height: 50,
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [
+                Color(0xFF218FF2), // Light blue
+                Color(0xFF13538C), // Dark blue
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: ElevatedButton(
+            onPressed: () {
+              showSuccessPopup(context); // Gọi showSuccessPopup với context
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            child: const Text(
+              'Lưu Thay Đổi',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+class CustomTextField extends StatelessWidget {
+  final String label;
+  final int maxLines;
+
+  CustomTextField({required this.label, this.maxLines = 1});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Cài đặt',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: TextField(
+        maxLines: maxLines,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: Styles.dark, fontSize: 16),
+          filled: true,
+          fillColor: Colors.grey[100],
+          contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
           ),
-          SizedBox(height: 8),
-          _buildMenuItem(
-            icon: Icons.insert_chart,
-            title: 'Bảng thống kê',
-            context: context,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Colors.grey[300]!),
           ),
-          _buildMenuItem(
-              icon: Icons.store,
-              title: 'Thông tin shop',
-              context: context,
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ShopOverviewScreen()));
-              }),
-          _buildMenuItem(
-            icon: Icons.notifications,
-            title: 'Cài đặt thông báo',
-            context: context,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: Color(0xFF1565C0), width: 1.5),
           ),
-          _buildMenuItem(
-              icon: Icons.people,
-              title: 'Quản lý nhân viên',
-              context: context,
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EmployeeListScreen()));
-              }),
-        ],
+        ),
+        style: TextStyle(fontSize: 16, color: Colors.grey[800]),
       ),
     );
   }
+}
 
-  Widget _buildMenuItem({
-    required IconData icon,
-    required String title,
-    required BuildContext context,
-    Function()? onTap,
-  }) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: ListTile(
-        leading: Container(
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.blue[50],
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(icon, color: Colors.blue[700], size: 24),
+void showSuccessPopup(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
         ),
-        title: Text(
-          title,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        contentPadding: EdgeInsets.all(20),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.check_circle,
+              color: Colors.green,
+              size: 50,
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Thành công!',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Thay đổi của bạn đang được duyệt. Vui lòng đợi!',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF218FF2), // Màu nền của nút
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                'Cảm ơn',
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+            ),
+          ],
         ),
-        trailing: Icon(Icons.chevron_right, color: Colors.grey[400]),
-        dense: true,
-        onTap: onTap,
-      ),
-    );
-  }
+      );
+    },
+  );
 }

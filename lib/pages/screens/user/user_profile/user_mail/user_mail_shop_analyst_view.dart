@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
+
+import '../../../../../core/colors/color.dart';
 
 class SalesAnalysisScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Phân tích bán hàng'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        backgroundColor: Styles.blue,
+        centerTitle: true,
+        leading: InkWell(
+            onTap: () => Navigator.pop(context),
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Styles.light,
+            )),
+        title: Text(
+          'Phân tích bán hàng',
+          style: context.theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: Styles.light,
+          ),
         ),
       ),
       body: Padding(
