@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/assets.dart';
 import 'package:ui_youtex/core/colors/color.dart';
+import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/shopping_cart_details_page.dart';
+import 'package:ui_youtex/pages/screens/shopping_cart_page/shopping_cart_page.dart';
 
 class HomeMain extends StatelessWidget {
   const HomeMain({Key? key}) : super(key: key);
@@ -17,11 +19,21 @@ class HomeMain extends StatelessWidget {
             Spacer(),
             IconButton(
               icon: Icon(Icons.search),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShoppingCartPagedetails()));
+              },
             ),
             IconButton(
               icon: Icon(Icons.shopping_cart),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShoppingCartPage()));
+              },
             ),
           ],
         ),
@@ -72,8 +84,8 @@ class HomeMain extends StatelessWidget {
                   const SizedBox(height: 24),
 
                   // News Card
-                  const NewsCard(
-                    imageUrl: Asset.bgCustomer0,
+                  NewsCard(
+                    imageUrl: Asset.bgCustomer4,
                     title: 'THƯƠNG HIỆU DỆT MAY VIỆT 2024',
                     description: '...',
                   ),
@@ -85,7 +97,7 @@ class HomeMain extends StatelessWidget {
 
                   // News Card
                   const NewsCard(
-                    imageUrl: Asset.bgCustomer0,
+                    imageUrl: Asset.bgCustomer5,
                     title: 'KHAI TRƯƠNG CHI NHÁNH THỨ 10',
                     description: '...',
                   ),
