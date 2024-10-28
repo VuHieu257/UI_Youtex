@@ -12,9 +12,16 @@ import '../../../widget_small/chat/chat_bubble.dart';
 
 
 class ChatScreen extends StatefulWidget {
+  final String chatId;
   final String receiverId;
+  final String receiverName;
 
-  const ChatScreen({super.key, required this.receiverId});
+  const ChatScreen({super.key,
+    required this.chatId,
+    required this.receiverId,
+    required this.receiverName,
+  });
+
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -28,22 +35,33 @@ class _ChatScreenState extends State<ChatScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Hàm gửi tin nhắn
-  void sendMessage() async {
-    if (_messageController.text.isNotEmpty) {
-      String currentUserId = _auth.currentUser!.uid;
+  void _sendMessage() async {
+    String message = _messageController.text.trim();
+    _messageController.clear();
+    if (message.isEmpty) return;
 
-      // Thêm tin nhắn vào Firestore
-      await _firestore.collection('db_messages').add({
-        // 'senderId': currentUserId,
-        'senderId': 'user1',
-        // 'receiverId': widget.receiverId,
-        'receiverId': "user2",
-        'message': _messageController.text,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-      _messageController.clear();
-    }
+    // String currentUserId = _auth.currentUser!.uid;
+    String currentUserId = "user1";
+
+    var messageRef = _firestore
+        .collection('chats')
+        .doc(widget.chatId)
+        .collection('messages')
+        .doc();
+
+    await messageRef.set({
+      'senderId': currentUserId,
+      'receiverId': widget.receiverId,
+      'message': message,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+
+    // Cập nhật tin nhắn cuối cùng và thời gian trong collection chats
+    await _firestore.collection('chats').doc(widget.chatId).update({
+      'lastMessage': message,
+      'lastTimestamp': FieldValue.serverTimestamp(),
+    });
+
   }
 
   @override
@@ -53,7 +71,9 @@ class _ChatScreenState extends State<ChatScreen> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue,
-          leading: const Icon(Icons.arrow_back_ios,color: Colors.white,),
+          leading: InkWell(onTap: () {
+            Navigator.pop(context);
+          },child: const Icon(Icons.arrow_back_ios,color: Colors.white,)),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -82,97 +102,99 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
+        // body: Stack(
+        //   children: [
+        //     SizedBox(
+        //       height: context.height,
+        //       child: SingleChildScrollView(
+        //         child: Column(
+        //           mainAxisAlignment: MainAxisAlignment.end,
+        //           crossAxisAlignment: CrossAxisAlignment.end,
+        //           children: [
+        //             Container(
+        //               color: Colors.white,
+        //               margin: const EdgeInsets.only(bottom: 30),
+        //               // Add message list here
+        //               alignment: Alignment.bottomCenter,
+        //               child: _buildMessageCard(context),
+        //             ),
+        //             StreamBuilder(
+        //               stream: _firestore
+        //                   .collection('chats')
+        //                   .doc(widget.chatId)
+        //                   .collection('messages')
+        //                   .orderBy('timestamp', descending: true)
+        //                   .snapshots(),
+        //               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        //                 if (!snapshot.hasData) {
+        //                   return const Center(child: CircularProgressIndicator());
+        //                 }
+        //
+        //                 var messages = snapshot.data!.docs;
+        //                 return ListView.builder(
+        //                   reverse: true,
+        //                   shrinkWrap: true,
+        //                   primary: true,
+        //                   physics: const NeverScrollableScrollPhysics(),
+        //                   itemCount: messages.length,
+        //                   itemBuilder: (context, index) {
+        //                     var messageData = messages[index];
+        //                     // bool isMe = messageData['senderId'] == _auth.currentUser!.uid;
+        //                     bool isMe = messageData['senderId'] == "user1";
+        //                     return
+        //                       _buildChatRow(
+        //                         message: messageData['message'],
+        //                         isMe: isMe,
+        //                       );
+        //                   },
+        //                 );
+        //               },
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //     ),
+        //     Positioned(
+        //         bottom: 0,
+        //         left: 10,
+        //         right: 10,
+        //         child: _buildBottomInputArea(context,_messageController)),
+        //   ],
+        // ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Container(
-              color: Colors.white,
-              margin: const EdgeInsets.only(bottom: 30),
-              // Add message list here
-              alignment: Alignment.bottomCenter,
-              child: _buildMessageCard(context),
-            ),
             Expanded(
               child: StreamBuilder(
                 stream: _firestore
+                    .collection('chats')
+                    .doc(widget.chatId)
                     .collection('messages')
-                    .where('senderId', whereIn: [_auth.currentUser!.uid, widget.receiverId])
-                    .where('receiverId', whereIn: [_auth.currentUser!.uid, widget.receiverId])
                     .orderBy('timestamp', descending: true)
                     .snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData) {
                     return const Center(child: CircularProgressIndicator());
                   }
-
                   var messages = snapshot.data!.docs;
-
                   return ListView.builder(
                     reverse: true,
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
-                      var message = messages[index];
-
-                      bool isMe = message['senderId'] == _auth.currentUser!.uid;
-
-                      return Align(
-                        alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-                          margin: const EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                            color: isMe ? Colors.blue : Colors.grey.shade300,
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          child: Text(
-                            message['message'],
-                            style: TextStyle(color: isMe ? Colors.white : Colors.black),
-                          ),
-                        ),
+                      var messageData = messages[index];
+                      // bool isMe = messageData['senderId'] == _auth.currentUser!.uid;
+                      bool isMe = messageData['senderId'] == "user1"; // Thay đổi ở đây
+                      return _buildChatRow(
+                        message: messageData['message'],
+                        isMe: isMe,
                       );
                     },
                   );
                 },
               ),
             ),
-            // Expanded(
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(10),
-            //     child: ListView(
-            //       children: [
-            //         // Chat bubbles with different alignment
-            //         _buildChatRow(
-            //           message: "Chào anh/chị, tôi đang tìm mua vài loại vải cotton...",
-            //           isMe: false,
-            //         ),
-            //         _buildChatRow(
-            //           message: "Chào anh/chị, chúng tôi có nhiều loại vải cotton...",
-            //           isMe: true,
-            //         ),
-            //         _buildChatRow(
-            //           message: "Tôi cần vải cotton mềm, thoáng khí...",
-            //           isMe: false,
-            //         ),
-            //         _buildChatRow(
-            //           message: "Chúng tôi có loại cotton 100%, mềm mịn...",
-            //           isMe: true,
-            //         ),
-            //         _buildChatRow(
-            //           message: "Tôi cần khoảng 50m",
-            //           isMe: false,
-            //         ),
-            //         _buildChatRow(
-            //           message: "Với số lượng này chúng tôi có thể giảm còn 180,000 đồng/mét.",
-            //           isMe: true,
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            _buildBottomInputArea(context,_messageController),
+            _buildBottomInputArea(context, _messageController),
           ],
-        ),
+        )
       ),
     );
   }
@@ -185,9 +207,12 @@ class _ChatScreenState extends State<ChatScreen> {
           const CircleAvatar(
             backgroundImage: AssetImage(Asset.bgImageAvatar),
           ),
-        ChatBubble(
-          message: message,
-          isMe: isMe,
+        SizedBox(
+          width: context.width*0.7,
+          child: ChatBubble(
+            message: message,
+            isMe: isMe,
+          ),
         ),
       ],
     );
@@ -215,25 +240,39 @@ class _ChatScreenState extends State<ChatScreen> {
               const SizedBox(width: 8.0),
               Expanded(
                 child: TextField(
-                  controller: controller,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Tin nhắn',
                     border: InputBorder.none,
                   ),
+                  controller: controller,
+                  onSubmitted: (value) {
+                    _sendMessage();
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      controller.text=value;
+                    });
+                  },
                 ),
               ),
-              const Icon(Icons.more_horiz_outlined, color: Colors.black54),
-              const SizedBox(width: 8.0),
-              IconButton(
-                icon: _isRecording?const Icon(Icons.mic, color: Colors.blue):const Icon(Icons.mic_none, color: Colors.black54),
-                onPressed: () {
-                  setState(() {
-                    _isRecording = !_isRecording;
-                  });
-                },
-              ),
-              const SizedBox(width: 8.0),
-              const Icon(Icons.image_outlined, color: Colors.black54),
+              if(controller.text.isEmpty)...{
+                const Icon(Icons.more_horiz_outlined, color: Colors.black54),
+                const SizedBox(width: 8.0),
+                IconButton(
+                  icon: _isRecording?const Icon(Icons.mic, color: Colors.blue):const Icon(Icons.mic_none, color: Colors.black54),
+                  onPressed: () {
+                    setState(() {
+                      _isRecording = !_isRecording;
+                    });
+                  },
+                ),
+                const SizedBox(width: 8.0),
+                const Icon(Icons.image_outlined, color: Colors.black54),
+              }else if(controller.text.isNotEmpty)
+                IconButton(
+                icon: const Icon(Icons.send, color:Colors.blue),
+                onPressed: _sendMessage,
+                ),
             ],
           ),
         ),

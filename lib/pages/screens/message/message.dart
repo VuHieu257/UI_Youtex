@@ -1,14 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
  import '../../../core/assets.dart';
 import '../../../core/colors/color.dart';
 import '../../widget_small/widget.dart';
+import 'chat/chat_screen.dart';
 class MessagesScreen extends StatelessWidget {
   const MessagesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
     return Scaffold(
       appBar:AppBar(
         backgroundColor: Styles.blue,
@@ -34,7 +39,6 @@ class MessagesScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Online Friends Section
           Container(
             height: 100,
             padding: const EdgeInsets.all(8),
@@ -49,48 +53,70 @@ class MessagesScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView(
-              children: [
-                Slidable(
-                  key: const ValueKey(0),
-                  endActionPane: ActionPane(
-                    motion: const ScrollMotion(),
-                    dismissible: DismissiblePane(onDismissed: () {}),
-                    children:   [
-                       SlidableAction(
-                        flex: 1,
-                        // onPressed: (context) => customShowReportSheet(context),
-                        onPressed: (context) => customShowBlockSheet(context),
-                        foregroundColor: Colors.black,
-                        icon: Icons.clear_all_sharp,
-                        // borderRadius: BorderRadius.all(Radius.circular(50)),
-                      ),
-                      SlidableAction(
-                        onPressed: (context) => customShowBottomSheet(context),
-                        // backgroundColor: Color(0xFF0392CF),
-                        foregroundColor: Colors.black,
-                        icon: Icons.notifications,
-                      ),
-                      const SlidableAction(
-                        onPressed: doNothing,
-                        // backgroundColor: Color(0xFF0392CF),
-                        foregroundColor: Colors.black,
-                        icon: Icons.delete,
-                      ),
-                    ],
-                  ),
-                  child:  _buildMessageTile("Martin Randolph", "You: What's man!", "9:40 AM", "3"),
-                ),
-                _buildMessageTile("Andrew Parker", "You: Ok, thanks!", "9:25 AM"),
-                _buildMessageTile("Karen Castillo", "You: Ok, See you in To...", "Fri"),
-                _buildMessageTile("Maisy Humphrey", "Have a good day, Maisy!", "Fri"),
-                _buildMessageTile("Joshua Lawrence", "The business plan loo...", "Thu"),
-              ],
+            child: StreamBuilder(
+              stream: _firestore
+                  .collection('chats')
+              // .where('participants', arrayContains: currentUserId)
+                  .where('participants', arrayContains: "user1")
+                  .orderBy('lastTimestamp', descending: true)
+                  .snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                var chatDocs = snapshot.data!.docs;
+
+                if (chatDocs.isEmpty) {
+                  return const Center(child: Text("Không có cuộc trò chuyện nào"));
+                }
+
+                return ListView.builder(
+                  itemCount: chatDocs.length,
+                  itemBuilder: (context, index) {
+                    var chat = chatDocs[index];
+                    var participants = chat['participants'] as List;
+
+                    // Lấy ra ID của người nhận (người không phải là user hiện tại)
+                    // String otherUserId = participants.firstWhere((id) => id != currentUserId);
+                    String otherUserId = participants.firstWhere((id) => id != "user1");
+
+                    return FutureBuilder(
+                      future: _firestore.collection('users').doc("user2").get(),
+                      builder: (context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                        if (!userSnapshot.hasData) {
+                          return const ListTile(title: Text("Loading..."));
+                        }
+                        var userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                        String otherUserName = userData['name'];
+                        return
+                          _buildMessageTile(otherUserName, chat['lastMessage'], formatTimestamp(chat['lastTimestamp']),() {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatScreen(
+                                  chatId: chat.id,
+                                  receiverId: otherUserId,
+                                  receiverName: otherUserName,
+                                ),
+                              ),
+                            );
+                          },);
+                      },
+                    );
+                  },
+                );
+              },
             ),
           ),
         ],
       ),
     );
+  }
+
+  String formatTimestamp(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+    return DateFormat('hh:mm a').format(dateTime); // dd/MM/yyyy hh:mm AM/PM
   }
 
   Widget _buildOnlineFriend(String name, String imagePath) {
@@ -125,49 +151,52 @@ class MessagesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMessageTile(String name, String message, String time, [String? unreadCount]) {
-    return ListTile(
-      leading: Stack(
-        children: [
-          const CircleAvatar(
-            radius: 25,
-            backgroundImage: AssetImage(Asset.bgImageAvatar), // Replace with your image assets
-          ),
-          const Positioned(
-            top: 0,
-            left: 0,
-            child: CircleAvatar(
-              radius: 7,
-              backgroundColor: Colors.white,
+  Widget _buildMessageTile(String name, String message, String time,void Function()? onTap, [String? unreadCount]) {
+    return GestureDetector(
+      onTap: onTap,
+      child: ListTile(
+        leading: Stack(
+          children: [
+            const CircleAvatar(
+              radius: 25,
+              backgroundImage: AssetImage(Asset.bgImageAvatar), // Replace with your image assets
+            ),
+            const Positioned(
+              top: 0,
+              left: 0,
               child: CircleAvatar(
-                radius: 5,
-                backgroundColor: Colors.green,
+                radius: 7,
+                backgroundColor: Colors.white,
+                child: CircleAvatar(
+                  radius: 5,
+                  backgroundColor: Colors.green,
+                ),
               ),
             ),
-          ),
-          if (unreadCount != null)
-            Positioned(
-              right: 0,
-              bottom: 0,
-              child: CircleAvatar(
-                radius: 10,
-                backgroundColor: Colors.red,
-                child: Text(unreadCount, style: const TextStyle(fontSize: 12, color: Colors.white)),
-              ),
-            )
-        ],
-      ),
-      title: Text(name),
-      subtitle: Row(children: [
-        Text(message),
-        const SizedBox(width:10,),
-        Text(time, style: const TextStyle(fontSize: 12)),
-      ],),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          unreadCount == null? const Icon(Icons.check_circle, color: Colors.grey, size: 16):const Icon(Icons.circle_outlined, color: Colors.grey, size: 16),
-        ],
+            if (unreadCount != null)
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: CircleAvatar(
+                  radius: 10,
+                  backgroundColor: Colors.red,
+                  child: Text(unreadCount, style: const TextStyle(fontSize: 12, color: Colors.white)),
+                ),
+              )
+          ],
+        ),
+        title: Text(name),
+        subtitle: Row(children: [
+          Text(message),
+          const SizedBox(width:10,),
+          Text(time, style: const TextStyle(fontSize: 12)),
+        ],),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            unreadCount == null? const Icon(Icons.check_circle, color: Colors.grey, size: 16):const Icon(Icons.circle_outlined, color: Colors.grey, size: 16),
+          ],
+        ),
       ),
     );
   }

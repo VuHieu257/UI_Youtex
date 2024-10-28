@@ -45,6 +45,7 @@ dependencies:
   flutter_svg: ^2.0.4
   pin_code_fields: ^8.0.1
   timelines: ^0.1.0
+  intl: ^0.17.0
 #  flutter_sound: ^9.16.0
 #  permission_handler: ^11.3.1
 
