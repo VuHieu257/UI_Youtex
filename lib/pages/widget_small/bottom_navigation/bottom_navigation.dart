@@ -25,7 +25,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
     HomeMall(),
     const LiveScreen(),
     const MessagesScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
 
 

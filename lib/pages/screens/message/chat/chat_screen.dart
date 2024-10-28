@@ -6,6 +6,7 @@ import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../core/assets.dart';
 import '../../../../main.dart';
+import '../../../widget_small/chat/chat_bubble.dart';
 
 
 class ChatScreen extends StatefulWidget {
@@ -21,78 +22,88 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        leading: const Icon(Icons.arrow_back_ios,color: Colors.white,),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Martha Craig',style: context.theme.textTheme.headlineSmall?.copyWith(color: Colors.white,fontWeight: FontWeight.w500),),
-            Text('Đang hoạt động',style: context.theme.textTheme.titleSmall?.copyWith(color: Colors.white,fontWeight: FontWeight.w500),),
+    return GestureDetector(
+      onTap: () => hideKeyBoard(),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.blue,
+          leading: const Icon(Icons.arrow_back_ios,color: Colors.white,),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Martha Craig',style: context.theme.textTheme.headlineSmall?.copyWith(color: Colors.white,fontWeight: FontWeight.w500),),
+              Text('Đang hoạt động',style: context.theme.textTheme.titleSmall?.copyWith(color: Colors.white,fontWeight: FontWeight.w500),),
+            ],
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.call,color: Colors.white,),
+              onPressed: () {
+                // Handle call button press
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.video_call_rounded,color: Colors.white),
+              onPressed: () {
+                // Handle video call button press
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.list_outlined,color: Colors.white),
+              onPressed: () {
+                // Handle menu button press
+              },
+            ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.call,color: Colors.white,),
-            onPressed: () {
-              // Handle call button press
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.video_call_rounded,color: Colors.white),
-            onPressed: () {
-              // Handle video call button press
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.list_outlined,color: Colors.white),
-            onPressed: () {
-              // Handle menu button press
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: ListView(
-                children: [
-                  // Chat bubbles with different alignment
-                  _buildChatRow(
-                    message: "Chào anh/chị, tôi đang tìm mua vài loại vải cotton...",
-                    isMe: false,
-                  ),
-                  _buildChatRow(
-                    message: "Chào anh/chị, chúng tôi có nhiều loại vải cotton...",
-                    isMe: true,
-                  ),
-                  _buildChatRow(
-                    message: "Tôi cần vải cotton mềm, thoáng khí...",
-                    isMe: false,
-                  ),
-                  _buildChatRow(
-                    message: "Chúng tôi có loại cotton 100%, mềm mịn...",
-                    isMe: true,
-                  ),
-                  _buildChatRow(
-                    message: "Tôi cần khoảng 50m",
-                    isMe: false,
-                  ),
-                  _buildChatRow(
-                    message: "Với số lượng này chúng tôi có thể giảm còn 180,000 đồng/mét.",
-                    isMe: true,
-                  ),
-                ],
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              color: Colors.white,
+              margin: const EdgeInsets.only(bottom: 30),
+              // Add message list here
+              alignment: Alignment.bottomCenter,
+              child: _buildMessageCard(context),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: ListView(
+                  children: [
+                    // Chat bubbles with different alignment
+                    _buildChatRow(
+                      message: "Chào anh/chị, tôi đang tìm mua vài loại vải cotton...",
+                      isMe: false,
+                    ),
+                    _buildChatRow(
+                      message: "Chào anh/chị, chúng tôi có nhiều loại vải cotton...",
+                      isMe: true,
+                    ),
+                    _buildChatRow(
+                      message: "Tôi cần vải cotton mềm, thoáng khí...",
+                      isMe: false,
+                    ),
+                    _buildChatRow(
+                      message: "Chúng tôi có loại cotton 100%, mềm mịn...",
+                      isMe: true,
+                    ),
+                    _buildChatRow(
+                      message: "Tôi cần khoảng 50m",
+                      isMe: false,
+                    ),
+                    _buildChatRow(
+                      message: "Với số lượng này chúng tôi có thể giảm còn 180,000 đồng/mét.",
+                      isMe: true,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          _buildBottomInputArea(context),
-        ],
+            _buildBottomInputArea(context),
+          ],
+        ),
       ),
     );
   }
@@ -102,7 +113,7 @@ class _ChatScreenState extends State<ChatScreen> {
       mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         if (!isMe)
-          CircleAvatar(
+          const CircleAvatar(
             backgroundImage: AssetImage(Asset.bgImageAvatar),
           ),
         ChatBubble(
@@ -183,4 +194,21 @@ class _ChatScreenState extends State<ChatScreen> {
       ],
     );
   }
+}
+Widget _buildMessageCard(BuildContext context) {
+  return Container(
+    height: context.height*0.25,
+    width: context.width*0.9,
+    alignment: Alignment.bottomLeft,
+    decoration: const BoxDecoration(
+        image: DecorationImage(image: AssetImage(Asset.bgCardMessage),fit: BoxFit.contain)
+    ),
+    child:  ListTile(
+      leading: const CircleAvatar(
+        backgroundImage: AssetImage(Asset.bgImageAvatar),
+      ),
+      title: Text('Martha Craig',style: context.theme.textTheme.titleMedium,),
+      subtitle: Text("Let's start this conversation with great stories",style: context.theme.textTheme.titleSmall?.copyWith(fontSize: 10),),
+    ),
+  );
 }
