@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
@@ -10,7 +12,9 @@ import '../../../widget_small/chat/chat_bubble.dart';
 
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+  final String receiverId;
+
+  const ChatScreen({super.key, required this.receiverId});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -19,6 +23,28 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   bool showEmojis=false;
   bool _isRecording = false;
+
+  final TextEditingController _messageController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Hàm gửi tin nhắn
+  void sendMessage() async {
+    if (_messageController.text.isNotEmpty) {
+      String currentUserId = _auth.currentUser!.uid;
+
+      // Thêm tin nhắn vào Firestore
+      await _firestore.collection('db_messages').add({
+        // 'senderId': currentUserId,
+        'senderId': 'user1',
+        // 'receiverId': widget.receiverId,
+        'receiverId': "user2",
+        'message': _messageController.text,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+      _messageController.clear();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,40 +94,83 @@ class _ChatScreenState extends State<ChatScreen> {
               child: _buildMessageCard(context),
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: ListView(
-                  children: [
-                    // Chat bubbles with different alignment
-                    _buildChatRow(
-                      message: "Chào anh/chị, tôi đang tìm mua vài loại vải cotton...",
-                      isMe: false,
-                    ),
-                    _buildChatRow(
-                      message: "Chào anh/chị, chúng tôi có nhiều loại vải cotton...",
-                      isMe: true,
-                    ),
-                    _buildChatRow(
-                      message: "Tôi cần vải cotton mềm, thoáng khí...",
-                      isMe: false,
-                    ),
-                    _buildChatRow(
-                      message: "Chúng tôi có loại cotton 100%, mềm mịn...",
-                      isMe: true,
-                    ),
-                    _buildChatRow(
-                      message: "Tôi cần khoảng 50m",
-                      isMe: false,
-                    ),
-                    _buildChatRow(
-                      message: "Với số lượng này chúng tôi có thể giảm còn 180,000 đồng/mét.",
-                      isMe: true,
-                    ),
-                  ],
-                ),
+              child: StreamBuilder(
+                stream: _firestore
+                    .collection('messages')
+                    .where('senderId', whereIn: [_auth.currentUser!.uid, widget.receiverId])
+                    .where('receiverId', whereIn: [_auth.currentUser!.uid, widget.receiverId])
+                    .orderBy('timestamp', descending: true)
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  var messages = snapshot.data!.docs;
+
+                  return ListView.builder(
+                    reverse: true,
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      var message = messages[index];
+
+                      bool isMe = message['senderId'] == _auth.currentUser!.uid;
+
+                      return Align(
+                        alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                          margin: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: isMe ? Colors.blue : Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: Text(
+                            message['message'],
+                            style: TextStyle(color: isMe ? Colors.white : Colors.black),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
-            _buildBottomInputArea(context),
+            // Expanded(
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(10),
+            //     child: ListView(
+            //       children: [
+            //         // Chat bubbles with different alignment
+            //         _buildChatRow(
+            //           message: "Chào anh/chị, tôi đang tìm mua vài loại vải cotton...",
+            //           isMe: false,
+            //         ),
+            //         _buildChatRow(
+            //           message: "Chào anh/chị, chúng tôi có nhiều loại vải cotton...",
+            //           isMe: true,
+            //         ),
+            //         _buildChatRow(
+            //           message: "Tôi cần vải cotton mềm, thoáng khí...",
+            //           isMe: false,
+            //         ),
+            //         _buildChatRow(
+            //           message: "Chúng tôi có loại cotton 100%, mềm mịn...",
+            //           isMe: true,
+            //         ),
+            //         _buildChatRow(
+            //           message: "Tôi cần khoảng 50m",
+            //           isMe: false,
+            //         ),
+            //         _buildChatRow(
+            //           message: "Với số lượng này chúng tôi có thể giảm còn 180,000 đồng/mét.",
+            //           isMe: true,
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            _buildBottomInputArea(context,_messageController),
           ],
         ),
       ),
@@ -124,7 +193,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget _buildBottomInputArea(BuildContext context) {
+  Widget _buildBottomInputArea(BuildContext context, TextEditingController controller) {
     return Column(
       children: [
         Container(
@@ -144,8 +213,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 },
               ),
               const SizedBox(width: 8.0),
-              const Expanded(
+              Expanded(
                 child: TextField(
+                  controller: controller,
                   decoration: InputDecoration(
                     hintText: 'Tin nhắn',
                     border: InputBorder.none,
