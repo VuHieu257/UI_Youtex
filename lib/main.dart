@@ -18,6 +18,7 @@ import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/forgotPass_Scr
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassDone_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassOtp_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPass_screen.dart';
+import 'package:ui_youtex/pages/splash/Welcome/welcome.dart';
 import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 
 import 'core/themes/theme_data.dart';
@@ -25,18 +26,18 @@ import 'pages/splash/Welcome/Register/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Platform.isAndroid?
-  await Firebase.initializeApp(
-      options: const FirebaseOptions(
-          apiKey: 'AIzaSyCU66WlqitlSdBipwdwb_69uuRnJNupI0s',
-          appId: '1:57983356211:android:5fd331cd4ef5361fea4246',
-          messagingSenderId: '57983356211',
-          projectId: 'mangxahoi-sotavn',
-          storageBucket: "mangxahoi-sotavn.appspot.com"
-      )) :
-  await Firebase.initializeApp();
+  Platform.isAndroid
+      ? await Firebase.initializeApp(
+          options: const FirebaseOptions(
+              apiKey: 'AIzaSyCU66WlqitlSdBipwdwb_69uuRnJNupI0s',
+              appId: '1:57983356211:android:5fd331cd4ef5361fea4246',
+              messagingSenderId: '57983356211',
+              projectId: 'mangxahoi-sotavn',
+              storageBucket: "mangxahoi-sotavn.appspot.com"))
+      : await Firebase.initializeApp();
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -48,23 +49,24 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       // home: HomePage(),
-      // home: WelcomeApp(),
+      home: WelcomeApp(),
       // home: const CustomNavBar(),
-      home: const MessagesScreen(),
+      // home: const MessagesScreen(),
       // home: ChatListScreen(),
       // home: CustomBackground(),
       // home: MembershipPaymentScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
-        '/home': (context) => const HomePage(),
+        '/home': (context) => const HomeMain(),
         '/memberVip': (context) => const FreeTrialTimeline(),
         '/CustomNavBar': (context) => const CustomNavBar(),
         '/Forgot': (context) => const ForgotScreen(),
         '/OTP': (context) => const OTPScreen(),
         '/Reset': (context) => const ResetpassScreen(),
         '/Resetpass': (context) => const ResetpassdoneScreen(),
-        '/MembershipPaymentScreen': (context) => const MembershipPaymentScreen(),
+        '/MembershipPaymentScreen': (context) =>
+            const MembershipPaymentScreen(),
         '/PaymentMethodScreen': (context) => const PaymentMethodScreen(),
         '/PaymentMethodPayScreen': (context) => const PaymentMethodPayScreen(),
         '/product_management': (context) => const ProductManagementScreen(),
@@ -108,9 +110,11 @@ class ChatListScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Các cuộc trò chuyện"),
         actions: [
-          InkWell(onTap: () {
-            createNewChat("user1", "user2");
-          },child: const Icon(Icons.add_box_outlined))
+          InkWell(
+              onTap: () {
+                createNewChat("user1", "user2");
+              },
+              child: const Icon(Icons.add_box_outlined))
         ],
       ),
       body: StreamBuilder(
@@ -139,16 +143,22 @@ class ChatListScreen extends StatelessWidget {
 
               // Lấy ra ID của người nhận (người không phải là user hiện tại)
               // String otherUserId = participants.firstWhere((id) => id != currentUserId);
-              String otherUserId = participants.firstWhere((id) => id != "user1");
+              String otherUserId =
+                  participants.firstWhere((id) => id != "user1");
 
               return FutureBuilder(
-                future: _firestore.collection('users').doc("user2").get(), // Lấy thông tin người nhận
-                builder: (context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                future: _firestore
+                    .collection('users')
+                    .doc("user2")
+                    .get(), // Lấy thông tin người nhận
+                builder:
+                    (context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
                   if (!userSnapshot.hasData) {
                     return const ListTile(title: Text("Loading..."));
                   }
 
-                  var userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                  var userData =
+                      userSnapshot.data!.data() as Map<String, dynamic>;
                   String otherUserName = userData['name'];
 
                   return ListTile(
