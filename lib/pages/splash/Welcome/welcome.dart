@@ -6,12 +6,14 @@ import 'package:ui_youtex/pages/splash/Welcome/second_welcome.dart';
 import 'package:ui_youtex/pages/splash/Welcome/third_welcome.dart';
 
 class WelcomeApp extends StatefulWidget {
+  const WelcomeApp({super.key});
+
   @override
   _WelcomeAppState createState() => _WelcomeAppState();
 }
 
 class _WelcomeAppState extends State<WelcomeApp> {
-  PageController _controller = PageController();
+  final PageController _controller = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,20 +22,20 @@ class _WelcomeAppState extends State<WelcomeApp> {
       children: [
         WelcomeScreen1(
             onPressed: () => _controller.nextPage(
-                duration: Duration(milliseconds: 300), curve: Curves.easeIn)),
+                duration: const Duration(milliseconds: 300), curve: Curves.easeIn)),
         WelcomeScreen2(
             title: " ",
             subtitle: " ",
             onPressed: () => _controller.nextPage(
-                duration: Duration(milliseconds: 300), curve: Curves.easeIn)),
+                duration: const Duration(milliseconds: 300), curve: Curves.easeIn)),
         WelcomeScreen3(
             title: " ",
             subtitle: " ",
             onPressed: () => _controller.nextPage(
-                duration: Duration(milliseconds: 300), curve: Curves.easeIn)),
+                duration: const Duration(milliseconds: 300), curve: Curves.easeIn)),
         WelcomeScreen4(
           onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => RegisterScreen())),
+              MaterialPageRoute(builder: (context) => const RegisterScreen())),
         ),
       ],
     );

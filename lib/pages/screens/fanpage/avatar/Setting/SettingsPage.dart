@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/fanpage/avatar/Setting/Setting_edit.dart';
@@ -6,6 +5,8 @@ import 'package:ui_youtex/pages/screens/fanpage/avatar/Setting/Setting_edit.dart
 import '../../../../../core/colors/color.dart';
 
 class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,13 +22,13 @@ class SettingsPage extends StatelessWidget {
           color: Styles.light,
         ),),          actions: [
         IconButton(
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           color: Styles.light,
 
           onPressed: () {_showBottomSheet(context);},
         ),
         IconButton(
-          icon: Icon(Icons.search),
+          icon: const Icon(Icons.search),
           color: Styles.light,
 
           onPressed: () {},
@@ -38,7 +39,7 @@ class SettingsPage extends StatelessWidget {
         children: [
           _buildListItem(Icons.add, 'Tạo',(){},),
           _buildDivider(),
-          _buildListItem(Icons.edit, 'Chỉnh sửa',(){Navigator.push(context, MaterialPageRoute(builder: (context)=>EditPage()),);},),
+          _buildListItem(Icons.edit, 'Chỉnh sửa',(){Navigator.push(context, MaterialPageRoute(builder: (context)=>const EditPage()),);},),
           _buildDivider(),
           _buildListItem(Icons.admin_panel_settings, 'Quản trị viên',(){},),
           _buildDivider(),
@@ -65,7 +66,7 @@ class SettingsPage extends StatelessWidget {
   }
 
   Widget _buildDivider() {
-    return Divider(
+    return const Divider(
       height: 1,
       thickness: 1,
     );
@@ -74,15 +75,15 @@ class SettingsPage extends StatelessWidget {
 void _showBottomSheet(BuildContext context) {
   showModalBottomSheet(
     context: context,
-    shape: RoundedRectangleBorder(
+    shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(20), // Bo góc ở phía trên của BottomSheet
       ),
     ),
     builder: (BuildContext context) {
       return Container(
-        padding: EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
           ),
@@ -98,18 +99,18 @@ void _showBottomSheet(BuildContext context) {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            SizedBox(height: 16), // Khoảng cách giữa thanh kéo và các mục chọn
+            const SizedBox(height: 16), // Khoảng cách giữa thanh kéo và các mục chọn
             ListTile(
-              leading: Icon(Icons.note_alt_rounded, size: 28),
-              title: Text('Bài Viết', style: TextStyle(fontSize: 16)),
+              leading: const Icon(Icons.note_alt_rounded, size: 28),
+              title: const Text('Bài Viết', style: TextStyle(fontSize: 16)),
               onTap: () {
                 // Code xử lý khi chọn "Chụp ảnh mới"
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.video_call, size: 28),
-              title: Text('Trực tiếp', style: TextStyle(fontSize: 16)),
+              leading: const Icon(Icons.video_call, size: 28),
+              title: const Text('Trực tiếp', style: TextStyle(fontSize: 16)),
               onTap: () {
                 // Code xử lý khi chọn "Chọn ảnh trên máy"
                 Navigator.pop(context);

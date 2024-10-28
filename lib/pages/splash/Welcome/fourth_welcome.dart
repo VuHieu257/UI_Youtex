@@ -4,7 +4,7 @@ import 'package:ui_youtex/core/colors/color.dart';
 class WelcomeScreen4 extends StatelessWidget {
   final VoidCallback onPressed;
 
-  WelcomeScreen4({required this.onPressed});
+  const WelcomeScreen4({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +17,11 @@ class WelcomeScreen4 extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.fitWidth,
           ),
-          SizedBox(height: 50), // Khoảng cách giữa ảnh và text
+          const SizedBox(height: 50), // Khoảng cách giữa ảnh và text
 
           // Text giới thiệu
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
             child: Text(
               "Tham gia cộng đồng của chúng tôi và khám phá những công cụ may mặc tiên tiến nhất.",
               style: TextStyle(
@@ -32,20 +32,20 @@ class WelcomeScreen4 extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 100), // Khoảng cách giữa text và nút bấm
+          const SizedBox(height: 100), // Khoảng cách giữa text và nút bấm
 
           // Nút "Tạo tài khoản ngay"
           ElevatedButton(
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(horizontal: 120, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 120, vertical: 15),
               backgroundColor:
-                  Color.fromARGB(255, 101, 193, 247), // Màu nút A4F86E
+                  const Color.fromARGB(255, 101, 193, 247), // Màu nút A4F86E
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30), // Bo góc cho nút
               ),
             ),
-            child: Text(
+            child: const Text(
               "Tạo tài khoản ngay",
               style: TextStyle(
                 fontSize: 16,

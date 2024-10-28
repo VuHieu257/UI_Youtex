@@ -5,7 +5,7 @@ class WelcomeScreen2 extends StatelessWidget {
   final String subtitle;
   final VoidCallback onPressed;
 
-  WelcomeScreen2({
+  const WelcomeScreen2({super.key, 
     required this.title,
     required this.subtitle,
     required this.onPressed,
@@ -29,7 +29,7 @@ class WelcomeScreen2 extends StatelessWidget {
               radius: 25,
               backgroundColor: Colors.white,
               child: IconButton(
-                icon: Icon(Icons.arrow_forward_ios, color: Colors.blue),
+                icon: const Icon(Icons.arrow_forward_ios, color: Colors.blue),
                 onPressed: onPressed,
               ),
             ),

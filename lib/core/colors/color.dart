@@ -20,9 +20,9 @@ class Styles {
 
   static ScrollbarThemeData scrollbarTheme =
   const ScrollbarThemeData().copyWith(
-    thumbColor: MaterialStateProperty.all(accent),
+    thumbColor: WidgetStateProperty.all(accent),
     // isAlwaysShown: false,
-    thumbVisibility: MaterialStateProperty.all(true),
+    thumbVisibility: WidgetStateProperty.all(true),
     //(người dùng có thể kéo và tương tác với thanh cuộn).
     interactive: true,
   );

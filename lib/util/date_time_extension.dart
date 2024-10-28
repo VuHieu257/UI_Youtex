@@ -68,9 +68,9 @@ class DateTimeValidation {
   static bool isDateTimeBetween(String? start, String? end,
       [DateTime? current]) {
     if (start == null || end == null) return false;
-    final _current = current ?? DateTime.now();
-    final _start = start.toDateTimeLocal;
-    final _end = end.toDateTimeLocal;
-    return _start.isBefore(_current) && _end.isAfter(_current);
+    final current0 = current ?? DateTime.now();
+    final start0 = start.toDateTimeLocal;
+    final end0 = end.toDateTimeLocal;
+    return start0.isBefore(current0) && end0.isAfter(current0);
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/core/size/size.dart';
 class ChatBubble extends StatelessWidget {
   final String message;
   final bool isMe;

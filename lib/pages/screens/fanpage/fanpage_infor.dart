@@ -6,6 +6,8 @@ import '../../../core/colors/color.dart';
 import '../../widget_small/custom_button.dart';
 
 class Fanpage_infor extends StatelessWidget {
+  const Fanpage_infor({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,17 +71,17 @@ class SectionTitle extends StatelessWidget {
   final IconData icon;
   final String title;
 
-  const SectionTitle({required this.icon, required this.title});
+  const SectionTitle({super.key, required this.icon, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Icon(icon, color: Colors.black54),
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         Text(
           title,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ],
     );
@@ -89,14 +91,14 @@ class SectionTitle extends StatelessWidget {
 class CustomTextField extends StatelessWidget {
    final String hintText;
 
-  const CustomTextField({  required this.hintText});
+  const CustomTextField({super.key,   required this.hintText});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         SizedBox(height: 8),
+         const SizedBox(height: 8),
         TextField(
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),

@@ -3,7 +3,7 @@ import 'package:ui_youtex/core/assets.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 
 class HomeMain extends StatelessWidget {
-  const HomeMain({Key? key}) : super(key: key);
+  const HomeMain({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +14,13 @@ class HomeMain extends StatelessWidget {
         title: Row(
           children: [
             Image.asset(Asset.bgLogo, height: 40), // Adjust logo size
-            Spacer(),
+            const Spacer(),
             IconButton(
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
               onPressed: () {},
             ),
             IconButton(
-              icon: Icon(Icons.shopping_cart),
+              icon: const Icon(Icons.shopping_cart),
               onPressed: () {},
             ),
           ],
@@ -129,10 +129,10 @@ class FeaturedCompanyCard extends StatelessWidget {
   final String title;
 
   const FeaturedCompanyCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.title,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -160,11 +160,11 @@ class NewsCard extends StatelessWidget {
   final String description;
 
   const NewsCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.description,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +207,7 @@ class NewsCard extends StatelessWidget {
 
 // Promotion Card
 class PromotionCard extends StatelessWidget {
-  const PromotionCard({Key? key}) : super(key: key);
+  const PromotionCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -219,10 +219,10 @@ class PromotionCard extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            Expanded(
+            const Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'Giảm đến 20%',
                     style: TextStyle(
@@ -258,13 +258,13 @@ class HighlightedPostCard extends StatelessWidget {
   final List<String> actions; // Các nút hành động
 
   const HighlightedPostCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.description,
     required this.rating,
     required this.actions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

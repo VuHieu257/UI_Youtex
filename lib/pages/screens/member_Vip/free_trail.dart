@@ -4,7 +4,7 @@ import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_vip.dart';
 
 class FreeTrialTimeline extends StatelessWidget {
-  const FreeTrialTimeline({Key? key}) : super(key: key);
+  const FreeTrialTimeline({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class FreeTrialTimeline extends StatelessWidget {
                               fontSize: 16,
                             ),
                           ),
-                          Text(' \10.990.000 đồng/năm',
+                          Text(' 10.990.000 đồng/năm',
                               textAlign: TextAlign.center,
                               style: context.theme.textTheme.bodyLarge!
                                   .copyWith(fontWeight: FontWeight.bold)),
@@ -128,7 +128,7 @@ class FreeTrialTimeline extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => PremiumUnlockScreen()));
+                                  builder: (context) => const PremiumUnlockScreen()));
                         },
                         child: const Text(
                           'Xem gói thành viên',

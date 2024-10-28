@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 
 class ForgotScreen extends StatelessWidget {
+  const ForgotScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,14 +28,14 @@ class ForgotScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFFBE005B99),
+                      color: Color(0xffbe005b99),
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 10),
-                  Row(
+                  const Row(
                     children: [
-                      const Text(
+                      Text(
                         "Enter your email",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
@@ -46,20 +48,20 @@ class ForgotScreen extends StatelessWidget {
                   // Form Email và Mật khẩu
                   TextField(
                     decoration: InputDecoration(
-                      hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
-                      prefixIcon: Icon(
+                      hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
+                      prefixIcon: const Icon(
                         Icons.email,
-                        color: Color(0xFFBE005B99),
+                        color: Color(0xffbe005b99),
                       ),
                       hintText: "Email",
                       filled: true,
-                      fillColor: Color(0xFFEEFBFF),
+                      fillColor: const Color(0xFFEEFBFF),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8)),
                     ),
                   ),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   // Nút Đăng nhập
                   Container(
@@ -98,18 +100,18 @@ class ForgotScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   // Điều hướng đến màn hình Đăng ký
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Already have account?   "),
+                      const Text("Already have account?   "),
                       GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(context, '/login');
                         },
-                        child: Text(
+                        child: const Text(
                           "Sign in",
                           style: TextStyle(color: Color(0xFF00B2F6)),
                         ),

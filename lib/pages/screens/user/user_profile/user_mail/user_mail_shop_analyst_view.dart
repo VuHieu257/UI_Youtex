@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class SalesAnalysisScreen extends StatelessWidget {
+  const SalesAnalysisScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Phân tích bán hàng'),
+        title: const Text('Phân tích bán hàng'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -21,13 +23,13 @@ class SalesAnalysisScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Tổng quan',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 DropdownButton<String>(
                   value: '30 Ngày gần nhất',
-                  items: [
+                  items: const [
                     DropdownMenuItem(
                       value: '30 Ngày gần nhất',
                       child: Text('30 Ngày gần nhất'),
@@ -41,7 +43,7 @@ class SalesAnalysisScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Grid for metrics
             Expanded(
@@ -83,18 +85,18 @@ class SalesAnalysisScreen extends StatelessWidget {
         color: bgColor,
         borderRadius: BorderRadius.circular(10),
       ),
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           Text(
             value,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           Row(
             children: [
@@ -104,7 +106,7 @@ class SalesAnalysisScreen extends StatelessWidget {
                     : Icons.trending_down,
                 color: iconColor,
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
                 status,
                 style: TextStyle(color: iconColor, fontWeight: FontWeight.bold),

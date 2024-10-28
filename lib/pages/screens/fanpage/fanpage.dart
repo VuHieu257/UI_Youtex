@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../core/colors/color.dart';
-import '../../widget_small/custom_button.dart';
 
 class Fanpage extends StatelessWidget {
+  const Fanpage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,46 +32,46 @@ class Fanpage extends StatelessWidget {
 
                 ElevatedButton(
                   onPressed: () {},
-                   child: Text('Tạo',style: TextStyle(color: Colors.black),),
+                   child: const Text('Tạo',style: TextStyle(color: Colors.black),),
 
 
                 ),
 
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () {},
-                   child: Text('Khám phá',style: TextStyle(color: Colors.black),),
+                   child: const Text('Khám phá',style: TextStyle(color: Colors.black),),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () {},
-                  child: Text('Trang đã thích',style: TextStyle(color: Colors.black),),
+                  child: const Text('Trang đã thích',style: TextStyle(color: Colors.black),),
                 ),
               ],
             ),
           ),
-          Divider(
+          const Divider(
             color: Colors.black, // Màu của đường gạch ngang
             thickness: 1, // Độ dày của đường gạch ngang
             height: 10, // Khoảng cách giữa đường và các phần tử trên/dưới
           ),
 
-Row(
+const Row(
   mainAxisAlignment:MainAxisAlignment.start ,
   children: [
-    const Text('Trang bạn quản lý',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),),
+    Text('Trang bạn quản lý',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),),
   ],
 ),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           // Danh sách trang quản lý
           Expanded(
             child: ListView.builder(
               itemCount: 3, // Số lượng trang
               itemBuilder: (context, index) {
                 return ListTile(
-                  leading: Icon(Icons.pets), // Biểu tượng trang
-                  title: Text('You Textile'),
-                  trailing: Icon(Icons.more_vert), // Nút hành động thêm
+                  leading: const Icon(Icons.pets), // Biểu tượng trang
+                  title: const Text('You Textile'),
+                  trailing: const Icon(Icons.more_vert), // Nút hành động thêm
                   onTap: () {
                     // Hành động khi nhấn vào trang
                   },

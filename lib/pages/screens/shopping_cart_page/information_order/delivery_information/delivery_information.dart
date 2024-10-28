@@ -190,7 +190,7 @@ class TimelineExample extends StatelessWidget {
 
     return Row(
       children: [
-        SizedBox(width: 48.0), // Điều chỉnh khoảng cách giữa icon và nội dung
+        const SizedBox(width: 48.0), // Điều chỉnh khoảng cách giữa icon và nội dung
         Column(
           crossAxisAlignment: CrossAxisAlignment.start, // Căn chỉnh nội dung text sang trái
           children: [

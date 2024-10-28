@@ -1,22 +1,23 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AccessPage extends StatelessWidget {
+  const AccessPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             // Action to go back
           },
         ),
-        title: Text("Quyền truy cập trang"),
+        title: const Text("Quyền truy cập trang"),
         backgroundColor: Colors.blue,
         actions: [
           IconButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             onPressed: () {
               // Action for the more button
             },
@@ -30,7 +31,7 @@ class AccessPage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   "Người có quyền truy cập vào Youtextile",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
@@ -38,7 +39,7 @@ class AccessPage extends StatelessWidget {
                   onTap: () {
                     // Add new person action
                   },
-                  child: Text(
+                  child: const Text(
                     "Thêm mới",
                     style: TextStyle(color: Colors.blue),
                   ),
@@ -65,7 +66,7 @@ class AccessPage extends StatelessWidget {
           Container(
             color: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Row(
+            child: const Row(
               children: [
                 Icon(Icons.cancel, color: Colors.black),
                 SizedBox(width: 10),
@@ -88,7 +89,7 @@ class AccessPage extends StatelessWidget {
       ),
       title: Text(name),
       subtitle: Text(roles),
-      trailing: Icon(Icons.more_vert),
+      trailing: const Icon(Icons.more_vert),
       onTap: () {
         // Action for tapping the user
       },

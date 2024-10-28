@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 class VoucherScreen extends StatelessWidget {
+  const VoucherScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Mã giảm giá',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -30,16 +32,16 @@ class VoucherScreen extends StatelessWidget {
                 // Nút "Nhập mã voucher"
                 ElevatedButton.icon(
                   onPressed: () {},
-                  icon: Icon(Icons.analytics_rounded, color: Colors.blue),
-                  label: Text('Nhập Mã Voucher',
+                  icon: const Icon(Icons.analytics_rounded, color: Colors.blue),
+                  label: const Text('Nhập Mã Voucher',
                       style: TextStyle(color: Colors.black)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
-                      side: BorderSide(color: Colors.grey),
+                      side: const BorderSide(color: Colors.grey),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     shadowColor: Colors.grey.withOpacity(0.5),
                     elevation: 4, // Đổ bóng nhẹ
                   ),
@@ -47,16 +49,16 @@ class VoucherScreen extends StatelessWidget {
                 // Nút "Tìm thêm voucher"
                 ElevatedButton.icon(
                   onPressed: () {},
-                  icon: Icon(Icons.airplane_ticket, color: Colors.blue),
-                  label: Text('Tìm thêm voucher',
+                  icon: const Icon(Icons.airplane_ticket, color: Colors.blue),
+                  label: const Text('Tìm thêm voucher',
                       style: TextStyle(color: Colors.black)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
-                      side: BorderSide(color: Colors.grey),
+                      side: const BorderSide(color: Colors.grey),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     shadowColor: Colors.grey.withOpacity(0.5),
                     elevation: 4, // Đổ bóng nhẹ
                   ),
@@ -86,7 +88,7 @@ class VoucherScreen extends StatelessWidget {
                         children: [
                           // Icon mã giảm giá
                           Container(
-                            padding: EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(12),
@@ -95,16 +97,16 @@ class VoucherScreen extends StatelessWidget {
                                   color: Colors.black.withOpacity(0.1),
                                   spreadRadius: 2,
                                   blurRadius: 6,
-                                  offset: Offset(0, 2),
+                                  offset: const Offset(0, 2),
                                 ),
                               ],
                             ),
-                            child: Icon(Icons.local_offer,
+                            child: const Icon(Icons.local_offer,
                                 size: 40, color: Colors.blue),
                           ),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           // Nội dung voucher
-                          Expanded(
+                          const Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -132,14 +134,14 @@ class VoucherScreen extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 8),
                               backgroundColor:
                                   Colors.blue, // Nền gradient cho nút
                               elevation: 3,
                               shadowColor: Colors.blue.withOpacity(0.3),
                             ),
-                            child: Text(
+                            child: const Text(
                               'Dùng sau',
                               style: TextStyle(color: Colors.white),
                             ),

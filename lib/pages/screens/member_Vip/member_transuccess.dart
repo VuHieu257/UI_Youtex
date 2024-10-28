@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 
 class PaymentScreen extends StatelessWidget {
+  const PaymentScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -10,7 +12,7 @@ class PaymentScreen extends StatelessWidget {
       ),
       backgroundColor: Colors.transparent,
       child: Container(
-        padding: EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -18,13 +20,13 @@ class PaymentScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
+            const Icon(
               Icons.check_circle,
               color: Colors.blue,
               size: 64,
             ),
-            SizedBox(height: 16),
-            Text(
+            const SizedBox(height: 16),
+            const Text(
               'Quý khách đã thanh toán thành công số tiền',
               style: TextStyle(
                 fontSize: 16,
@@ -33,8 +35,8 @@ class PaymentScreen extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 8),
-            Text(
+            const SizedBox(height: 8),
+            const Text(
               '100,000 VND',
               style: TextStyle(
                 fontSize: 18,
@@ -42,21 +44,21 @@ class PaymentScreen extends StatelessWidget {
                 color: Colors.blue,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Divider(
               thickness: 1,
               color: Colors.grey.withOpacity(0.3),
               indent: 24,
               endIndent: 24,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        CustomNavBar(), // Trang bạn muốn chuyển tới
+                        const CustomNavBar(), // Trang bạn muốn chuyển tới
                   ),
                 ); // Đóng popup
               },
@@ -66,7 +68,7 @@ class PaymentScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'Tiếp tục',
                 style: TextStyle(
                   color: Colors.white,

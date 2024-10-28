@@ -58,7 +58,7 @@ class BottomMusicPlayer extends StatelessWidget {
             fontWeight: selectedIndex == index?FontWeight.bold:null
         ),
       ),
-      trailing: selectedIndex == index ? Icon(Icons.check, color: Colors.blue) : null,
+      trailing: selectedIndex == index ? const Icon(Icons.check, color: Colors.blue) : null,
       onTap: () {
         onOptionSelected(index);
         Navigator.pop(context);

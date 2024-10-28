@@ -4,9 +4,11 @@ import 'package:ui_youtex/pages/screens/member_Vip/member_payment_vnpay.dart';
 
 class PremiumUnlockScreen extends StatelessWidget {
   // Define custom colors
-  final Color primaryBlue = Color(0xFF6DA7FF);
-  final Color lightBlue = Color(0xFFDAF5FF);
-  final Color backgroundBlue = Color(0xFFE2EEF3);
+  final Color primaryBlue = const Color(0xFF6DA7FF);
+  final Color lightBlue = const Color(0xFFDAF5FF);
+  final Color backgroundBlue = const Color(0xFFE2EEF3);
+
+  const PremiumUnlockScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +31,18 @@ class PremiumUnlockScreen extends StatelessWidget {
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildHeader(),
-                        SizedBox(height: 32),
+                        const SizedBox(height: 32),
                         _buildFeaturesList(),
-                        SizedBox(height: 32),
+                        const SizedBox(height: 32),
                         _buildTrialSwitch(),
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
                         _buildSubscriptionOptions(),
-                        SizedBox(height: 32),
+                        const SizedBox(height: 32),
                         _buildBottomSection(context),
                       ],
                     ),
@@ -56,7 +58,7 @@ class PremiumUnlockScreen extends StatelessWidget {
 
   Widget _buildAppBar(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       decoration: BoxDecoration(
         color: Colors.transparent,
         border: Border(
@@ -69,11 +71,11 @@ class PremiumUnlockScreen extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black87),
+            icon: const Icon(Icons.arrow_back, color: Colors.black87),
             onPressed: () => Navigator.pop(context),
           ),
-          SizedBox(width: 8),
-          Text(
+          const SizedBox(width: 8),
+          const Text(
             'Gói thành viên Premium',
             style: TextStyle(
               fontSize: 20,
@@ -90,7 +92,7 @@ class PremiumUnlockScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Mở khóa Premium',
           style: TextStyle(
             fontSize: 28,
@@ -98,7 +100,7 @@ class PremiumUnlockScreen extends StatelessWidget {
             color: Colors.black87,
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
           'Tận hưởng những lợi ích này khi bạn nâng cấp lên gói cao cấp',
           style: TextStyle(
@@ -128,11 +130,11 @@ class PremiumUnlockScreen extends StatelessWidget {
 
   Widget _buildFeatureItem(String text) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: [
           Container(
-            padding: EdgeInsets.all(2),
+            padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
               color: lightBlue,
               borderRadius: BorderRadius.circular(20),
@@ -143,11 +145,11 @@ class PremiumUnlockScreen extends StatelessWidget {
               size: 22,
             ),
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Expanded(
             child: Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.black87,
                 height: 1.4,
@@ -161,7 +163,7 @@ class PremiumUnlockScreen extends StatelessWidget {
 
   Widget _buildTrialSwitch() {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.7),
         borderRadius: BorderRadius.circular(16),
@@ -169,14 +171,14 @@ class PremiumUnlockScreen extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: Offset(0, 4),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
+          const Text(
             'Bắt đầu dùng thử miễn phí 7 ngày',
             style: TextStyle(
               fontSize: 16,
@@ -224,7 +226,7 @@ class PremiumUnlockScreen extends StatelessWidget {
     bool isPopular = false,
   }) {
     return Container(
-      margin: EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: isSelected
             ? lightBlue.withOpacity(0.7)
@@ -238,12 +240,12 @@ class PremiumUnlockScreen extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withOpacity(0.03),
             blurRadius: 10,
-            offset: Offset(0, 4),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Row(
           children: [
             Radio(
@@ -252,7 +254,7 @@ class PremiumUnlockScreen extends StatelessWidget {
               onChanged: (value) {},
               activeColor: primaryBlue,
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,15 +263,15 @@ class PremiumUnlockScreen extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       if (discountTag != null) ...[
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 8,
                             vertical: 4,
                           ),
@@ -279,7 +281,7 @@ class PremiumUnlockScreen extends StatelessWidget {
                           ),
                           child: Text(
                             discountTag,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
@@ -289,7 +291,7 @@ class PremiumUnlockScreen extends StatelessWidget {
                       ],
                     ],
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     price,
                     style: TextStyle(
@@ -317,7 +319,7 @@ class PremiumUnlockScreen extends StatelessWidget {
             fontSize: 14,
           ),
         ),
-        SizedBox(height: 24),
+        const SizedBox(height: 24),
         Container(
           width: double.infinity,
           height: MediaQuery.sizeOf(context).height / 14,
@@ -378,11 +380,13 @@ void showPaymentMethodSheet(BuildContext context) {
     context: context,
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
-    builder: (context) => PaymentMethodBottomSheet(),
+    builder: (context) => const PaymentMethodBottomSheet(),
   );
 }
 
 class PaymentMethodBottomSheet extends StatefulWidget {
+  const PaymentMethodBottomSheet({super.key});
+
   @override
   _PaymentMethodBottomSheetState createState() =>
       _PaymentMethodBottomSheetState();
@@ -407,7 +411,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(24),
@@ -427,7 +431,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
 
   Widget _buildHeader() {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -438,16 +442,16 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
       ),
       child: Row(
         children: [
-          Text(
+          const Text(
             'Chọn phương thức thanh toán',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
           ),
-          Spacer(),
+          const Spacer(),
           IconButton(
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.close),
             onPressed: () => Navigator.pop(context),
           ),
         ],
@@ -458,7 +462,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
   Widget _buildPaymentMethods() {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: paymentMethods.length,
       itemBuilder: (context, index) {
         return _buildPaymentMethodItem(index);
@@ -476,12 +480,12 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
         if (method.name == 'Thẻ') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => CardInputApppayPayment()),
+            MaterialPageRoute(builder: (context) => const CardInputApppayPayment()),
           );
         } else if (method.name == 'VnPay') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PaymenVNPaytScreen()),
+            MaterialPageRoute(builder: (context) => const PaymenVNPaytScreen()),
           );
         }
         // Bạn có thể thêm điều kiện cho các phương thức thanh toán khác ở đây
@@ -491,9 +495,9 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
         });
       },
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isSelected ? Color(0xFFDAF5FF) : Colors.white,
+          color: isSelected ? const Color(0xFFDAF5FF) : Colors.white,
           border: Border(
             bottom: BorderSide(
               color: Colors.grey.withOpacity(0.2),
@@ -511,7 +515,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                   selectedMethodIndex = value as int;
                 });
               },
-              activeColor: Color(0xFF6DA7FF),
+              activeColor: const Color(0xFF6DA7FF),
             ),
             Text(
               method.name,
@@ -520,22 +524,22 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
               ),
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             Container(
               child: Image.asset(
                 method.logo,
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             if (method.name == 'Thẻ') ...[
-              Spacer(),
+              const Spacer(),
               Row(
                 children: [
                   _buildCardIcon(),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   _buildCardIcon(),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   _buildCardIcon(),
                 ],
               ),
@@ -586,7 +590,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
             borderRadius: BorderRadius.circular(30),
           ),
         ),
-        child: Text(
+        child: const Text(
           'Xác nhận',
           style: TextStyle(
             fontSize: 16,
@@ -600,17 +604,19 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
 
 // Usage Example:
 class PaymentButton extends StatelessWidget {
+  const PaymentButton({super.key});
+
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () => showPaymentMethodSheet(context),
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey.shade300),
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Row(
+        child: const Row(
           children: [
             Icon(Icons.payment, color: Color(0xFF6DA7FF)),
             SizedBox(width: 12),

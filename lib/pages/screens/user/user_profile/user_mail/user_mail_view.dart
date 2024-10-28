@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/pages/screens/message/friend_list_scrren.dart';
 import 'package:ui_youtex/pages/screens/user/user_profile/user_mail/user_mail_shop_employee.dart';
 import 'package:ui_youtex/pages/screens/user/user_profile/user_mail/user_mail_shop_view.dart';
 import 'package:ui_youtex/pages/screens/user/user_profile/user_profile_settings.dart';
-import 'package:ui_youtex/pages/screens/voucher/voucher_view.dart';
-import '../../../../oder_manager/oder_manager_view.dart';
 
 class MailScreen extends StatelessWidget {
+  const MailScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -26,11 +25,13 @@ class MailScreen extends StatelessWidget {
 }
 
 class UserInfoHeader extends StatelessWidget {
+  const UserInfoHeader({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFF1E3799), Color(0xFF4A69BD)],
           begin: Alignment.topLeft,
@@ -53,8 +54,8 @@ class UserInfoHeader extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 12),
-          Expanded(
+          const SizedBox(width: 12),
+          const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -90,12 +91,12 @@ class UserInfoHeader extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.settings, color: Colors.white),
+            icon: const Icon(Icons.settings, color: Colors.white),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AccountSettingsScreen()),
+                    builder: (context) => const AccountSettingsScreen()),
               );
             },
           ),
@@ -106,12 +107,14 @@ class UserInfoHeader extends StatelessWidget {
 }
 
 class RevenueSection extends StatelessWidget {
+  const RevenueSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
@@ -119,11 +122,11 @@ class RevenueSection extends StatelessWidget {
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
               blurRadius: 4,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
@@ -149,21 +152,23 @@ class RevenueSection extends StatelessWidget {
 }
 
 class SettingsSection extends StatelessWidget {
+  const SettingsSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Cài đặt',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           _buildMenuItem(
             icon: Icons.insert_chart,
             title: 'Bảng thống kê',
@@ -177,7 +182,7 @@ class SettingsSection extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ShopOverviewScreen()));
+                        builder: (context) => const ShopOverviewScreen()));
               }),
           _buildMenuItem(
             icon: Icons.notifications,
@@ -192,7 +197,7 @@ class SettingsSection extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => EmployeeListScreen()));
+                        builder: (context) => const EmployeeListScreen()));
               }),
         ],
       ),
@@ -206,7 +211,7 @@ class SettingsSection extends StatelessWidget {
     Function()? onTap,
   }) {
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -214,13 +219,13 @@ class SettingsSection extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
             blurRadius: 4,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: ListTile(
         leading: Container(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: Colors.blue[50],
             borderRadius: BorderRadius.circular(8),
@@ -229,7 +234,7 @@ class SettingsSection extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         trailing: Icon(Icons.chevron_right, color: Colors.grey[400]),
         dense: true,

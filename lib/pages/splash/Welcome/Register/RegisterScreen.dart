@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/core/colors/color.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -29,83 +28,83 @@ class RegisterScreen extends StatelessWidget {
               style: TextStyle(fontSize: 16),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
 
             // Form Họ và tên, Email, Mật khẩu
             TextField(
               decoration: InputDecoration(
-                hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
-                prefixIcon: Icon(
+                hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
+                prefixIcon: const Icon(
                   Icons.person,
                   color: Color(0xFF005B99),
                 ),
                 hintText: "Họ và tên",
                 filled: true,
-                fillColor: Color(0xFFEEFBFF),
+                fillColor: const Color(0xFFEEFBFF),
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             TextField(
               decoration: InputDecoration(
-                hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
-                prefixIcon: Icon(
+                hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
+                prefixIcon: const Icon(
                   Icons.email,
                   color: Color(0xFF005B99),
                 ),
                 hintText: "Email",
                 filled: true,
-                fillColor: Color(0xFFEEFBFF),
+                fillColor: const Color(0xFFEEFBFF),
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             TextField(
               obscureText: true,
               decoration: InputDecoration(
-                hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
-                prefixIcon: Icon(
+                hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
+                prefixIcon: const Icon(
                   Icons.lock_clock_outlined,
                   color: Color(0xFF005B99),
                 ),
                 hintText: "Mật khẩu",
                 filled: true,
-                fillColor: Color(0xFFEEFBFF),
+                fillColor: const Color(0xFFEEFBFF),
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             TextField(
               obscureText: true,
               decoration: InputDecoration(
-                hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
-                prefixIcon: Icon(
+                hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
+                prefixIcon: const Icon(
                   Icons.lock_clock_outlined,
                   color: Color(0xFF005B99),
                 ),
                 hintText: "Nhập lại mật khẩu",
                 filled: true,
-                fillColor: Color(0xFFEEFBFF),
+                fillColor: const Color(0xFFEEFBFF),
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
 
             // Checkbox đồng ý với điều khoản
             Row(
               children: [
                 Checkbox(
-                    activeColor: Color(0xFF00B2F6),
+                    activeColor: const Color(0xFF00B2F6),
                     value: true,
                     onChanged: (value) {}),
-                Text("Đồng ý với điều khoản sử dụng"),
+                const Text("Đồng ý với điều khoản sử dụng"),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Nút Đăng ký
              Container(
@@ -147,7 +146,7 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
 
             // Nút liên kết với Facebook, Google, Apple
             Row(
@@ -155,7 +154,7 @@ class RegisterScreen extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.facebook,
                     color: Colors.blue,
                     size: 55,
@@ -163,7 +162,7 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {},
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.g_translate,
                     color: Colors.red,
                     size: 55,
@@ -171,7 +170,7 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {},
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.apple,
                     color: Colors.black,
                     size: 55,
@@ -179,18 +178,18 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Điều hướng đến màn hình Đăng nhập
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Bạn đã có tài khoản? "),
+                const Text("Bạn đã có tài khoản? "),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, '/login');
                   },
-                  child: Text(
+                  child: const Text(
                     "Đăng nhập",
                     style: TextStyle(color: Color(0xFF00B2F6)),
                   ),

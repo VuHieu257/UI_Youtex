@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/core/colors/color.dart';
-import 'package:ui_youtex/pages/screens/user/user_profile/user_mail/user_mail_shop_analyst_view.dart';
-import 'package:ui_youtex/pages/screens/user/user_profile/user_mail/user_mail_shop_product.dart';
 
 class ShopOverviewScreen extends StatelessWidget {
+  const ShopOverviewScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        backgroundColor: Color(0xFF1E3799),
+        backgroundColor: const Color(0xFF1E3799),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           onPressed: () {},
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.settings_outlined, color: Colors.white),
+            icon: const Icon(Icons.settings_outlined, color: Colors.white),
             onPressed: () {},
           ),
           IconButton(
-            icon: Icon(Icons.person_outline, color: Colors.white),
+            icon: const Icon(Icons.person_outline, color: Colors.white),
             onPressed: () {},
           ),
         ],
@@ -29,10 +28,10 @@ class ShopOverviewScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            UserInfoHeader(),
-            WalletCard(),
-            OrderStatusSection(),
-            SalesOverviewSection(),
+            const UserInfoHeader(),
+            const WalletCard(),
+            const OrderStatusSection(),
+            const SalesOverviewSection(),
             SalesToolsSection(),
           ],
         ),
@@ -42,11 +41,13 @@ class ShopOverviewScreen extends StatelessWidget {
 }
 
 class UserInfoHeader extends StatelessWidget {
+  const UserInfoHeader({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      decoration: const BoxDecoration(
         color: Color(0xFF1E3799),
       ),
       child: Row(
@@ -59,8 +60,8 @@ class UserInfoHeader extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          SizedBox(width: 12),
-          Expanded(
+          const SizedBox(width: 12),
+          const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -94,11 +95,13 @@ class UserInfoHeader extends StatelessWidget {
 }
 
 class WalletCard extends StatelessWidget {
+  const WalletCard({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
@@ -106,11 +109,11 @@ class WalletCard extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 4,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-      child: Row(
+      child: const Row(
         children: [
           Icon(Icons.account_balance_wallet_outlined,
               color: Colors.blue, size: 20),
@@ -138,9 +141,11 @@ class WalletCard extends StatelessWidget {
 }
 
 class OrderStatusSection extends StatelessWidget {
+  const OrderStatusSection({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
         SizedBox(height: 12),
         Row(
@@ -180,7 +185,7 @@ class OrderStatusItem extends StatelessWidget {
   final int? count;
   final Color color;
 
-  OrderStatusItem({
+  const OrderStatusItem({super.key, 
     required this.icon,
     required this.label,
     this.count,
@@ -195,7 +200,7 @@ class OrderStatusItem extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             Container(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: color.withOpacity(0.1),
                 shape: BoxShape.circle,
@@ -207,14 +212,14 @@ class OrderStatusItem extends StatelessWidget {
                 right: -4,
                 top: -4,
                 child: Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
                     color: Colors.red,
                     shape: BoxShape.circle,
                   ),
                   child: Text(
                     '$count',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
@@ -224,10 +229,10 @@ class OrderStatusItem extends StatelessWidget {
               ),
           ],
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 12,
             color: Colors.black87,
           ),
@@ -238,14 +243,16 @@ class OrderStatusItem extends StatelessWidget {
 }
 
 class SalesOverviewSection extends StatelessWidget {
+  const SalesOverviewSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(16),
+      margin: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
@@ -264,15 +271,15 @@ class SalesOverviewSection extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,
             childAspectRatio: 1.6,
-            children: [
+            children: const [
               SalesOverviewCard(
                 title: 'Doanh thu',
                 value: '160.100K',
@@ -311,7 +318,7 @@ class SalesOverviewCard extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
 
-  SalesOverviewCard({
+  const SalesOverviewCard({super.key, 
     required this.title,
     required this.value,
     required this.backgroundColor,
@@ -321,7 +328,7 @@ class SalesOverviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(8),
@@ -338,10 +345,10 @@ class SalesOverviewCard extends StatelessWidget {
               color: textColor,
             ),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
               color: Colors.black87,
             ),
@@ -381,25 +388,27 @@ class SalesToolsSection extends StatelessWidget {
     },
   ];
 
+  SalesToolsSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(16),
+      margin: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Công cụ bán hàng',
             style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           GridView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
@@ -426,7 +435,7 @@ class SalesToolCard extends StatelessWidget {
   final String label;
   final String route;
 
-  SalesToolCard({
+  const SalesToolCard({super.key, 
     required this.icon,
     required this.label,
     required this.route,
@@ -442,17 +451,17 @@ class SalesToolCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: Colors.grey[200],
               shape: BoxShape.circle,
             ),
             child: Icon(icon, size: 24, color: Colors.blue),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
               color: Colors.black87,
             ),

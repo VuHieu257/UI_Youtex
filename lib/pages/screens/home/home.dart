@@ -18,14 +18,14 @@ class HomePage extends StatelessWidget {
           ],
         ),
         actions: [
-          CircleAvatar(backgroundColor: Colors.grey.shade300,child: Icon(Icons.search)),
+          CircleAvatar(backgroundColor: Colors.grey.shade300,child: const Icon(Icons.search)),
           const SizedBox(width: 10),
-          CircleAvatar(backgroundColor: Colors.grey.shade300,child: Icon(Icons.notifications_none)),
+          CircleAvatar(backgroundColor: Colors.grey.shade300,child: const Icon(Icons.notifications_none)),
           const SizedBox(width: 10),
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         children: [
           // Section 1: "Doanh nghiệp nổi bật"
           Container(
@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
                 const SizedBox(height: 10),
                 Container(
                   height: 120,
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       color: Colors.white,
@@ -68,7 +68,7 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           // Section 2: "Thương hiệu dệt may Việt 2024"
           const Card(
             child: Column(
@@ -89,7 +89,7 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           // Section 4: "Bài đăng nổi bật"
           const Text(
             'Bài đăng nổi bật',

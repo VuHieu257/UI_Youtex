@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
-import '../../../../../core/assets.dart';
 import '../../../../../core/colors/color.dart';
 import '../../../../widget_small/custom_button.dart';
 import 'adress_add_screen.dart';
 class AddressScreen extends StatefulWidget {
+  const AddressScreen({super.key});
+
   @override
   _AddressScreenState createState() => _AddressScreenState();
 }
@@ -37,7 +37,7 @@ class _AddressScreenState extends State<AddressScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Row(mainAxisAlignment: MainAxisAlignment.start,
+            const Row(mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text('Địa chỉ đã thêm',),
               ],
@@ -78,7 +78,7 @@ class _AddressScreenState extends State<AddressScreen> {
             ),
             const SizedBox(height: 20),
             // Save Button
-            InkWell(onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) =>   AddAddressScreen(),)),child: const CusButton(text:"Lưu thay đổi",color:Styles.blue)),
+            InkWell(onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) =>   const AddAddressScreen(),)),child: const CusButton(text:"Lưu thay đổi",color:Styles.blue)),
           ],
         ),
       ),
@@ -93,7 +93,7 @@ class AddressItem extends StatelessWidget {
   final bool isDefault;
   final VoidCallback onChanged;
 
-  const AddressItem({
+  const AddressItem({super.key, 
     required this.label,
     required this.address,
     required this.isSelected,
@@ -104,12 +104,12 @@ class AddressItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ListTile(
-        leading: Icon(Icons.location_on, color: Styles.blue),
+        leading: const Icon(Icons.location_on, color: Styles.blue),
         title: Text(label),
         subtitle: Text(
           address,
@@ -121,12 +121,12 @@ class AddressItem extends StatelessWidget {
           children: [
             if (isDefault)
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Text(
+                child: const Text(
                   'Default',
                   style: TextStyle(fontSize: 12),
                 ),

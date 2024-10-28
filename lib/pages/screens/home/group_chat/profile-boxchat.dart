@@ -5,6 +5,8 @@ import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import '../../../../core/colors/color.dart';
 
 class UserOptionsPage extends StatelessWidget {
+  const UserOptionsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,24 +25,24 @@ class UserOptionsPage extends StatelessWidget {
             // Bọc ảnh đại diện và các nút tùy chọn trong một widget hình tròn
             Column(
               children: [
-                ClipOval(
+                const ClipOval(
                   child: CircleAvatar(
                     radius: 50,
                     backgroundImage: AssetImage(Asset.bgImageAvatar), // Thay thế bằng ảnh thực tế
                   ),
                 ),
-                SizedBox(height: 10),
-                Text(
+                const SizedBox(height: 10),
+                const Text(
                   'Martha Craig',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 // Bọc các nút tùy chọn trong hình tròn và thêm hiệu ứng nhấn
                 Container(
-                  padding: EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(10.0),
 
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -50,11 +52,11 @@ class UserOptionsPage extends StatelessWidget {
                           // Xử lý khi nhấn nút "Tìm tin nhắn"
                         },
                         child: Container(
-                          padding: EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.grey.shade200,),
-                            child: Column(
+                            child: const Column(
                             children: [
                               Icon(Icons.search, size: 30),
                               Text('Tìm tin nhắn', style: TextStyle(fontSize: 12)),
@@ -67,11 +69,11 @@ class UserOptionsPage extends StatelessWidget {
                           // Xử lý khi nhấn nút "Trang cá nhân"
                         },
                         child: Container(
-                          padding: EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.grey.shade200,),
-                          child: Column(
+                          child: const Column(
                             children: [
                               Icon(Icons.person, size: 30),
                               Text('Trang cá nhân', style: TextStyle(fontSize: 12)),
@@ -84,11 +86,11 @@ class UserOptionsPage extends StatelessWidget {
                           // Xử lý khi nhấn nút "Tắt thông báo"
                         },
                         child: Container(
-                          padding: EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.grey.shade200,),
-                          child: Column(
+                          child: const Column(
                             children: [
                               Icon(Icons.notifications_on_outlined, size: 30),
                               Text('Tắt Thông báo', style: TextStyle(fontSize: 12)),
@@ -101,35 +103,35 @@ class UserOptionsPage extends StatelessWidget {
                 ),
               ],
             ),
-            Divider(),
+            const Divider(),
             // Các tùy chọn hành động
             Expanded(
               child: ListView(
                 children: [
                   ListTile(
-                    leading: Icon(Icons.photo, color: Colors.black),
-                    title: Text('Xem hình ảnh, file và liên kết'),
+                    leading: const Icon(Icons.photo, color: Colors.black),
+                    title: const Text('Xem hình ảnh, file và liên kết'),
                     onTap: () {
                       // Xử lý khi nhấn
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.report, color: Colors.black),
-                    title: Text('Báo cáo tin nhắn'),
+                    leading: const Icon(Icons.report, color: Colors.black),
+                    title: const Text('Báo cáo tin nhắn'),
                     onTap: () {
                       // Xử lý khi nhấn
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.block, color: Colors.black),
-                    title: Text('Chặn'),
+                    leading: const Icon(Icons.block, color: Colors.black),
+                    title: const Text('Chặn'),
                     onTap: () {
                       // Xử lý khi nhấn
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.delete, color: Colors.black),
-                    title: Text('Xóa lịch sử trò chuyện'),
+                    leading: const Icon(Icons.delete, color: Colors.black),
+                    title: const Text('Xóa lịch sử trò chuyện'),
                     onTap: () {
                       // Xử lý khi nhấn
                     },

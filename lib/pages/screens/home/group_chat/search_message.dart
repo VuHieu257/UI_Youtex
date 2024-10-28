@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/core/size/size.dart';
 
 import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
@@ -104,8 +103,8 @@ class _SearchMessage1State extends State<SearchMessage1> {
           // Ô nhập tin nhắn
           if (_showSearchResult)
 
-            Padding(
-            padding: const EdgeInsets.all(8.0),
+            const Padding(
+            padding: EdgeInsets.all(8.0),
              child:
              Text(
               "Kết quả thứ 10/18",
@@ -114,7 +113,7 @@ class _SearchMessage1State extends State<SearchMessage1> {
           ),
           // Ô nhập tin nhắn
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
                 Expanded(
@@ -131,7 +130,7 @@ class _SearchMessage1State extends State<SearchMessage1> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: () {
                     // Xử lý gửi tin nhắn
                   },
@@ -165,7 +164,7 @@ class _SearchMessage1State extends State<SearchMessage1> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (isCustomer)
-              CircleAvatar(
+              const CircleAvatar(
                 backgroundImage: AssetImage(Asset.bgImageAvatar), // Thay thế bằng ảnh thực tế
               ),
             if (isCustomer) const SizedBox(width: 20),
@@ -177,7 +176,7 @@ class _SearchMessage1State extends State<SearchMessage1> {
             ),
             if (!isCustomer) const SizedBox(width: 10),
             if (!isCustomer)
-              CircleAvatar(
+              const CircleAvatar(
                 backgroundImage: AssetImage(Asset.bgImageAvatar), // Thay thế bằng ảnh thực tế
               ),
           ],

@@ -86,7 +86,7 @@ class ProfileScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            AccountSettingsScreen()),
+                                            const AccountSettingsScreen()),
                                   );
                                 },
                                 child: CircleAvatar(
@@ -102,7 +102,7 @@ class ProfileScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            AccountSettingsScreen()),
+                                            const AccountSettingsScreen()),
                                   );
                                 },
                                 child: CircleAvatar(
@@ -196,7 +196,7 @@ class ProfileScreen extends StatelessWidget {
                                     color: Colors.white
                                   ),
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 const SizedBox(height: 2),
                                 Row(
                                   children: [
@@ -262,7 +262,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   InkWell(
                     onTap: () {
                       Navigator.push(
@@ -311,7 +311,7 @@ class ProfileScreen extends StatelessWidget {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => VoucherScreen())),
+                            builder: (context) => const VoucherScreen())),
                   ),
                   _buildMenuItem(Icons.share, 'Chia sẻ App',
                       context: context,color:const Color(0xff113A71),
@@ -324,7 +324,7 @@ class ProfileScreen extends StatelessWidget {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => VoucherScreen())),
+                            builder: (context) => const VoucherScreen())),
                   ),
                   _buildMenuItem(Icons.language, 'Ngôn ngữ/Language',
                       context: context,

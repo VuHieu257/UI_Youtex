@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/pages/oder_manager/oder_manager_screen.dart';
-import 'package:ui_youtex/pages/screens/shopping_cart_page/information_order/delivery_information/delivery_information.dart';
 
 class OrderManagementScreen extends StatelessWidget {
   final List<Map<String, dynamic>> orders = [
@@ -16,19 +15,21 @@ class OrderManagementScreen extends StatelessWidget {
     },
   ];
 
+  OrderManagementScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Quản lý đơn hàng',
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
           backgroundColor: Colors.blue,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.pop(context),
           ),
           bottom: TabBar(
@@ -36,7 +37,7 @@ class OrderManagementScreen extends StatelessWidget {
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white.withOpacity(0.7),
             indicatorColor: Colors.white,
-            tabs: [
+            tabs: const [
               Tab(text: 'Chờ xác nhận'),
               Tab(text: 'Chờ giao hàng'),
               Tab(text: 'Đã giao'),
@@ -59,11 +60,11 @@ class OrderManagementScreen extends StatelessWidget {
   Widget _buildOrderList(String status) {
     return ListView.builder(
       itemCount: orders.length,
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       itemBuilder: (context, index) {
         final order = orders[index];
         return Card(
-          margin: EdgeInsets.only(bottom: 16),
+          margin: const EdgeInsets.only(bottom: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
@@ -72,7 +73,7 @@ class OrderManagementScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: IntrinsicHeight(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,29 +87,29 @@ class OrderManagementScreen extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               order["store"],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             Text(
                               order["name"],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             Text(
                               order["color"],
                               style: TextStyle(
@@ -116,17 +117,17 @@ class OrderManagementScreen extends StatelessWidget {
                                 fontSize: 14,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             Row(
                               children: [
                                 Text(
                                   order["rating"],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.orange,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.star,
                                   color: Colors.orange,
                                   size: 16,
@@ -136,13 +137,13 @@ class OrderManagementScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 6,
                             ),
@@ -150,7 +151,7 @@ class OrderManagementScreen extends StatelessWidget {
                               color: Colors.blue.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            child: Text(
+                            child: const Text(
                               'Cửa hàng',
                               style: TextStyle(
                                 color: Colors.blue,
@@ -159,7 +160,7 @@ class OrderManagementScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Text(
                             'Thành tiền: ',
                             style: TextStyle(
@@ -169,13 +170,13 @@ class OrderManagementScreen extends StatelessWidget {
                           ),
                           Text(
                             order["price"],
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.red,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
                             order["quantity"],
                             style: TextStyle(
@@ -189,21 +190,21 @@ class OrderManagementScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Divider(height: 1),
+              const Divider(height: 1),
               Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.local_shipping,
                             color: Colors.blue,
                             size: 20,
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Flexible(
                             child: Text(
                               'Đơn hàng đang chờ xác nhận',
@@ -223,9 +224,9 @@ class OrderManagementScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    OrderManagementScreen1()));
+                                    const OrderManagementScreen1()));
                       },
-                      child: Text(
+                      child: const Text(
                         'Xem tình trạng',
                         style: TextStyle(
                           color: Colors.blue,

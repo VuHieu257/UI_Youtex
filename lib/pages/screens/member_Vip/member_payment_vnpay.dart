@@ -4,6 +4,8 @@ import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_transuccess.dart';
 
 class PaymenVNPaytScreen extends StatelessWidget {
+  const PaymenVNPaytScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,22 +31,22 @@ class PaymenVNPaytScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PaymentInfoRow(label: 'Đơn vị thụ hưởng', value: 'UNG SANG'),
-            PaymentInfoRow(label: 'Điểm bán', value: 'YOUTEXTILE'),
-            SizedBox(height: 20),
-            PaymentInputField(
+            const PaymentInfoRow(label: 'Đơn vị thụ hưởng', value: 'UNG SANG'),
+            const PaymentInfoRow(label: 'Điểm bán', value: 'YOUTEXTILE'),
+            const SizedBox(height: 20),
+            const PaymentInputField(
               icon: Icons.attach_money,
               hintText: 'Số tiền (VND)',
             ),
-            PaymentInputField(
+            const PaymentInputField(
               icon: Icons.percent,
               hintText: 'Mã khuyến mãi VNPAY QR',
             ),
-            PaymentInputField(
+            const PaymentInputField(
               icon: Icons.notes,
               hintText: 'Ghi chú',
             ),
-            Spacer(),
+            const Spacer(),
             Container(
               width: double.infinity,
               height: MediaQuery.sizeOf(context).height / 14,
@@ -64,7 +66,7 @@ class PaymenVNPaytScreen extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return PaymentScreen();
+                      return const PaymentScreen();
                     },
                   );
                 },
@@ -98,10 +100,10 @@ class PaymentInfoRow extends StatelessWidget {
   final String value;
 
   const PaymentInfoRow({
-    Key? key,
+    super.key,
     required this.label,
     required this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +118,7 @@ class PaymentInfoRow extends StatelessWidget {
           ),
           Text(
             value,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -129,10 +131,10 @@ class PaymentInputField extends StatelessWidget {
   final String hintText;
 
   const PaymentInputField({
-    Key? key,
+    super.key,
     required this.icon,
     required this.hintText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

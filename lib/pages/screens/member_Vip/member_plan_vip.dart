@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class VipPlanScreen extends StatelessWidget {
+  const VipPlanScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +64,7 @@ class VipPlanScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 24),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton(

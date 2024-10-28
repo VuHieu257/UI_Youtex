@@ -1,15 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/assets.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 
 class BioEditPage extends StatelessWidget {
+  const BioEditPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             // Action to go back
           },
@@ -19,7 +20,7 @@ class BioEditPage extends StatelessWidget {
             onPressed: () {
               // Save action
             },
-            child: Text(
+            child: const Text(
               "Lưu",
               style: TextStyle(
                 color: Styles.light,
@@ -30,8 +31,8 @@ class BioEditPage extends StatelessWidget {
         ],
         backgroundColor: Styles.blue,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: const Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

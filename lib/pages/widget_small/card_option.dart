@@ -43,11 +43,11 @@ class CardOption extends StatelessWidget {
                   width: 40,
                   height: 40,
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('$cardType $cardNumber', style: TextStyle(fontSize: 16)),
+                    Text('$cardType $cardNumber', style: const TextStyle(fontSize: 16)),
                     if (isDefault)
                       const Text('Default', style: TextStyle(fontSize: 12, color: Colors.grey)),
                   ],

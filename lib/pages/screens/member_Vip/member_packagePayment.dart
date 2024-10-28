@@ -5,17 +5,19 @@ import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/login_screen.dart';
 
 class MembershipPaymentScreen extends StatelessWidget {
+  const MembershipPaymentScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text(
+        title: const Text(
           'Membership Package Payment',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
@@ -31,7 +33,7 @@ class MembershipPaymentScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Order Summary Section
-            Text(
+            const Text(
               "Order Summary",
               style: TextStyle(
                 fontSize: 18,
@@ -39,7 +41,7 @@ class MembershipPaymentScreen extends StatelessWidget {
                 color: Colors.black87, // Màu chữ đậm hơn một chút
               ),
             ),
-            SizedBox(height: 15), // Tăng khoảng cách để thoáng hơn
+            const SizedBox(height: 15), // Tăng khoảng cách để thoáng hơn
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -55,7 +57,7 @@ class MembershipPaymentScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -63,14 +65,14 @@ class MembershipPaymentScreen extends StatelessWidget {
                   "Discount",
                   style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                 ),
-                Text(
+                const Text(
                   "0\$",
                   style: TextStyle(fontSize: 16, color: Styles.blue),
                 ),
               ],
             ),
-            Divider(height: 30, thickness: 1),
-            Row(
+            const Divider(height: 30, thickness: 1),
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -91,10 +93,10 @@ class MembershipPaymentScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
 
             // Payment Method Section
-            Text(
+            const Text(
               "Payment Method",
               style: TextStyle(
                 fontSize: 18,
@@ -102,35 +104,35 @@ class MembershipPaymentScreen extends StatelessWidget {
                 color: Colors.black87,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 PaymentMethodButton(
                   icon: Icons.credit_card,
                   label: "Card",
-                  color: Color(0xFF1F96F2), // Light blue-ish color
+                  color: const Color(0xFF1F96F2), // Light blue-ish color
                   onPressed: () {},
                 ),
                 PaymentMethodButton(
                   icon: Icons.attach_money,
                   label: "Cash",
-                  color: Color(0xFF1F96F2), // Light gray color
+                  color: const Color(0xFF1F96F2), // Light gray color
                   onPressed: () {},
                 ),
                 PaymentMethodButton(
                   icon: Icons.apple,
                   label: "Apple Pay",
-                  color: Color(0xFF1F96F2), // Light gray color
+                  color: const Color(0xFF1F96F2), // Light gray color
                   onPressed: () {},
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
                 height:
                     25), // Khoảng cách giữa phần phương thức thanh toán và thẻ
             Container(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                   horizontal: 10, vertical: 5), // Tăng padding để thoáng hơn
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
@@ -140,16 +142,16 @@ class MembershipPaymentScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Image.asset(Asset.iconVisa),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
-                  Text(
+                  const Text(
                     "**** **** **** 2512",
                     style: TextStyle(fontSize: 16, color: Colors.black87),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     onPressed: () {
                       Navigator.pushNamed(context, '/PaymentMethodPayScreen');
                       // Xử lý chỉnh sửa thẻ
@@ -158,7 +160,7 @@ class MembershipPaymentScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Spacer(),
+            const Spacer(),
 
             // Buy Package Button
             Container(
@@ -189,7 +191,7 @@ class MembershipPaymentScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          LoginScreen(), // Trang bạn muốn chuyển tới
+                          const LoginScreen(), // Trang bạn muốn chuyển tới
                     ),
                   );
                 },
@@ -211,7 +213,7 @@ class MembershipPaymentScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
 
             // Payment Info Text
             Center(
@@ -237,7 +239,7 @@ class PaymentMethodButton extends StatelessWidget {
   final Color color;
   final VoidCallback onPressed;
 
-  PaymentMethodButton({
+  const PaymentMethodButton({super.key, 
     required this.icon,
     required this.label,
     required this.color,
@@ -249,7 +251,7 @@ class PaymentMethodButton extends StatelessWidget {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
             vertical: 12, horizontal: 20), // Điều chỉnh padding
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -258,7 +260,7 @@ class PaymentMethodButton extends StatelessWidget {
       icon: Icon(icon, color: Styles.light),
       label: Text(
         label,
-        style: TextStyle(
+        style: const TextStyle(
             color: Styles.light,
             fontWeight: FontWeight.bold), // Font chữ đậm cho nhãn
       ),

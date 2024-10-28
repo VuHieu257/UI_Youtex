@@ -6,9 +6,7 @@ import '../../screens/home/home.dart';
 import '../../screens/home/home_mall.dart';
 import '../../screens/live/live.dart';
 import '../../screens/message/message.dart';
-import '../../screens/shopping_cart_page/shopping_cart_page.dart';
 import '../../screens/user/user_profile/user_profile.dart';
-import '../../screens/user/user_selection_screen/user_selection_screen.dart';
 
 class CustomNavBar extends StatefulWidget {
   const CustomNavBar({super.key});

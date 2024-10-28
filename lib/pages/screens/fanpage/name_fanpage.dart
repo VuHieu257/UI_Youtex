@@ -5,6 +5,8 @@ import '../../../core/colors/color.dart';
 import '../../widget_small/custom_button.dart';
 
 class NamePangage extends StatefulWidget {
+  const NamePangage({super.key});
+
   @override
   _FanPageManagementState createState() => _FanPageManagementState();
 }
@@ -44,8 +46,8 @@ class _FanPageManagementState extends State<NamePangage>
   }
 
   Widget _buildCreatePage() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    return const Padding(
+      padding: EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -67,7 +69,7 @@ class _FanPageManagementState extends State<NamePangage>
           Spacer(),
           SizedBox(
             width: double.infinity,
-            child: const CusButton(text: "Tiếp", color: Styles.blue),
+            child: CusButton(text: "Tiếp", color: Styles.blue),
           ),
         ],
       ),

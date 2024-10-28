@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/assets.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
@@ -7,6 +6,8 @@ import 'package:ui_youtex/pages/screens/fanpage/avatar/Setting/SettingsPage.dart
 import '../../../../core/colors/color.dart';
 
 class ProfileFanpage extends StatelessWidget {
+  const ProfileFanpage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -24,16 +25,16 @@ class ProfileFanpage extends StatelessWidget {
             color: Styles.light,
           ),),          actions: [
             IconButton(
-              icon: Icon(Icons.edit),
+              icon: const Icon(Icons.edit),
               color: Styles.light,
 
               onPressed: () {},
             ),
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               color: Styles.light,
 
-              onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingsPage()),);},
+              onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context)=>const SettingsPage()),);},
             ),
           ],
         ),
@@ -51,7 +52,7 @@ class ProfileFanpage extends StatelessWidget {
                     width: double.infinity,
                     fit: BoxFit.cover,
                   ),
-                  Positioned(
+                  const Positioned(
                     left: 20,
                     bottom: -50,
                     child: CircleAvatar(
@@ -61,36 +62,36 @@ class ProfileFanpage extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 60), // Khoảng cách giữa ảnh đại diện và thông tin
+              const SizedBox(height: 60), // Khoảng cách giữa ảnh đại diện và thông tin
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Youtextile',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 4),
-                    Text(
+                    const SizedBox(height: 4),
+                    const Text(
                       '119 người theo dõi',
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
-                    SizedBox(height: 8),
-                    Text(
+                    const SizedBox(height: 8),
+                    const Text(
                       'Cung cấp đa dạng các loại vải trên thị trường.',
                       style: TextStyle(fontSize: 14, color: Colors.black),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start  ,
                       children: [
                         ElevatedButton.icon(
-                          icon: Icon(Icons.notifications,size: 18,color: Styles.grey,),
-                          label: Text('Đang theo dõi',style:TextStyle(color: Styles.grey),),
+                          icon: const Icon(Icons.notifications,size: 18,color: Styles.grey,),
+                          label: const Text('Đang theo dõi',style:TextStyle(color: Styles.grey),),
                           onPressed: () {},
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey[200], // Nút màu xám nhạt
@@ -99,34 +100,34 @@ class ProfileFanpage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         OutlinedButton.icon(
-                          icon: Icon(Icons.chat, size: 18,color: Styles.light,),
-                          label: Text('Nhắn tin',style:TextStyle(color: Styles.light),),
+                          icon: const Icon(Icons.chat, size: 18,color: Styles.light,),
+                          label: const Text('Nhắn tin',style:TextStyle(color: Styles.light),),
 
                           onPressed: () {},
                           style: OutlinedButton.styleFrom(
                             backgroundColor: Styles.blue,
 
-                            side: BorderSide(color: Styles.light),
+                            side: const BorderSide(color: Styles.light),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8), // Bo góc vuông
                             ),
                           ),
 
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         IconButton(
-                          icon: Icon(Icons.more_horiz),
+                          icon: const Icon(Icons.more_horiz),
                           onPressed: () {},
                         ),
                       ],
                     ),
-                    SizedBox(height: 16)
+                    const SizedBox(height: 16)
                   ],
                 ),
               ),
-              TabBar(
+              const TabBar(
                 indicatorColor: Colors.blue,
                 labelColor: Colors.blue,
                 unselectedLabelColor: Colors.grey,
@@ -137,7 +138,7 @@ class ProfileFanpage extends StatelessWidget {
                   Tab(text: 'Video'),
                 ],
               ),
-              Container(
+              SizedBox(
                 height: 400, // Chiều cao của ListView
                 child: TabBarView(
                   children: [
@@ -145,7 +146,7 @@ class ProfileFanpage extends StatelessWidget {
                     ListView.builder(
                       itemCount: 5, // Số lượng bài viết giả định
                       itemBuilder: (context, index) {
-                        return ListTile(
+                        return const ListTile(
                           leading: CircleAvatar(
                             backgroundImage: NetworkImage(
                               'https://link_to_post_image.jpg', // Ảnh bài viết
@@ -159,9 +160,9 @@ class ProfileFanpage extends StatelessWidget {
                     ),
                     // Tab Giới thiệu
 // Tab Giới thiệu
-                    Center(
+                    const Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: EdgeInsets.all(16.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -228,9 +229,9 @@ class ProfileFanpage extends StatelessWidget {
                         ),
                       ),
                     ),                    // Tab Ảnh
-                    Center(child: Text('Thư viện ảnh.')),
+                    const Center(child: Text('Thư viện ảnh.')),
                     // Tab Video
-                    Center(child: Text('Thư viện video.')),
+                    const Center(child: Text('Thư viện video.')),
                   ],
                 ),
               ),

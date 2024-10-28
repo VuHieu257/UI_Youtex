@@ -1,5 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
@@ -125,13 +124,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Card Information (Shown only if Card is selected)
             if (_selectedPaymentMethod == 'Card')
-              CardInfoSection(),
-            SizedBox(height: 20),
-            Divider(),
+              const CardInfoSection(),
+            const SizedBox(height: 20),
+            const Divider(),
 
             // Order Summary Section
             Text(
@@ -151,7 +150,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               isBold: true,
             ),
             const Spacer(),
-            InkWell(onTap: () {                         Navigator.push(context, MaterialPageRoute(builder: (context) =>   AddressScreen(),));
+            InkWell(onTap: () {                         Navigator.push(context, MaterialPageRoute(builder: (context) =>   const AddressScreen(),));
 
             },child: const CusButton(text:"Thanh toán",color:Styles.blue)),
           ],

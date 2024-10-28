@@ -12,7 +12,7 @@ class MessagesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     return Scaffold(
       appBar:AppBar(
@@ -54,7 +54,7 @@ class MessagesScreen extends StatelessWidget {
           ),
           Expanded(
             child: StreamBuilder(
-              stream: _firestore
+              stream: firestore
                   .collection('chats')
               // .where('participants', arrayContains: currentUserId)
                   .where('participants', arrayContains: "user1")
@@ -70,7 +70,6 @@ class MessagesScreen extends StatelessWidget {
                 if (chatDocs.isEmpty) {
                   return const Center(child: Text("Không có cuộc trò chuyện nào"));
                 }
-
                 return ListView.builder(
                   itemCount: chatDocs.length,
                   itemBuilder: (context, index) {
@@ -82,7 +81,7 @@ class MessagesScreen extends StatelessWidget {
                     String otherUserId = participants.firstWhere((id) => id != "user1");
 
                     return FutureBuilder(
-                      future: _firestore.collection('users').doc("user2").get(),
+                      future: firestore.collection('users').doc("user2").get(), // Lấy thông tin người nhận
                       builder: (context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
                         if (!userSnapshot.hasData) {
                           return const ListTile(title: Text("Loading..."));
@@ -90,18 +89,47 @@ class MessagesScreen extends StatelessWidget {
                         var userData = userSnapshot.data!.data() as Map<String, dynamic>;
                         String otherUserName = userData['name'];
                         return
-                          _buildMessageTile(otherUserName, chat['lastMessage'], formatTimestamp(chat['lastTimestamp']),() {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChatScreen(
-                                  chatId: chat.id,
-                                  receiverId: otherUserId,
-                                  receiverName: otherUserName,
+                          Slidable(
+                            key: const ValueKey(0),
+                            endActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              dismissible: DismissiblePane(onDismissed: () {}),
+                              children:   [
+                                SlidableAction(
+                                  flex: 1,
+                                  // onPressed: (context) => customShowReportSheet(context),
+                                  onPressed: (context) => customShowBlockSheet(context),
+                                  foregroundColor: Colors.black,
+                                  icon: Icons.clear_all_sharp,
+                                  // borderRadius: BorderRadius.all(Radius.circular(50)),
                                 ),
-                              ),
+                                SlidableAction(
+                                  onPressed: (context) => customShowBottomSheet(context),
+                                  // backgroundColor: Color(0xFF0392CF),
+                                  foregroundColor: Colors.black,
+                                  icon: Icons.notifications,
+                                ),
+                                SlidableAction(
+                                  onPressed: (context) => doNothing(context,chat.id),
+                                  // backgroundColor: Color(0xFF0392CF),
+                                  foregroundColor: Colors.black,
+                                  icon: Icons.delete,
+                                ),
+                              ],
+                            ),
+                            child:  _buildMessageTile(otherUserName, chat['lastMessage'], formatTimestamp(chat['lastTimestamp']),() {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatScreen(
+                                      chatId: chat.id,
+                                      receiverId: otherUserId,
+                                      receiverName: otherUserName,
+                                    ),
+                                  ),
+                                );
+                              },)
                             );
-                          },);
                       },
                     );
                   },
@@ -202,4 +230,24 @@ class MessagesScreen extends StatelessWidget {
   }
 }
 
-void doNothing(BuildContext context) {}
+Future<void> doNothing(BuildContext context,String messageId) async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  var messages = await firestore
+      .collection('chats')
+      .doc(messageId)
+      .collection('messages')
+      .get();
+
+  for (var doc in messages.docs) {
+    await firestore
+        .collection('chats')
+        .doc(messageId)
+        .collection('messages')
+        .doc(doc.id)
+        .delete();
+  }
+
+  await firestore.collection('chats').doc(messageId).delete();
+
+  Navigator.pop(context);
+}
