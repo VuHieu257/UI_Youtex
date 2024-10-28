@@ -31,9 +31,9 @@ class FreeTrialTimeline extends StatelessWidget {
                   children: [
                     const SizedBox(height: 20),
                     const Text(
-                      'How your\nfree trial works',
+                      'Bản dùng thử miễn phí của\nbạn hoạt động như thế nào',
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 25,
                         fontWeight: FontWeight.bold,
                         height: 1.2,
                       ),
@@ -42,44 +42,44 @@ class FreeTrialTimeline extends StatelessWidget {
                     const SizedBox(height: 50),
                     _buildTimelineItem(
                       icon: Icons.lock_open,
-                      title: 'Today',
-                      description: 'Unlock access to all premium features',
+                      title: 'Hôm nay',
+                      description:
+                          'Mở khóa quyền truy cập vào tất cả các tính năng cao cấp',
                       isFirst: true,
                     ),
                     _buildTimelineItem(
                       icon: Icons.notifications_none,
                       title: 'Day 5',
                       description:
-                          'Get a reminder that your trial is about to end',
+                          'Nhận lời nhắc rằng thời gian dùng thử của bạn sắp kết thúc',
                     ),
                     _buildTimelineItem(
                       icon: Icons.star_border,
                       title: 'Day 7',
                       description:
-                          'Your subscription starts.\nCancel anytime before',
+                          'Đăng ký của bạn bắt đầu. Hủy bất cứ lúc nào trước',
                       isLast: true,
                     ),
-                    const SizedBox(height: 50), // Thay Spacer() bằng SizedBox
+                    const SizedBox(height: 20), // Thay Spacer() bằng SizedBox
                     Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Row(
+                      child: Column(
                         children: [
                           const Text(
-                            'Free access for 7 days, then ',
+                            'Truy cập miễn phí trong 7 ngày, sau đó là',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 16,
                             ),
                           ),
-                          Text(' \$400 per year',
+                          Text(' \10.990.000 đồng/năm',
                               textAlign: TextAlign.center,
                               style: context.theme.textTheme.bodyLarge!
                                   .copyWith(fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16),
                     Container(
                       width: double.infinity,
                       height: MediaQuery.sizeOf(context).height / 14,
@@ -112,7 +112,7 @@ class FreeTrialTimeline extends StatelessWidget {
                           ),
                         ),
                         child: const Text(
-                          'Start 7-Day Free Trial',
+                          'Bắt đầu dùng thử miễn phí 7 ngày',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -128,10 +128,10 @@ class FreeTrialTimeline extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MembershipScreen()));
+                                  builder: (context) => PremiumUnlockScreen()));
                         },
                         child: const Text(
-                          'View All Plans',
+                          'Xem gói thành viên',
                           style: TextStyle(
                             color: Color(0xFF2196F3),
                             fontSize: 16,

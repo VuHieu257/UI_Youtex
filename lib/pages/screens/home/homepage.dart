@@ -20,7 +20,7 @@ class HomeMain extends StatelessWidget {
               onPressed: () {},
             ),
             IconButton(
-              icon: Icon(Icons.notifications_none),
+              icon: Icon(Icons.shopping_cart),
               onPressed: () {},
             ),
           ],

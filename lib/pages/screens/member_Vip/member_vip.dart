@@ -1,302 +1,156 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/core/themes/theme_extensions.dart';
-import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
-import 'package:ui_youtex/pages/screens/home/home.dart';
-import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
-import 'package:ui_youtex/pages/screens/member_Vip/member_plan_vip.dart';
-import 'package:ui_youtex/pages/screens/member_Vip/member_plan_prenium.dart';
-import 'package:ui_youtex/pages/splash/Welcome/Register/login_screen.dart';
+import 'package:ui_youtex/pages/screens/member_Vip/cardInput_app.dart';
+import 'package:ui_youtex/pages/screens/member_Vip/member_payment_vnpay.dart';
 
-import '../../../core/assets.dart';
+class PremiumUnlockScreen extends StatelessWidget {
+  // Define custom colors
+  final Color primaryBlue = Color(0xFF6DA7FF);
+  final Color lightBlue = Color(0xFFDAF5FF);
+  final Color backgroundBlue = Color(0xFFE2EEF3);
 
-class MembershipScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.black),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  padding: EdgeInsets.zero,
-                  alignment: Alignment.bottomLeft,
-                ),
-                Column(
-                  children: [
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Membership',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 16),
-                    Column(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              lightBlue, // DAF5FF
+              backgroundBlue, // E2EEF3
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              _buildAppBar(context),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.all(24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildPlanCard(
-                          title: 'User Bình Thường',
-                          price: 'Miễn phí',
-                          features: [
-                            _buildFeature(
-                              icon: Icons.check_circle_outline,
-                              text: 'Sử dụng các tính năng cơ bản của app',
-                            ),
-                            _buildFeature(
-                              icon: Icons.people_outline,
-                              text: 'Tạo nhóm (tối đa 5 người/nhóm)',
-                            ),
-                          ],
-                          onTap: null, // Không điều hướng cho gói miễn phí
-                          showInterest: false,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildPlanCard(
-                          title: 'VIP',
-                          features: [
-                            _buildFeature(
-                              icon: Icons.block_outlined,
-                              text: 'Không có quảng cáo',
-                            ),
-                            _buildFeature(
-                              icon: Icons.file_download_outlined,
-                              text: 'Tải xuống nhật ký (10 bộ/tháng)',
-                            ),
-                            _buildFeature(
-                              icon: Icons.edit_outlined,
-                              text:
-                                  'Tuỳ chỉnh giao diện cơ bản (thay đổi thông tin người dùng)',
-                            ),
-                            _buildFeature(
-                              icon: Icons.security,
-                              text: 'Bảo hiểm đơn hàng - Buff Youtex',
-                            ),
-                            _buildFeature(
-                              icon: Icons.people_outline,
-                              text: 'Quản lý nhân viên (tối đa 10 tài khoản)',
-                            ),
-                          ],
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    VipPlanScreen(), // Link to VIP page
-                              ),
-                            );
-                          },
-                          showInterest: true,
-                          context: context, // Pass context here
-                        ),
-                        const SizedBox(height: 16),
-                        _buildPlanCard(
-                          title: 'Premium',
-                          features: [
-                            _buildFeature(
-                              icon: Icons.block_outlined,
-                              text: 'Không có quảng cáo',
-                            ),
-                            _buildFeature(
-                              icon: Icons.star_border,
-                              text: 'Biểu tượng Premium',
-                            ),
-                            _buildFeature(
-                              icon: Icons.emoji_events_outlined,
-                              text: 'Truy cập nội dung độc quyền',
-                            ),
-                            _buildFeature(
-                              icon: Icons.file_download_outlined,
-                              text: 'Tải xuống nhật ký không giới hạn',
-                            ),
-                            _buildFeature(
-                              icon: Icons.people_outline,
-                              text:
-                                  'Quản lý nhân viên không giới hạn tài khoản',
-                            ),
-                            _buildFeature(
-                              icon: Icons.security,
-                              text: 'Bảo hiểm đơn hàng - Buff Youtex',
-                            ),
-                            _buildFeature(
-                              icon: Icons.post_add,
-                              text: 'Hỗ trợ đăng bài quảng cáo (10 bài/tháng)',
-                            ),
-                            _buildFeature(
-                              icon: Icons.campaign,
-                              text: 'Hỗ trợ marketing cao cấp',
-                            ),
-                          ],
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    PremiumPlanScreen(), // Link to Premium page
-                              ),
-                            );
-                          },
-                          showInterest: true,
-                          context: context, // Pass context here
-                        ),
+                        _buildHeader(),
+                        SizedBox(height: 32),
+                        _buildFeaturesList(),
+                        SizedBox(height: 32),
+                        _buildTrialSwitch(),
+                        SizedBox(height: 24),
+                        _buildSubscriptionOptions(),
+                        SizedBox(height: 32),
+                        _buildBottomSection(context),
                       ],
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: MediaQuery.sizeOf(context).height / 14,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFF218FF2), // Light blue
-                            Color(0xFF13538C), // Dark blue
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return LoginScreen();
-                            },
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          elevation: 0,
-                          shadowColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        child: const Text(
-                          'Choose Plan',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildPlanCard({
-    required String title,
-    String? price,
-    required List<Widget> features,
-    bool showInterest = false,
-    BuildContext? context, // Add context here to use in the showDialog
-    VoidCallback? onTap, // Add onTap function to handle card click
-  }) {
-    return GestureDetector(
-      onTap: onTap, // Detect taps and navigate
-
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.9),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: const Offset(0, 2),
-            ),
-          ],
+  Widget _buildAppBar(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.grey.withOpacity(0.1),
+            width: 1,
+          ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                if (showInterest)
-                  GestureDetector(
-                    onTap: () {
-                      if (title == 'VIP') {
-                        _showVipBenefitsPopup(context!);
-                      } else if (title == 'Premium') {
-                        _showPremiumBenefitsPopup(context!);
-                      }
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF2196F3),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Text(
-                        'Quyền Lợi',
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      ),
-                    ),
-                  ),
-              ],
+      ),
+      child: Row(
+        children: [
+          IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black87),
+            onPressed: () => Navigator.pop(context),
+          ),
+          SizedBox(width: 8),
+          Text(
+            'Gói thành viên Premium',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
             ),
-            if (price != null) ...[
-              const SizedBox(height: 8),
-              Text(
-                price,
-                style: const TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-            const SizedBox(height: 16),
-            ...features,
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildFeature({required IconData icon, required String text}) {
+  Widget _buildHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Mở khóa Premium',
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
+        SizedBox(height: 8),
+        Text(
+          'Tận hưởng những lợi ích này khi bạn nâng cấp lên gói cao cấp',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey[600],
+            height: 1.5,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFeaturesList() {
+    final features = [
+      'Quản lý Mall riêng',
+      'Hỗ trợ PR & Marketing',
+      'Bảo hiểm đơn hàng - Buff Youtex',
+      'Xây dựng uy tín doanh nghiệp - Dấu chân Youtex',
+      'Quyền lợi ưu tiên trong sự kiện',
+      'Tài khoản quản lý cho Mall',
+    ];
+
+    return Column(
+      children: features.map((feature) => _buildFeatureItem(feature)).toList(),
+    );
+  }
+
+  Widget _buildFeatureItem(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: Colors.grey[600]),
-          const SizedBox(width: 12),
+          Container(
+            padding: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: lightBlue,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Icon(
+              Icons.check_circle,
+              color: primaryBlue,
+              size: 22,
+            ),
+          ),
+          SizedBox(width: 16),
           Expanded(
             child: Text(
               text,
               style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 14,
+                fontSize: 16,
+                color: Colors.black87,
+                height: 1.4,
               ),
             ),
           ),
@@ -305,101 +159,472 @@ class MembershipScreen extends StatelessWidget {
     );
   }
 
-  void _showVipBenefitsPopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Quyền lợi gói VIP'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildFeature(
-                  icon: Icons.check,
-                  text: 'Sử dụng tất cả tính năng của User Bình Thường.'),
-              _buildFeature(
-                  icon: Icons.add_shopping_cart,
-                  text: 'Tạo mall riêng và buôn bán các mặt hàng.'),
-              _buildFeature(
-                  icon: Icons.security,
-                  text: 'Bảo hiểm đơn hàng - Buff Youtex.'),
-              _buildFeature(
-                  icon: Icons.account_circle,
-                  text:
-                      'Quản lý cửa hàng: Giá cả, chương trình khuyến mãi, doanh thu.'),
-              _buildFeature(
-                  icon: Icons.people_outline,
-                  text: 'Quản lý nhân viên (giới hạn tối đa 10 tài khoản).'),
-              _buildFeature(
-                  icon: Icons.group, text: 'Tạo nhóm (tối đa 30 người/nhóm).'),
-              _buildFeature(
-                  icon: Icons.star,
-                  text:
-                      'Tham gia chương trình "Dấu chân Youtex" để xây dựng uy tín.'),
-              _buildFeature(
-                  icon: Icons.mark_email_read,
-                  text:
-                      'Hỗ trợ đăng bài quảng cáo cho mall: Team marketing hỗ trợ viết tối đa 2 bài PR/tháng.'),
-            ],
+  Widget _buildTrialSwitch() {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.7),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 4),
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Đóng'),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Bắt đầu dùng thử miễn phí 7 ngày',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
             ),
-          ],
-        );
-      },
+          ),
+          Switch(
+            value: true,
+            onChanged: (value) {},
+            activeColor: primaryBlue,
+          ),
+        ],
+      ),
     );
   }
 
-  void _showPremiumBenefitsPopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Quyền lợi gói Premium'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildFeature(
-                  icon: Icons.check, text: 'Tất cả quyền lợi của gói VIP.'),
-              _buildFeature(
-                  icon: Icons.security,
-                  text: 'Bảo hiểm đơn hàng - Buff Youtex'),
-              _buildFeature(
-                  icon: Icons.post_add,
-                  text: 'Hỗ trợ đăng bài quảng cáo (10 bài/tháng)'),
-              _buildFeature(
-                  icon: Icons.campaign, text: 'Hỗ trợ marketing cao cấp'),
-            ],
+  Widget _buildSubscriptionOptions() {
+    return Column(
+      children: [
+        _buildSubscriptionOption(
+          'Tháng',
+          '1.990.000đ/tháng',
+          isSelected: true,
+        ),
+        _buildSubscriptionOption(
+          '3 tháng',
+          '1.990.000đ/3 tháng',
+          discountTag: 'Save 17%',
+        ),
+        _buildSubscriptionOption(
+          'Year',
+          '10.990.000đ/năm',
+          discountTag: 'Best choice/Save 54%',
+          isPopular: true,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSubscriptionOption(
+    String title,
+    String price, {
+    bool isSelected = false,
+    String? discountTag,
+    bool isPopular = false,
+  }) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: isSelected
+            ? lightBlue.withOpacity(0.7)
+            : Colors.white.withOpacity(0.7),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isSelected ? primaryBlue : Colors.grey.withOpacity(0.2),
+          width: 2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 10,
+            offset: Offset(0, 4),
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Đóng'),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Radio(
+              value: true,
+              groupValue: isSelected,
+              onChanged: (value) {},
+              activeColor: primaryBlue,
+            ),
+            SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      if (discountTag != null) ...[
+                        SizedBox(width: 8),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: primaryBlue,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            discountTag,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    price,
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
-        );
-      },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomSection(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'Chưa mất phí. Có thể hủy bất cứ lúc nào.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.grey[600],
+            fontSize: 14,
+          ),
+        ),
+        SizedBox(height: 24),
+        Container(
+          width: double.infinity,
+          height: MediaQuery.sizeOf(context).height / 14,
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [
+                Color(0xFF218FF2), // Light blue
+                Color(0xFF13538C), // Dark blue
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: ElevatedButton(
+            onPressed: () {
+              showPaymentMethodSheet(context);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            child: const Text(
+              'Tiếp Tục',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
-// Thay thế bằng một widget phù hợp cho dùng thử miễn phí
-class FreeTrialTimeline extends StatelessWidget {
-  const FreeTrialTimeline({Key? key}) : super(key: key);
+// Payment Method Model
+class PaymentMethod {
+  final String name;
+  final String logo;
+  final bool isSelected;
+
+  PaymentMethod({
+    required this.name,
+    required this.logo,
+    this.isSelected = false,
+  });
+}
+
+// Bottom Sheet Widget
+void showPaymentMethodSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.transparent,
+    isScrollControlled: true,
+    builder: (context) => PaymentMethodBottomSheet(),
+  );
+}
+
+class PaymentMethodBottomSheet extends StatefulWidget {
+  @override
+  _PaymentMethodBottomSheetState createState() =>
+      _PaymentMethodBottomSheetState();
+}
+
+class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
+  int selectedMethodIndex = 0;
+
+  final List<PaymentMethod> paymentMethods = [
+    PaymentMethod(
+      name: 'Thẻ',
+      logo: 'assets/images/thẻ.png',
+      isSelected: true,
+    ),
+    PaymentMethod(
+      name: 'VnPay',
+      logo: 'assets/images/VnPay.png',
+    ),
+    // Add more payment methods as needed
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Thời gian dùng thử')),
-      body: const Center(
-        child: Text('Thông tin về thời gian dùng thử ở đây!'),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildHeader(),
+          _buildPaymentMethods(),
+          // _buildConfirmButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.grey.withOpacity(0.2),
+            width: 1,
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          Text(
+            'Chọn phương thức thanh toán',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Spacer(),
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentMethods() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: paymentMethods.length,
+      itemBuilder: (context, index) {
+        return _buildPaymentMethodItem(index);
+      },
+    );
+  }
+
+  Widget _buildPaymentMethodItem(int index) {
+    final method = paymentMethods[index];
+    final isSelected = selectedMethodIndex == index;
+
+    return InkWell(
+      onTap: () {
+        // Điều hướng đến các trang khác nhau dựa trên tên của phương thức thanh toán
+        if (method.name == 'Thẻ') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CardInputApppayPayment()),
+          );
+        } else if (method.name == 'VnPay') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PaymenVNPaytScreen()),
+          );
+        }
+        // Bạn có thể thêm điều kiện cho các phương thức thanh toán khác ở đây
+
+        setState(() {
+          selectedMethodIndex = index;
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isSelected ? Color(0xFFDAF5FF) : Colors.white,
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.grey.withOpacity(0.2),
+              width: 1,
+            ),
+          ),
+        ),
+        child: Row(
+          children: [
+            Radio(
+              value: index,
+              groupValue: selectedMethodIndex,
+              onChanged: (value) {
+                setState(() {
+                  selectedMethodIndex = value as int;
+                });
+              },
+              activeColor: Color(0xFF6DA7FF),
+            ),
+            Text(
+              method.name,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+            SizedBox(width: 12),
+            Container(
+              child: Image.asset(
+                method.logo,
+                fit: BoxFit.cover,
+              ),
+            ),
+            SizedBox(width: 12),
+            if (method.name == 'Thẻ') ...[
+              Spacer(),
+              Row(
+                children: [
+                  _buildCardIcon(),
+                  SizedBox(width: 10),
+                  _buildCardIcon(),
+                  SizedBox(width: 8),
+                  _buildCardIcon(),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCardIcon() {
+    return Container(
+      width: 32,
+      height: 20,
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(4),
+      ),
+    );
+  }
+
+  Widget _buildConfirmButton() {
+    return Container(
+      width: double.infinity,
+      height: MediaQuery.sizeOf(context).height / 14,
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xFF218FF2), // Light blue
+            Color(0xFF13538C), // Dark blue
+          ],
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: ElevatedButton(
+        onPressed: () {
+          final selectedPaymentMethod = paymentMethods[selectedMethodIndex];
+          print('Selected Payment Method: ${selectedPaymentMethod.name}');
+          Navigator.pop(context);
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        child: Text(
+          'Xác nhận',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Usage Example:
+class PaymentButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () => showPaymentMethodSheet(context),
+      child: Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.payment, color: Color(0xFF6DA7FF)),
+            SizedBox(width: 12),
+            Text(
+              'Chọn phương thức thanh toán',
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 16,
+              ),
+            ),
+            Spacer(),
+            Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+          ],
+        ),
       ),
     );
   }
