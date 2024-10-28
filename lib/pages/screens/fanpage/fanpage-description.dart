@@ -5,6 +5,8 @@ import '../../../core/colors/color.dart';
 import '../../widget_small/custom_button.dart';
 
 class FanpageDescription extends StatefulWidget {
+  const FanpageDescription({super.key});
+
   @override
   _FanPageManagementState createState() => _FanPageManagementState();
 }

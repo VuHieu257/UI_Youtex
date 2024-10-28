@@ -5,7 +5,6 @@ import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/card_option.dart';
 import '../../../widget_small/custom_button.dart';
-import '../checkout_page/checkout_page.dart';
 import 'cardInput_app.dart';
 
 class PaymentMethodScreen extends StatefulWidget {

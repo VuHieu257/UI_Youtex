@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
@@ -33,7 +32,7 @@ class _ManagerMemberScreenState extends State<ManagerMemberScreen> {
       ),
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -48,7 +47,7 @@ class _ManagerMemberScreenState extends State<ManagerMemberScreen> {
               ),
               const SizedBox(height: 16),
               Text("Thông tin thành viên",style: context.theme.textTheme.headlineMedium,),
-              Divider(),
+              const Divider(),
               const SizedBox(height: 20),
               ListTile(
                 leading: CircleAvatar(
@@ -135,7 +134,7 @@ class _ManagerMemberScreenState extends State<ManagerMemberScreen> {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Tìm kiếm',
-                  hintStyle: TextStyle(color: Colors.grey), // Color for the hint text
+                  hintStyle: const TextStyle(color: Colors.grey), // Color for the hint text
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25.0),

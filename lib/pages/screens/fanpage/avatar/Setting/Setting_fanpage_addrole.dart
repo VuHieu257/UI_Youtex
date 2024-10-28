@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddRolePage extends StatefulWidget {
+  const AddRolePage({super.key});
+
   @override
   _AddRolePageState createState() => _AddRolePageState();
 }
@@ -25,19 +26,19 @@ class _AddRolePageState extends State<AddRolePage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             // Action to go back
           },
         ),
-        title: Text("Quyền truy cập trang"),
+        title: const Text("Quyền truy cập trang"),
         backgroundColor: Colors.blue,
         actions: [
           TextButton(
             onPressed: () {
               // Cancel action
             },
-            child: Text(
+            child: const Text(
               "Hủy",
               style: TextStyle(color: Colors.white),
             ),
@@ -55,7 +56,7 @@ class _AddRolePageState extends State<AddRolePage> {
                 });
               },
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 hintText: "John",
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -86,7 +87,7 @@ class _AddRolePageState extends State<AddRolePage> {
                     selected: userName == "John Henry", // Example of selecting a user
                     selectedTileColor: Colors.blue[50],
                     trailing: userName == "John Henry"
-                        ? Icon(Icons.check_box, color: Colors.blue)
+                        ? const Icon(Icons.check_box, color: Colors.blue)
                         : null,
                   );
                 } else {

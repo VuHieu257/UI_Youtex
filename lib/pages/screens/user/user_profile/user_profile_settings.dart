@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AccountSettingsScreen extends StatelessWidget {
+  const AccountSettingsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -8,13 +10,13 @@ class AccountSettingsScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 2.0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pop(context);
             // Handle back action
           },
         ),
-        title: Text(
+        title: const Text(
           'Thiết lập tài khoản',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
@@ -27,11 +29,11 @@ class AccountSettingsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Section: Tài khoản
-              Text(
+              const Text(
                 'Tài khoản',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildSettingItem('Tài khoản & bảo mật', Icons.security, () {}),
               _buildSettingItem('Địa chỉ', Icons.location_on, () {}),
               _buildSettingItem(
@@ -40,14 +42,14 @@ class AccountSettingsScreen extends StatelessWidget {
               _buildSettingItem(
                   'Cài đặt thông báo', Icons.notifications, () {}),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Section: Hỗ trợ
-              Text(
+              const Text(
                 'Hỗ trợ',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildSettingItem('Trung tâm hỗ trợ', Icons.headset_mic, () {}),
               _buildSettingItem('Tiêu chuẩn cộng đồng', Icons.group, () {}),
               _buildSettingItem(
@@ -55,13 +57,13 @@ class AccountSettingsScreen extends StatelessWidget {
               _buildSettingItem(
                   'Yêu cầu xóa tài khoản', Icons.delete_forever, () {}),
 
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
 
               // Logout Button
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                     backgroundColor: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -70,7 +72,7 @@ class AccountSettingsScreen extends StatelessWidget {
                   onPressed: () {
                     // Handle log out
                   },
-                  child: Text(
+                  child: const Text(
                     'Đăng xuất tài khoản',
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
@@ -86,7 +88,7 @@ class AccountSettingsScreen extends StatelessWidget {
   // Helper widget for creating each setting item
   Widget _buildSettingItem(String title, IconData icon, VoidCallback onTap) {
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
@@ -94,7 +96,7 @@ class AccountSettingsScreen extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 4,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -102,9 +104,9 @@ class AccountSettingsScreen extends StatelessWidget {
         leading: Icon(icon, color: Colors.blue),
         title: Text(
           title,
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
-        trailing: Icon(Icons.chevron_right, color: Colors.grey),
+        trailing: const Icon(Icons.chevron_right, color: Colors.grey),
         onTap: onTap,
       ),
     );

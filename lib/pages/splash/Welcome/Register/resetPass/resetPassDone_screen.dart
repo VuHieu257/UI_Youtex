@@ -3,6 +3,8 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 
 class ResetpassdoneScreen extends StatelessWidget {
+  const ResetpassdoneScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +29,7 @@ class ResetpassdoneScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFFBE005B99),
+                      color: Color(0xffbe005b99),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -51,7 +53,7 @@ class ResetpassdoneScreen extends StatelessWidget {
                   ),
 
                   // Nút quay lại Login
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
 
                   // Nút Đăng nhập
                   Container(

@@ -161,10 +161,10 @@ class GroupChatSettings extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
                     title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -233,7 +233,7 @@ class GroupChatSettings extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -280,23 +280,23 @@ class GroupChatSettings extends StatelessWidget {
                                 onPressed: () {},
                               ),
                             ),
-                            SizedBox(height: 10,),
+                            const SizedBox(height: 10,),
                             Text("Thêm thành viên",
                                 style: context.theme.textTheme.titleMedium?.copyWith(color: Colors.black87,fontWeight: FontWeight.bold)
                             )
                           ],
                         ),
-                        SizedBox(width: 20,),
+                        const SizedBox(width: 20,),
                         Column(
                           children: [
                             CircleAvatar(
                               backgroundColor: Colors.grey[200] ,
                               child:   IconButton(
-                                icon: Icon(Icons.notifications_none,color: Colors.black87,),
+                                icon: const Icon(Icons.notifications_none,color: Colors.black87,),
                                 onPressed: () {},
                               ),
                             ),
-                            SizedBox(height: 10,),
+                            const SizedBox(height: 10,),
                             Text("Tắt thông báo",
                                 style: context.theme.textTheme.titleMedium?.copyWith(color: Colors.black87,fontWeight: FontWeight.bold)
                             )
@@ -310,7 +310,7 @@ class GroupChatSettings extends StatelessWidget {
             ),
           ),
 
-          Divider(),
+          const Divider(),
 
           // Các tuỳ chọn trong List
           Expanded(

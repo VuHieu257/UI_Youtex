@@ -4,7 +4,6 @@ import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../../core/colors/color.dart';
-
 class ColorTransitionPage extends StatefulWidget {
   const ColorTransitionPage({super.key});
 
@@ -36,7 +35,7 @@ class _ColorTransitionPageState extends State<ColorTransitionPage> {
         Navigator.of(context).pop();
       },
       child: Scaffold(
-        backgroundColor: Colors.blue, // Đặt nền trong suốt
+        backgroundColor: Colors.transparent, // Đặt nền trong suốt
         body: GestureDetector(
           onTap: () {}, // Chặn sự kiện tap trong trang
           child: Stack(
@@ -63,17 +62,15 @@ class _ColorTransitionPageState extends State<ColorTransitionPage> {
     );
   }
 }
-
 class TimelineExample extends StatelessWidget {
   const TimelineExample({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.all(16),
+        padding:const EdgeInsets.all(16),
         decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(18), topRight: Radius.circular(18)),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18)),
           gradient: LinearGradient(
             colors: [
               Color(0xFF6DA7FF),
@@ -88,16 +85,18 @@ class TimelineExample extends StatelessWidget {
           children: [
             Container(
               height: 5,
-              margin: EdgeInsets.symmetric(horizontal: context.width * 0.3),
+              margin: EdgeInsets.symmetric(horizontal: context.width*0.3),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Styles.light,
+                  color: Styles.nearPrimary,
                   boxShadow: [
                     BoxShadow(
-                        color: const Color(0xff000000).withOpacity(0.25),
-                        offset: const Offset(0, 4),
-                        blurRadius: 4)
-                  ]),
+                        color:const Color(0xff000000).withOpacity(0.25),
+                        offset:const Offset(0, 4),
+                        blurRadius: 4
+                    )
+                  ]
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(15.0),
@@ -106,31 +105,17 @@ class TimelineExample extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.local_shipping_outlined,
-                          color: Styles.light),
+                      const Icon(Icons.local_shipping_outlined, color: Styles.nearPrimary),
                       const SizedBox(width: 8),
-                      Text(
-                        'Mã vận đơn',
-                        style: context.theme.textTheme.headlineSmall,
-                      ),
+                      Text('Mã vận đơn', style: context.theme.textTheme.headlineSmall,),
                     ],
                   ),
-                  Text(
-                    'GHNVN0857497245',
-                    style: context.theme.textTheme.headlineSmall,
-                  ),
+                  Text('GHNVN0857497245', style: context.theme.textTheme.headlineSmall,),
                 ],
               ),
             ),
-            Divider(
-              color: const Color(0xff000000).withOpacity(0.16),
-              thickness: 1,
-              endIndent: context.width * 0.15,
-              indent: context.width * 0.15,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+            Divider(color: const Color(0xff000000).withOpacity(0.16),thickness: 1,endIndent: context.width*0.15,indent: context.width*0.15,),
+           const SizedBox(height: 10,),
             Expanded(
               child: Timeline.tileBuilder(
                 theme: TimelineThemeData(
@@ -143,33 +128,32 @@ class TimelineExample extends StatelessWidget {
                 ),
                 builder: TimelineTileBuilder.connected(
                   indicatorBuilder: (context, index) => _buildIndicator(index),
-                  connectorBuilder: (context, index, _) =>
-                      const SolidLineConnector(
-                    color: Styles.light,
+                  connectorBuilder: (context, index, _) => const SolidLineConnector(
+                    color: Styles.nearPrimary,
                   ),
                   itemCount: 7,
                   contentsBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.only(
-                        left: 8.0, bottom: 24.0), // Điều chỉnh lề trái
-                    child: _buildTimelineContent(context, index),
+                    padding: const EdgeInsets.only(left: 8.0, bottom: 24.0), // Điều chỉnh lề trái
+                    child: _buildTimelineContent(context,index),
                   ),
                 ),
               ),
             ),
           ],
-        ));
+        )
+    );
   }
 
   // Tạo các biểu tượng cho từng trạng thái
   Widget _buildIndicator(int index) {
     final icons = [
-      Icons.gif_box_outlined, // Giao hàng thành công
-      Icons.local_shipping_outlined, // Đang giao đến
-      Icons.storefront, // Rời kho
+      Icons.gif_box_outlined,          // Giao hàng thành công
+      Icons.local_shipping_outlined,     // Đang giao đến
+      Icons.storefront,              // Rời kho
       Icons.store_mall_directory_outlined, // Đến kho
-      Icons.local_shipping_outlined, // Đang chờ vận chuyển
-      Icons.check_circle_outline, // Đã xác nhận
-      Icons.shopping_cart_outlined, // Đặt hàng thành công
+      Icons.local_shipping_outlined,     // Đang chờ vận chuyển
+      Icons.check_circle_outline,       // Đã xác nhận
+      Icons.shopping_cart_outlined,      // Đặt hàng thành công
     ];
 
     return DotIndicator(
@@ -177,13 +161,13 @@ class TimelineExample extends StatelessWidget {
       color: const Color(0xffAAD5F5),
       child: Icon(
         icons[index],
-        color: Styles.light,
+        color: Styles.nearPrimary,
       ),
     );
   }
 
   // Tạo nội dung cho mỗi mục trong dòng thời gian
-  Widget _buildTimelineContent(BuildContext context, int index) {
+  Widget _buildTimelineContent(BuildContext context,int index) {
     final titles = [
       'Giao hàng thành công',
       'Đơn hàng đang được giao đến bạn',
@@ -206,21 +190,20 @@ class TimelineExample extends StatelessWidget {
 
     return Row(
       children: [
-        SizedBox(width: 48.0), // Điều chỉnh khoảng cách giữa icon và nội dung
+        const SizedBox(width: 48.0), // Điều chỉnh khoảng cách giữa icon và nội dung
         Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Căn chỉnh nội dung text sang trái
+          crossAxisAlignment: CrossAxisAlignment.start, // Căn chỉnh nội dung text sang trái
           children: [
             Text(
               titles[index],
-              style: context.theme.textTheme.headlineMedium
-                  ?.copyWith(fontWeight: FontWeight.bold, color: Styles.light),
+              style: context.theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,color:Styles.nearPrimary),
             ),
             const SizedBox(height: 4.0),
             Text(
               times[index],
-              style: context.theme.textTheme.titleMedium
-                  ?.copyWith(color: const Color(0xff4E4E4E)),
+              style: context.theme.textTheme.titleMedium?.copyWith(
+                  color: const Color(0xff4E4E4E)),
             ),
           ],
         ),

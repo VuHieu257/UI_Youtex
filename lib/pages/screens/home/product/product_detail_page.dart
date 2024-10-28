@@ -72,16 +72,16 @@ class ProductDetailPage extends StatelessWidget {
               // Ratings and Review Count
               Row(
                 children: [
-                  Icon(Icons.star, color: Colors.orange, size: 16),
-                  Icon(Icons.star, color: Colors.orange, size: 16),
-                  Icon(Icons.star, color: Colors.orange, size: 16),
-                  Icon(Icons.star, color: Colors.orange, size: 16),
-                  Icon(Icons.star_half, color: Colors.orange, size: 16),
-                  SizedBox(width: 8),
+                  const Icon(Icons.star, color: Colors.orange, size: 16),
+                  const Icon(Icons.star, color: Colors.orange, size: 16),
+                  const Icon(Icons.star, color: Colors.orange, size: 16),
+                  const Icon(Icons.star, color: Colors.orange, size: 16),
+                  const Icon(Icons.star_half, color: Colors.orange, size: 16),
+                  const SizedBox(width: 8),
                   Text('4.7 (143 Reviews)',
                     style: context.theme.textTheme.titleSmall?.copyWith(
                     ),),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Text('Đã bán: 63' ,style: context.theme.textTheme.titleSmall?.copyWith(
                   ),),
                 ],

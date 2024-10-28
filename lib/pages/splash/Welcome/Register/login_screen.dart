@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 
 class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +30,7 @@ class LoginScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFFBE005B99),
+                      color: Color(0xffbe005b99),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -43,59 +45,59 @@ class LoginScreen extends StatelessWidget {
                   // Form Email và Mật khẩu
                   TextField(
                     decoration: InputDecoration(
-                      hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
-                      prefixIcon: Icon(
+                      hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
+                      prefixIcon: const Icon(
                         Icons.email,
-                        color: Color(0xFFBE005B99),
+                        color: Color(0xffbe005b99),
                       ),
                       hintText: "Email",
                       filled: true,
-                      fillColor: Color(0xFFEEFBFF),
+                      fillColor: const Color(0xFFEEFBFF),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8)),
                     ),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   TextField(
                     obscureText: true,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Icons.lock_clock_outlined,
-                        color: Color(0xFFBE005B99),
+                        color: Color(0xffbe005b99),
                       ),
-                      hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
+                      hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
                       hintText: "Mật khẩu",
                       filled: true,
-                      fillColor: Color(0xFFEEFBFF),
+                      fillColor: const Color(0xFFEEFBFF),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8)),
                     ),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
 
                   // Checkbox ghi nhớ tài khoản
                   Row(
                     children: [
                       Checkbox(
-                          focusColor: Color(0xFF00B2F6),
-                          activeColor: Color(0xFF00B2F6),
-                          shape: CircleBorder(),
+                          focusColor: const Color(0xFF00B2F6),
+                          activeColor: const Color(0xFF00B2F6),
+                          shape: const CircleBorder(),
                           value: true,
                           onChanged: (value) {}),
-                      Text("Ghi nhớ tài khoản"),
-                      Spacer(),
+                      const Text("Ghi nhớ tài khoản"),
+                      const Spacer(),
                       TextButton(
                         onPressed: () {
                           Navigator.pushNamed(context, '/Forgot');
                         },
-                        child: Text(
+                        child: const Text(
                           "Quên mật khẩu?",
                           style: TextStyle(color: Color(0xFF00B2F6)),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   // Nút Đăng nhập
                   Container(
@@ -137,18 +139,18 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   // Điều hướng đến màn hình Đăng ký
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Bạn chưa có tài khoản? "),
+                      const Text("Bạn chưa có tài khoản? "),
                       GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(context, '/register');
                         },
-                        child: Text(
+                        child: const Text(
                           "Đăng ký",
                           style: TextStyle(color: Color(0xFF00B2F6)),
                         ),

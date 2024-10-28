@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CardAddedSuccessDialog extends StatelessWidget {
-  const CardAddedSuccessDialog({Key? key}) : super(key: key);
+  const CardAddedSuccessDialog({super.key});
 
   @override
   Widget build(BuildContext context) {

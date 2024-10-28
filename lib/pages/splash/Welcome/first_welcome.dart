@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class WelcomeScreen1 extends StatelessWidget {
   final VoidCallback onPressed;
 
-  WelcomeScreen1({required this.onPressed});
+  const WelcomeScreen1({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class WelcomeScreen1 extends StatelessWidget {
         children: [
           // Background Image
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/welcome-app-1 (2).png'),
                 fit: BoxFit.cover,
@@ -28,7 +28,7 @@ class WelcomeScreen1 extends StatelessWidget {
               radius: 25,
               backgroundColor: Colors.white,
               child: IconButton(
-                icon: Icon(Icons.arrow_forward_ios, color: Colors.blue),
+                icon: const Icon(Icons.arrow_forward_ios, color: Colors.blue),
                 onPressed: onPressed,
               ),
             ),

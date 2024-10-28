@@ -6,6 +6,8 @@ import 'package:ui_youtex/pages/screens/home/group_chat/profile-boxchat.dart';
 import '../../../../core/colors/color.dart';
 
 class GroupCreationPage extends StatelessWidget {
+  const GroupCreationPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,18 +44,18 @@ class GroupCreationPage extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 labelText: 'Tên nhóm (không bắt buộc)',
                ),
             ),
-            SizedBox(height: 10),
-            Container(
+            const SizedBox(height: 10),
+            SizedBox(
               width: 450,
                height: 40,
                child: TextField(
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                   hintText: 'Tìm kiếm',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30.0),
@@ -61,7 +63,7 @@ class GroupCreationPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
                 itemCount: 10, // Số lượng thành viên trong danh sách
@@ -76,13 +78,13 @@ class GroupCreationPage extends StatelessWidget {
                      title: Row(
                       children: [
                         GestureDetector(
-                          onTap:(){Navigator.push(context,MaterialPageRoute(builder: (context) =>   UserOptionsPage()));},
+                          onTap:(){Navigator.push(context,MaterialPageRoute(builder: (context) =>   const UserOptionsPage()));},
 
-                          child: CircleAvatar(
+                          child: const CircleAvatar(
                             backgroundImage: AssetImage(Asset.bgImageAvatar) // Thay thế bằng ảnh thực tế
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Text('Tên thành viên $index'),
                       ],
                     ),

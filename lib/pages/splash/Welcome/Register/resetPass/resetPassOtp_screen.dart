@@ -3,6 +3,8 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 
 class OTPScreen extends StatelessWidget {
+  const OTPScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,14 +29,14 @@ class OTPScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFFBE005B99),
+                      color: Color(0xffbe005b99),
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 10),
-                  Row(
+                  const Row(
                     children: [
-                      const Text(
+                      Text(
                         "Enter your email",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
@@ -67,7 +69,7 @@ class OTPScreen extends StatelessWidget {
                     },
                   ),
 
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   // Nút Đăng nhập
                   Container(
@@ -106,18 +108,18 @@ class OTPScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   // Điều hướng đến màn hình Đăng ký
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Didn’t receive the email? "),
+                      const Text("Didn’t receive the email? "),
                       GestureDetector(
                         // onTap: () {
                         //   Navigator.pushNamed(context, '/login');
                         // },
-                        child: Text(
+                        child: const Text(
                           "Click to resend",
                           style: TextStyle(color: Color(0xFF00B2F6)),
                         ),

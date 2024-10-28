@@ -7,6 +7,8 @@ import 'package:ui_youtex/pages/screens/fanpage/avatar/Setting/Setting_edit_deta
 import '../../../../../core/colors/color.dart';
 
 class EditPage extends StatelessWidget {
+  const EditPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,14 +24,14 @@ class EditPage extends StatelessWidget {
         ),),
       ),
       body: ListView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         children: [
           _buildProfileSection(context),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           _buildCoverPhotoSection(),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           _buildBiographySection(context),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           _buildDetailsSection(),
         ],
       ),
@@ -43,7 +45,7 @@ class EditPage extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Ảnh đại diện',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -55,11 +57,11 @@ class EditPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditDetailPage(), // Thay bằng trang chỉnh sửa
+                    builder: (context) => const EditDetailPage(), // Thay bằng trang chỉnh sửa
                   ),
                 );
               },
-              child: Text('Chỉnh sửa'),
+              child: const Text('Chỉnh sửa'),
             ),
           ],
         ),
@@ -85,7 +87,7 @@ class EditPage extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Ảnh bìa',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -96,7 +98,7 @@ class EditPage extends StatelessWidget {
               onPressed: () {
                 // Edit action
               },
-              child: Text('Chỉnh sửa'),
+              child: const Text('Chỉnh sửa'),
             ),
           ],
         ),
@@ -119,7 +121,7 @@ class EditPage extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Tiểu sử',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -131,12 +133,12 @@ class EditPage extends StatelessWidget {
 
                 // Edit action
               },
-              child: Text('Chỉnh sửa'),
+              child: const Text('Chỉnh sửa'),
             ),
           ],
         ),
-        SizedBox(height: 8),
-        Text(
+        const SizedBox(height: 8),
+        const Text(
           'Cung cấp đa dạng các loại vải trên thị trường.',
           style: TextStyle(fontSize: 16),
         ),
@@ -151,7 +153,7 @@ class EditPage extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Chi tiết',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -162,20 +164,20 @@ class EditPage extends StatelessWidget {
               onPressed: () {
                 // Edit action
               },
-              child: Text('Chỉnh sửa'),
+              child: const Text('Chỉnh sửa'),
             ),
           ],
         ),
-        SizedBox(height: 8),
-        Row(
+        const SizedBox(height: 8),
+        const Row(
           children: [
             Icon(Icons.location_on, size: 20),
             SizedBox(width: 10),
             Text('Gia Lâm, Hà Nội',style: TextStyle(fontSize: 18),),
           ],
         ),
-        SizedBox(height: 8),
-        Row(
+        const SizedBox(height: 8),
+        const Row(
           children: [
             Icon(Icons.phone, size: 20),
             SizedBox(width: 8),
@@ -189,15 +191,15 @@ class EditPage extends StatelessWidget {
 void _showBottomSheet(BuildContext context) {
   showModalBottomSheet(
     context: context,
-    shape: RoundedRectangleBorder(
+    shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(20), // Bo góc ở phía trên của BottomSheet
       ),
     ),
     builder: (BuildContext context) {
       return Container(
-        padding: EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
           ),
@@ -213,22 +215,22 @@ void _showBottomSheet(BuildContext context) {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            SizedBox(height: 16), // Khoảng cách giữa thanh kéo và các mục chọn
+            const SizedBox(height: 16), // Khoảng cách giữa thanh kéo và các mục chọn
             ListTile(
-              leading: Icon(Icons.edit, size: 28),
-              title: Text('Chỉnh Sửa Tiểu Sử', style: TextStyle(fontSize: 16)),
+              leading: const Icon(Icons.edit, size: 28),
+              title: const Text('Chỉnh Sửa Tiểu Sử', style: TextStyle(fontSize: 16)),
               onTap: () {
                 // Code xử lý khi chọn "Chụp ảnh mới"
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => BioEditPage(), // Thay bằng trang chỉnh sửa
+                    builder: (context) => const BioEditPage(), // Thay bằng trang chỉnh sửa
                   ),
                 );              },
             ),
             ListTile(
-              leading: Icon(Icons.restore_from_trash, size: 28),
-              title: Text('Gỡ', style: TextStyle(fontSize: 16)),
+              leading: const Icon(Icons.restore_from_trash, size: 28),
+              title: const Text('Gỡ', style: TextStyle(fontSize: 16)),
               onTap: () {
                 // Code xử lý khi chọn "Chọn ảnh trên máy"
 

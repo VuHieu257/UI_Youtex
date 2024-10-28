@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
-import 'package:ui_youtex/pages/screens/home/homepage.dart';
-import 'package:ui_youtex/pages/screens/member_Vip/member_packagePayment.dart';
 import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 
 import '../../../../core/colors/color.dart';
@@ -102,7 +100,7 @@ class CardInputApppayPayment extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        CustomNavBar(), // Trang bạn muốn chuyển tới
+                        const CustomNavBar(), // Trang bạn muốn chuyển tới
                   ),
                 );
               },

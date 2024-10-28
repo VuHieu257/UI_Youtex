@@ -3,7 +3,7 @@ import 'package:ui_youtex/core/assets.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 
 class HomeMain extends StatelessWidget {
-  const HomeMain({Key? key}) : super(key: key);
+  const HomeMain({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +14,13 @@ class HomeMain extends StatelessWidget {
         title: Row(
           children: [
             Image.asset(Asset.bgLogo, height: 40), // Adjust logo size
-            Spacer(),
+            const Spacer(),
             IconButton(
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
               onPressed: () {},
             ),
             IconButton(
-              icon: Icon(Icons.shopping_cart),
+              icon: const Icon(Icons.shopping_cart),
               onPressed: () {},
             ),
           ],
@@ -37,20 +37,20 @@ class HomeMain extends StatelessWidget {
               height: 180, // Adjust height to match the design
               fit: BoxFit.cover,
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Featured Companies Section
-                  const Text(
+                  Text(
                     'Doanh nghiệp nổi bật',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       FeaturedCompanyCard(
                         imageUrl: Asset.bgCustomer1,
                         title: 'Vinatex',
@@ -69,34 +69,34 @@ class HomeMain extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
 
                   // News Card
-                  const NewsCard(
-                    imageUrl: Asset.bgCustomer0,
+                  NewsCard(
+                    imageUrl: Asset.bgCustomer1,
                     title: 'THƯƠNG HIỆU DỆT MAY VIỆT 2024',
                     description: '...',
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
 
                   // Promotion Card
-                  const PromotionCard(),
-                  const SizedBox(height: 16),
+                  PromotionCard(),
+                  SizedBox(height: 16),
 
                   // News Card
-                  const NewsCard(
-                    imageUrl: Asset.bgCustomer0,
+                  NewsCard(
+                    imageUrl: Asset.bgCustomer2,
                     title: 'KHAI TRƯƠNG CHI NHÁNH THỨ 10',
                     description: '...',
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
 
                   // Highlighted Posts Section
-                  const Text(
+                  Text(
                     'Bài đăng nổi bật',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   HighlightedPostCard(
                     imageUrl: Asset.bgCustomer4,
                     title: 'KỶ NIỆM 10 NĂM THÀNH LẬP HẢI ANH',
@@ -104,7 +104,7 @@ class HomeMain extends StatelessWidget {
                     rating: 5,
                     actions: ['Xem thêm', 'Nhận quà'],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   HighlightedPostCard(
                     imageUrl: Asset.bgCustomer4,
                     title: 'CHUNG TAY CÙNG VINID XÂY TRƯỜNG MỚI',
@@ -129,10 +129,10 @@ class FeaturedCompanyCard extends StatelessWidget {
   final String title;
 
   const FeaturedCompanyCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.title,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -160,11 +160,11 @@ class NewsCard extends StatelessWidget {
   final String description;
 
   const NewsCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.description,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +207,7 @@ class NewsCard extends StatelessWidget {
 
 // Promotion Card
 class PromotionCard extends StatelessWidget {
-  const PromotionCard({Key? key}) : super(key: key);
+  const PromotionCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -219,10 +219,10 @@ class PromotionCard extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            Expanded(
+            const Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'Giảm đến 20%',
                     style: TextStyle(
@@ -258,13 +258,13 @@ class HighlightedPostCard extends StatelessWidget {
   final List<String> actions; // Các nút hành động
 
   const HighlightedPostCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.description,
     required this.rating,
     required this.actions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

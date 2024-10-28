@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
@@ -7,6 +6,8 @@ import '../../../../../core/colors/color.dart';
 import '../../../../widget_small/custom_button.dart';
 
 class EditDetailPage extends StatelessWidget {
+  const EditDetailPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +59,7 @@ class EditDetailPage extends StatelessWidget {
                 flex: 2,
                 child: Text(
                   label,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Styles.grey,
                     fontSize: 20,
                   ),
@@ -68,7 +69,7 @@ class EditDetailPage extends StatelessWidget {
                 flex: 3,
                 child: Text(
                   value,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Styles.dark,
                     fontSize: 20,
                   ),

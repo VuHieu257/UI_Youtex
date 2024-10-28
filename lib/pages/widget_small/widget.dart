@@ -39,8 +39,8 @@ void customShowBottomSheet(BuildContext context) {
             Container(
               margin: EdgeInsets.symmetric(horizontal: context.width*0.3),
               height: 5,
-              width: context.width*0.3,decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              width: context.width*0.3,decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
               color: Styles.grey
             ),),
             ListTile(
@@ -50,19 +50,19 @@ void customShowBottomSheet(BuildContext context) {
               },
             ),
             ListTile(
-              title: Text('Trong 4 giờ'),
+              title: const Text('Trong 4 giờ'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: Text('Đến 8 giờ sáng'),
+              title: const Text('Đến 8 giờ sáng'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: Text('Cho đến khi được mở lại'),
+              title: const Text('Cho đến khi được mở lại'),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -119,12 +119,12 @@ class _ReportSheetState extends State<ReportSheet> {
             'Chọn vấn đề bạn muốn báo cáo',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           const Text(
             'Nếu cho rằng đoạn chat này vi phạm nguyên tắc cộng đồng của chúng tôi, bạn có thể báo cáo với chúng tôi. Tài khoản đó sẽ không biết là bạn đã gửi báo cáo này.',
             style: TextStyle(fontSize: 14),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           _buildRadioOption('Biểu tượng hoặc ngôn từ gây thù ghét'),
           _buildRadioOption('Lừa đảo hoặc gian lận'),
           _buildRadioOption('Bạo lực hoặc tổ chức nguy hiểm'),
@@ -200,33 +200,33 @@ class BlockSheet extends StatelessWidget {
             radius: 40,
             backgroundImage: AssetImage(Asset.bgImageAvatar), // Hình đại diện
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           const Text(
             'Chặn Martha Craig',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           const Text(
             'Hành động này cũng chặn mọi tài khoản khác mà họ có thể đang sở hữu hoặc sẽ tạo trong tương lai.',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 14),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           _buildInfoRow(
             icon: Icons.block,
             text: 'Họ sẽ không thể nhắn tin hay tìm được trang cá nhân/nội dung của bạn trên YouTextile',
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           _buildInfoRow(
             icon: Icons.notifications_off,
             text: 'Họ sẽ không được thông báo là bạn đã chặn họ',
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           _buildInfoRow(
             icon: Icons.settings,
             text: 'Bạn có thể bỏ chặn họ bất cứ lúc nào trong phần cài đặt',
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
           InkWell(
             onTap: () {
               Navigator.pop(context);
@@ -251,11 +251,11 @@ class BlockSheet extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(icon, size: 24),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         Expanded(
           child: Text(
             text,
-            style: TextStyle(fontSize: 14),
+            style: const TextStyle(fontSize: 14),
           ),
         ),
       ],

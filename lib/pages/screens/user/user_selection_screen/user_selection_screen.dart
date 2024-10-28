@@ -26,7 +26,7 @@ class _UserSelectionScreenState extends State<UserSelectionScreen> {
   ];
 
   // Track selected users
-  Map<String, bool> _selectedUsers = {};
+  final Map<String, bool> _selectedUsers = {};
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class _UserSelectionScreenState extends State<UserSelectionScreen> {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Tìm kiếm',
-                  hintStyle: TextStyle(color: Colors.grey), // Color for the hint text
+                  hintStyle: const TextStyle(color: Colors.grey), // Color for the hint text
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25.0),

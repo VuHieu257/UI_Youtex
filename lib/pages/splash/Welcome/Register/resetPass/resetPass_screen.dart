@@ -3,6 +3,8 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 
 class ResetpassScreen extends StatelessWidget {
+  const ResetpassScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,14 +29,14 @@ class ResetpassScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFFBE005B99),
+                      color: Color(0xffbe005b99),
                     ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 10),
-                  Row(
+                  const Row(
                     children: [
-                      const Text(
+                      Text(
                         "Password",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
@@ -48,14 +50,14 @@ class ResetpassScreen extends StatelessWidget {
                   TextField(
                     obscureText: true, // Che mật khẩu
                     decoration: InputDecoration(
-                      hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
-                      prefixIcon: Icon(
+                      hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
+                      prefixIcon: const Icon(
                         Icons.lock,
-                        color: Color(0xFFBE005B99), // Icon khóa cho mật khẩu
+                        color: Color(0xffbe005b99), // Icon khóa cho mật khẩu
                       ),
                       hintText: "******",
                       filled: true,
-                      fillColor: Color(0xFFEEFBFF),
+                      fillColor: const Color(0xFFEEFBFF),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -63,9 +65,9 @@ class ResetpassScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
 
-                  Row(
+                  const Row(
                     children: [
-                      const Text(
+                      Text(
                         "Confirm password",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
@@ -79,21 +81,21 @@ class ResetpassScreen extends StatelessWidget {
                   TextField(
                     obscureText: true, // Che mật khẩu
                     decoration: InputDecoration(
-                      hintStyle: TextStyle(color: Color(0xFFB5B2B2)),
-                      prefixIcon: Icon(
+                      hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
+                      prefixIcon: const Icon(
                         Icons.lock,
-                        color: Color(0xFFBE005B99), // Icon khóa cho mật khẩu
+                        color: Color(0xffbe005b99), // Icon khóa cho mật khẩu
                       ),
                       hintText: "******",
                       filled: true,
-                      fillColor: Color(0xFFEEFBFF),
+                      fillColor: const Color(0xFFEEFBFF),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),
                   const SizedBox(height: 10),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   // Nút Đăng nhập
                   Container(
@@ -135,7 +137,7 @@ class ResetpassScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   // Điều hướng đến màn hình Đăng ký
                   Row(
@@ -145,7 +147,7 @@ class ResetpassScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.pushNamed(context, '/login');
                         },
-                        child: Text(
+                        child: const Text(
                           "<- Back to Login",
                           style: TextStyle(),
                         ),

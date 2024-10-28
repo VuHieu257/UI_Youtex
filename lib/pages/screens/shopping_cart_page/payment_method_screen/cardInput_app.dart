@@ -5,7 +5,6 @@ import 'package:ui_youtex/pages/screens/member_Vip/member_packagePayment.dart';
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/custom_button.dart';
 import '../../home/add_success/add_success.dart';
-import '../../home/search_page/search_page.dart';
 
 class CardInputApp extends StatelessWidget {
   const CardInputApp({super.key});
@@ -101,7 +100,7 @@ class CardInputApp extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        MembershipPaymentScreen(), // Trang bạn muốn chuyển tới
+                        const MembershipPaymentScreen(), // Trang bạn muốn chuyển tới
                   ),
                 );
               },

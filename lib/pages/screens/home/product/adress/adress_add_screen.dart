@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../../core/assets.dart';
@@ -9,6 +8,8 @@ import '../../../shopping_cart_page/payment_method_screen/payment_method_screen.
 
 
 class AddAddressScreen extends StatefulWidget {
+  const AddAddressScreen({super.key});
+
   @override
   _AddAddressScreenState createState() => _AddAddressScreenState();
 }
@@ -24,7 +25,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       appBar: AppBar(
         backgroundColor: Styles.blue,
         centerTitle: true,
-        leading: InkWell(onTap: () => Navigator.pop(context),child: Icon(Icons.arrow_back_ios,color: Styles.light,)),
+        leading: InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.arrow_back_ios,color: Styles.light,)),
         title: Text('Thêm Địa Chỉ',style: context.theme.textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.bold,
           color: Styles.light,
@@ -40,7 +41,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           // Form nhập địa chỉ
           Container(
             padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             ),
@@ -48,36 +49,36 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Biệt danh (Alias) Dropdown
-                Text("Biệt danh", style: TextStyle(fontWeight: FontWeight.bold)),
-                SizedBox(height: 8),
+                const Text("Biệt danh", style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
                 DropdownButtonFormField<String>(
                   value: addressAlias,
-                  items: [
-                    DropdownMenuItem(child: Text("Nhà riêng"), value: "Nhà riêng"),
-                    DropdownMenuItem(child: Text("Công ty"), value: "Công ty"),
-                    DropdownMenuItem(child: Text("Khác"), value: "Khác"),
+                  items: const [
+                    DropdownMenuItem(value: "Nhà riêng", child: Text("Nhà riêng")),
+                    DropdownMenuItem(value: "Công ty", child: Text("Công ty")),
+                    DropdownMenuItem(value: "Khác", child: Text("Khác")),
                   ],
                   onChanged: (value) {
                     setState(() {
                       addressAlias = value!;
                     });
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Nhập địa chỉ chi tiết
-                Text("Địa chỉ chi tiết", style: TextStyle(fontWeight: FontWeight.bold)),
-                SizedBox(height: 8),
+                const Text("Địa chỉ chi tiết", style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
                 TextField(
                   controller: addressController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "Vinhomes Grand Park, s103, Nguyễn Xiển",
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Đặt làm địa chỉ mặc định Checkbox
                 Row(
                   children: [
@@ -89,16 +90,16 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                         });
                       },
                     ),
-                    Text("Đặt làm địa chỉ mặc định"),
+                    const Text("Đặt làm địa chỉ mặc định"),
                   ],
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Nút thêm địa chỉ
                 InkWell(
-                  onTap: ()=>  Navigator.push(context, MaterialPageRoute(builder: (context) =>   PaymentMethodScreen(),)),
-                  child: SizedBox(
+                  onTap: ()=>  Navigator.push(context, MaterialPageRoute(builder: (context) =>   const PaymentMethodScreen(),)),
+                  child: const SizedBox(
                     width: double.infinity,
-                    child: const CusButton(text:"Thêm",color:Styles.blue),
+                    child: CusButton(text:"Thêm",color:Styles.blue),
                   ),
                 ),
               ],
