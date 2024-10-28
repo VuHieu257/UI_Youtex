@@ -10,6 +10,7 @@ import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_packagePayment.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen%20copy.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
+import 'package:ui_youtex/pages/screens/user/user_profile/user_mail/user_mail_shop_product.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/forgotPass_Screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassDone_screen.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         '/MembershipPaymentScreen': (context) => MembershipPaymentScreen(),
         '/PaymentMethodScreen': (context) => PaymentMethodScreen(),
         '/PaymentMethodPayScreen': (context) => PaymentMethodPayScreen(),
+        '/product_management': (context) => ProductManagementScreen(),
       },
     );
   }
