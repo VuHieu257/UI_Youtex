@@ -10,18 +10,19 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Styles.light,
+      color: Styles.colorF9F9F9,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 3,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
+          Padding(
+            padding:const EdgeInsets.all(10),
             child: Container(
+              height: 100,
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
                 image: DecorationImage(
                   image: AssetImage(product['image']),
                   fit: BoxFit.cover,
@@ -35,27 +36,49 @@ class ProductCard extends StatelessWidget {
               product['name'],
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: context.theme.textTheme.titleMedium,
-              // style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              '₫${product['price']}',
-              style: context.theme.textTheme.headlineSmall?.copyWith(
-                  color: Colors.blue
+              style: context.theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold
               ),
             ),
           ),
           Padding(
+            padding: const EdgeInsets.symmetric(horizontal:8.0),
+            child: Text(
+              product['name'],
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: context.theme.textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.w500
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 4),
+            child: Row(
+              children: [
+                const Icon(Icons.star,color: Styles.nearPrimary, size: 16),
+                Text('${product['rating']}',
+                  style: context.theme.textTheme.titleMedium?.copyWith(
+                    color: Styles.nearPrimary
+                  ),),
+              ],
+            ),
+          ),
+
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
               children: [
-                const Icon(Icons.star, color: Colors.orange, size: 16),
-                Text('${product['rating']}',
-                  style: context.theme.textTheme.titleMedium?.copyWith(
-                  ),),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    '${product['price']}₫',
+                    style: context.theme.textTheme.headlineSmall?.copyWith(
+                        color: Colors.blue,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                ),
                 const Spacer(),
                 Text('Đã bán ${product['sales']}',
                     style: context.theme.textTheme.titleSmall?.copyWith(

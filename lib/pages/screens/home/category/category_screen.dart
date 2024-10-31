@@ -28,12 +28,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
     {
       'name': 'Máy May Một Kim',
       'price': '123.000',
+      'color': 'S17, màu hồng',
       'image': Asset.bgImageProduct,
       'rating': 4.5,
       'sales': 63
     },
     {
       'name': 'Vải Cotton May Áo Phông',
+      'color': 'S17, màu hồng',
       'price': '123.000',
       'image': Asset.bgImageProduct,
       'rating': 5,
@@ -41,6 +43,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     },
     {
       'name': 'Máy May Một Kim',
+      'color': 'S17, màu hồng',
       'price': '123.000',
       'image': Asset.bgImageProduct,
       'rating': 4,
@@ -49,6 +52,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     {
       'name': 'Vải Cotton May Áo',
       'price': '123.000',
+      'color': 'S17, màu hồng',
       'image': Asset.bgImageProduct,
       'rating': 5,
       'sales': 63
@@ -56,6 +60,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     {
       'name': 'Vải Cotton May Áo Phông',
       'price': '123.000',
+      'color': 'S17, màu hồng',
       'image': Asset.bgImageProduct,
       'rating': 5,
       'sales': 63
@@ -63,6 +68,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     {
       'name': 'Máy May Một Kim',
       'price': '123.000',
+      'color': 'S17, màu hồng',
       'image': Asset.bgImageProduct,
       'rating': 4,
       'sales': 63
@@ -70,6 +76,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     {
       'name': 'Vải Cotton May Áo',
       'price': '123.000',
+      'color': 'S17, màu hồng',
       'image': Asset.bgImageProduct,
       'rating': 5,
       'sales': 63

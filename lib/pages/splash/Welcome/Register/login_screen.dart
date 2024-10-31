@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/core/assets.dart';
 import 'package:ui_youtex/core/colors/color.dart';
+import 'package:ui_youtex/core/size/size.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -25,52 +28,82 @@ class LoginScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     "Đăng nhập",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xffbe005b99),
-                    ),
+                   style: context.theme.textTheme.headlineLarge?.copyWith(
+                     fontSize: 30,
+                     fontWeight: FontWeight.bold,
+                     color: Styles.nearPrimary,
+                   ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 10),
-                  const Text(
+                  Text(
                     "Đăng nhập bằng tài khoản của bạn",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: context.theme.textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w400,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 30),
 
                   // Form Email và Mật khẩu
-                  TextField(
-                    decoration: InputDecoration(
-                      hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
-                      prefixIcon: const Icon(
-                        Icons.email,
-                        color: Color(0xffbe005b99),
+                  Container(
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(0, 2),
+                          blurRadius: 3
+                        )
+                      ]
+                    ),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
+                        prefixIcon: const Icon(
+                          Icons.email,
+                          color: Styles.color005B99,
+                        ),
+                        hintText: "Email",
+                        filled: true,
+                        fillColor: const Color(0xFFEEFBFF),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide:BorderSide.none
+                        ),
                       ),
-                      hintText: "Email",
-                      filled: true,
-                      fillColor: const Color(0xFFEEFBFF),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8)),
                     ),
                   ),
                   const SizedBox(height: 15),
-                  TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        Icons.lock_clock_outlined,
-                        color: Color(0xffbe005b99),
+                  Container(
+                    decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black26,
+                              offset: Offset(0, 2),
+                              blurRadius: 3
+                          )
+                        ]
+                    ),
+                    child: TextField(
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          // Icons.lock_clock_outlined,
+                          Icons.punch_clock,
+                          color: Styles.color005B99,
+                        ),
+                        suffixIcon: const Icon(Icons.visibility_off,color: Styles.color005B99,),
+                        hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
+                        hintText: "Mật khẩu",
+                        filled: true,
+                        fillColor: const Color(0xFFEEFBFF),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide:BorderSide.none
+                        ),
                       ),
-                      hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
-                      hintText: "Mật khẩu",
-                      filled: true,
-                      fillColor: const Color(0xFFEEFBFF),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8)),
                     ),
                   ),
                   const SizedBox(height: 15),
@@ -84,15 +117,20 @@ class LoginScreen extends StatelessWidget {
                           shape: const CircleBorder(),
                           value: true,
                           onChanged: (value) {}),
-                      const Text("Ghi nhớ tài khoản"),
+                      Text("Ghi nhớ tài khoản",
+                        style: context.theme.textTheme.titleSmall?.copyWith(
+
+                      ),),
                       const Spacer(),
                       TextButton(
                         onPressed: () {
                           Navigator.pushNamed(context, '/Forgot');
                         },
-                        child: const Text(
+                        child: Text(
                           "Quên mật khẩu?",
-                          style: TextStyle(color: Color(0xFF00B2F6)),
+                          style: context.theme.textTheme.titleSmall?.copyWith(
+                            color: Colors.blue,
+                          ),
                         ),
                       ),
                     ],
@@ -100,36 +138,23 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   // Nút Đăng nhập
-                  Container(
-                    width: double.infinity,
-                    height: MediaQuery.sizeOf(context).height / 14,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xFF218FF2), // Light blue
-                          Color(0xFF13538C), // Dark blue
-                        ],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context,
+                          '/CustomNavBar'
+                              '');
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      height: MediaQuery.sizeOf(context).height / 14,
+                      decoration: BoxDecoration(
+                        color: Styles.nearPrimary,
+                        borderRadius: BorderRadius.circular(30),
                       ),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context,
-                            '/CustomNavBar'
-                            '');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
-                        shadowColor: Colors.transparent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: const Text(
+                      child:
+                      const Text(
                         'Đăng Nhập',
                         style: TextStyle(
                           color: Colors.white,
@@ -141,7 +166,6 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
 
-                  // Điều hướng đến màn hình Đăng ký
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -153,6 +177,55 @@ class LoginScreen extends StatelessWidget {
                         child: const Text(
                           "Đăng ký",
                           style: TextStyle(color: Color(0xFF00B2F6)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin:const EdgeInsets.symmetric(horizontal: 10),
+                        height: 1,
+                        width: context.width*0.2,
+                        color: Colors.black,
+                      ),
+                      Text("Hoặc tiếp tục với",style: context.theme.textTheme.headlineSmall,),
+                      Container(
+                        height: 1,
+                        margin:const EdgeInsets.symmetric(horizontal: 10),
+                        width: context.width*0.2,
+                        color: Colors.black,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.facebook,
+                          color: Colors.blue,
+                          size: 55,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Image.asset(Asset.iconGg1,height: 45,)
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context,
+                              '/memberVip'
+                                  '');
+                        },
+                        icon: const Icon(
+                          Icons.apple,
+                          color: Colors.black,
+                          size: 55,
                         ),
                       ),
                     ],

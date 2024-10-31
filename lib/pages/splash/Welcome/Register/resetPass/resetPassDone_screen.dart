@@ -25,7 +25,7 @@ class ResetpassdoneScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const Text(
-                    "All done!",
+                    "Xong rồi",
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -38,7 +38,7 @@ class ResetpassdoneScreen extends StatelessWidget {
 
                   const SizedBox(height: 10),
                   const Text(
-                    "Your password had been reset",
+                    "Mật khẩu của bạn đã được đặt lại",
                     style: TextStyle(
                       fontSize: 16,
                     ),
@@ -52,10 +52,8 @@ class ResetpassdoneScreen extends StatelessWidget {
                     color: Colors.blue,
                   ),
 
-                  // Nút quay lại Login
                   const SizedBox(height: 40),
 
-                  // Nút Đăng nhập
                   Container(
                     width: double.infinity,
                     height: MediaQuery.sizeOf(context).height / 14,
@@ -65,8 +63,8 @@ class ResetpassdoneScreen extends StatelessWidget {
                           Color(0xFF218FF2), // Light blue
                           Color(0xFF13538C), // Dark blue
                         ],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
+                        begin: Alignment.centerRight,
+                        end: Alignment.centerLeft,
                       ),
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -86,7 +84,7 @@ class ResetpassdoneScreen extends StatelessWidget {
                         ),
                       ),
                       child: const Text(
-                        'Back to Login',
+                        'Quay lại đăng nhập',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,

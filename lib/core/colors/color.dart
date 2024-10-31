@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class Styles {
   static const Color primary = Color(0xFF6200EA); // Example color, replace with your primary color
   static const Color nearPrimary = Color(0xff113A71); // Example color, replace with your primary color
+  static const Color color005B99 = Color(0xff005B99); // Example color, replace with your primary color
+  static const Color colorF9F9F9 = Color(0xffF9F9F9); // Example color, replace with your primary color
   static const Color secondary = Color(0xFF03DAC6); // Example color, replace with your secondary color
   static const Color accent = Color(0xFFEAB135); // Example color, replace with your accent color
   static const Color dark = Color(0xFF121212); // Dark color for dark theme or text

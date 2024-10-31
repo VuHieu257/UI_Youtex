@@ -22,12 +22,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Styles.blue,
         centerTitle: true,
-        leading: InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.arrow_back_ios,color: Styles.light,)),
+        leading: InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.arrow_back_ios)),
         title: Text('Giỏ hàng',style: context.theme.textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.bold,
-          color: Styles.light,
         ),),
         actions: [
           IconButton(

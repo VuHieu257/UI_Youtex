@@ -1,55 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/cardInput_app.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_payment_vnpay.dart';
 
-class PremiumUnlockScreen extends StatelessWidget {
-  // Define custom colors
-  final Color primaryBlue = const Color(0xFF6DA7FF);
-  final Color lightBlue = const Color(0xFFDAF5FF);
-  final Color backgroundBlue = const Color(0xFFE2EEF3);
+import '../../../core/assets.dart';
+
+class PremiumUnlockScreen extends StatefulWidget {
 
   const PremiumUnlockScreen({super.key});
+
+  @override
+  State<PremiumUnlockScreen> createState() => _PremiumUnlockScreenState();
+}
+
+class _PremiumUnlockScreenState extends State<PremiumUnlockScreen> {
+  // Define custom colors
+  final Color primaryBlue = const Color(0xFF6DA7FF);
+
+  final Color lightBlue = const Color(0xFFDAF5FF);
+
+  final Color backgroundBlue = const Color(0xFFE2EEF3);
+
+  bool switchValue = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
             colors: [
-              lightBlue, // DAF5FF
-              backgroundBlue, // E2EEF3
+              Color(0xFF6DA7FF),
+              Color(0xFFDAF5FF),
+              Color(0xFFDAF5FF),
             ],
+            begin: Alignment.topRight,
+            end: Alignment.bottomCenter,
           ),
         ),
         child: SafeArea(
-          child: Column(
-            children: [
-              _buildAppBar(context),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildHeader(),
-                        const SizedBox(height: 32),
-                        _buildFeaturesList(),
-                        const SizedBox(height: 32),
-                        _buildTrialSwitch(),
-                        const SizedBox(height: 24),
-                        _buildSubscriptionOptions(),
-                        const SizedBox(height: 32),
-                        _buildBottomSection(context),
-                      ],
-                    ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  _buildAppBar(context),
+                  _buildHeader(),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(onPressed: () {
+                      _showPremiumBenefitsDialog(context);
+                    }, icon: const Icon(Icons.info_outline)),
                   ),
-                ),
+                  _buildFeaturesList(),
+                  const SizedBox(height: 32),
+                  _buildTrialSwitch(),
+                  const SizedBox(height: 24),
+                  _buildSubscriptionOptions(),
+                  const SizedBox(height: 32),
+                  _buildBottomSection(context),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -89,10 +101,11 @@ class PremiumUnlockScreen extends StatelessWidget {
   }
 
   Widget _buildHeader() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
+        Text(
           'Mở khóa Premium',
           style: TextStyle(
             fontSize: 28,
@@ -100,19 +113,22 @@ class PremiumUnlockScreen extends StatelessWidget {
             color: Colors.black87,
           ),
         ),
-        const SizedBox(height: 8),
-        Text(
-          'Tận hưởng những lợi ích này khi bạn nâng cấp lên gói cao cấp',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey[600],
-            height: 1.5,
+        SizedBox(height: 8),
+        SizedBox(
+          width: 300,
+          child: Text(
+            'Tận hưởng những lợi ích này khi bạn nâng cấp lên gói cao cấp',
+            style: TextStyle(
+              fontSize: 16,
+              color: Color(0xff626262),
+              height: 1.5,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
       ],
     );
   }
-
   Widget _buildFeaturesList() {
     final features = [
       'Quản lý Mall riêng',
@@ -124,26 +140,21 @@ class PremiumUnlockScreen extends StatelessWidget {
     ];
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: features.map((feature) => _buildFeatureItem(feature)).toList(),
     );
   }
 
   Widget _buildFeatureItem(String text) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.only(left: 20,bottom: 10,top: 10),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              color: lightBlue,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Icon(
-              Icons.check_circle,
-              color: primaryBlue,
-              size: 22,
-            ),
+          const Icon(
+            Icons.check_circle_outline,
+            color: Color(0xff5F6368),
+            size: 22,
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -162,36 +173,29 @@ class PremiumUnlockScreen extends StatelessWidget {
   }
 
   Widget _buildTrialSwitch() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.7),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text(
+          'Bắt đầu dùng thử miễn phí 7 ngày',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
           ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            'Bắt đầu dùng thử miễn phí 7 ngày',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          Switch(
-            value: true,
-            onChanged: (value) {},
-            activeColor: primaryBlue,
-          ),
-        ],
-      ),
+        ),
+        Switch(
+          value: switchValue,
+          activeColor: Colors.white,
+          activeTrackColor:Colors.blue,
+          inactiveTrackColor: Colors.white,
+          inactiveThumbColor: Colors.blue,
+          onChanged: (bool newValue) {
+            setState(() {
+              switchValue = newValue;
+            });
+          },
+        ),
+      ],
     );
   }
 
@@ -228,9 +232,7 @@ class PremiumUnlockScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: isSelected
-            ? lightBlue.withOpacity(0.7)
-            : Colors.white.withOpacity(0.7),
+        color:Colors.white.withOpacity(0.7),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isSelected ? primaryBlue : Colors.grey.withOpacity(0.2),
@@ -329,8 +331,8 @@ class PremiumUnlockScreen extends StatelessWidget {
                 Color(0xFF218FF2), // Light blue
                 Color(0xFF13538C), // Dark blue
               ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
+              begin: Alignment.centerRight,
+              end: Alignment.centerLeft,
             ),
             borderRadius: BorderRadius.circular(30),
           ),
@@ -356,6 +358,16 @@ class PremiumUnlockScreen extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(height: 24),
+        Text(
+          'Khôi phục mua hàng\tChính sách bảo mật\tĐiều khoản sử dụng',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.grey[600],
+            fontSize: 14,
+          ),
+        ),
+        const SizedBox(height: 24),
       ],
     );
   }
@@ -398,7 +410,7 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
   final List<PaymentMethod> paymentMethods = [
     PaymentMethod(
       name: 'Thẻ',
-      logo: 'assets/images/thẻ.png',
+      logo: Asset.iconVisa,
       isSelected: true,
     ),
     PaymentMethod(
@@ -525,22 +537,20 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
               ),
             ),
             const SizedBox(width: 12),
-            Container(
-              child: Image.asset(
-                method.logo,
-                fit: BoxFit.cover,
-              ),
+            Image.asset(
+              method.logo,
+              fit: BoxFit.cover,
+              height: 30,
             ),
             const SizedBox(width: 12),
             if (method.name == 'Thẻ') ...[
-              const Spacer(),
               Row(
                 children: [
-                  _buildCardIcon(),
+                  _buildCardIcon(Asset.iconVisa),
                   const SizedBox(width: 10),
-                  _buildCardIcon(),
+                  _buildCardIcon(Asset.iconMastercard),
                   const SizedBox(width: 8),
-                  _buildCardIcon(),
+                  _buildCardIcon(Asset.iconJCB),
                 ],
               ),
             ],
@@ -550,13 +560,13 @@ class _PaymentMethodBottomSheetState extends State<PaymentMethodBottomSheet> {
     );
   }
 
-  Widget _buildCardIcon() {
+  Widget _buildCardIcon(String assetName) {
     return Container(
       width: 32,
-      height: 20,
+      height: 30,
       decoration: BoxDecoration(
-        color: Colors.grey[200],
         borderRadius: BorderRadius.circular(4),
+        image:DecorationImage(image: AssetImage(assetName))
       ),
     );
   }
@@ -634,4 +644,128 @@ class PaymentButton extends StatelessWidget {
       ),
     );
   }
+}
+
+
+void _showPremiumBenefitsDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Container(
+          height: context.height*0.9,
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10))
+          ),
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  'Quyền lợi Premium',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildBenefitItem(
+                        'Quản lý Mall riêng:',
+                        [
+                          'Tạo và vận hành mall riêng để buôn bán các mặt hàng.',
+                          'Quản lý giá cả, chương trình khuyến mãi, doanh thu của cửa hàng.',
+                          'Hỗ trợ mở các chương trình khuyến mãi dành riêng cho mall hàng tháng từ YouTex.',
+                        ],
+                      ),
+                      _buildBenefitItem(
+                        'Hỗ trợ PR & Marketing:',
+                        [
+                          'Quản lý chiến dịch marketing hàng tháng cho mall.',
+                          'Viết nội dung quảng cáo cho các chiến dịch mall.',
+                          'Lưu trữ và đăng tối đa 10 bài PR/tháng cho mall, do team marketing viết.',
+                          '500k/bài PR từ bài thứ 11 trở đi.',
+                        ],
+                      ),
+                      _buildBenefitItem(
+                        'Bảo hiểm đơn hàng - Buff Youtex:',
+                        [
+                          'Đảm bảo an toàn cho các giao dịch qua mall.',
+                        ],
+                      ),
+                      _buildBenefitItem(
+                        'Xây dựng uy tín doanh nghiệp - Dấu chuẩn Youtex:',
+                        [
+                          'Xây dựng uy tín với thông tin doanh nghiệp, thế mạnh, hình ảnh được truyền thông rộng rãi.',
+                          'Có hội nhận biểu tượng 5* nếu đạt chuẩn.',
+                          'Hỗ trợ doanh nghiệp đạt chuẩn TCVN.',
+                        ],
+                      ),
+                      _buildBenefitItem(
+                        'Quyền lợi ưu tiên trong sự kiện:',
+                        [
+                          'Nhận ưu tiên trong các sự kiện và chương trình khuyến mãi đặc biệt từ YouTex.',
+                        ],
+                      ),
+                      _buildBenefitItem(
+                        'Tài khoản quản lý cho Mall:',
+                        [
+                          'Tài khoản riêng dành cho việc quản lý mall.',
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('Đóng'),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Widget _buildBenefitItem(String title, List<String> details) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Icon(Icons.star_border, color: Colors.amber, size: 24),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              ...details.map((detail) => Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(detail),
+              )),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 }

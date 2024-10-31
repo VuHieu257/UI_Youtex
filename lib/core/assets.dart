@@ -19,6 +19,7 @@ class Asset {
   static const String bgSigin = '$_img/img_sigin.png';
   static const String iconFb = '$_img/fb_icon.png';
   static const String iconGg = '$_img/gg_icon.png';
+  static const String iconGg1 = '$_img/google.png';
   static const String iconIp = '$_img/ip_icon.png';
   static const String iconPremium = '$_icon/image 2061.png';
   static const String iconPremium1 = '$_img/icon_king.png';
@@ -32,8 +33,10 @@ class Asset {
   static const String iconHome1 = '$_icon/assets/icon/icon_home copy.png';
 
   static const String iconCard = '$_icon/Vector.png';
+  static const String iconSec = '$_icon/encrypted_2592317.png';
 
   static const String iconVisa = '$_icon/icon_visa.png';
+  static const String iconJCB= '$_icon/icon_visa.png';
   static const String iconMastercard = '$_icon/icon_mastercard.png';
   static const String bgMap = '$_img/Map.png';
   static const String bgSlider = '$_img/slider.png';

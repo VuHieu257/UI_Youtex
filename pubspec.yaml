@@ -47,6 +47,8 @@ dependencies:
   timelines: ^0.1.0
   intl: ^0.17.0
   flutter_bloc: ^8.0.1
+  photo_manager: ^3.5.2
+  permission_handler: ^10.2.0
   #  flutter_sound: ^9.16.0
 #  permission_handler: ^11.3.1
 

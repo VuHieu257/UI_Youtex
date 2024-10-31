@@ -3,16 +3,36 @@ import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_vip.dart';
 
-class FreeTrialTimeline extends StatelessWidget {
+import '../../../core/assets.dart';
+import '../../widget_small/bottom_navigation/bottom_navigation.dart';
+
+class FreeTrialTimeline extends StatefulWidget {
   const FreeTrialTimeline({super.key});
 
+  @override
+  State<FreeTrialTimeline> createState() => _FreeTrialTimelineState();
+}
+
+class _FreeTrialTimelineState extends State<FreeTrialTimeline> {
+  String _selectedPaymentMethod = 'Thẻ';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+
       body: SafeArea(
-        child: SingleChildScrollView(
-          // Sử dụng SingleChildScrollView để cuộn
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF6DA7FF),
+                Color(0xFFDAF5FF),
+                Color(0xFFDAF5FF),
+              ],
+              begin: Alignment.topRight,
+              end: Alignment.bottomCenter,
+            ),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
@@ -23,8 +43,6 @@ class FreeTrialTimeline extends StatelessWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  padding: EdgeInsets.zero,
-                  alignment: Alignment.bottomLeft,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -96,12 +114,13 @@ class FreeTrialTimeline extends StatelessWidget {
                       ),
                       child: ElevatedButton(
                         onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return const CardAddedSuccessDialog();
-                            },
-                          );
+                          showPaymentMethodSheet(context);
+                          // showDialog(
+                          //   context: context,
+                          //   builder: (BuildContext context) {
+                          //     return const CardAddedSuccessDialog();
+                          //   },
+                          // );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
@@ -132,6 +151,23 @@ class FreeTrialTimeline extends StatelessWidget {
                         },
                         child: const Text(
                           'Xem gói thành viên',
+                          style: TextStyle(
+                            color: Color(0xFF2196F3),
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const CustomNavBar()));
+                        },
+                        child: const Text(
+                          'Bỏ qua',
                           style: TextStyle(
                             color: Color(0xFF2196F3),
                             fontSize: 16,
@@ -215,6 +251,14 @@ class FreeTrialTimeline extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+  void showPaymentMethodSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => const PaymentMethodBottomSheet(),
     );
   }
 }

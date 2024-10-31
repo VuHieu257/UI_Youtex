@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'dart:typed_data';
+import 'package:photo_manager/photo_manager.dart';
 import 'dart:core';
 import 'package:ui_youtex/pages/screens/home/home.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
@@ -18,6 +20,7 @@ import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/forgotPass_Scr
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassDone_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassOtp_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPass_screen.dart';
+import 'package:ui_youtex/pages/splash/Welcome/welcome.dart';
 import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 
 import 'core/themes/theme_data.dart';
@@ -48,10 +51,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       // home: HomePage(),
-      // home: WelcomeApp(),
+      home: const WelcomeApp(),
       // home: const CustomNavBar(),
-      home: const MessagesScreen(),
-      // home: ChatListScreen(),
+      // home: const MessagesScreen(),
+      // home: const GridGallery(),
       // home: CustomBackground(),
       // home: MembershipPaymentScreen(),
       routes: {
@@ -69,6 +72,347 @@ class MyApp extends StatelessWidget {
         '/PaymentMethodPayScreen': (context) => const PaymentMethodPayScreen(),
         '/product_management': (context) => const ProductManagementScreen(),
       },
+    );
+  }
+}
+
+// class GridGallery extends StatefulWidget {
+//   final ScrollController? scrollCtr;
+//
+//   const GridGallery({super.key, this.scrollCtr});
+//
+//   @override
+//   _GridGalleryState createState() => _GridGalleryState();
+// }
+//
+// class _GridGalleryState extends State<GridGallery> {
+//   List<Widget> _mediaList = [];
+//   List<Widget> _confirmedImages = []; // List to display confirmed images
+//   int currentPage = 0;
+//   int? lastPage;
+//   Set<AssetEntity> _selectedImages = {};
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _fetchNewMedia();
+//   }
+//
+//   _handleScrollEvent(ScrollNotification scroll) {
+//     if (scroll.metrics.pixels / scroll.metrics.maxScrollExtent > 0.33) {
+//       if (currentPage != lastPage) {
+//         _fetchNewMedia();
+//       }
+//     }
+//   }
+//
+//   _fetchNewMedia() async {
+//     lastPage = currentPage;
+//     final PermissionState _ps = await PhotoManager.requestPermissionExtend();
+//
+//     if (_ps.isAuth) {
+//       List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
+//         type: RequestType.image,
+//         onlyAll: true,
+//       );
+//
+//       if (albums.isNotEmpty) {
+//         List<AssetEntity> media = await albums[0].getAssetListPaged(
+//           page: currentPage,
+//           size: 60,
+//         );
+//
+//         List<Widget> temp = media.map((asset) {
+//           return GestureDetector(
+//             onTap: () {
+//               setState(() {
+//                 if (_selectedImages.contains(asset)) {
+//                   _selectedImages.remove(asset);
+//                 } else {
+//                   _selectedImages.add(asset);
+//                 }
+//               });
+//             },
+//             child: Stack(
+//               children: [
+//                 FutureBuilder<Uint8List?>(
+//                   future: asset.thumbnailDataWithSize(const ThumbnailSize(200, 200)),
+//                   builder: (context, snapshot) {
+//                     if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
+//                       return Positioned.fill(
+//                         child: Image.memory(
+//                           snapshot.data!,
+//                           fit: BoxFit.cover,
+//                         ),
+//                       );
+//                     }
+//                     return Container(color: Colors.grey);
+//                   },
+//                 ),
+//                 // Align(
+//                 //   alignment: Alignment.topRight,
+//                 //   child: Checkbox(
+//                 //     value: _selectedImages.contains(asset),
+//                 //     onChanged: (isSelected) {
+//                 //       setState(() {
+//                 //         if (isSelected == true) {
+//                 //           _selectedImages.add(asset);
+//                 //         } else {
+//                 //           _selectedImages.remove(asset);
+//                 //         }
+//                 //       });
+//                 //     },
+//                 //     checkColor: Colors.white,
+//                 //     activeColor: Colors.blue,
+//                 //   ),
+//                 // ),
+//                 Align(
+//                     alignment: Alignment.topRight,
+//                   child: Container(
+//                     margin:const EdgeInsets.only(top: 10,right: 10),
+//                     height: 20,
+//                     width: 20,
+//                     decoration:BoxDecoration(
+//                         shape: BoxShape.circle,
+//                         color: Colors.white
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           );
+//         }).toList();
+//
+//         setState(() {
+//           _mediaList.addAll(temp);
+//           currentPage++;
+//         });
+//       }
+//     } else {
+//       PhotoManager.openSetting();
+//     }
+//   }
+//
+//   // Confirm and display selected images on the main screen
+//   void _confirmSelection() async {
+//     List<Widget> selectedWidgets = _selectedImages.map((asset) {
+//       return FutureBuilder<Uint8List?>(
+//         future: asset.thumbnailDataWithSize(const ThumbnailSize(200, 200)),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
+//             return Image.memory(snapshot.data!, fit: BoxFit.cover);
+//           }
+//           return Container(color: Colors.grey);
+//         },
+//       );
+//     }).toList();
+//
+//     setState(() {
+//       _confirmedImages = selectedWidgets;
+//       _selectedImages.clear(); // Clear selection after confirmation
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Column(
+//         children: [
+//           // Display confirmed images at the top of the screen
+//           if (_confirmedImages.isNotEmpty)
+//             Expanded(
+//               child: GridView.count(
+//                 crossAxisCount: 3,
+//                 children: _confirmedImages,
+//               ),
+//             ),
+//           Expanded(
+//             child: NotificationListener<ScrollNotification>(
+//               onNotification: (ScrollNotification scroll) {
+//                 _handleScrollEvent(scroll);
+//                 return false;
+//               },
+//               child: GridView.builder(
+//                 controller: widget.scrollCtr,
+//                 itemCount: _mediaList.length,
+//                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+//                 itemBuilder: (context, index) {
+//                   return _mediaList[index];
+//                 },
+//               ),
+//             ),
+//           ),
+//           ElevatedButton(
+//             onPressed: _selectedImages.isNotEmpty ? _confirmSelection : null,
+//             child: const Text('Confirm Selection'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+class GridGallery extends StatefulWidget {
+  final ScrollController? scrollCtr;
+
+  const GridGallery({super.key, this.scrollCtr});
+
+  @override
+  _GridGalleryState createState() => _GridGalleryState();
+}
+
+class _GridGalleryState extends State<GridGallery> {
+  List<AssetEntity> _mediaList = []; // Store images directly
+  List<Widget> _confirmedImages = []; // Confirmed images for display
+  int currentPage = 0;
+  int? lastPage;
+  Set<AssetEntity> _selectedImages = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchNewMedia();
+  }
+
+  _handleScrollEvent(ScrollNotification scroll) {
+    if (scroll.metrics.pixels / scroll.metrics.maxScrollExtent > 0.33) {
+      if (currentPage != lastPage) {
+        _fetchNewMedia();
+      }
+    }
+  }
+
+  _fetchNewMedia() async {
+    lastPage = currentPage;
+    final PermissionState _ps = await PhotoManager.requestPermissionExtend();
+
+    if (_ps.isAuth) {
+      List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
+        type: RequestType.image,
+        onlyAll: true,
+      );
+
+      if (albums.isNotEmpty) {
+        List<AssetEntity> media = await albums[0].getAssetListPaged(
+          page: currentPage,
+          size: 60,
+        );
+
+        setState(() {
+          _mediaList.addAll(media); // Add new images to the list
+          currentPage++;
+        });
+      }
+    } else {
+      PhotoManager.openSetting();
+    }
+  }
+
+  // Confirm selected images to display on main screen
+  void _confirmSelection() async {
+    List<Widget> selectedWidgets = _selectedImages.map((asset) {
+      return FutureBuilder<Uint8List?>(
+        future: asset.thumbnailDataWithSize(const ThumbnailSize(200, 200)),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
+            return Image.memory(snapshot.data!, fit: BoxFit.cover);
+          }
+          return Container(color: Colors.grey);
+        },
+      );
+    }).toList();
+
+    setState(() {
+      _confirmedImages = selectedWidgets;
+      _selectedImages.clear(); // Clear selection after confirmation
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          // Display confirmed images at the top
+          if (_confirmedImages.isNotEmpty)
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 3,
+                children: _confirmedImages,
+              ),
+            ),
+          Expanded(
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scroll) {
+                _handleScrollEvent(scroll);
+                return false;
+              },
+              child: GridView.builder(
+                controller: widget.scrollCtr,
+                itemCount: _mediaList.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+                itemBuilder: (context, index) {
+                  AssetEntity asset = _mediaList[index];
+                  bool isSelected = _selectedImages.contains(asset);
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (isSelected) {
+                          _selectedImages.remove(asset);
+                        } else {
+                          _selectedImages.add(asset);
+                        }
+                      });
+                    },
+                    child: Stack(
+                      children: [
+                        FutureBuilder<Uint8List?>(
+                          future: asset.thumbnailDataWithSize(const ThumbnailSize(200, 200)),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
+                              return Positioned.fill(
+                                child: Image.memory(
+                                  snapshot.data!,
+                                  fit: BoxFit.cover,
+                                ),
+                              );
+                            }
+                            return Container(color: Colors.grey);
+                          },
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 10, right: 10),
+                            height: 20,
+                            width: 20,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: isSelected ? Colors.blue : null,
+                              border: Border.all(
+                                width: 2.5,
+                                color: Colors.white
+                              )
+                            ),
+                            child: isSelected
+                                ? const Icon(Icons.check, color: Colors.white, size: 16)
+                                : Container(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: _selectedImages.isNotEmpty ? _confirmSelection : null,
+            child: const Text('Confirm Selection'),
+          ),
+        ],
+      ),
     );
   }
 }

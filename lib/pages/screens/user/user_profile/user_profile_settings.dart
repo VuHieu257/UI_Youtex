@@ -88,15 +88,15 @@ class AccountSettingsScreen extends StatelessWidget {
   // Helper widget for creating each setting item
   Widget _buildSettingItem(String title, IconData icon, VoidCallback onTap) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 8,top: 4),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color(0xffF3F3F3),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(0.25),
             blurRadius: 4,
-            offset: const Offset(0, 2),
+            offset: const Offset(0, 4),
           ),
         ],
       ),

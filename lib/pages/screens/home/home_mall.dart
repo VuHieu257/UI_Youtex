@@ -54,64 +54,93 @@ class HomeMall extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body: SingleChildScrollView(
+      appBar: AppBar(
+        leading: null,
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            Image.asset(
+              Asset.bgLogo,
+              height: 40,
+            ),
+          ],
+        ),
+        actions: [
+          InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SearchPage(),
+                ));
+          }
+          ,child: CircleAvatar(backgroundColor: Colors.grey.shade300,child: const Icon(Icons.search))),
+          const SizedBox(width: 10),
+          InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ShoppingCartPage(),
+                ));
+          },child: CircleAvatar(backgroundColor: Colors.grey.shade300,child: const Icon(Icons.shopping_cart_outlined))),
+          const SizedBox(width: 10),
+        ],
+      ),
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: MediaQuery.of(context).size.height /9,
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).padding.top + 10,
-                  left: MediaQuery.of(context).padding.left + 10,
-                  right: MediaQuery.of(context).padding.right + 10,
-                  bottom: 15),
-              color: Styles.blue,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SearchPage(),
-                            ));
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Tìm kiếm',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide.none),
-                        hintStyle: const TextStyle(color: Colors.grey),
-                        prefixIcon: const Icon(
-                          Icons.search,
-                          color: Colors.grey,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  InkWell(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ShoppingCartPage(),
-                          )),
-                      child: const Icon(
-                        Icons.shopping_cart_outlined,
-                        color: Styles.light,
-                      )),
-                  const SizedBox(width: 10),
-                  Image.asset(
-                    Asset.iconMessage,
-                    width: context.width * 0.06,
-                  ),
-                  // Image.asset(Asset.iconMessage),
-                ],
-              ),
-            ),
+            // Container(
+            //   height: MediaQuery.of(context).size.height /9,
+            //   padding: EdgeInsets.only(
+            //       top: MediaQuery.of(context).padding.top + 10,
+            //       left: MediaQuery.of(context).padding.left + 10,
+            //       right: MediaQuery.of(context).padding.right + 10,
+            //       bottom: 15),
+            //   color: Styles.blue,
+            //   child: Row(
+            //     children: [
+            //       Expanded(
+            //         child: TextField(
+            //           onTap: () {
+            //
+            //           },
+            //           decoration: InputDecoration(
+            //             hintText: 'Tìm kiếm',
+            //             border: OutlineInputBorder(
+            //                 borderRadius: BorderRadius.circular(25),
+            //                 borderSide: BorderSide.none),
+            //             hintStyle: const TextStyle(color: Colors.grey),
+            //             prefixIcon: const Icon(
+            //               Icons.search,
+            //               color: Colors.grey,
+            //             ),
+            //             filled: true,
+            //             fillColor: Colors.white,
+            //           ),
+            //         ),
+            //       ),
+            //       const SizedBox(width: 10),
+            //       InkWell(
+            //           onTap: () => Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                 builder: (context) => const ShoppingCartPage(),
+            //               )),
+            //           child: const Icon(
+            //             Icons.shopping_cart_outlined,
+            //             color: Styles.light,
+            //           )),
+            //       const SizedBox(width: 10),
+            //       Image.asset(
+            //         Asset.iconMessage,
+            //         width: context.width * 0.06,
+            //       ),
+            //       // Image.asset(Asset.iconMessage),
+            //     ],
+            //   ),
+            // ),
             // Banner Image
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -177,7 +206,10 @@ class HomeMall extends StatelessWidget {
                 },
               ),
             ),
-
+           const Padding(
+             padding: EdgeInsets.symmetric(horizontal:16.0),
+             child: Divider(),
+           ),
             // Product Section Title
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),

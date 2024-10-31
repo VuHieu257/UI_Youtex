@@ -12,7 +12,10 @@ class HistoryOrder extends StatelessWidget {
         title: Text('Thông tin đơn hàng',style: context.theme.textTheme.headlineLarge?.copyWith(
             color: Colors.white,fontWeight: FontWeight.bold
         ),),
-        leading: const InkWell(
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
           child: Icon(Icons.arrow_back,color: Colors.white,),
         ),
         backgroundColor: Colors.blue,

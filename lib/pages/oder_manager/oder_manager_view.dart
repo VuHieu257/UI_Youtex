@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/pages/oder_manager/oder_manager_screen.dart';
 
+import '../screens/shopping_cart_page/information_order/information_oder.dart';
+
 class OrderManagementScreen extends StatelessWidget {
   final List<Map<String, dynamic>> orders = [
     {
@@ -220,11 +222,16 @@ class OrderManagementScreen extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) =>
+                        //             const OrderManagementScreen1()));
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    const OrderManagementScreen1()));
+                                 const   HistoryOrder()));
                       },
                       child: const Text(
                         'Xem tình trạng',

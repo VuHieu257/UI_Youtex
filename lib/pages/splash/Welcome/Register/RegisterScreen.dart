@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/core/size/size.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
+
+import '../../../../core/assets.dart';
+import '../../../../core/colors/color.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -30,71 +35,41 @@ class RegisterScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
 
-            // Form Họ và tên, Email, Mật khẩu
-            TextField(
-              decoration: InputDecoration(
-                hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
-                prefixIcon: const Icon(
-                  Icons.person,
-                  color: Color(0xFF005B99),
+            Container(
+              decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black26,
+                        offset: Offset(0, 2),
+                        blurRadius: 3
+                    )
+                  ]
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
+                  prefixIcon: const Icon(
+                    Icons.person,
+                    color: Styles.color005B99,
+                  ),
+                  hintText: "Số điện thoại",
+                  filled: true,
+                  fillColor: const Color(0xFFEEFBFF),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide:BorderSide.none
+                  ),
                 ),
-                hintText: "Họ và tên",
-                filled: true,
-                fillColor: const Color(0xFFEEFBFF),
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               ),
             ),
             const SizedBox(height: 15),
-            TextField(
-              decoration: InputDecoration(
-                hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
-                prefixIcon: const Icon(
-                  Icons.email,
-                  color: Color(0xFF005B99),
-                ),
-                hintText: "Email",
-                filled: true,
-                fillColor: const Color(0xFFEEFBFF),
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-              ),
-            ),
+            textField(Icons.email,"Email"),
             const SizedBox(height: 15),
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
-                prefixIcon: const Icon(
-                  Icons.lock_clock_outlined,
-                  color: Color(0xFF005B99),
-                ),
-                hintText: "Mật khẩu",
-                filled: true,
-                fillColor: const Color(0xFFEEFBFF),
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-              ),
-            ),
+            textField(Icons.punch_clock,"Mật khẩu",iconRight: Icons.visibility_off),
             const SizedBox(height: 15),
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
-                prefixIcon: const Icon(
-                  Icons.lock_clock_outlined,
-                  color: Color(0xFF005B99),
-                ),
-                hintText: "Nhập lại mật khẩu",
-                filled: true,
-                fillColor: const Color(0xFFEEFBFF),
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-              ),
-            ),
+            textField(Icons.punch_clock,"Nhập lại mật khẩu",iconRight: Icons.visibility_off),
             const SizedBox(height: 15),
 
-            // Checkbox đồng ý với điều khoản
             Row(
               children: [
                 Checkbox(
@@ -106,49 +81,52 @@ class RegisterScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Nút Đăng ký
-             Container(
-              width: double.infinity,
-              height: MediaQuery.sizeOf(context).height / 14,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [
-                    Color(0xFF218FF2), // Light blue
-                    Color(0xFF13538C), // Dark blue
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(
+                    context,
+                    '/memberVip'
+                        '');
+              },
+              child: Container(
+                width: double.infinity,
+                alignment: Alignment.center,
+                height: MediaQuery.sizeOf(context).height / 14,
+                decoration: BoxDecoration(
+                  color: Styles.nearPrimary,
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/memberVip'
-                      '');
-
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  shadowColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: const Text(
+                child:
+                const Text(
                   'Đăng Ký',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
-
                 ),
               ),
             ),
-            const SizedBox(height: 10),
 
-            // Nút liên kết với Facebook, Google, Apple
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin:const EdgeInsets.symmetric(horizontal: 10),
+                  height: 1,
+                  width: context.width*0.2,
+                  color: Colors.black,
+                ),
+                Text("Hoặc tiếp tục với",style: context.theme.textTheme.headlineSmall,),
+                Container(
+                  height: 1,
+                  margin:const EdgeInsets.symmetric(horizontal: 10),
+                  width: context.width*0.2,
+                  color: Colors.black,
+                ),
+              ],
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -161,15 +139,16 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.g_translate,
-                    color: Colors.red,
-                    size: 55,
-                  ),
+                    onPressed: () {},
+                    icon: Image.asset(Asset.iconGg1,height: 45,)
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context,
+                        '/memberVip'
+                            '');
+                  },
                   icon: const Icon(
                     Icons.apple,
                     color: Colors.black,
@@ -197,6 +176,36 @@ class RegisterScreen extends StatelessWidget {
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+  Widget textField(IconData icon,String hintText,{IconData? iconRight}){
+    return Container(
+      decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black26,
+                offset: Offset(0, 2),
+                blurRadius: 3
+            )
+          ]
+      ),
+      child: TextField(
+        decoration: InputDecoration(
+          hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
+          prefixIcon: Icon(
+            icon,
+            color: Styles.color005B99,
+          ),
+          suffixIcon:iconRight!=null? Icon(iconRight,color: Styles.color005B99,):null,
+          hintText: hintText,
+          filled: true,
+          fillColor: const Color(0xFFEEFBFF),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide:BorderSide.none
+          ),
         ),
       ),
     );

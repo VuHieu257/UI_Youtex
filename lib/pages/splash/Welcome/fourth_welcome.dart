@@ -10,50 +10,48 @@ class WelcomeScreen4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Hình ảnh chính, với chiều rộng đầy đủ của màn hình
           Image.asset(
             'assets/images/Vector 1.png',
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.fitWidth,
           ),
-          const SizedBox(height: 50), // Khoảng cách giữa ảnh và text
-
           // Text giới thiệu
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Text(
-              "Tham gia cộng đồng của chúng tôi và khám phá những công cụ may mặc tiên tiến nhất.",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF333333), // Màu chữ 333333
+          const SizedBox(
+            width: 300,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text(
+                "Tham gia cộng đồng của chúng tôi và khám phá những công cụ may mặc tiên tiến nhất.",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF333333), // Màu chữ 333333
+                ),
               ),
             ),
           ),
 
-          const SizedBox(height: 100), // Khoảng cách giữa text và nút bấm
+          const SizedBox(height: 180),
 
-          // Nút "Tạo tài khoản ngay"
-          ElevatedButton(
-            onPressed: onPressed,
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 120, vertical: 15),
-              backgroundColor:
-                  const Color.fromARGB(255, 101, 193, 247), // Màu nút A4F86E
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30), // Bo góc cho nút
-              ),
-            ),
-            child: const Text(
-              "Tạo tài khoản ngay",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Styles.light, // Màu chữ trên nút
+          InkWell(
+            onTap: onPressed,
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                margin: const EdgeInsets.all(10),
+                padding:const EdgeInsets.all(15),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color:  Color(0xff333333)
+                ),
+                child:const Icon(Icons.arrow_forward_ios,color: Colors.white,),
               ),
             ),
           ),
+
         ],
       ),
     );
