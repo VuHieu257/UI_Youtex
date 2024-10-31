@@ -18,12 +18,8 @@ class MessagesScreen extends StatelessWidget {
       appBar:AppBar(
         backgroundColor: Styles.blue,
         centerTitle: true,
-        leading: InkWell(
-            // onTap: () => Navigator.pop(context),
-            onTap: () {
-
-            },
-            child: const Icon(Icons.settings_suggest_outlined,color: Styles.light,)),
+        leading: null,
+        automaticallyImplyLeading: false,
         title: Text('Message',style: context.theme.textTheme.headlineMedium?.copyWith(
           fontWeight: FontWeight.bold,
           color: Styles.light,
@@ -32,7 +28,6 @@ class MessagesScreen extends StatelessWidget {
           InkWell(
               // onTap: () => Navigator.pop(context),
               onTap: () {
-
               },
               child: const Icon(Icons.edit_note_rounded,color: Styles.light,)),
         ],

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
-import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_vip.dart';
 
-import '../../../core/assets.dart';
 import '../../widget_small/bottom_navigation/bottom_navigation.dart';
 
 class FreeTrialTimeline extends StatefulWidget {
@@ -14,7 +12,7 @@ class FreeTrialTimeline extends StatefulWidget {
 }
 
 class _FreeTrialTimelineState extends State<FreeTrialTimeline> {
-  String _selectedPaymentMethod = 'Thẻ';
+  final String _selectedPaymentMethod = 'Thẻ';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

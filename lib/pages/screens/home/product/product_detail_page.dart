@@ -4,6 +4,7 @@ import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
+import '../../shopping_cart_page/shopping_cart_page.dart';
 class ProductDetailPage extends StatelessWidget {
   final Map<String, dynamic> product;
 
@@ -26,11 +27,13 @@ class ProductDetailPage extends StatelessWidget {
           const SizedBox(width: 10),
           IconButton(
             icon:const Icon(Icons.shopping_cart_outlined,color: Styles.light,),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon:Image.asset(Asset.iconMessage,width: context.width*0.06,),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ShoppingCartPage(),
+                  ));
+                          },
           ),
         ],
       ),

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 class MallInfoScreen extends StatelessWidget {
+  const MallInfoScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Thông tin Mall', style: TextStyle(color: Colors.blue)),
+        title: const Text('Thông tin Mall', style: TextStyle(color: Colors.blue)),
         backgroundColor: Colors.white,
         elevation: 4,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.blue),
+          icon: const Icon(Icons.arrow_back, color: Colors.blue),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -25,21 +27,21 @@ class MallInfoScreen extends StatelessWidget {
                 // Điều hướng đến trang chi tiết Thông tin doanh nghiệp
               },
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             MallInfoButton(
               title: 'Giấy tờ',
               onTap: () {
                 // Điều hướng đến trang chi tiết Giấy tờ
               },
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             MallInfoButton(
               title: 'Ngân hàng',
               onTap: () {
                 // Điều hướng đến trang chi tiết Ngân hàng
               },
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             MallInfoButton(
               title: 'Mô tả shop',
               onTap: () {
@@ -57,14 +59,14 @@ class MallInfoButton extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
 
-  MallInfoButton({required this.title, required this.onTap});
+  const MallInfoButton({super.key, required this.title, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
@@ -73,7 +75,7 @@ class MallInfoButton extends StatelessWidget {
               color: Colors.grey.withOpacity(0.2),
               spreadRadius: 1,
               blurRadius: 4,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
           border: Border.all(color: Colors.blue, width: 1), // Khung màu xanh
@@ -83,9 +85,9 @@ class MallInfoButton extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 16, color: Colors.black),
+              style: const TextStyle(fontSize: 16, color: Colors.black),
             ),
-            Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 16),
+            const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 16),
           ],
         ),
       ),

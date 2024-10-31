@@ -49,7 +49,7 @@ class DetailArticle extends StatelessWidget {
                 style: TextStyle(color: Colors.grey, fontSize: 14),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             const Align(
               alignment: Alignment.center,
               child:      Text(
@@ -95,7 +95,7 @@ class DetailArticle extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             const Text(
               'Chi nhánh này sẽ cung cấp dịch vụ cho vay, tiền gửi, thanh toán trong nước, quốc tế, và các dịch vụ ngân hàng tiện ích khác.',
               style: TextStyle(fontSize: 16),

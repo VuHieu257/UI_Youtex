@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/core/colors/color.dart';
 
 class WelcomeScreen4 extends StatelessWidget {
   final VoidCallback onPressed;

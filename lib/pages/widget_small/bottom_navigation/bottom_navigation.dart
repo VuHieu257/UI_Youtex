@@ -18,11 +18,11 @@ class CustomNavBar extends StatefulWidget {
 class _CustomNavBarState extends State<CustomNavBar> {
   int _selectedIndex = 0;
   final List<Widget> _screens = [
-    const HomeMain(),
+    const HomePage(),
     HomeMall(),
     const LiveScreen(),
     const MessagesScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
 
   @override

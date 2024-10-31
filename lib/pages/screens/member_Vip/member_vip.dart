@@ -673,7 +673,7 @@ void _showPremiumBenefitsDialog(BuildContext context) {
               ),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -730,7 +730,7 @@ void _showPremiumBenefitsDialog(BuildContext context) {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: Text('Đóng'),
+                    child: const Text('Đóng'),
                   ),
                 ),
               ),

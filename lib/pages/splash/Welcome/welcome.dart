@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/login_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/first_welcome.dart';
 import 'package:ui_youtex/pages/splash/Welcome/fourth_welcome.dart';

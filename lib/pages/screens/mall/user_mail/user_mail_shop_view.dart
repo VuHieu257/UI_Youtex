@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/colors/color.dart';
-import 'package:ui_youtex/pages/screens/user/user_profile/user_mail/user_mail_shop_analyst_view.dart';
-import 'package:ui_youtex/pages/screens/user/user_profile/user_mail/user_mail_shop_product.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_analyst_view.dart';
 import 'package:ui_youtex/pages/screens/user/user_profile/user_profile_settings.dart';
+
+import '../../../../core/assets.dart';
+import '../../../widget_small/appbar/cus_appbar_background.dart';
+import '../user_mail_settings/mail_infor_view.dart';
 
 class ShopOverviewScreen extends StatelessWidget {
   const ShopOverviewScreen({super.key});
@@ -10,55 +14,22 @@ class ShopOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(40),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF1E3799), Color(0xFF4A69BD)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+      body: Column(
+        children: [
+          const UserInfoHeader(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const WalletCard(),
+                  const OrderStatusSection(),
+                  const SalesOverviewSection(),
+                  SalesToolsSection(),
+                ],
+              ),
             ),
           ),
-          child: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.settings, color: Colors.white),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AccountSettingsScreen()),
-                  );
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.person_outline, color: Colors.white),
-                onPressed: () {},
-              ),
-            ],
-
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const UserInfoHeader(),
-            const WalletCard(),
-            const OrderStatusSection(),
-            const SalesOverviewSection(),
-            SalesToolsSection(),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -69,52 +40,152 @@ class UserInfoHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      decoration: const BoxDecoration(
-        color: Color(0xFF1E3799),
-      ),
-      child: Row(
+    return cusAppBarBackground(context,
+      widget: Column(
         children: [
-          CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.white,
-            child: Image.asset(
-              'assets/images/images_users.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-          const SizedBox(width: 12),
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          Padding(
+            padding: const EdgeInsets.only(right:10.0,top: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  'Vải Hải Anh',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    padding:const EdgeInsets.all(5),
+                    decoration:  BoxDecoration(
+                        shape: BoxShape.circle,
+                        color:Styles.colorF9F9F9.withOpacity(0.5)
+                    ),
+                    child: const Icon(Icons.arrow_back,color: Styles.light,),
                   ),
                 ),
-                Row(
-                  children: [
-                    Icon(Icons.star, color: Colors.amber, size: 14),
-                    Text(
-                      ' Đơn hoàn tất 91.00%',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+                const Spacer(),
+                InkWell(
+                  onTap:() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                          const AccountSettingsScreen()),
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Styles.greyLight.withOpacity(0.5),
+                    child: const Icon(Icons.settings_suggest_outlined, color: Colors.white),
+                  ),
+                ),
+                const SizedBox(width: 10,),
+                InkWell(
+                  onTap:() {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MallInfoScreen()),
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Styles.greyLight.withOpacity(0.5),
+                    child:const Icon(Icons.notifications_none, color: Colors.white),
+                  ),
                 ),
               ],
             ),
           ),
+          Row(
+            children: [
+              Container(
+                width: 100,
+                height: 100,
+                padding: const EdgeInsets.all(3),
+                margin:const EdgeInsets.only(left: 30),
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xff3EB0FF),
+                      Color(0xFF113A71),
+                      Color(0xff3EB0FF),
+                      Color(0xff3EB0FF),
+                      Color(0xff3EB0FF),
+                      Color(0xFF113A71),
+                      Color(0xff3EB0FF),
+                      Color(0xffDAF5FF),
+                    ],
+                  ),
+                ),
+                child: const CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage(Asset.bgImageAvatar,)
+                ),
+              ),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                      'Nguyễn Văn A',
+                      style:context.theme.textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
+                      )
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 100,
+                        child: Text(
+                          'Đơn hoàn tất',
+                          style: context.theme.textTheme.titleMedium?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '91.00%',
+                        style: context.theme.textTheme.titleMedium?.copyWith(
+                            color: Styles.color73FF83,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 8),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 100,
+                        child: Text(
+                          'Khiếu nại\t\t',
+                          style: context.theme.textTheme.titleMedium?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '1.00%',
+                        style: context.theme.textTheme.titleMedium?.copyWith(
+                            color: Styles.colorFF6B6B,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ],
-      ),
-    );
+      ),);
   }
 }
 
@@ -127,16 +198,16 @@ class WalletCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        color: Styles.colorF3F3F3,
+        borderRadius: BorderRadius.circular(12), // Tăng độ bo tròn
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+            color: Colors.black.withOpacity(0.25),
+            blurRadius: 3,
+            offset: const Offset(0, 4),
           ),
-        ],
-      ),
+        ],),
+
       child: const Row(
         children: [
           Icon(Icons.account_balance_wallet_outlined,
@@ -169,10 +240,27 @@ class OrderStatusSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        SizedBox(height: 12),
-        Row(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal:15.0),
+          child: Row(
+            children: [
+              Text("Đơn hàng",style: context.theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),),
+              const Spacer(),
+              TextButton(onPressed: () {
+
+              }, child: Text("Đơn hàng",style: context.theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Colors.blue
+              ),),)
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             OrderStatusItem(
@@ -272,20 +360,20 @@ class SalesOverviewSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal:16,vertical: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Tổng quan bán hàng',
                 style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
+              Spacer(),
               Text(
                 '7 ngày gần nhất',
                 style: TextStyle(
@@ -295,7 +383,6 @@ class SalesOverviewSection extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
           GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
@@ -307,26 +394,34 @@ class SalesOverviewSection extends StatelessWidget {
               SalesOverviewCard(
                 title: 'Doanh thu',
                 value: '160.100K',
-                backgroundColor: Color(0xFFE8F5E9),
+                backgroundColor: Color(0xFFEFFFEC),
                 textColor: Colors.green,
+                icon: Icons.arrow_circle_up,
+                iconColor:Colors.green,
               ),
               SalesOverviewCard(
                 title: 'Số đơn hàng hoàn tất',
                 value: '1.100',
-                backgroundColor: Color(0xFFE3F2FD),
-                textColor: Colors.blue,
+                backgroundColor: Color(0xFFFFD0D0),
+                textColor: Colors.pink,
+                icon: Icons.arrow_circle_down,
+                iconColor:Colors.red,
               ),
               SalesOverviewCard(
                 title: 'Lượt truy cập',
                 value: '950',
                 backgroundColor: Color(0xFFF3E5F5),
                 textColor: Colors.purple,
+                icon: Icons.arrow_circle_up,
+                iconColor:Colors.green,
               ),
               SalesOverviewCard(
                 title: 'Số người mua',
                 value: '1.960',
                 backgroundColor: Color(0xFFFFF3E0),
                 textColor: Colors.orange,
+                icon: Icons.remove_circle_outline_outlined,
+                iconColor:Colors.orange,
               ),
             ],
           ),
@@ -341,33 +436,50 @@ class SalesOverviewCard extends StatelessWidget {
   final String value;
   final Color backgroundColor;
   final Color textColor;
+  final IconData icon;
+  final Color iconColor;
 
   const SalesOverviewCard({super.key, 
     required this.title,
     required this.value,
     required this.backgroundColor,
-    required this.textColor,
+    required this.textColor, required this.icon, required this.iconColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
+      alignment: Alignment.center,
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, 4),
+            blurRadius: 4,
+            color:Colors.black.withOpacity(0.25)
+          )
+        ]
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: textColor,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                value,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: textColor,
+                ),
+              ),
+              const SizedBox(width: 10,),
+              Icon(icon,color: iconColor,),
+            ],
           ),
           const SizedBox(height: 4),
           Text(
@@ -416,16 +528,16 @@ class SalesToolsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          InkWell(
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
             onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => SalesAnalysisScreen()));
+                      builder: (context) => const SalesAnalysisScreen()));
             },
             child: const Text(
               'Xem chi tiết phân tích bán hàng',
@@ -436,7 +548,11 @@ class SalesToolsSection extends StatelessWidget {
               ),
             ),
           ),
-          Column(
+        ),
+       const Divider(),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
@@ -446,11 +562,10 @@ class SalesToolsSection extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(height: 12),
               GridView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
                   mainAxisSpacing: 8,
                   crossAxisSpacing: 8,
@@ -469,8 +584,8 @@ class SalesToolsSection extends StatelessWidget {
             ],
 
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -499,18 +614,28 @@ class SalesToolCard extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: Colors.grey[200],
-              shape: BoxShape.circle,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                    offset:const Offset(0, 4),
+                    blurRadius: 4,
+                    color: Colors.black.withOpacity(0.25))
+              ]
             ),
             child: Icon(icon, size: 24, color: Colors.blue),
           ),
           const SizedBox(height: 4),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.black87,
+          SizedBox(
+            height: 40,
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontSize: 12,
+                color: Colors.black87,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),

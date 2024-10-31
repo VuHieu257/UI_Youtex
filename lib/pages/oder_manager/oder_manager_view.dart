@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/pages/oder_manager/oder_manager_screen.dart';
 
 import '../screens/shopping_cart_page/information_order/information_oder.dart';
 

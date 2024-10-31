@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../core/assets.dart';
@@ -24,7 +23,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPagedetails> {
         title: Row(
           children: [
             IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white),
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -36,7 +35,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPagedetails> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: TextField(
+                child: const TextField(
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.search, color: Colors.grey),
                     border: InputBorder.none,
@@ -45,11 +44,11 @@ class _ShoppingCartPageState extends State<ShoppingCartPagedetails> {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.notifications_outlined, color: Colors.white),
+              icon: const Icon(Icons.notifications_outlined, color: Colors.white),
               onPressed: () {},
             ),
             IconButton(
-              icon: Icon(Icons.grid_view, color: Colors.white),
+              icon: const Icon(Icons.grid_view, color: Colors.white),
               onPressed: () {},
             ),
           ],
@@ -71,17 +70,17 @@ class _ShoppingCartPageState extends State<ShoppingCartPagedetails> {
                 ),
                 Row(
                   children: [
-                    Icon(Icons.sort, color: Styles.grey),
-                    SizedBox(width: 8),
+                    const Icon(Icons.sort, color: Styles.grey),
+                    const SizedBox(width: 8),
                     Text('Lọc', style: context.theme.textTheme.bodyMedium),
                   ],
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
@@ -89,7 +88,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPagedetails> {
                 ),
                 itemCount: 6, // Giả sử có 6 sản phẩm
                 itemBuilder: (context, index) {
-                  return ProductCart(
+                  return const ProductCart(
                     imageUrl: Asset.bgImageProduct,
                     name: 'Vải thun cotton 4 chiều',
                     price: 150000,
@@ -146,17 +145,17 @@ class ProductCart extends StatelessWidget {
                 Text(name, maxLines: 2, overflow: TextOverflow.ellipsis),
                 Text(
                   '${price.toStringAsFixed(0)}đ',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Styles.blue,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Row(
                   children: [
-                    Icon(Icons.star, color: Colors.yellow, size: 14),
-                    SizedBox(width: 4),
+                    const Icon(Icons.star, color: Colors.yellow, size: 14),
+                    const SizedBox(width: 4),
                     Text('$rating'),
-                    Spacer(),
+                    const Spacer(),
                     Text('Đã bán $soldCount'),
                   ],
                 ),

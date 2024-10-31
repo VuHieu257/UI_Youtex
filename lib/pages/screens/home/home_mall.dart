@@ -5,7 +5,6 @@ import 'package:ui_youtex/pages/screens/home/product/product_detail_page.dart';
 import 'package:ui_youtex/pages/screens/home/search_page/search_page.dart';
 
 import '../../../core/assets.dart';
-import '../../../core/colors/color.dart';
 import '../../widget_small/product/product_card.dart';
 import '../shopping_cart_page/shopping_cart_page.dart';
 import 'category/category_screen.dart';

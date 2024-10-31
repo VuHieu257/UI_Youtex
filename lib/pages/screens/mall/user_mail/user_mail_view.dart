@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 
 class MallInfoScreen extends StatelessWidget {
+  const MallInfoScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Thông tin Mall', style: TextStyle(color: Colors.white)),
+        title: const Text('Thông tin Mall', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -23,41 +25,41 @@ class MallInfoScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              SizedBox(height: 100),
+              const SizedBox(height: 100),
               MallInfoButton(
                   title: 'Thông tin doanh nghiệp',
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => BusinessInfoScreen()));
+                            builder: (context) => const BusinessInfoScreen()));
                   }),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               MallInfoButton(
                   title: 'Giấy tờ',
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DocumentInfoScreen()));
+                            builder: (context) => const DocumentInfoScreen()));
                   }),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               MallInfoButton(
                   title: 'Ngân hàng',
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => BankInfoScreen()));
+                            builder: (context) => const BankInfoScreen()));
                   }),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               MallInfoButton(
                   title: 'Mô tả shop',
                   onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ShopDescriptionScreen()));
+                            builder: (context) => const ShopDescriptionScreen()));
                   }),
             ],
           ),
@@ -68,7 +70,7 @@ class MallInfoScreen extends StatelessWidget {
 }
 
 BoxDecoration _buildGradientBackground() {
-  return BoxDecoration(
+  return const BoxDecoration(
     gradient: LinearGradient(
       colors: [Color(0xFF13538C), Color(0xFF218FF2)],
       begin: Alignment.topLeft,
@@ -81,14 +83,14 @@ class MallInfoButton extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
 
-  MallInfoButton({required this.title, required this.onTap});
+  const MallInfoButton({super.key, required this.title, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15),
@@ -97,7 +99,7 @@ class MallInfoButton extends StatelessWidget {
               color: Colors.black.withOpacity(0.1),
               spreadRadius: 2,
               blurRadius: 10,
-              offset: Offset(0, 5),
+              offset: const Offset(0, 5),
             ),
           ],
         ),
@@ -120,6 +122,8 @@ class MallInfoButton extends StatelessWidget {
 }
 
 class BusinessInfoScreen extends StatelessWidget {
+  const BusinessInfoScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,9 +134,9 @@ class BusinessInfoScreen extends StatelessWidget {
         child: _buildFormContent(
           context, // Truyền context vào đây
           [
-            CustomTextField(label: 'Mã số thuế doanh nghiệp'),
-            CustomTextField(label: 'Địa chỉ đăng ký kinh doanh'),
-            CustomTextField(label: 'Số giấy phép kinh doanh'),
+            const CustomTextField(label: 'Mã số thuế doanh nghiệp'),
+            const CustomTextField(label: 'Địa chỉ đăng ký kinh doanh'),
+            const CustomTextField(label: 'Số giấy phép kinh doanh'),
           ],
         ),
       ),
@@ -141,6 +145,8 @@ class BusinessInfoScreen extends StatelessWidget {
 }
 
 class DocumentInfoScreen extends StatelessWidget {
+  const DocumentInfoScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,7 +158,7 @@ class DocumentInfoScreen extends StatelessWidget {
             context, // Truyền context vào đây
             [
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Loại giấy tờ (CCCD/CMND/Hộ Chiếu)',
                   labelStyle: TextStyle(
                     color: Colors.white, // Đổi thành màu bạn muốn
@@ -164,9 +170,9 @@ class DocumentInfoScreen extends StatelessWidget {
                 }).toList(),
                 onChanged: (newValue) {},
               ),
-              CustomTextField(label: 'Số giấy tờ'),
-              CustomTextField(label: 'Ảnh giấy tờ (mặt trước)'),
-              CustomTextField(label: 'Ảnh giấy tờ (mặt sau)'),
+              const CustomTextField(label: 'Số giấy tờ'),
+              const CustomTextField(label: 'Ảnh giấy tờ (mặt trước)'),
+              const CustomTextField(label: 'Ảnh giấy tờ (mặt sau)'),
             ]),
       ),
     );
@@ -174,6 +180,8 @@ class DocumentInfoScreen extends StatelessWidget {
 }
 
 class BankInfoScreen extends StatelessWidget {
+  const BankInfoScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -185,7 +193,7 @@ class BankInfoScreen extends StatelessWidget {
             context, // Truyền context vào đây
             [
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: 'Tên ngân hàng',
                     labelStyle: TextStyle(color: Colors.white)),
                 items: ['Vietcombank', 'ACB', 'TPBank'].map((String value) {
@@ -194,8 +202,8 @@ class BankInfoScreen extends StatelessWidget {
                 }).toList(),
                 onChanged: (value) {},
               ),
-              CustomTextField(label: 'Số tài khoản ngân hàng'),
-              CustomTextField(label: 'Thẻ tín dụng hoặc thẻ ghi nợ (nếu có)'),
+              const CustomTextField(label: 'Số tài khoản ngân hàng'),
+              const CustomTextField(label: 'Thẻ tín dụng hoặc thẻ ghi nợ (nếu có)'),
             ]),
       ),
     );
@@ -203,6 +211,8 @@ class BankInfoScreen extends StatelessWidget {
 }
 
 class ShopDescriptionScreen extends StatelessWidget {
+  const ShopDescriptionScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -213,7 +223,7 @@ class ShopDescriptionScreen extends StatelessWidget {
         child: _buildFormContent(
             context, // Truyền context vào đây
             [
-              CustomTextField(label: 'Mô tả shop', maxLines: 4),
+              const CustomTextField(label: 'Mô tả shop', maxLines: 4),
             ]),
       ),
     );
@@ -223,11 +233,11 @@ class ShopDescriptionScreen extends StatelessWidget {
 PreferredSizeWidget _buildTransparentAppBar(
     BuildContext context, String title) {
   return AppBar(
-    title: Text(title, style: TextStyle(color: Colors.white)),
+    title: Text(title, style: const TextStyle(color: Colors.white)),
     backgroundColor: Colors.transparent,
     elevation: 0,
     leading: IconButton(
-      icon: Icon(Icons.arrow_back, color: Colors.white),
+      icon: const Icon(Icons.arrow_back, color: Colors.white),
       onPressed: () => Navigator.pop(context),
     ),
   );
@@ -238,12 +248,12 @@ Widget _buildFormContent(BuildContext context, List<Widget> fields) {
     padding: const EdgeInsets.all(16.0),
     child: Column(
       children: [
-        SizedBox(height: 100),
+        const SizedBox(height: 100),
         Expanded(
           child: Column(
             children: [
               ...fields,
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),
@@ -292,7 +302,7 @@ class CustomTextField extends StatelessWidget {
   final String label;
   final int maxLines;
 
-  CustomTextField({required this.label, this.maxLines = 1});
+  const CustomTextField({super.key, required this.label, this.maxLines = 1});
 
   @override
   Widget build(BuildContext context) {
@@ -302,10 +312,10 @@ class CustomTextField extends StatelessWidget {
         maxLines: maxLines,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Styles.dark, fontSize: 16),
+          labelStyle: const TextStyle(color: Styles.dark, fontSize: 16),
           filled: true,
           fillColor: Colors.grey[100],
-          contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
@@ -316,7 +326,7 @@ class CustomTextField extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Color(0xFF1565C0), width: 1.5),
+            borderSide: const BorderSide(color: Color(0xFF1565C0), width: 1.5),
           ),
         ),
         style: TextStyle(fontSize: 16, color: Colors.grey[800]),
@@ -333,39 +343,39 @@ void showSuccessPopup(BuildContext context) {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        contentPadding: EdgeInsets.all(20),
+        contentPadding: const EdgeInsets.all(20),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
+            const Icon(
               Icons.check_circle,
               color: Colors.green,
               size: 50,
             ),
-            SizedBox(height: 16),
-            Text(
+            const SizedBox(height: 16),
+            const Text(
               'Thành công!',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               'Thay đổi của bạn đang được duyệt. Vui lòng đợi!',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF218FF2), // Màu nền của nút
+                backgroundColor: const Color(0xFF218FF2), // Màu nền của nút
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'Cảm ơn',
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),

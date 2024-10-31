@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
-import 'package:ui_youtex/pages/screens/home/home_mail.dart';
 import 'package:ui_youtex/pages/screens/message/friend_list_scrren.dart';
 import 'package:ui_youtex/pages/screens/user/user_profile/user_profile_settings.dart';
 import 'package:ui_youtex/pages/screens/voucher/voucher_view.dart';
@@ -9,6 +8,7 @@ import 'package:ui_youtex/pages/screens/voucher/voucher_view.dart';
 import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
 import '../../../oder_manager/oder_manager_view.dart';
+import '../../mall/register_mall/register_mall.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -217,8 +217,8 @@ class ProfileScreen extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: Text(
-                                        'Sửa chữa',
-                                        style: context.theme.textTheme.titleMedium?.copyWith(
+                                        'Sao chép',
+                                        style: context.theme.textTheme.titleSmall?.copyWith(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold
                                         ),
@@ -325,7 +325,7 @@ class ProfileScreen extends StatelessWidget {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => HomeMall())),
+                            builder: (context) => const RegisterMallScreen())),
                   ),
                   _buildMenuItem(Icons.language, 'Ngôn ngữ/Language',
                       context: context,
