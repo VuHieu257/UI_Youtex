@@ -253,7 +253,7 @@ class _FilterModalState extends State<FilterModal> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Theo tình trạng đơn hàng',
+            'Chức vụ',
             style: context.theme.textTheme.headlineMedium
                 ?.copyWith(fontWeight: FontWeight.bold),
           ),
@@ -270,10 +270,10 @@ class _FilterModalState extends State<FilterModal> {
               children: [
                 RadioListTile<String>(
                   title: Text(
-                    'Chờ xác nhận',
+                    'Quản lý',
                     style: context.theme.textTheme.headlineSmall?.copyWith(),
                   ),
-                  value: 'Chờ xác nhận',
+                  value: 'Nhân viên',
                   groupValue: orderStatus,
                   onChanged: (String? value) {
                     setState(() {
@@ -286,10 +286,10 @@ class _FilterModalState extends State<FilterModal> {
                 ),
                 RadioListTile<String>(
                   title: Text(
-                    'Chờ vận chuyển',
+                    'Nhân viên',
                     style: context.theme.textTheme.headlineSmall?.copyWith(),
                   ),
-                  value: 'Chờ vận chuyển',
+                  value: 'Nhân viên',
                   groupValue: orderStatus,
                   onChanged: (String? value) {
                     setState(() {
@@ -302,7 +302,7 @@ class _FilterModalState extends State<FilterModal> {
                 ),
                 RadioListTile<String>(
                   title: Text(
-                    'Đã giao',
+                    'Nhân viên mới',
                     style: context.theme.textTheme.headlineSmall?.copyWith(),
                   ),
                   value: 'Đã giao',
@@ -316,52 +316,52 @@ class _FilterModalState extends State<FilterModal> {
               ],
             ),
           ),
-          Text(
-            'Theo phương thức thanh toán',
-            style: context.theme.textTheme.headlineMedium
-                ?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 10, top: 10),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: const [
-                  BoxShadow(
-                      color: Colors.grey, offset: Offset(0, 4), blurRadius: 6)
-                ]),
-            child: Column(
-              children: [
-                RadioListTile<String>(
-                  title: const Text('COD'),
-                  value: 'COD',
-                  groupValue: paymentMethod,
-                  onChanged: (String? value) {
-                    setState(() {
-                      paymentMethod = value;
-                    });
-                  },
-                ),
-                const Divider(
-                  height: 0,
-                ),
-                RadioListTile<String>(
-                  title: Text(
-                    'Tài khoản ngân hàng/Thẻ tín dụng',
-                    style: context.theme.textTheme.headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  value: 'Tài khoản ngân hàng/Thẻ tín dụng',
-                  groupValue: paymentMethod,
-                  onChanged: (String? value) {
-                    setState(() {
-                      paymentMethod = value;
-                    });
-                  },
-                ),
-              ],
-            ),
-          ),
+          // Text(
+          //   'Theo phương thức thanh toán',
+          //   style: context.theme.textTheme.headlineMedium
+          //       ?.copyWith(fontWeight: FontWeight.bold),
+          // ),
+          // Container(
+          //   margin: const EdgeInsets.only(bottom: 10, top: 10),
+          //   decoration: BoxDecoration(
+          //       color: Colors.white,
+          //       borderRadius: BorderRadius.circular(20),
+          //       boxShadow: const [
+          //         BoxShadow(
+          //             color: Colors.grey, offset: Offset(0, 4), blurRadius: 6)
+          //       ]),
+          //   child: Column(
+          //     children: [
+          //       RadioListTile<String>(
+          //         title: const Text('COD'),
+          //         value: 'COD',
+          //         groupValue: paymentMethod,
+          //         onChanged: (String? value) {
+          //           setState(() {
+          //             paymentMethod = value;
+          //           });
+          //         },
+          //       ),
+          //       const Divider(
+          //         height: 0,
+          //       ),
+          //       RadioListTile<String>(
+          //         title: Text(
+          //           'Tài khoản ngân hàng/Thẻ tín dụng',
+          //           style: context.theme.textTheme.headlineSmall
+          //               ?.copyWith(fontWeight: FontWeight.bold),
+          //         ),
+          //         value: 'Tài khoản ngân hàng/Thẻ tín dụng',
+          //         groupValue: paymentMethod,
+          //         onChanged: (String? value) {
+          //           setState(() {
+          //             paymentMethod = value;
+          //           });
+          //         },
+          //       ),
+          //     ],
+          //   ),
+          // ),
           Align(
             alignment: Alignment.bottomRight,
             child: Container(

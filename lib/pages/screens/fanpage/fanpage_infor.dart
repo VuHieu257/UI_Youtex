@@ -14,16 +14,21 @@ class Fanpage_infor extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Styles.blue,
         centerTitle: true,
-        leading: InkWell(onTap: () => Navigator.pop(context),
-            child: const Icon(Icons.arrow_back_ios, color: Styles.light,)),
+        leading: InkWell(
+            onTap: () => Navigator.pop(context),
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Styles.light,
+            )),
         title: Text(
-          'Trang', style: context.theme.textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: Styles.light,
-        ),),
+          'Trang',
+          style: context.theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: Styles.light,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
-
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -39,28 +44,41 @@ class Fanpage_infor extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               const SectionTitle(icon: Icons.info, title: 'Chung'),
-              const CustomTextField( hintText: 'Tiểu sử'),
-              Text('Mô tả về trang của bạn',style: context.theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Styles.grey,
-              ),),
+              const CustomTextField(
+                hintText: 'Tiểu sử',
+                label: '',
+              ),
+              Text(
+                'Mô tả về trang của bạn',
+                style: context.theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Styles.grey,
+                ),
+              ),
               const SizedBox(height: 16),
-              const SectionTitle(icon: Icons.contact_mail, title: 'Thông tin liên hệ'),
-              const CustomTextField( hintText: 'Email'),
-              const CustomTextField( hintText: 'Số điện thoại'),
+              const SectionTitle(
+                  icon: Icons.contact_mail, title: 'Thông tin liên hệ'),
+              const CustomTextField(
+                hintText: 'Email',
+                label: '',
+              ),
+              const CustomTextField(
+                hintText: 'Số điện thoại',
+                label: '',
+              ),
               const SizedBox(height: 16),
               const SectionTitle(icon: Icons.location_on, title: 'Vị trí'),
-              const CustomTextField( hintText: 'Địa chỉ'),
-
+              const CustomTextField(
+                hintText: 'Địa chỉ',
+                label: '',
+              ),
             ],
           ),
         ),
-
       ),
-      bottomNavigationBar:
-      SizedBox(
-        width: context.width*0.2,
-        height: context.width*0.2,
+      bottomNavigationBar: SizedBox(
+        width: context.width * 0.2,
+        height: context.width * 0.2,
         child: const CusButton(text: "Tạo Nhóm", color: Styles.blue),
       ),
     );
@@ -89,16 +107,16 @@ class SectionTitle extends StatelessWidget {
 }
 
 class CustomTextField extends StatelessWidget {
-   final String hintText;
+  final String hintText;
 
-  const CustomTextField({super.key,   required this.hintText});
+  const CustomTextField({required this.hintText, required String label});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         const SizedBox(height: 8),
+        const SizedBox(height: 8),
         TextField(
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),

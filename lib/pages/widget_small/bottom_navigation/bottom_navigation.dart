@@ -16,16 +16,14 @@ class CustomNavBar extends StatefulWidget {
 }
 
 class _CustomNavBarState extends State<CustomNavBar> {
-
   int _selectedIndex = 0;
   final List<Widget> _screens = [
-    const HomePage(),
+    const HomeMain(),
     HomeMall(),
     const LiveScreen(),
     const MessagesScreen(),
-    const ProfileScreen(),
+    ProfileScreen(),
   ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -34,21 +32,16 @@ class _CustomNavBarState extends State<CustomNavBar> {
         index: _selectedIndex,
         children: _screens,
       ),
-      bottomNavigationBar:
-      Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(40),
             boxShadow: const [
               BoxShadow(
-                  offset: Offset(4, 4),
-                  blurRadius: 10,
-                  color: Colors.black54
-              )
-            ]
-        ),
+                  offset: Offset(4, 4), blurRadius: 10, color: Colors.black54)
+            ]),
         child: GNav(
           color: Colors.grey[800],
           activeColor: Colors.blue,
@@ -64,8 +57,14 @@ class _CustomNavBarState extends State<CustomNavBar> {
           },
           tabs: [
             GButton(
-              icon:  Icons.home_outlined,
-              leading: Image.asset(Asset.iconHome,color: _selectedIndex == 0? Colors.blue:Colors.grey[800],fit: BoxFit.fitHeight,height: 20,width: 20,),
+              icon: Icons.home_outlined,
+              leading: Image.asset(
+                Asset.iconHome,
+                color: _selectedIndex == 0 ? Colors.blue : Colors.grey[800],
+                fit: BoxFit.fitHeight,
+                height: 20,
+                width: 20,
+              ),
               text: 'Trang chủ',
               iconColor: Colors.transparent, // Làm icon trở nên vô hình
             ),
@@ -76,7 +75,13 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 height: 16,
                 width: 16,
                 margin: const EdgeInsets.symmetric(horizontal: 5),
-                child: Image.asset(Asset.iconMarket,color: _selectedIndex == 1? Colors.blue:Colors.grey[800],fit: BoxFit.fitHeight,height: 20,width: 20,),
+                child: Image.asset(
+                  Asset.iconMarket,
+                  color: _selectedIndex == 1 ? Colors.blue : Colors.grey[800],
+                  fit: BoxFit.fitHeight,
+                  height: 20,
+                  width: 20,
+                ),
               ),
               text: 'Mall',
               iconColor: Colors.transparent, //
@@ -88,7 +93,13 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 height: 16,
                 width: 16,
                 margin: const EdgeInsets.symmetric(horizontal: 5),
-                child: Image.asset(Asset.iconLive,color: _selectedIndex == 1? Colors.red:Colors.red,fit: BoxFit.fitHeight,height: 20,width: 20,),
+                child: Image.asset(
+                  Asset.iconLive,
+                  color: _selectedIndex == 1 ? Colors.red : Colors.red,
+                  fit: BoxFit.fitHeight,
+                  height: 20,
+                  width: 20,
+                ),
               ),
               iconColor: Colors.transparent, //
             ),
@@ -99,7 +110,13 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 height: 16,
                 width: 16,
                 margin: const EdgeInsets.symmetric(horizontal: 5),
-                child: Image.asset(Asset.iconMessage1,color: _selectedIndex == 2? Colors.blue:Colors.grey[800],fit: BoxFit.fitHeight,height: 20,width: 20,),
+                child: Image.asset(
+                  Asset.iconMessage1,
+                  color: _selectedIndex == 2 ? Colors.blue : Colors.grey[800],
+                  fit: BoxFit.fitHeight,
+                  height: 20,
+                  width: 20,
+                ),
               ),
               text: 'Tin Nhắn',
               iconColor: Colors.transparent, //
@@ -109,7 +126,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
               icon: Icons.notifications_none,
               leading: CircleAvatar(
                 radius: 15,
-                backgroundImage:AssetImage(Asset.bgImageAvatar) ,
+                backgroundImage: AssetImage(Asset.bgImageAvatar),
               ),
               iconColor: Colors.transparent, //
             ),
