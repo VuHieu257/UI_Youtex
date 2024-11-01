@@ -66,12 +66,7 @@ class FriendListScreen extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const FilterModal();
-                        },
-                      );
+                      showAddFriendDialog(context);
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -200,22 +195,27 @@ class FriendCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.25),
-                        offset: const Offset(0, 4),
-                        blurRadius: 4),
-                  ],
-                  color: const Color(0xffFF6B6B),
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                ),
-                child: Text(
-                  'Nhắn tin',
-                  style: context.theme.textTheme.titleSmall?.copyWith(
-                    color: Colors.white,
+              GestureDetector(
+                onTap: () {
+                  showUnfollowDialog(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: const Offset(0, 4),
+                          blurRadius: 4),
+                    ],
+                    color: const Color(0xffFF6B6B),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: Text(
+                    'Unfllow ',
+                    style: context.theme.textTheme.titleSmall?.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -225,4 +225,127 @@ class FriendCard extends StatelessWidget {
       ),
     );
   }
+}
+
+void showAddFriendDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFFDAF5FF),
+                Color(0xFF3EB0FF),
+                Color(0xFF1F96F2),
+                Color(0xFF113A71)
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Thông báo thay cho TextField đầu tiên
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Nhập email hoặc memberID',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
+              // Trường nhập liệu chính
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Nhập thông tin tại đây',
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  // Nút gửi yêu cầu kết bạn
+                  ElevatedButton(
+                    onPressed: () {
+                      // Hành động gửi yêu cầu kết bạn
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: CircleBorder(),
+                      padding: EdgeInsets.all(12),
+                      backgroundColor: Colors.white, // Nền trắng cho nút
+                    ),
+                    child: Icon(
+                      Icons.person_add,
+                      color: Color(0xFF113A71), // Màu xanh đậm từ gradient
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+void showUnfollowDialog(
+  BuildContext context,
+) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        title: Text('Unfollow '),
+        content: Text(
+          'Bạn sẽ không thể thấy trạng thái hoạt động và các bài viết của  nữa.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Đóng dialog
+            },
+            child: Text(
+              'Hủy',
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              // Thực hiện hành động Unfollow
+              Navigator.of(context)
+                  .pop(); // Đóng dialog sau khi thực hiện hành động
+            },
+            child: Text(
+              'Unfollow',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      );
+    },
+  );
 }
