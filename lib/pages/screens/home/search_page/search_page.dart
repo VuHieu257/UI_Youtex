@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
 import '../../shopping_cart_page/shopping_cart_page.dart';
+
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
@@ -107,15 +108,15 @@ class _SearchPageState extends State<SearchPage> {
           ),
           // Recent Searches / Search Results
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   showRecentSearches ? 'Recent Searches' : 'Search Results',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 if (showRecentSearches)
                   TextButton(
@@ -132,44 +133,44 @@ class _SearchPageState extends State<SearchPage> {
           Expanded(
             child: showRecentSearches
                 ? ListView.builder(
-              itemCount: recentSearches.length,
-              padding: EdgeInsets.zero,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Row(
-                    children: [
-                      Text(
-                        recentSearches[index],
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      const Spacer(),
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () {
-                          removeSearchItem(index);
-                        },
-                      ),
-                    ],
-                  ),
-                  subtitle: const Divider(),
-                );
-              },
-            )
+                    itemCount: recentSearches.length,
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Row(
+                          children: [
+                            Text(
+                              recentSearches[index],
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              icon: const Icon(Icons.close),
+                              onPressed: () {
+                                removeSearchItem(index);
+                              },
+                            ),
+                          ],
+                        ),
+                        subtitle: const Divider(),
+                      );
+                    },
+                  )
                 : ListView.builder(
-              itemCount: searchResults.length,
-              padding: EdgeInsets.zero,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                    searchResults[index],
-                    style: Theme.of(context).textTheme.headlineSmall,
+                    itemCount: searchResults.length,
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(
+                          searchResults[index],
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        onTap: () {
+                          // Điều hướng đến trang sản phẩm nếu cần
+                        },
+                      );
+                    },
                   ),
-                  onTap: () {
-                    // Điều hướng đến trang sản phẩm nếu cần
-                  },
-                );
-              },
-            ),
           ),
         ],
       ),

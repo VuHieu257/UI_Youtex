@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/pages/screens/mall/register_mall/register_maiil_infor_exhibit.dart';
+import 'package:ui_youtex/pages/screens/mall/register_mall/register_maiil_infor_shop.dart';
+import 'package:ui_youtex/pages/screens/mall/register_mall/register_mail_infor_banking.dart';
+import 'package:ui_youtex/pages/screens/mall/register_mall/register_mall_infor.dart';
+import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_employee.dart';
+import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_view.dart';
+
+import '../../../../core/colors/color.dart';
+import '../../../widget_small/appbar/custome_appbar_circle.dart';
 
 class MallInfoScreen extends StatelessWidget {
   const MallInfoScreen({super.key});
@@ -6,48 +15,16 @@ class MallInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Thông tin Mall', style: TextStyle(color: Colors.blue)),
-        backgroundColor: Colors.white,
-        elevation: 4,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.blue),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MallInfoButton(
-              title: 'Thông tin doanh nghiệp',
-              onTap: () {
-                // Điều hướng đến trang chi tiết Thông tin doanh nghiệp
-              },
+            Padding(
+              padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+              child: cusAppBarCircle(context, title: "Thông tin Mall"),
             ),
-            const SizedBox(height: 8),
-            MallInfoButton(
-              title: 'Giấy tờ',
-              onTap: () {
-                // Điều hướng đến trang chi tiết Giấy tờ
-              },
-            ),
-            const SizedBox(height: 8),
-            MallInfoButton(
-              title: 'Ngân hàng',
-              onTap: () {
-                // Điều hướng đến trang chi tiết Ngân hàng
-              },
-            ),
-            const SizedBox(height: 8),
-            MallInfoButton(
-              title: 'Mô tả shop',
-              onTap: () {
-                // Điều hướng đến trang chi tiết Mô tả shop
-              },
-            ),
+            const Divider(),
+            const SettingsList(),
           ],
         ),
       ),
@@ -55,39 +32,150 @@ class MallInfoScreen extends StatelessWidget {
   }
 }
 
-class MallInfoButton extends StatelessWidget {
-  final String title;
+class WalletCard extends StatelessWidget {
+  const WalletCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      decoration: BoxDecoration(
+        color: Styles.colorF3F3F3,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.25),
+            blurRadius: 2,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: const Row(
+        children: [
+          Icon(Icons.account_balance_wallet_outlined,
+              color: Styles.nearPrimary, size: 28),
+          SizedBox(width: 12),
+          Text(
+            'Ví người bán',
+            style: TextStyle(
+                fontSize: 16,
+                color: Colors.black87,
+                fontWeight: FontWeight.bold),
+          ),
+          Spacer(),
+          Text(
+            '160.100.111 đ',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.blue,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SettingsList extends StatelessWidget {
+  const SettingsList({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          SettingsItem(
+            icon: Icons.bar_chart,
+            text: 'Thông tin doanh nghiệp',
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RegisterMallinforScreen()));
+            },
+          ),
+          SettingsItem(
+            icon: Icons.shopping_bag_outlined,
+            text: 'Giấy tờ',
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const RegisterMallinforExhibitiScreen()));
+            },
+          ),
+          SettingsItem(
+            icon: Icons.notifications_none,
+            text: 'Ngân hàng',
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const RegisterMallinforbankingScreen()));
+            },
+          ),
+          SettingsItem(
+            icon: Icons.people_outline,
+            text: 'Mô tả shop',
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const RegisterMallinforShopScreen()));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SettingsItem extends StatelessWidget {
+  final IconData icon;
+  final String text;
   final VoidCallback onTap;
 
-  const MallInfoButton({super.key, required this.title, required this.onTap});
+  const SettingsItem(
+      {super.key, required this.icon, required this.text, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
+          color: Styles.colorF3F3F3,
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+              color: Colors.black.withOpacity(0.25),
+              blurRadius: 3,
+              offset: const Offset(0, 4),
             ),
           ],
-          border: Border.all(color: Colors.blue, width: 1), // Khung màu xanh
         ),
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 16, color: Colors.black),
+            // Icon(icon, color: Styles.nearPrimary, size: 28),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                text,
+                style: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
-            const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 16),
+            const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 18),
           ],
         ),
       ),

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/core/assets.dart';
+import 'package:ui_youtex/core/colors/color.dart';
+import 'package:ui_youtex/pages/oder_manager/oder_manager_screen.dart';
+import 'package:ui_youtex/pages/screens/shopping_cart_page/shopping_cart_page.dart';
+import 'package:ui_youtex/pages/screens/voucher/Voucher_seller_add.dart';
 
-class VoucherScreen extends StatelessWidget {
-  const VoucherScreen({super.key});
+class VoucherSlScreen extends StatelessWidget {
+  const VoucherSlScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,42 +32,57 @@ class VoucherScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // Nút "Nhập mã voucher"
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.analytics_rounded, color: Colors.blue),
-                  label: const Text('Nhập Mã Voucher',
-                      style: TextStyle(color: Colors.black)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: const Color(0xffF3F3F3),
                       borderRadius: BorderRadius.circular(20),
-                      side: const BorderSide(color: Colors.grey),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: const Offset(0, 4),
+                          blurRadius: 4,
+                        ),
+                      ],
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    shadowColor: Colors.grey.withOpacity(0.5),
-                    elevation: 4, // Đổ bóng nhẹ
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Tìm kiếm',
+                        prefixIcon: Icon(Icons.search),
+                        border: InputBorder.none,
+                      ),
+                    ),
                   ),
                 ),
-                // Nút "Tìm thêm voucher"
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.airplane_ticket, color: Colors.blue),
-                  label: const Text('Tìm thêm voucher',
-                      style: TextStyle(color: Colors.black)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      side: const BorderSide(color: Colors.grey),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const FilterModal();
+                        },
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 8),
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.25),
+                                offset: const Offset(0, 4),
+                                blurRadius: 4)
+                          ],
+                          borderRadius: BorderRadius.circular(18),
+                          color: const Color(0xffF3F3F3)),
+                      child: const Icon(Icons.filter_alt_outlined),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    shadowColor: Colors.grey.withOpacity(0.5),
-                    elevation: 4, // Đổ bóng nhẹ
                   ),
                 ),
               ],
@@ -72,7 +92,7 @@ class VoucherScreen extends StatelessWidget {
           // Danh sách voucher
           Expanded(
             child: ListView.builder(
-              itemCount: 4, // Số lượng voucher
+              itemCount: 1, // Số lượng voucher
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(
@@ -139,12 +159,12 @@ class VoucherScreen extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 8),
                               backgroundColor:
-                                  Colors.blue, // Nền gradient cho nút
+                                  Colors.red, // Nền gradient cho nút
                               elevation: 3,
-                              shadowColor: Colors.blue.withOpacity(0.3),
+                              shadowColor: Colors.red.withOpacity(0.3),
                             ),
                             child: const Text(
-                              'Dùng sau',
+                              'Xóa',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
@@ -155,6 +175,54 @@ class VoucherScreen extends StatelessWidget {
                 );
               },
             ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFF218FF2), // Light blue
+                        Color(0xFF13538C), // Dark blue
+                      ],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => VoucheraddScreen()));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      child: Text(
+                        'Thêm mã giảm giá',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

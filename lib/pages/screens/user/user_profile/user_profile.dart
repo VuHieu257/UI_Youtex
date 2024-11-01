@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/pages/screens/mall/user_mail/profile_mall.dart';
 import 'package:ui_youtex/pages/screens/message/friend_list_scrren.dart';
 import 'package:ui_youtex/pages/screens/user/user_profile/user_profile_settings.dart';
+import 'package:ui_youtex/pages/screens/voucher/Voucher_seller.dart';
 import 'package:ui_youtex/pages/screens/voucher/voucher_view.dart';
 
 import '../../../../core/assets.dart';
@@ -23,32 +25,36 @@ class ProfileScreen extends StatelessWidget {
           children: [
             Container(
               margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-              height: context.height*0.22,
+              height: context.height * 0.22,
               decoration: const BoxDecoration(
-                // gradient: LinearGradient(
-                //   begin: Alignment.topLeft,
-                //   end: Alignment.bottomRight,
-                //   colors: [
-                //     Color(0xFF040435),
-                //     Color(0xFF040435),
-                //     Color(0xFF113A71),
-                //     Color(0xFF1E37C5),
-                //     Color(0xff3EB0FF),
-                //     Color(0xffDAF5FF),
-                //   ],
-                // ),
-                // image: DecorationImage(
-                //     image: AssetImage(Asset.bgImagePremium),fit: BoxFit.cover)
-              ),
+                  // gradient: LinearGradient(
+                  //   begin: Alignment.topLeft,
+                  //   end: Alignment.bottomRight,
+                  //   colors: [
+                  //     Color(0xFF040435),
+                  //     Color(0xFF040435),
+                  //     Color(0xFF113A71),
+                  //     Color(0xFF1E37C5),
+                  //     Color(0xff3EB0FF),
+                  //     Color(0xffDAF5FF),
+                  //   ],
+                  // ),
+                  // image: DecorationImage(
+                  //     image: AssetImage(Asset.bgImagePremium),fit: BoxFit.cover)
+                  ),
               child: Stack(
                 children: [
                   Positioned(
-                    top: 0,
+                      top: 0,
                       bottom: 0,
                       right: 0,
                       left: 0,
-                      child: Image.asset(Asset.bgImagePremium,fit: BoxFit.fitHeight,)),
-                    ///Back ground no sign
+                      child: Image.asset(
+                        Asset.bgImagePremium,
+                        fit: BoxFit.fitHeight,
+                      )),
+
+                  ///Back ground no sign
                   // Positioned(
                   //     top: 0,
                   //       bottom:14,
@@ -72,17 +78,18 @@ class ProfileScreen extends StatelessWidget {
                   //   ),
                   // ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10,bottom: 10,right: 10),
+                    padding:
+                        const EdgeInsets.only(left: 10, bottom: 10, right: 10),
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(right:10.0,top: 8),
+                          padding: const EdgeInsets.only(right: 10.0, top: 8),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               InkWell(
-                                onTap:() {
+                                onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -92,13 +99,18 @@ class ProfileScreen extends StatelessWidget {
                                 },
                                 child: CircleAvatar(
                                   radius: 20,
-                                  backgroundColor: Styles.greyLight.withOpacity(0.5),
-                                  child: const Icon(Icons.settings_suggest_outlined, color: Colors.white),
+                                  backgroundColor:
+                                      Styles.greyLight.withOpacity(0.5),
+                                  child: const Icon(
+                                      Icons.settings_suggest_outlined,
+                                      color: Colors.white),
                                 ),
                               ),
-                              const SizedBox(width: 10,),
+                              const SizedBox(
+                                width: 10,
+                              ),
                               InkWell(
-                                onTap:() {
+                                onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -108,8 +120,10 @@ class ProfileScreen extends StatelessWidget {
                                 },
                                 child: CircleAvatar(
                                   radius: 20,
-                                  backgroundColor: Styles.greyLight.withOpacity(0.5),
-                                  child:const Icon(Icons.notifications_none, color: Colors.white),
+                                  backgroundColor:
+                                      Styles.greyLight.withOpacity(0.5),
+                                  child: const Icon(Icons.notifications_none,
+                                      color: Colors.white),
                                 ),
                               ),
                             ],
@@ -141,8 +155,9 @@ class ProfileScreen extends StatelessWidget {
                               ),
                               child: const CircleAvatar(
                                   radius: 50,
-                              backgroundImage: AssetImage(Asset.bgImageAvatar,)
-                              ),
+                                  backgroundImage: AssetImage(
+                                    Asset.bgImageAvatar,
+                                  )),
                             ),
                             const SizedBox(width: 12),
                             Column(
@@ -151,51 +166,57 @@ class ProfileScreen extends StatelessWidget {
                                 Stack(
                                   children: [
                                     Container(
-                                      margin: const EdgeInsets.only(top:12,left: 10),
+                                      margin: const EdgeInsets.only(
+                                          top: 12, left: 10),
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 6, vertical: 2),
                                       decoration: BoxDecoration(
                                         color: Colors.amber,
-                                        borderRadius: BorderRadius.circular(8 ),
-                                          gradient: const LinearGradient(
-                                            begin: Alignment.bottomCenter,
-                                            end: Alignment.topRight,
-                                            colors: [
-                                              Color(0xFF338BFF),
-                                              Color(0xFF72CAEC),
-                                              Color(0xFFA8E0F6),
-                                            ],
-                                          ),
+                                        borderRadius: BorderRadius.circular(8),
+                                        gradient: const LinearGradient(
+                                          begin: Alignment.bottomCenter,
+                                          end: Alignment.topRight,
+                                          colors: [
+                                            Color(0xFF338BFF),
+                                            Color(0xFF72CAEC),
+                                            Color(0xFFA8E0F6),
+                                          ],
+                                        ),
                                       ),
                                       child: Text(
                                         'Premium',
-                                        style: context.theme.textTheme.titleSmall?.copyWith(
-                                          fontWeight: FontWeight.bold,color: Colors.white
-                                        ),
+                                        style: context
+                                            .theme.textTheme.titleSmall
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
                                       ),
                                     ),
                                     Positioned(
-                                      top: 0,
+                                        top: 0,
                                         left: 0,
-                                        child:Transform.rotate(
-                                            angle: 320 * 3.141592653589793 / 180,
-                                            child: Image.asset(Asset.iconPremium1,height: 20,width: 20,))),
+                                        child: Transform.rotate(
+                                            angle:
+                                                320 * 3.141592653589793 / 180,
+                                            child: Image.asset(
+                                              Asset.iconPremium1,
+                                              height: 20,
+                                              width: 20,
+                                            ))),
                                   ],
                                 ),
                                 const SizedBox(height: 4),
-                                Text(
-                                  'Nguyễn Văn A',
-                                  style:context.theme.textTheme.headlineMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white
-                                  )
-                                ),
+                                Text('Nguyễn Văn A',
+                                    style: context
+                                        .theme.textTheme.headlineMedium
+                                        ?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white)),
                                 const SizedBox(height: 4),
                                 Text(
                                   '@cute',
-                                  style: context.theme.textTheme.titleMedium?.copyWith(
-                                    color: Colors.white
-                                  ),
+                                  style: context.theme.textTheme.titleMedium
+                                      ?.copyWith(color: Colors.white),
                                 ),
                                 const SizedBox(width: 8),
                                 const SizedBox(height: 2),
@@ -203,25 +224,30 @@ class ProfileScreen extends StatelessWidget {
                                   children: [
                                     Text(
                                       'Member ID: 1234567890',
-                                      style: context.theme.textTheme.titleMedium?.copyWith(
-                                          color: Colors.white.withOpacity(0.71),
-                                        fontWeight: FontWeight.w300
-                                      ),
+                                      style: context.theme.textTheme.titleMedium
+                                          ?.copyWith(
+                                              color: Colors.white
+                                                  .withOpacity(0.71),
+                                              fontWeight: FontWeight.w300),
                                     ),
-                                    const SizedBox(width: 10,),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
                                     Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 2),
                                       decoration: BoxDecoration(
-                                        color: const Color(0xff4A85D4).withOpacity(0.78),
+                                        color: const Color(0xff4A85D4)
+                                            .withOpacity(0.78),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: Text(
                                         'Sao chép',
-                                        style: context.theme.textTheme.titleSmall?.copyWith(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold
-                                        ),
+                                        style: context
+                                            .theme.textTheme.titleSmall
+                                            ?.copyWith(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
                                       ),
                                     ),
                                   ],
@@ -237,7 +263,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only( bottom:10,left: 8,right: 8),
+              padding: const EdgeInsets.only(bottom: 10, left: 8, right: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -269,8 +295,7 @@ class ProfileScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  OrderManagementScreen()));
+                              builder: (context) => OrderManagementScreen()));
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -297,7 +322,7 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-           const Divider(),
+            const Divider(),
             // Menu Items
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -308,35 +333,51 @@ class ProfileScreen extends StatelessWidget {
                     Icons.local_offer,
                     'Mã giảm giá',
                     context: context,
-                    color:const Color(0xff113A71),
+                    color: const Color(0xff113A71),
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const VoucherScreen())),
                   ),
-                  _buildMenuItem(Icons.share, 'Chia sẻ App',
-                      context: context,color:const Color(0xff113A71),
+                  _buildMenuItem(
+                    Icons.local_offer,
+                    'Mã giảm giá sl',
+                    context: context,
+                    color: const Color(0xff113A71),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const VoucherSlScreen())),
+                  ),
+                  _buildMenuItem(
+                    Icons.share,
+                    'Chia sẻ App',
+                    context: context,
+                    color: const Color(0xff113A71),
                   ),
                   _buildMenuItem(
                     Icons.shopping_bag,
                     'Mall của tôi',
                     context: context,
-                    color:const Color(0xff113A71),
+                    color: const Color(0xff113A71),
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
+                            // builder: (context) => const UserMailDetailsShop())),
                             builder: (context) => const RegisterMallScreen())),
                   ),
-                  _buildMenuItem(Icons.language, 'Ngôn ngữ/Language',
-                      context: context,
-                      subtitle: 'Tiếng Việt',
-                    color:const Color(0xff113A71),
+                  _buildMenuItem(
+                    Icons.language,
+                    'Ngôn ngữ/Language',
+                    context: context,
+                    subtitle: 'Tiếng Việt',
+                    color: const Color(0xff113A71),
                   ),
                   _buildMenuItem(
                     Icons.people,
                     'Bạn bè',
                     context: context,
-                    color:const Color(0xff113A71),
+                    color: const Color(0xff113A71),
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -346,7 +387,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.symmetric( vertical:10,horizontal: 8),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
               child: Text(
                 'Hỗ trợ',
                 style: TextStyle(
@@ -358,9 +399,12 @@ class ProfileScreen extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: _buildMenuItem(Icons.headset_mic, 'Trung tâm trợ giúp',
-                  context: context,
-            color:const Color(0xff113A71),),
+              child: _buildMenuItem(
+                Icons.headset_mic,
+                'Trung tâm trợ giúp',
+                context: context,
+                color: const Color(0xff113A71),
+              ),
             ),
           ],
         ),
@@ -399,10 +443,9 @@ class ProfileScreen extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey[600],
-            fontWeight:FontWeight.bold
-          ),
+              fontSize: 14,
+              color: Colors.grey[600],
+              fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -417,7 +460,7 @@ class ProfileScreen extends StatelessWidget {
     Function()? onTap,
   }) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8 ),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         color: const Color(0xffF3F3F3),
         borderRadius: BorderRadius.circular(8),

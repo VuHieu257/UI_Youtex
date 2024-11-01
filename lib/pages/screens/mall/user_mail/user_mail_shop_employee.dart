@@ -4,6 +4,7 @@ import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/oder_manager/oder_manager_screen.dart';
+import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_employee_add.dart';
 
 class EmployeeListScreen extends StatelessWidget {
   const EmployeeListScreen({super.key});
@@ -72,33 +73,6 @@ class EmployeeListScreen extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 8),
-                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.black.withOpacity(0.25),
-                                offset: const Offset(0, 4),
-                                blurRadius: 4)
-                          ],
-                          borderRadius: BorderRadius.circular(18),
-                          color: const Color(0xffF3F3F3)),
-                      child: const Icon(Icons.group_add_outlined),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const FilterModal();
-                        },
-                      );
-                    },
-                    child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 5),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 8),
@@ -113,6 +87,47 @@ class EmployeeListScreen extends StatelessWidget {
                           color: const Color(0xffF3F3F3)),
                       child: const Icon(Icons.filter_alt_outlined),
                     ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => EmployeeaddScreen()));
+            },
+            child: Row(
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        offset: const Offset(0, 4),
+                        blurRadius: 4,
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(18),
+                    color: const Color(0xffF3F3F3),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.group_add_outlined),
+                      const SizedBox(
+                          width:
+                              8), // Add some spacing between the icon and text
+                      const Text(
+                        'Thêm nhân viên',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
