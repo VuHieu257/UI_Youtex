@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:typed_data';
 import 'package:photo_manager/photo_manager.dart';
 import 'dart:core';
@@ -18,6 +19,7 @@ import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassOtp_s
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPass_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/welcome.dart';
 import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
+import 'bloc/login_bloc/login_bloc.dart';
 import 'core/themes/theme_data.dart';
 import 'pages/splash/Welcome/Register/login_screen.dart';
 
@@ -33,7 +35,14 @@ void main() async {
           storageBucket: "mangxahoi-sotavn.appspot.com"
       )) :
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(
+      MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => LoginBloc(),
+            ),
+    
+          ], child: const MyApp()));
 }
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

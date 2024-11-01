@@ -47,11 +47,52 @@ class ProductDetailPage extends StatelessWidget {
               Container(
                 height: context.height*0.4,
                 width: context.width*0.9,
+                padding: const EdgeInsets.only(bottom: 10),
+                alignment: Alignment.bottomCenter,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(26),
                     // image: const DecorationImage(image: AssetImage(Asset.bgImageProduct,
                     image: DecorationImage(image: AssetImage( product['image'],
                     ),fit: BoxFit.cover,)
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 15,
+                      width: 15,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Styles.blue
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      height: 15,
+                      width: 15,
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Styles.light
+                      ),
+                    ),
+                    Container(
+                      height: 15,
+                      width: 15,
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Styles.light
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      height: 15,
+                      width: 15,
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Styles.light
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 16),
@@ -75,11 +116,11 @@ class ProductDetailPage extends StatelessWidget {
               // Ratings and Review Count
               Row(
                 children: [
-                  const Icon(Icons.star, color: Colors.orange, size: 16),
-                  const Icon(Icons.star, color: Colors.orange, size: 16),
-                  const Icon(Icons.star, color: Colors.orange, size: 16),
-                  const Icon(Icons.star, color: Colors.orange, size: 16),
-                  const Icon(Icons.star_half, color: Colors.orange, size: 16),
+                  const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+                  const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+                  const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+                  const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+                  const Icon(Icons.star_half, color:  Styles.nearPrimary, size: 16),
                   const SizedBox(width: 8),
                   Text('4.7 (143 Reviews)',
                     style: context.theme.textTheme.titleSmall?.copyWith(
@@ -90,8 +131,7 @@ class ProductDetailPage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-
-              // User Information
+              const Divider(),
               Row(
                 children: [
                   const CircleAvatar(
@@ -126,11 +166,14 @@ class ProductDetailPage extends StatelessWidget {
                   ),
                 ],
               ),
+              const Divider(),
               const SizedBox(height: 16),
               // Quantity Selector
               Row(
                 children: [
-                  Text('Số lượng',style: context.theme.textTheme.titleMedium?.copyWith(),),
+                  Text('Số lượng',style: context.theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),),
                   const Spacer(),
                   Container(
                     decoration: BoxDecoration(
@@ -166,13 +209,12 @@ class ProductDetailPage extends StatelessWidget {
                   customColor(context,"Xanh Lá Mạ",false),
                 ],
               ),
+             const SizedBox(height: 10,),
               Text(
                 'Giới thiệu về sản phẩm này'
                 ,style: context.theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold
-              ),
-                // style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
+              ),),
               const SizedBox(height: 8),
               Text(
                 'Máy khâu bao Kachi KC9-200-2 đang cầm tay được nhiều người ưa chuộng '
@@ -190,8 +232,59 @@ class ProductDetailPage extends StatelessWidget {
                 textAlign: TextAlign.justify,
               ),
               const SizedBox(height: 16),
-
-              // Add to Cart and Buy Now Buttons
+              Text(
+                'Đánh giá'
+                ,style: context.theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold
+              ),),
+             const Divider(),
+               Row(
+                children: [
+                  const CircleAvatar(
+                    backgroundImage: AssetImage(
+                        Asset.bgImageAvatar), // Replace with user's image
+                    radius: 15,
+                  ),
+                  const SizedBox(width: 10,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "user1"
+                        ,style: context.theme.textTheme.headlineSmall?.copyWith(),),
+                      const Row(children: [
+                        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+                        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+                        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+                        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+                        Icon(Icons.star_half, color:  Styles.nearPrimary, size: 16),
+                        SizedBox(width: 8),
+                      ],),
+                    ],
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left:10.0,top: 5),
+                child: Text(
+                  'Sản phẩm này oke nha'
+                  ,style: context.theme.textTheme.headlineSmall?.copyWith(),),
+              ),
+              Container(
+                height: 100,
+                width: 100,
+                margin: const EdgeInsets.only(left:10.0,top: 2,bottom: 2),
+                decoration: const BoxDecoration(
+                  image: DecorationImage(image:AssetImage(Asset.bgImageProduct))
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left:10.0,top: 5),
+                child: Text(
+                  '10/10/2024'
+                  ,style: context.theme.textTheme.headlineSmall?.copyWith(),),
+              ),
+              const Divider(),
             ],
           ),
         ),
@@ -242,9 +335,22 @@ class ProductDetailPage extends StatelessWidget {
   Container customColor(BuildContext context,String title,bool isCheck){
     return  Container(
       margin: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
-      padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 3),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(37),color:isCheck?Styles.blue:Styles.greyLight),
-      child: Text(title,style: context.theme.textTheme.titleSmall?.copyWith(color: isCheck?Styles.light:Styles.dark),),
+      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color:isCheck?Styles.blue:Styles.light,
+        boxShadow: [
+          BoxShadow(
+            offset:const Offset(0, 4),
+            color: Colors.black.withOpacity(0.25),
+            blurRadius: 4
+          )
+        ]
+      ),
+      child: Text(title,style: context.theme.textTheme.titleSmall?.copyWith(
+          color: isCheck?Styles.light:Styles.dark,
+          fontWeight: FontWeight.bold
+      ),),
     );
   }
 }

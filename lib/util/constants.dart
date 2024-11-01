@@ -4,17 +4,7 @@ class NetworkConstants {
   NetworkConstants._();
   static const String baseUrl =
   //server testing
-  "https://kimi-api.sharework-academy.com/api/";
-      
-  //server domain 
-  // "https://kitemite2.ataraxiashorin.com/api/";
-
-  //server customer
-  // "https://kitemite2.ataraxiashorin.com/api/";
-  static const String baseAuthUrl =
-      "https://kitemite2.ataraxiashorin.com/auth/";
-      // "https://kimi-api.sharework-academy.com/auth/";
-
+  "http://52.77.246.91/api/v1/";
 
   static const Duration receiveTimeout = Duration(milliseconds: 5000);
 
