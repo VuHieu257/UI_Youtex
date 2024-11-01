@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:meta/meta.dart';
 
 import '../../services/restful_api_provider.dart';
@@ -25,7 +26,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         password: event.password,
       );
 
-      final token = response.data['token'];
+      final token = response.data['access_token'];
       emit(LoginSuccess(token));
     } catch (error) {
       emit(LoginFailure(error.toString()));

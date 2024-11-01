@@ -54,7 +54,7 @@ class RestfulApiProviderImpl {
       final response = await dioClient.post(
         ApiPath.login,
         body: {
-          "userName": userName,
+          "email": userName,
           "password": password,
         },
         headers: {
@@ -67,8 +67,14 @@ class RestfulApiProviderImpl {
         throw Exception('Failed to login');
       }
     }on DioException catch (e) {
-      throw e.response?.data['message'];
-    } catch (error) {
+      if (e.response?.data != null && e.response?.data['errors'] != null) {
+        final errors = e.response?.data['errors'];
+        final emailError = errors['email']?[0];
+        throw emailError ?? 'Unknown error';
+      } else {
+        throw 'Lỗi không xác định';
+      }
+    }  catch (error) {
       if (kDebugMode) {
         print('Error login: $error');
       }
