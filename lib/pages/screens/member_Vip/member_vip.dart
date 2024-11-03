@@ -183,18 +183,18 @@ class _PremiumUnlockScreenState extends State<PremiumUnlockScreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
-        Switch(
-          value: switchValue,
-          activeColor: Colors.white,
-          activeTrackColor:Colors.blue,
-          inactiveTrackColor: Colors.white,
-          inactiveThumbColor: Colors.blue,
-          onChanged: (bool newValue) {
-            setState(() {
-              switchValue = newValue;
-            });
-          },
-        ),
+        // Switch(
+        //   value: switchValue,
+        //   activeColor: Colors.white,
+        //   activeTrackColor:Colors.blue,
+        //   inactiveTrackColor: Colors.white,
+        //   inactiveThumbColor: Colors.blue,
+        //   onChanged: (bool newValue) {
+        //     setState(() {
+        //       switchValue = newValue;
+        //     });
+        //   },
+        // ),
       ],
     );
   }

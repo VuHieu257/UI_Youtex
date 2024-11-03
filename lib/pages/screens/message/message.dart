@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
- import '../../../core/assets.dart';
+import '../../../core/assets.dart';
 import '../../../core/colors/color.dart';
 import '../../widget_small/widget.dart';
 import 'chat/chat_screen.dart';
+
 class MessagesScreen extends StatelessWidget {
   const MessagesScreen({super.key});
 
@@ -15,21 +16,26 @@ class MessagesScreen extends StatelessWidget {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     return Scaffold(
-      appBar:AppBar(
+      appBar: AppBar(
         backgroundColor: Styles.blue,
         centerTitle: true,
         leading: null,
         automaticallyImplyLeading: false,
-        title: Text('Message',style: context.theme.textTheme.headlineMedium?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: Styles.light,
-        ),),
+        title: Text(
+          'Message',
+          style: context.theme.textTheme.headlineMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: Styles.light,
+          ),
+        ),
         actions: [
           InkWell(
               // onTap: () => Navigator.pop(context),
-              onTap: () {
-              },
-              child: const Icon(Icons.edit_note_rounded,color: Styles.light,)),
+              onTap: () {},
+              child: const Icon(
+                Icons.edit_note_rounded,
+                color: Styles.light,
+              )),
         ],
       ),
       body: Column(
@@ -40,7 +46,7 @@ class MessagesScreen extends StatelessWidget {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                _buildOnlineFriend("Christopher",Asset.bgImageAvatar),
+                _buildOnlineFriend("Christopher", Asset.bgImageAvatar),
                 _buildOnlineFriend("Reese", Asset.bgImageAvatar),
                 _buildOnlineFriend("Jeffrey", Asset.bgImageAvatar),
                 _buildOnlineFriend("Laura", Asset.bgImageAvatar),
@@ -51,7 +57,7 @@ class MessagesScreen extends StatelessWidget {
             child: StreamBuilder(
               stream: firestore
                   .collection('chats')
-              // .where('participants', arrayContains: currentUserId)
+                  // .where('participants', arrayContains: currentUserId)
                   .where('participants', arrayContains: "user1")
                   .orderBy('lastTimestamp', descending: true)
                   .snapshots(),
@@ -63,7 +69,8 @@ class MessagesScreen extends StatelessWidget {
                 var chatDocs = snapshot.data!.docs;
 
                 if (chatDocs.isEmpty) {
-                  return const Center(child: Text("Không có cuộc trò chuyện nào"));
+                  return const Center(
+                      child: Text("Không có cuộc trò chuyện nào"));
                 }
                 return ListView.builder(
                   itemCount: chatDocs.length,
@@ -73,46 +80,56 @@ class MessagesScreen extends StatelessWidget {
 
                     // Lấy ra ID của người nhận (người không phải là user hiện tại)
                     // String otherUserId = participants.firstWhere((id) => id != currentUserId);
-                    String otherUserId = participants.firstWhere((id) => id != "user1");
+                    String otherUserId =
+                        participants.firstWhere((id) => id != "user1");
 
                     return FutureBuilder(
-                      future: firestore.collection('users').doc("user2").get(), // Lấy thông tin người nhận
-                      builder: (context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                      future: firestore.collection('users').doc("user2").get(),
+                      // Lấy thông tin người nhận
+                      builder: (context,
+                          AsyncSnapshot<DocumentSnapshot> userSnapshot) {
                         if (!userSnapshot.hasData) {
                           return const ListTile(title: Text("Loading..."));
                         }
-                        var userData = userSnapshot.data!.data() as Map<String, dynamic>;
+                        var userData =
+                            userSnapshot.data!.data() as Map<String, dynamic>;
                         String otherUserName = userData['name'];
-                        return
-                          Slidable(
+                        return Slidable(
                             key: const ValueKey(0),
                             endActionPane: ActionPane(
                               motion: const ScrollMotion(),
                               dismissible: DismissiblePane(onDismissed: () {}),
-                              children:   [
+                              children: [
                                 SlidableAction(
                                   flex: 1,
                                   // onPressed: (context) => customShowReportSheet(context),
-                                  onPressed: (context) => customShowBlockSheet(context),
+                                  onPressed: (context) =>
+                                      customShowBlockSheet(context),
                                   foregroundColor: Colors.black,
                                   icon: Icons.clear_all_sharp,
                                   // borderRadius: BorderRadius.all(Radius.circular(50)),
                                 ),
                                 SlidableAction(
-                                  onPressed: (context) => customShowBottomSheet(context),
+                                  onPressed: (context) =>
+                                      customShowBottomSheet(context),
                                   // backgroundColor: Color(0xFF0392CF),
                                   foregroundColor: Colors.black,
                                   icon: Icons.notifications,
                                 ),
                                 SlidableAction(
-                                  onPressed: (context) => doNothing(context,chat.id),
+                                  onPressed: (context) =>
+                                      doNothing(context, chat.id),
                                   // backgroundColor: Color(0xFF0392CF),
                                   foregroundColor: Colors.black,
                                   icon: Icons.delete,
                                 ),
                               ],
                             ),
-                            child:  _buildMessageTile(otherUserName, chat['lastMessage'], formatTimestamp(chat['lastTimestamp']),() {
+                            child: _buildMessageTile(
+                              otherUserName,
+                              chat['lastMessage'],
+                              formatTimestamp(chat['lastTimestamp']),
+                              () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -123,8 +140,8 @@ class MessagesScreen extends StatelessWidget {
                                     ),
                                   ),
                                 );
-                              },)
-                            );
+                              },
+                            ));
                       },
                     );
                   },
@@ -174,7 +191,9 @@ class MessagesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMessageTile(String name, String message, String time,void Function()? onTap, [String? unreadCount]) {
+  Widget _buildMessageTile(
+      String name, String message, String time, void Function()? onTap,
+      [String? unreadCount]) {
     return GestureDetector(
       onTap: onTap,
       child: ListTile(
@@ -182,7 +201,8 @@ class MessagesScreen extends StatelessWidget {
           children: [
             const CircleAvatar(
               radius: 25,
-              backgroundImage: AssetImage(Asset.bgImageAvatar), // Replace with your image assets
+              backgroundImage: AssetImage(
+                  Asset.bgImageAvatar), // Replace with your image assets
             ),
             const Positioned(
               top: 0,
@@ -203,21 +223,30 @@ class MessagesScreen extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 10,
                   backgroundColor: Colors.red,
-                  child: Text(unreadCount, style: const TextStyle(fontSize: 12, color: Colors.white)),
+                  child: Text(unreadCount,
+                      style:
+                          const TextStyle(fontSize: 12, color: Colors.white)),
                 ),
               )
           ],
         ),
         title: Text(name),
-        subtitle: Row(children: [
-          Text(message),
-          const SizedBox(width:10,),
-          Text(time, style: const TextStyle(fontSize: 12)),
-        ],),
+        subtitle: Row(
+          children: [
+            Text(message),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(time, style: const TextStyle(fontSize: 12)),
+          ],
+        ),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            unreadCount == null? const Icon(Icons.check_circle, color: Colors.grey, size: 16):const Icon(Icons.circle_outlined, color: Colors.grey, size: 16),
+            unreadCount == null
+                ? const Icon(Icons.check_circle, color: Colors.grey, size: 16)
+                : const Icon(Icons.circle_outlined,
+                    color: Colors.grey, size: 16),
           ],
         ),
       ),
@@ -225,7 +254,7 @@ class MessagesScreen extends StatelessWidget {
   }
 }
 
-Future<void> doNothing(BuildContext context,String messageId) async {
+Future<void> doNothing(BuildContext context, String messageId) async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   var messages = await firestore
       .collection('chats')

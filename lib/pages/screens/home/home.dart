@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
+import '../../../bloc/login_bloc/login_bloc.dart';
 import '../../../core/assets.dart';
 import 'detail_article.dart';
 class HomePage extends StatelessWidget {
@@ -9,6 +11,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final token = context.read<LoginBloc>().token;
     return Scaffold(
       appBar: AppBar(
         leading: null,
@@ -43,7 +46,7 @@ class HomePage extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+            Text(
                 'Doanh nghiệp nổi bật',
                 style: context.theme.textTheme.headlineLarge,
               ),

@@ -19,11 +19,12 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal:Styles.defaultPadding),
+      padding: EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
       child: TextFormField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-            filled: true, // Cho phép tô màu nền
+            filled: true,
+            // Cho phép tô màu nền
             fillColor: bg,
             // border: const OutlineInputBorder(
             //   borderRadius: BorderRadius.all(
@@ -50,21 +51,25 @@ class CustomTextFieldNoIcon extends StatelessWidget {
   final String label;
   final String hintText;
   final int? line;
+  final TextEditingController? controller;
 
   const CustomTextFieldNoIcon({
     super.key,
-    required this.hintText, required this.label, this.line,
+    required this.hintText,
+    required this.label,
+    this.line,
+    this.controller
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom:8.0),
+      padding: const EdgeInsets.only(bottom: 8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label,style: context.theme.textTheme.headlineSmall?.copyWith(
+          Text(label, style: context.theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w600
           ),),
           Container(
@@ -80,15 +85,16 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                 ]
             ),
             child: TextField(
-              maxLines: line??null,
+              controller:controller,
+              maxLines: line ?? null,
               decoration: InputDecoration(
                 hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
-                hintText:hintText,
+                hintText: hintText,
                 filled: true,
                 fillColor: Styles.colorF9F9F9,
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
-                    borderSide:BorderSide.none
+                    borderSide: BorderSide.none
                 ),
               ),
             ),
