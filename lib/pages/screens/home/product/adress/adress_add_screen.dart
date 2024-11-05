@@ -8,6 +8,7 @@ import '../../../../../core/assets.dart';
 import '../../../../../core/colors/color.dart';
 import '../../../../widget_small/custom_button.dart';
 import '../../../shopping_cart_page/payment_method_screen/payment_method_screen.dart';
+import 'adress_screen.dart';
 
 class AddAddressScreen extends StatefulWidget {
   const AddAddressScreen({super.key});
@@ -32,7 +33,13 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           backgroundColor: Styles.blue,
           centerTitle: true,
           leading: InkWell(
-              onTap: () => Navigator.pop(context),
+              onTap: () => Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AddressScreen(),
+                    ),
+                    (route) => false,
+                  ),
               child: const Icon(
                 Icons.arrow_back_ios,
                 color: Styles.light,
@@ -173,18 +180,20 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                       onTap: () {
                         context.read<AddressBloc>().add(AddAddress(Address(
                             id: 2,
-                            name: "Chưa nhập",
+                            name: addressAlias,
                             phone: "0812507355",
                             country: countryController.text,
                             province: provinceController.text,
                             ward: wardController.text,
                             address: detailedAddressController.text,
                             isDefault: isDefault == true ? 1 : 0)));
-                        // Navigator.push(
-                        // context,
-                        // MaterialPageRoute(
-                        //   builder: (context) => const PaymentMethodScreen(),
-                        // ));
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AddressScreen(),
+                          ),
+                          (route) => false,
+                        );
                       },
                       child: const SizedBox(
                         width: double.infinity,

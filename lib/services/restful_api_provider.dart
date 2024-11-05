@@ -10,14 +10,16 @@ abstract class ApiPath {
   static const String login = 'login';
   static const String logout = 'auth/logout';
   static const String customer = 'auth/profile';
+  static const String searchByPhone = 'buyer/user/';
   static const String register = 'register';
   static const String buyerAddress = 'buyer/addresses';
   static const String buyerDeleteAddress = 'buyer/address';
   static const String buyerAddAddress = 'buyer/address';
-
 }
+
 class RestfulApiProviderImpl {
   final DioClient dioClient = DioClient();
+
   ///******************************************************************
   ///---------------------------Auth-----------------------------------
   ///******************************************************************
@@ -33,15 +35,15 @@ class RestfulApiProviderImpl {
           "password": password,
         },
         headers: {
-            'Content-Type': 'application/json',
-          },
+          'Content-Type': 'application/json',
+        },
       );
       if (response.statusCode == 200) {
         return response;
       } else {
         throw Exception('Failed to login');
       }
-    }catch (error) {
+    } catch (error) {
       if (kDebugMode) {
         print('Error login: $error');
       }
@@ -76,6 +78,22 @@ class RestfulApiProviderImpl {
   ///******************************************************************
   ///---------------------------GET-----------------------------------
   ///******************************************************************
+  Future<Map<String, dynamic>> getUserByPhone({
+    required String token,
+    required String phone,
+  }) async {
+    try {
+      final response = await dioClient.get('${ApiPath.searchByPhone}/$phone',
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+        },
+      );
+      return response.data;
+    } catch (e) {
+      throw Exception('Failed to load user');
+    }
+  }
   Future profile({
     required String token,
   }) async {
@@ -112,7 +130,7 @@ class RestfulApiProviderImpl {
         },
       );
       if (response.statusCode == 200) {
-         List<Address> listAddresses = (response.data['addresses'] as List)
+        List<Address> listAddresses = (response.data['addresses'] as List)
             .map((json) => Address.fromJson(json))
             .toList();
         return listAddresses;
@@ -126,6 +144,7 @@ class RestfulApiProviderImpl {
       rethrow;
     }
   }
+
   ///******************************************************************
   ///---------------------------POST-----------------------------------
   ///******************************************************************
@@ -150,11 +169,7 @@ class RestfulApiProviderImpl {
           'Content-Type': 'application/json',
         },
       );
-      if (response.statusCode == 200) {
         return response;
-      } else {
-        throw Exception('Failed to login');
-      }
     } catch (error) {
       if (kDebugMode) {
         print('Error login: $error');
@@ -162,20 +177,21 @@ class RestfulApiProviderImpl {
       rethrow;
     }
   }
-  Future editProfile({
-    required String name,
-    required String gender,
-    required String birthday,
-    required String imagePath,
-    required String token
-  }) async {
+
+  Future editProfile(
+      {required String name,
+      required String gender,
+      required String birthday,
+      required String imagePath,
+      required String token}) async {
     try {
       FormData formData = FormData.fromMap({
         "name": name,
         "gender": gender,
         "birthday": birthday,
         "_method": "PUT",
-        "image": await MultipartFile.fromFile(imagePath, filename: "name_profile_image.jpg"),
+        "image": await MultipartFile.fromFile(imagePath,
+            filename: "name_profile_image.jpg"),
         // "image": imagePath,
       });
       final response = await dioClient.post(
@@ -213,17 +229,15 @@ class RestfulApiProviderImpl {
       final response = await dioClient.post(
         ApiPath.buyerAddAddress,
         body: {
-          {
-            "name": name,
-            "phone": phone,
-            "country": country,
-            "province": province,
-            "ward": ward,
-            "address": address,
-            "longitude": "20.1234567",
-            "latitude": "-20.1234567",
-            "is_default": true
-          }
+          "name": name,
+          "phone": phone,
+          "country": country,
+          "province": province,
+          "ward": ward,
+          "address": address,
+          "longitude": "20.1234567",
+          "latitude": "-20.1234567",
+          "is_default": true
         },
         headers: {
           'Content-Type': 'application/json',
@@ -253,7 +267,7 @@ class RestfulApiProviderImpl {
   }) async {
     try {
       final response = await dioClient.delete(
-       "${ApiPath.buyerDeleteAddress}/$id",
+        "${ApiPath.buyerDeleteAddress}/$id",
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token'

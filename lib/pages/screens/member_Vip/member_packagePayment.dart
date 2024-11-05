@@ -141,7 +141,7 @@ class MembershipPaymentScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Image.asset(Asset.iconVisa),
+                  Image.asset(Asset.iconVisa,height: 100,),
                   const SizedBox(
                     width: 5,
                   ),

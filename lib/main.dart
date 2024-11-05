@@ -1,17 +1,25 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:typed_data';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:ui_youtex/bloc/address_bloc/address_bloc.dart';
+import 'package:ui_youtex/core/size/size.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/pages/screens/friend_list_screen/friend_list_screen.dart';
 import 'dart:core';
 import 'package:ui_youtex/pages/screens/home/home.dart';
 import 'package:ui_youtex/pages/screens/home/product/adress/adress_screen.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_product.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_packagePayment.dart';
+import 'package:ui_youtex/pages/screens/message/chat/chat_screen.dart';
+import 'package:ui_youtex/pages/screens/message/friend_list_scrren.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen%20copy.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
@@ -19,11 +27,18 @@ import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/forgotPass_Scr
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassDone_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassOtp_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPass_screen.dart';
+import 'package:ui_youtex/pages/splash/Welcome/welcome.dart';
 import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
+import 'package:ui_youtex/services/restful_api_provider.dart';
+import 'package:ui_youtex/util/constants.dart';
+import 'package:ui_youtex/util/token_manager.dart';
 import 'bloc/edit_profile_bloc/edit_profile_bloc.dart';
 import 'bloc/login_bloc/login_bloc.dart';
-import 'bloc/register/register_bloc.dart';
+import 'bloc/register_bloc/register_bloc.dart';
+import 'bloc/search_user_bloc/fetch_user_by_phone_bloc.dart';
 import 'bloc/user_profile_bloc/user_profile_bloc.dart';
+import 'core/assets.dart';
+import 'core/colors/color.dart';
 import 'core/themes/theme_data.dart';
 import 'pages/splash/Welcome/Register/login_screen.dart';
 
@@ -52,7 +67,11 @@ void main() async {
       create: (context) => AddressBloc(),
     ),
     BlocProvider(
+      create: (context) => FetchUserByPhoneBloc(),
+    ),
+    BlocProvider(
       create: (context) => UserProfileBloc()..add(FetchProfileEvent()),
+      child: const CustomNavBar(),
     ),
   ], child: const MyApp()));
 }
@@ -68,12 +87,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       // home: const WelcomeApp(),
-      // home: const EditProfileScreen(),
-      // home: const CustomNavBar(),
-      home: const AddressScreen(),
+      // home: ChatListScreen(),
+      home: const CustomNavBar(),
+      // home: const UserScreen("0812507355"),
+      // home: const FriendListScreen(),
+      // home: const SearchUserByPhoneScreen(),
+      // home: const FriendListScreen(),
+      // home: const FriendsList(userId: '0812507355',),
       // home: const MessagesScreen(),
-      // home: const GridGallery(),
-      // home: MembershipPaymentScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
@@ -94,6 +115,419 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class SearchUserByPhoneScreen extends StatefulWidget {
+  const SearchUserByPhoneScreen({super.key});
+
+  @override
+  _SearchUserByPhoneScreenState createState() =>
+      _SearchUserByPhoneScreenState();
+}
+
+class _SearchUserByPhoneScreenState extends State<SearchUserByPhoneScreen> {
+  final TextEditingController _phoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Search User by Phone'),
+      ),
+      body: BlocBuilder<FetchUserByPhoneBloc, FetchUserByPhoneState>(
+          builder: (context, state) {
+        if (state is UserLoading) {
+          return const CircularProgressIndicator();
+        }
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: const Color(0xffF3F3F3),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.25),
+                            offset: const Offset(0, 4),
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: _phoneController,
+                        decoration: const InputDecoration(
+                          hintText: 'Tìm kiếm bạn bè',
+                          prefixIcon: Icon(Icons.search),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        final phone = _phoneController.text;
+                        if (phone.isNotEmpty) {
+                          // Dispatch the event to the bloc
+                          context
+                              .read<FetchUserByPhoneBloc>()
+                              .add(FetchUserByPhone(phone));
+                          FocusScope.of(context).unfocus(); // Hide the keyboard
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 8),
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(0.25),
+                                  offset: const Offset(0, 4),
+                                  blurRadius: 4)
+                            ],
+                            borderRadius: BorderRadius.circular(18),
+                            color: const Color(0xffF3F3F3)),
+                        child: const Icon(Icons.done_all),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              if (state is UserLoaded) ...{
+                FriendCard(id:state.id,name: state.name,img: "${state.img}",),
+              }
+            ],
+          ),
+        );
+      }),
+    );
+  }
+}
+final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+Future<void> addFriend(String userId, String friendId, String name, String? imgUrl) async {
+  try {
+    await _firestore.collection('users').doc(userId).collection('friends').doc(friendId).set({
+      'id': friendId,
+      'name': name,
+      'image': imgUrl,
+      'addedAt': FieldValue.serverTimestamp(),
+    });
+    if (kDebugMode) {
+      print("Friend added successfully");
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print("Failed to add friend: $e");
+    }
+  }
+}
+void createNewChat(BuildContext context,String currentUserId, String otherUserId) async {
+  final chatDocRef = _firestore.collection('chats').doc();
+
+  await chatDocRef.set({
+    'participants': [currentUserId, otherUserId],
+    'lastMessage': '',
+    'lastTimestamp': FieldValue.serverTimestamp(),
+  });
+
+  // Điều hướng tới màn hình chat
+  // Navigator.push(
+  //   context,
+  //   MaterialPageRoute(
+  //     builder: (context) => ChatScreen(
+  //       chatId: chatDocRef.id,
+  //       receiverId: otherUserId,
+  //       receiverName: 'Tên của người nhận',
+  //     ),
+  //   ),
+  // );
+}
+class FriendCard extends StatelessWidget {
+  final String name;
+  final String img;
+  final String id;
+  const FriendCard({super.key, required this.name, required this.img, required this.id});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Card(
+        color: const Color(0xffF3F3F3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Container(
+                height: context.width * 0.15,
+                width: context.width * 0.15,
+                decoration:  BoxDecoration(
+                  borderRadius:const BorderRadius.all(Radius.circular(12)),
+                  image: DecorationImage(
+                      image:img.isEmpty||img=="null"?const AssetImage(Asset.bgImageAvatar):NetworkImage("${NetworkConstants.urlImage}/storage/$img")as ImageProvider,
+                      fit: BoxFit.cover),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: context.theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'Member ID: $id',
+                      style: context.theme.textTheme.titleMedium?.copyWith(
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () => createNewChat(context,"0812507355","0812507356",),
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: const Offset(0, 4),
+                          blurRadius: 4),
+                    ],
+                    color: Styles.blue,
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: Text(
+                    'Nhắn tin',
+                    style: context.theme.textTheme.titleSmall?.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  addFriend("0812507355","0812507356",name,img);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: const Offset(0, 4),
+                          blurRadius: 4),
+                    ],
+                    color: const Color(0xffFF6B6B),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: Text(
+                    'Kết bạn',
+                    style: context.theme.textTheme.titleSmall?.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FriendsList extends StatelessWidget {
+  final String userId;
+
+  const FriendsList({super.key, required this.userId});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: getFriends(userId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+
+          if (snapshot.hasError) {
+            return Text("Error: ${snapshot.error}");
+          }
+
+          final friends = snapshot.data;
+
+          if (friends == null || friends.isEmpty) {
+            return const Text("No friends added yet.");
+          }
+
+          return ListView.builder(
+            itemCount: friends.length,
+            itemBuilder: (context, index) {
+              final friend = friends[index];
+              return ListTile(
+                leading: friend['image'] != null
+                    ? Image.network(friend['image'], width: 50, height: 50)
+                    : const Icon(Icons.person, size: 50),
+                title: Text(friend['name'] ?? 'Unknown'),
+                subtitle: Text(friend['addedAt'] != null
+                    ? 'Added on ${friend['addedAt'].toDate()}'
+                    : 'Date not available'),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Stream<List<Map<String, dynamic>>> getFriends(String userId) {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('friends')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+        .map((doc) => doc.data())
+        .toList());
+  }
+}
+
+
+class ChatListScreen extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  ChatListScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // String currentUserId = _auth.currentUser!.uid;
+    void createNewChat(String currentUserId, String otherUserId) async {
+      final chatDocRef = _firestore.collection('chats').doc();
+
+      await chatDocRef.set({
+        'participants': [currentUserId, otherUserId],
+        'lastMessage': '',
+        'lastTimestamp': FieldValue.serverTimestamp(),
+      });
+
+      // Điều hướng tới màn hình chat
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => ChatScreen(
+      //       chatId: chatDocRef.id,
+      //       receiverId: otherUserId,
+      //       receiverName: 'Tên của người nhận',
+      //     ),
+      //   ),
+      // );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Các cuộc trò chuyện"),
+        actions: [
+          InkWell(
+              onTap: () {
+                createNewChat("user1", "user2");
+              },
+              child: const Icon(Icons.add_box_outlined))
+        ],
+      ),
+      body: StreamBuilder(
+        stream: _firestore
+            .collection('chats')
+            // .where('participants', arrayContains: currentUserId)
+            .where('participants', arrayContains: "user1")
+            .orderBy('lastTimestamp', descending: true)
+            .snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          var chatDocs = snapshot.data!.docs;
+
+          if (chatDocs.isEmpty) {
+            return const Center(child: Text("Không có cuộc trò chuyện nào"));
+          }
+
+          return ListView.builder(
+            itemCount: chatDocs.length,
+            itemBuilder: (context, index) {
+              var chat = chatDocs[index];
+              var participants = chat['participants'] as List;
+
+              // Lấy ra ID của người nhận (người không phải là user hiện tại)
+              // String otherUserId = participants.firstWhere((id) => id != currentUserId);
+              String otherUserId =
+                  participants.firstWhere((id) => id != "user1");
+
+              return FutureBuilder(
+                future: _firestore.collection('users').doc("user2").get(),
+                // Lấy thông tin người nhận
+                builder:
+                    (context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                  if (!userSnapshot.hasData) {
+                    return const ListTile(title: Text("Loading..."));
+                  }
+
+                  var userData =
+                      userSnapshot.data!.data() as Map<String, dynamic>;
+                  String otherUserName = userData['name'];
+
+                  return ListTile(
+                    title: Text(otherUserName),
+                    subtitle: Text(chat['lastMessage']),
+                    onTap: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => ChatScreen(
+                      //       chatId: chat.id,
+                      //       receiverId: otherUserId,
+                      //       receiverName: otherUserName,
+                      //     ),
+                      //   ),
+                      // );
+                    },
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
 // class AddressScreen extends StatelessWidget {
 //   const AddressScreen({super.key});
 //

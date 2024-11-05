@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:ui_youtex/bloc/register/register_state.dart';
+import 'package:ui_youtex/bloc/register_bloc/register_state.dart';
 
 import '../../services/restful_api_provider.dart';
 

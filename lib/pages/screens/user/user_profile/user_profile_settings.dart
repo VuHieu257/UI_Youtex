@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/util/show_snack_bar.dart';
 
 import '../../../../bloc/login_bloc/login_bloc.dart';
+import '../../../widget_small/bottom_navigation/bottom_navigation.dart';
 import '../../home/product/adress/adress_screen.dart';
+import '../../member_Vip/member_packagePayment.dart';
 import '../edit_profile/edit_profile_screen.dart';
 
 class AccountSettingsScreen extends StatelessWidget {
@@ -18,8 +20,8 @@ class AccountSettingsScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
-            // Handle back action
+            // Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>const CustomNavBar(),));
           },
         ),
         title: const Text(
@@ -55,7 +57,9 @@ class AccountSettingsScreen extends StatelessWidget {
                     ));
               }),
               _buildSettingItem(
-                  'Tài khoản/Thẻ ngân hàng', Icons.credit_card, () {}),
+                  'Tài khoản/Thẻ ngân hàng', Icons.credit_card, () {
+                Navigator.pushNamed(context, '/PaymentMethodPayScreen');
+              }),
               _buildSettingItem('Quốc gia: 🇻🇳 Vietnam', Icons.flag, () {}),
               _buildSettingItem(
                   'Cài đặt thông báo', Icons.notifications, () {}),

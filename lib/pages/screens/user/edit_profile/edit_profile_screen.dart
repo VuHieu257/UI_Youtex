@@ -123,6 +123,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         listener: (context, state) {
           if (state is EditProfileSuccess) {
             SnackBarUtils.showSuccessSnackBar(context, message: state.message);
+            _nameController.clear();
+            _birthdayController.clear();
+            Navigator.pop(context);
             setState(() {
               nameError="null";
               genderError="null";
@@ -149,12 +152,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _selectedImagePath!=null
-                        ? Image.file(
-                      File(_selectedImagePath!),
-                      height: 100,
-                      width: 100,
-                      fit: BoxFit.cover,
+                        ?CircleAvatar(
+                      radius: 50,
+                      backgroundImage: FileImage(File(_selectedImagePath!)),
                     )
+                    // Image.file(
+                    //   ,
+                    //   height: 100,
+                    //   width: 100,
+                    //   fit: BoxFit.cover,
+                    // )
                         : Container(
                       height: 100,
                       width: 100,

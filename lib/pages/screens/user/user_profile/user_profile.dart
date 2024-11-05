@@ -11,6 +11,7 @@ import 'package:ui_youtex/pages/screens/voucher/voucher_view.dart';
 import '../../../../bloc/user_profile_bloc/user_profile_bloc.dart';
 import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
+import '../../../../util/constants.dart';
 import '../../../oder_manager/oder_manager_view.dart';
 import '../../mall/register_mall/register_mall.dart';
 
@@ -90,11 +91,12 @@ class ProfileScreen extends StatelessWidget {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      Navigator.push(
+                                      Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 const AccountSettingsScreen()),
+                                        (route) => false,
                                       );
                                     },
                                     child: CircleAvatar(
@@ -156,13 +158,14 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                   child: CircleAvatar(
                                       radius: 50,
-                                      backgroundImage:
-                                          user.image?.isEmpty ?? true
-                                              ? const AssetImage(
-                                                  Asset.bgImageAvatar,
-                                                )
-                                              : NetworkImage("${user.image}")
-                                                  as ImageProvider),
+                                      backgroundImage: user.image?.isEmpty ??
+                                              true
+                                          ? const AssetImage(
+                                              Asset.bgImageAvatar,
+                                            )
+                                          : NetworkImage(
+                                                  "${NetworkConstants.urlImage}storage/${user.image}")
+                                              as ImageProvider),
                                 ),
                                 const SizedBox(width: 12),
                                 Column(
@@ -398,7 +401,7 @@ class ProfileScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    const FriendListScreen())),
+                                    FriendListScreen(currentUserId: user.phone,))),
                       ),
                     ],
                   ),
@@ -515,8 +518,10 @@ class ProfileScreen extends StatelessWidget {
 }
 
 String convertToUnaccentedNoSpace(String input) {
-  const accents = 'áàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ';
-  const unaccented = 'aaaaaaaaaaaaaaaaaeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyyd';
+  const accents =
+      'áàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ';
+  const unaccented =
+      'aaaaaaaaaaaaaaaaaeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyyd';
 
   String result = '';
   for (int i = 0; i < input.length; i++) {

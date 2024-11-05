@@ -31,7 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Scaffold(
         body: BlocListener<LoginBloc, LoginState>(
           listener: (context, state) {
-
             if (state is LoginSuccess) {
               Navigator.pushNamed(
                   context,
