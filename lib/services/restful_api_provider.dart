@@ -15,7 +15,29 @@ abstract class ApiPath {
   static const String buyerAddress = 'buyer/addresses';
   static const String buyerDeleteAddress = 'buyer/address';
   static const String buyerAddAddress = 'buyer/address';
+  static const String paymentMethods = 'buyer/payment-methods';
+  static const String bankAccount = 'buyer/bank-account';
+  static const String creditCard = 'buyer/credit-card';
 }
+// buyer/payment-methods
+// api/v1/buyer/bank-account
+//{
+//   "bank": "Sacombank",
+//   "branch": "Tân Phú",
+//   "number": "1234567811",
+//   "card_holder": "Lư Hữu Đức",
+//   "is_default": true
+// }
+//pi/v1/buyer/credit-card
+//{
+//     "type": "visa",
+//     "number": "1111111111111112",
+//     "expiration": "29/12",
+//     "cvv": "123",
+//     "card_holder": "Lư Hữu Đức",
+//     "address": "Tân Phú",
+//     "postal_code": "720000"
+// }
 
 class RestfulApiProviderImpl {
   final DioClient dioClient = DioClient();
@@ -78,15 +100,15 @@ class RestfulApiProviderImpl {
   ///******************************************************************
   ///---------------------------GET-----------------------------------
   ///******************************************************************
-  Future<Map<String, dynamic>> getUserByPhone({
+  Future<Map<String, dynamic>> getAllPaymentMethods({
     required String token,
-    required String phone,
   }) async {
     try {
-      final response = await dioClient.get('${ApiPath.searchByPhone}/$phone',
+      final response = await dioClient.get(
+        ApiPath.paymentMethods,
         headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token'
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
         },
       );
       return response.data;
@@ -94,6 +116,25 @@ class RestfulApiProviderImpl {
       throw Exception('Failed to load user');
     }
   }
+
+  Future<Map<String, dynamic>> getUserByPhone({
+    required String token,
+    required String phone,
+  }) async {
+    try {
+      final response = await dioClient.get(
+        '${ApiPath.searchByPhone}/$phone',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+      );
+      return response.data;
+    } catch (e) {
+      throw Exception('Failed to load user');
+    }
+  }
+
   Future profile({
     required String token,
   }) async {
@@ -148,6 +189,74 @@ class RestfulApiProviderImpl {
   ///******************************************************************
   ///---------------------------POST-----------------------------------
   ///******************************************************************
+  Future addBankAccount({
+    required String token,
+    required String bank,
+    required String branch,
+    required String number,
+    required String cardHolder,
+    required String isDefault,
+  }) async {
+    try {
+      final response = await dioClient.post(
+        ApiPath.bankAccount,
+        body: {
+          "bank": bank,
+          "branch": branch,
+          "number": number,
+          "card_holder": cardHolder,
+          "is_default": isDefault
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+      );
+      return response;
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error login: $error');
+      }
+      rethrow;
+    }
+  }
+
+  Future addCreditCard({
+    required String token,
+    required String type,
+    required String number,
+    required String expiration,
+    required String cvv,
+    required String cardHolder,
+    required String address,
+    required String postalCode,
+  }) async {
+    try {
+      final response = await dioClient.post(
+        ApiPath.creditCard,
+        body: {
+          "type": type,
+          "number": number,
+          "expiration": expiration,
+          "cvv": cvv,
+          "card_holder": cardHolder,
+          "address": address,
+          "postal_code": postalCode
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+      );
+      return response;
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error login: $error');
+      }
+      rethrow;
+    }
+  }
+
   Future register({
     required String name,
     required String phone,
@@ -169,7 +278,7 @@ class RestfulApiProviderImpl {
           'Content-Type': 'application/json',
         },
       );
-        return response;
+      return response;
     } catch (error) {
       if (kDebugMode) {
         print('Error login: $error');
