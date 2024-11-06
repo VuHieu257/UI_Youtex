@@ -364,7 +364,8 @@ class ProfileScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             // builder: (context) => const UserMailDetailsShop())),
-                            builder: (context) => const RegisterMallScreen())),
+                            builder: (context) =>
+                                const RegisterMallDetailScreen())),
                   ),
                   _buildMenuItem(
                     Icons.language,

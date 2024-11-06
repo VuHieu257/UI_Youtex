@@ -13,13 +13,14 @@ class CustomTextField extends StatelessWidget {
     super.key,
     required this.hintText,
     required this.prefixIcon,
-    required this.bg, required this.colorText,
+    required this.bg,
+    required this.colorText,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal:Styles.defaultPadding),
+      padding: EdgeInsets.symmetric(horizontal: Styles.defaultPadding),
       child: TextFormField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
@@ -40,8 +41,8 @@ class CustomTextField extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17,
             ),
-            prefixIcon: prefixIcon
-        ),),
+            prefixIcon: prefixIcon),
+      ),
     );
   }
 }
@@ -53,20 +54,24 @@ class CustomTextFieldNoIcon extends StatelessWidget {
 
   const CustomTextFieldNoIcon({
     super.key,
-    required this.hintText, required this.label, this.line,
+    required this.hintText,
+    required this.label,
+    this.line,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom:8.0),
+      padding: const EdgeInsets.only(bottom: 8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label,style: context.theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w600
-          ),),
+          Text(
+            label,
+            style: context.theme.textTheme.headlineSmall
+                ?.copyWith(fontWeight: FontWeight.w600),
+          ),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             decoration: const BoxDecoration(
@@ -75,21 +80,18 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                   BoxShadow(
                       color: Colors.black26,
                       offset: Offset(0, 4),
-                      blurRadius: 4
-                  )
-                ]
-            ),
+                      blurRadius: 4)
+                ]),
             child: TextField(
-              maxLines: line??null,
+              maxLines: line ?? null,
               decoration: InputDecoration(
                 hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
-                hintText:hintText,
+                hintText: hintText,
                 filled: true,
                 fillColor: Styles.colorF9F9F9,
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
-                    borderSide:BorderSide.none
-                ),
+                    borderSide: BorderSide.none),
               ),
             ),
           ),

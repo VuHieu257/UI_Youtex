@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_event.dart';
+import 'package:ui_youtex/core/model/store.info.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_employee.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_view.dart';
+import 'package:ui_youtex/services/restful_api_provider.dart';
 
 import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
@@ -15,20 +20,38 @@ class UserMailDetailsShop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body:  SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment:CrossAxisAlignment.start,
-          children: [
-            UserInfoHeader(),
-            WalletCard(),
-            Divider(),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal:8.0),
-              child: Text("Cài đặt",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-            ),
-            SettingsList(),
-          ],
+    return BlocProvider(
+      create: (context) => SellerRegisterBloc(
+        restfulApiProvider: RestfulApiProviderImpl(),
+      )..add(const LoadStoreInfo()),
+      child: Scaffold(
+        body: BlocBuilder<SellerRegisterBloc, SellerRegisterState>(
+          builder: (context, state) {
+            if (state is SellerRegisterLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is SellerRegisterLoaded) {
+              return Column(
+                children: [
+                  UserStorageHeader(storeInfo: state.storeInfo),
+                  WalletCard(),
+                  const Divider(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: const Text(
+                      "Cài đặt",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  ),
+                  SettingsList(),
+                ],
+              );
+            } else if (state is SellerRegisterFailure) {
+              return Center(child: Text('Lỗi: ${state.error}'));
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
         ),
       ),
     );
@@ -41,10 +64,8 @@ class WalletCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(
-          horizontal: 16, vertical: 12),
-      padding: const EdgeInsets.symmetric(
-          horizontal: 16, vertical: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
       decoration: BoxDecoration(
         color: Styles.colorF3F3F3,
         borderRadius: BorderRadius.circular(12), // Tăng độ bo tròn
@@ -64,14 +85,13 @@ class WalletCard extends StatelessWidget {
           Text(
             'Ví người bán',
             style: TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
-              fontWeight: FontWeight.bold
-            ),
+                fontSize: 16,
+                color: Colors.black87,
+                fontWeight: FontWeight.bold),
           ),
           Spacer(),
           Text(
-            '160.100.111 đ',
+            '0 đ',
             style: TextStyle(
               fontSize: 16, // Tăng font chữ
               color: Colors.blue,
@@ -135,7 +155,8 @@ class SettingsItem extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
 
-  const SettingsItem({super.key, required this.icon, required this.text, required this.onTap});
+  const SettingsItem(
+      {super.key, required this.icon, required this.text, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -143,17 +164,19 @@ class SettingsItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-        color: Styles.colorF3F3F3,
-        borderRadius: BorderRadius.circular(12), // Tăng độ bo tròn
-        boxShadow: [
-          BoxShadow(
-          color: Colors.black.withOpacity(0.25),
-          blurRadius: 3,
-          offset: const Offset(0, 4),
-          ),
-        ],),
+          color: Styles.colorF3F3F3,
+          borderRadius: BorderRadius.circular(12), // Tăng độ bo tròn
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.25),
+              blurRadius: 3,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
         margin: const EdgeInsets.symmetric(vertical: 10),
-        padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 12), // Tăng padding
+        padding: const EdgeInsets.symmetric(
+            vertical: 16, horizontal: 12), // Tăng padding
         child: Row(
           children: [
             Icon(icon, color: Styles.nearPrimary, size: 28),
@@ -162,13 +185,168 @@ class SettingsItem extends StatelessWidget {
               child: Text(
                 text,
                 style: const TextStyle(
-                    fontSize: 18, color: Colors.black87,fontWeight: FontWeight.bold), // Tăng font chữ
+                    fontSize: 18,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold), // Tăng font chữ
               ),
             ),
             const Icon(Icons.arrow_forward_ios,
                 color: Colors.grey, size: 18), // Tăng kích thước mũi tên
           ],
         ),
+      ),
+    );
+  }
+}
+
+class UserStorageHeader extends StatelessWidget {
+  final StoreInfo storeInfo; // Nhận dữ liệu từ StoreInfo
+  const UserStorageHeader({super.key, required this.storeInfo});
+  @override
+  Widget build(BuildContext context) {
+    return cusAppBarBackground(
+      context,
+      widget: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0, top: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Styles.colorF9F9F9.withOpacity(0.5)),
+                    child: const Icon(
+                      Icons.arrow_back,
+                      color: Styles.light,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MallInfoScreen()),
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Styles.greyLight.withOpacity(0.5),
+                    child: const Icon(Icons.settings_suggest_outlined,
+                        color: Colors.white),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MallInfoScreen()),
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Styles.greyLight.withOpacity(0.5),
+                    child: const Icon(Icons.notifications_none,
+                        color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            children: [
+              Container(
+                width: 100,
+                height: 100,
+                padding: const EdgeInsets.all(3),
+                margin: const EdgeInsets.only(left: 30),
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xff3EB0FF),
+                      Color(0xFF113A71),
+                      Color(0xff3EB0FF),
+                      Color(0xff3EB0FF),
+                      Color(0xff3EB0FF),
+                      Color(0xFF113A71),
+                      Color(0xff3EB0FF),
+                      Color(0xffDAF5FF),
+                    ],
+                  ),
+                ),
+                child: const CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage(
+                      Asset.bgImageAvatar,
+                    )),
+              ),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(storeInfo.name,
+                      style: context.theme.textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold, color: Colors.white)),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 100,
+                        child: Text(
+                          'Phone',
+                          style: context.theme.textTheme.titleMedium?.copyWith(
+                              color: Colors.white, fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      Text(
+                        storeInfo.phone,
+                        style: context.theme.textTheme.titleMedium?.copyWith(
+                            color: Styles.color73FF83,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 8),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 100,
+                        child: Text(
+                          'Mail\t\t',
+                          style: context.theme.textTheme.titleMedium?.copyWith(
+                              color: Colors.white, fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      Text(
+                        storeInfo.email,
+                        style: context.theme.textTheme.titleMedium?.copyWith(
+                            color: Styles.colorFF6B6B,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
