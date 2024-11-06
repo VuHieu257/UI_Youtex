@@ -6,29 +6,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:typed_data';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:ui_youtex/bloc/address_bloc/address_bloc.dart';
 import 'package:ui_youtex/bloc/forgot_password_bloc/forgot_password_bloc.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
-import 'package:ui_youtex/pages/screens/friend_list_screen/friend_list_screen.dart';
-import 'package:ui_youtex/bloc_seller/bloc/bloc_seller_address_bloc.dart';
-import 'package:ui_youtex/bloc_seller/seller_register_identification_bloc/seller_register_identification_bloc_bloc.dart';
-import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_event.dart';
-import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_register_product_bloc_bloc.dart';
-import 'package:ui_youtex/bloc_seller/seller_register_tax_get_bloc/seller_register_tax_get_bloc_bloc.dart';
-import 'package:ui_youtex/core/model/store.info.dart';
-
 import 'dart:core';
 import 'package:ui_youtex/pages/screens/home/home.dart';
-import 'package:ui_youtex/pages/screens/home/product/adress/adress_screen.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_product.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_packagePayment.dart';
-import 'package:ui_youtex/pages/screens/message/chat/chat_screen.dart';
-import 'package:ui_youtex/pages/screens/message/friend_list_scrren.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen%20copy.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
@@ -40,9 +27,7 @@ import 'package:ui_youtex/pages/splash/Welcome/welcome.dart';
 import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
 import 'package:ui_youtex/util/constants.dart';
-import 'package:ui_youtex/util/token_manager.dart';
 import 'bloc/edit_profile_bloc/edit_profile_bloc.dart';
-import 'package:ui_youtex/services/restful_api_provider.dart';
 import 'bloc/login_bloc/login_bloc.dart';
 import 'bloc/register_bloc/register_bloc.dart';
 import 'bloc/search_user_bloc/fetch_user_by_phone_bloc.dart';
@@ -90,6 +75,7 @@ void main() async {
     BlocProvider(
     create: (context) => SellerRegisterBloc(
       restfulApiProvider: RestfulApiProviderImpl(),
+    ),
     ),
   ], child: const MyApp()));
 }

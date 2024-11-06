@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_event.dart';
 import 'package:ui_youtex/core/model/store.info.dart';
-import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_employee.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_view.dart';
@@ -12,7 +11,6 @@ import 'package:ui_youtex/services/restful_api_provider.dart';
 import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/appbar/cus_appbar_background.dart';
-import '../../user/user_profile/user_profile_settings.dart';
 import '../user_mail_settings/mail_infor_view.dart';
 
 class UserMailDetailsShop extends StatelessWidget {
@@ -33,17 +31,17 @@ class UserMailDetailsShop extends StatelessWidget {
               return Column(
                 children: [
                   UserStorageHeader(storeInfo: state.storeInfo),
-                  WalletCard(),
+                  const WalletCard(),
                   const Divider(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: const Text(
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
                       "Cài đặt",
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                   ),
-                  SettingsList(),
+                  const SettingsList(),
                 ],
               );
             } else if (state is SellerRegisterFailure) {

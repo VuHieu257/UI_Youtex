@@ -10,12 +10,15 @@ class SellerRegisterBankAccountButtonPressed
     extends SellerRegisterBankAccountBlocEvent {
   // Trong SellerRegisterBankAccountButtonPressed
   void validateInput() {
-    if (bankName.isEmpty)
+    if (bankName.isEmpty) {
       throw ArgumentError('Tên ngân hàng không được để trống');
-    if (accountNumber.isEmpty)
+    }
+    if (accountNumber.isEmpty) {
       throw ArgumentError('Số tài khoản không được để trống');
-    if (cardHolder.isEmpty)
+    }
+    if (cardHolder.isEmpty) {
       throw ArgumentError('Tên chủ thẻ không được để trống');
+    }
   }
 
   final String bankName;

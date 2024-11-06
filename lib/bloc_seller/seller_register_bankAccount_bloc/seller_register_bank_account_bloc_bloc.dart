@@ -1,9 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:ui_youtex/bloc_seller/seller_register_bankAccount_bloc/seller_register_bank_account_bloc_bloc.dart';
 import 'package:ui_youtex/core/model/bank.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
-import 'package:http/http.dart' as http;
 
 part 'seller_register_bank_account_bloc_event.dart';
 part 'seller_register_bank_account_bloc_state.dart';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
-import 'package:ui_youtex/pages/screens/mall/user_mail/profile_mall.dart';
 import 'package:ui_youtex/pages/screens/message/friend_list_scrren.dart';
 import 'package:ui_youtex/pages/screens/user/user_profile/user_profile_settings.dart';
 import 'package:ui_youtex/pages/screens/voucher/Voucher_seller.dart';
@@ -383,7 +382,7 @@ class ProfileScreen extends StatelessWidget {
                             MaterialPageRoute(
                                 // builder: (context) => const UserMailDetailsShop())),
                                 builder: (context) =>
-                                    const RegisterMallScreen())),
+                                    const RegisterMallDetailScreen())),
                       ),
                       _buildMenuItem(
                         Icons.language,

@@ -1,18 +1,16 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_identification_bloc/seller_register_identification_bloc_bloc.dart';
-import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_event.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_register_product_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_tax_get_bloc/seller_register_tax_get_bloc_bloc.dart';
 import 'package:ui_youtex/core/model/bank.dart';
-import 'package:ui_youtex/core/model/shipping.dart';
 import 'package:ui_youtex/core/model/store.info.dart';
 
-import '../bloc_seller/seller_register_bloc/seller_register_bloc.dart';
 import '../core/base/base_dio.dart';
 import '../model/address.dart';
+import '../util/constants.dart';
 
 abstract class ApiPath {
   ApiPath._();
@@ -29,6 +27,7 @@ abstract class ApiPath {
   static const String paymentMethods = 'buyer/payment-methods';
   static const String bankAccount = 'buyer/bank-account';
   static const String creditCard = 'buyer/credit-card';
+
 // buyer/payment-methods
 // api/v1/buyer/bank-account
 //{
@@ -49,22 +48,6 @@ abstract class ApiPath {
 //     "postal_code": "720000"
 // }
 
-  static const String productStore = 'v2/product/store';
-  static const String productWarehouse = 'v2/product/ware-house';
-  static const String product = 'v2/product';
-  static const String historyProduct = 'v2/history-update-product';
-  static const String productOfWareHouse = 'v2/product/storeId-wareHouseId';
-
-  static const String places = 'place/autocomplete/json';
-  static const String searchWareHouse = 'v2/ware-house/warehousesName';
-  static const String wareHouseNearby = 'v2/ware-house/nearby';
-  static const String wareHouse = 'v2/ware-house';
-
-  static const String order = 'v1/order';
-  static const String shoppingCart = 'v1/shopping-cart';
-  static const String payment = 'create-payment-intent';
-  static const String cartCustomer = 'v1/shopping-cart/customer';
-
   ///*******************************MALL***********************************
   ///*******************************POST***********************************
 
@@ -74,6 +57,7 @@ abstract class ApiPath {
   static const String sellerTaxPost = 'seller/tax';
   static const String selleridentificationPost = 'seller/identification';
   static const String sellershippingunitsPost = 'seller/shipping-unit';
+
   // static const String sellerpaymentmethodssPost = 'seller/payment-methods';
   // static const String sellerswalletPost = 'seller/shipping-wallet';
   static const String sellerscategoriesPost = 'seller/category';
@@ -411,7 +395,7 @@ class RestfulApiProviderImpl {
       });
 
       if (kDebugMode) {
-        print('Request URL: ${NetworkConstants.baseUrl}${ApiPath.store}');
+        // print('Request URL: ${NetworkConstants.baseUrl}${ApiPath.store}');
         print('Request Data: ${formData.fields}');
       }
 
@@ -505,7 +489,7 @@ class RestfulApiProviderImpl {
           final storeData = response.data['store'] ?? response.data;
           return StoreInfo.fromJson(storeData);
         } else {
-          throw FormatException('Invalid response format');
+          throw const FormatException('Invalid response format');
         }
       }
 
@@ -896,12 +880,12 @@ class RestfulApiProviderImpl {
       // Prepare FormData with identification information
       final formData = FormData.fromMap({
         // Set default values if fields are null or empty
-        'type': identification.type?.isNotEmpty == true
+        'type': identification.type.isNotEmpty == true
             ? identification.type
             : 'id_card',
         'number':
             identification.number.isNotEmpty ? identification.number : '123456',
-        'name': identification.name?.isNotEmpty == true
+        'name': identification.name.isNotEmpty == true
             ? identification.name
             : 'Default Name',
 
@@ -1019,7 +1003,6 @@ class RestfulApiProviderImpl {
       }
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('Bank account posted successfully');
         return response;
       } else if (response.statusCode == 401) {
         throw 'Không có quyền truy cập. Vui lòng đăng nhập lại.';
@@ -1080,7 +1063,6 @@ class RestfulApiProviderImpl {
       }
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('Get successfully');
         return BankAccountResponse.fromJson(response.data);
       } else if (response.statusCode == 401) {
         throw 'Không có quyền truy cập. Vui lòng đăng nhập lại.';
@@ -1152,21 +1134,13 @@ class RestfulApiProviderImpl {
         throw Exception(
             'Failed to get product information. Status: ${response.statusCode}');
       }
-    } on DioException catch (e) {
+    } on DioException {
       throw 'Lỗi kết nối hoặc lỗi từ server';
     } catch (error) {
       throw 'Đã xảy ra lỗi không xác định khi lấy thông tin sản phẩm';
     }
   }
 
-  Future<bool> postProduct(ProductPostModel product) async {
-    try {
-      // Kiểm tra xem tất cả các hình ảnh có tồn tại không
-      for (String imagePath in product.images) {
-        if (!File(imagePath).existsSync()) {
-          throw 'Hình ảnh không tồn tại: $imagePath';
-        }
-      }
   Future editProfile(
       {required String name,
       required String gender,
@@ -1274,6 +1248,15 @@ class RestfulApiProviderImpl {
       rethrow;
     }
   }
+
+  Future<bool> postProduct(ProductPostModel product) async {
+    try {
+      // Kiểm tra xem tất cả các hình ảnh có tồn tại không
+      for (String imagePath in product.images) {
+        if (!File(imagePath).existsSync()) {
+          throw 'Hình ảnh không tồn tại: $imagePath';
+        }
+      }
       // Giới hạn số lượng ảnh tối đa là 9
       final limitedImages = product.images.take(9).toList();
 
@@ -1361,7 +1344,7 @@ class RestfulApiProviderImpl {
       if (kDebugMode) {
         print('General Error: $error');
       }
-      throw error;
+      rethrow;
     }
   }
 

@@ -85,7 +85,7 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                 ]),
             child: TextField(
               controller:controller,
-              maxLines: line ?? null,
+              maxLines: line,
               decoration: InputDecoration(
                 hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
                 hintText: hintText,

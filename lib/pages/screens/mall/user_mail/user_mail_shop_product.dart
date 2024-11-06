@@ -3,10 +3,7 @@ import 'package:ui_youtex/core/assets.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
-import 'package:ui_youtex/pages/oder_manager/oder_manager_screen.dart';
-import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_employee_add.dart';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_productmanager_add.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
@@ -118,7 +115,7 @@ class ProductManagementScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProductaddScreen()),
+                  MaterialPageRoute(builder: (context) => const ProductaddScreen()),
                 );
               },
               child: Row(
@@ -155,7 +152,7 @@ class ProductManagementScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
 

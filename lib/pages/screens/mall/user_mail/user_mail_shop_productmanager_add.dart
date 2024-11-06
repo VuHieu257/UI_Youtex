@@ -4,20 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_register_product_bloc_bloc.dart';
-import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
-import 'package:ui_youtex/pages/screens/voucher/Voucher_seller_add.dart';
 
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/appbar/custome_appbar_circle.dart';
-import '../../../widget_small/text_form_field.dart';
-import '../user_mail/profile_mall.dart';
 
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ProductaddScreen extends StatefulWidget {
+  const ProductaddScreen({super.key});
+
   @override
   State<ProductaddScreen> createState() => _ProductaddScreenState();
 }
@@ -167,7 +162,7 @@ class _ProductaddScreenState extends State<ProductaddScreen> {
         productDescription.isEmpty ||
         coverImageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Vui lòng nhập đầy đủ thông tin và chọn ảnh")),
+        const SnackBar(content: Text("Vui lòng nhập đầy đủ thông tin và chọn ảnh")),
       );
       return;
     }
@@ -211,12 +206,12 @@ class CustomTextFieldNoIcon extends StatelessWidget {
   final int? line;
 
   const CustomTextFieldNoIcon({
-    Key? key,
+    super.key,
     required this.controller,
     required this.hintText,
     required this.label,
     this.line,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -258,8 +253,7 @@ class ImagePickerField extends StatelessWidget {
   final String label;
   final File? imageFile;
 
-  const ImagePickerField({Key? key, required this.label, this.imageFile})
-      : super(key: key);
+  const ImagePickerField({super.key, required this.label, this.imageFile});
 
   @override
   Widget build(BuildContext context) {

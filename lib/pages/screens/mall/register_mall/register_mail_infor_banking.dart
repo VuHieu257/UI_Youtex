@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/core/colors/color.dart';
-import 'package:ui_youtex/pages/screens/mall/register_mall/register_mall.dart';
 import 'package:ui_youtex/pages/widget_small/appbar/custome_appbar_circle.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_bankAccount_bloc/seller_register_bank_account_bloc_bloc.dart';
@@ -83,7 +82,7 @@ class _RegisterMallinforbankingScreenState
                               margin: const EdgeInsets.symmetric(vertical: 10),
                               decoration: const BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
+                                BorderRadius.all(Radius.circular(15)),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black26,
@@ -96,7 +95,7 @@ class _RegisterMallinforbankingScreenState
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
+                                      BorderRadius.all(Radius.circular(15)),
                                       borderSide: BorderSide.none),
                                   filled: true,
                                   fillColor: Styles.colorF9F9F9,
@@ -105,18 +104,18 @@ class _RegisterMallinforbankingScreenState
                                 value: selectedBank ?? 'Sacombank',
                                 isExpanded: true,
                                 items:
-                                    ['Vietcombank', 'Vietinbank', 'Sacombank']
-                                        .map((type) => DropdownMenuItem(
-                                              value: type,
-                                              child: Text(type),
-                                            ))
-                                        .toList(),
+                                ['Vietcombank', 'Vietinbank', 'Sacombank']
+                                    .map((type) => DropdownMenuItem(
+                                  value: type,
+                                  child: Text(type),
+                                ))
+                                    .toList(),
                                 onChanged: isEditable
                                     ? (value) {
-                                        setState(() {
-                                          selectedBank = value;
-                                        });
-                                      }
+                                  setState(() {
+                                    selectedBank = value;
+                                  });
+                                }
                                     : null,
                                 icon: const Icon(Icons.arrow_drop_down),
                               ),
@@ -145,10 +144,10 @@ class _RegisterMallinforbankingScreenState
                                   value: _isDefault,
                                   onChanged: isEditable
                                       ? (value) {
-                                          setState(() {
-                                            _isDefault = value ?? false;
-                                          });
-                                        }
+                                    setState(() {
+                                      _isDefault = value ?? false;
+                                    });
+                                  }
                                       : null,
                                 ),
                                 Text(
@@ -180,22 +179,22 @@ class _RegisterMallinforbankingScreenState
                                         onPressed: () {
                                           context
                                               .read<
-                                                  SellerRegisterBankAccountBloc>()
+                                              SellerRegisterBankAccountBloc>()
                                               .add(
-                                                SellerRegisterBankAccountButtonPressed(
-                                                  bankName: selectedBank ??
-                                                      'Sacombank',
-                                                  branch:
-                                                      _branchController.text,
-                                                  accountNumber:
-                                                      _accountNumberController
-                                                          .text,
-                                                  cardHolder:
-                                                      _cardHolderController
-                                                          .text,
-                                                  isDefault: _isDefault,
-                                                ),
-                                              );
+                                            SellerRegisterBankAccountButtonPressed(
+                                              bankName: selectedBank ??
+                                                  'Sacombank',
+                                              branch:
+                                              _branchController.text,
+                                              accountNumber:
+                                              _accountNumberController
+                                                  .text,
+                                              cardHolder:
+                                              _cardHolderController
+                                                  .text,
+                                              isDefault: _isDefault,
+                                            ),
+                                          );
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.transparent,
@@ -203,7 +202,7 @@ class _RegisterMallinforbankingScreenState
                                           shadowColor: Colors.transparent,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(30),
+                                            BorderRadius.circular(30),
                                           ),
                                         ),
                                         child: const Padding(

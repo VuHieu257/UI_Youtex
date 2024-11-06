@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_youtex/bloc/user_profile_bloc/user_profile_bloc.dart';
 import 'package:ui_youtex/util/constants.dart';
 

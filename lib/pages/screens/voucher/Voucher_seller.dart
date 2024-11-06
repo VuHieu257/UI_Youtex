@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/core/assets.dart';
-import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/pages/oder_manager/oder_manager_screen.dart';
-import 'package:ui_youtex/pages/screens/shopping_cart_page/shopping_cart_page.dart';
 import 'package:ui_youtex/pages/screens/voucher/Voucher_seller_add.dart';
 
 class VoucherSlScreen extends StatelessWidget {
@@ -198,7 +195,7 @@ class VoucherSlScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => VoucheraddScreen()));
+                              builder: (context) => const VoucheraddScreen()));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,

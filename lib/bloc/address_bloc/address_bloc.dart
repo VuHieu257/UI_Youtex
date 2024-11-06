@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -19,7 +18,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     on<DeleteAddress>(_onDeleteAddress);
   }
 
-  RestfulApiProviderImpl _restfulApiProviderImpl = RestfulApiProviderImpl();
+  final RestfulApiProviderImpl _restfulApiProviderImpl = RestfulApiProviderImpl();
 
   Future<void> _onFetchAddresses(
       FetchAddresses event, Emitter<AddressState> emit) async {

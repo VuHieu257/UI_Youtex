@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../../bloc/address_bloc/address_bloc.dart';

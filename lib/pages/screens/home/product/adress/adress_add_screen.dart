@@ -7,7 +7,6 @@ import '../../../../../bloc/address_bloc/address_bloc.dart';
 import '../../../../../core/assets.dart';
 import '../../../../../core/colors/color.dart';
 import '../../../../widget_small/custom_button.dart';
-import '../../../shopping_cart_page/payment_method_screen/payment_method_screen.dart';
 import 'adress_screen.dart';
 
 class AddAddressScreen extends StatefulWidget {

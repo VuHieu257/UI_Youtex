@@ -7,7 +7,6 @@ import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import '../../../bloc/user_profile_bloc/user_profile_bloc.dart';
 import '../../../core/assets.dart';
 import '../../../core/colors/color.dart';
-import '../../../model/user_profile.dart';
 import '../../widget_small/widget.dart';
 import 'chat/chat_screen.dart';
 import 'friend_list_scrren.dart';

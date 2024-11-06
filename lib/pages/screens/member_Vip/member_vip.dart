@@ -173,10 +173,10 @@ class _PremiumUnlockScreenState extends State<PremiumUnlockScreen> {
   }
 
   Widget _buildTrialSwitch() {
-    return Row(
+    return const Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
+        Text(
           'Bắt đầu dùng thử miễn phí 7 ngày',
           style: TextStyle(
             fontSize: 16,

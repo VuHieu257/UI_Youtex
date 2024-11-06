@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
-import '../../../bloc/login_bloc/login_bloc.dart';
 import '../../../core/assets.dart';
 import 'detail_article.dart';
 class HomePage extends StatelessWidget {

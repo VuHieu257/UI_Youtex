@@ -4,8 +4,6 @@ import 'package:ui_youtex/pages/screens/mall/register_mall/register_maiil_infor_
 import 'package:ui_youtex/pages/screens/mall/register_mall/register_maiil_infor_shop.dart';
 import 'package:ui_youtex/pages/screens/mall/register_mall/register_mail_infor_banking.dart';
 import 'package:ui_youtex/pages/screens/mall/register_mall/register_mall_infor.dart';
-import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_employee.dart';
-import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_view.dart';
 
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/appbar/custome_appbar_circle.dart';
@@ -95,7 +93,7 @@ class SettingsList extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => RegisterMallinforScreen()));
+                      builder: (context) => const RegisterMallinforScreen()));
             },
           ),
           SettingsItem(

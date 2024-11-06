@@ -487,7 +487,7 @@ class SalesOverviewCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-                offset: Offset(0, 4),
+                offset: const Offset(0, 4),
                 blurRadius: 4,
                 color: Colors.black.withOpacity(0.25))
           ]),

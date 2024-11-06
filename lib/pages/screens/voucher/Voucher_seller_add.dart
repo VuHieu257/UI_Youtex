@@ -46,7 +46,7 @@ class _VoucheraddScreenState extends State<VoucheraddScreen> {
                         label: "Giá trị giảm",
                         hintText: "Điển thông tin tại đây"),
                     RadioListTile<String>(
-                      title: Text(
+                      title: const Text(
                         "Cố định: Giảm một số tiền cụ thể (ví dụ: 50,000 VND)",
                         style: TextStyle(fontSize: 15),
                       ),
@@ -60,7 +60,7 @@ class _VoucheraddScreenState extends State<VoucheraddScreen> {
                       },
                     ),
                     RadioListTile<String>(
-                      title: Text(
+                      title: const Text(
                         "Phần trăm: Giảm theo phần trăm trên giá trị đơn hàng (ví dụ: 20%)",
                         style: TextStyle(fontSize: 15),
                       ),

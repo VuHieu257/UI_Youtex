@@ -53,7 +53,7 @@ class SalesAnalysisScreen extends StatelessWidget {
                     onChanged: (value) {
                       // Xử lý khi chọn một tùy chọn
                     },
-                    dropdownColor: Color(0xFFF9F9F9), // Màu nền cho menu thả xuống
+                    dropdownColor: const Color(0xFFF9F9F9), // Màu nền cho menu thả xuống
                   ),
                 ],
               ),

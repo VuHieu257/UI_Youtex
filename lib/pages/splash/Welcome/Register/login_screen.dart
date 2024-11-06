@@ -8,7 +8,6 @@ import 'package:ui_youtex/util/constants.dart';
 import 'package:ui_youtex/util/show_snack_bar.dart';
 
 import '../../../../bloc/login_bloc/login_bloc.dart';
-import '../../../../main.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

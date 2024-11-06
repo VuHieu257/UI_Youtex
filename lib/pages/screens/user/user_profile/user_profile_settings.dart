@@ -5,7 +5,6 @@ import 'package:ui_youtex/util/show_snack_bar.dart';
 import '../../../../bloc/login_bloc/login_bloc.dart';
 import '../../../widget_small/bottom_navigation/bottom_navigation.dart';
 import '../../home/product/adress/adress_screen.dart';
-import '../../member_Vip/member_packagePayment.dart';
 import '../edit_profile/edit_profile_screen.dart';
 
 class AccountSettingsScreen extends StatelessWidget {

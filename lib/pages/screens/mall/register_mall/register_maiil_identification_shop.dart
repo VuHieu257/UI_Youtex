@@ -5,12 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_identification_bloc/seller_register_identification_bloc_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
-import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/appbar/custome_appbar_circle.dart';
-import '../../../widget_small/text_form_field.dart';
-import '../user_mail/profile_mall.dart';
 
 class RegisterMallIdentificationScreen extends StatefulWidget {
   const RegisterMallIdentificationScreen({super.key});
@@ -30,8 +27,8 @@ class _RegisterMallIdentificationScreenState
   XFile? _selfie;
 
   Future<void> _pickImage(bool isSelfie) async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       setState(() {
         if (isSelfie) {
@@ -103,32 +100,32 @@ class _RegisterMallIdentificationScreenState
                         onTap: () => _pickImage(false),
                         child: _image == null
                             ? Container(
-                                height: 100,
-                                color: Colors.grey[200],
-                                child: Center(child: Text("Chọn ảnh")),
-                              )
+                          height: 100,
+                          color: Colors.grey[200],
+                          child: const Center(child: Text("Chọn ảnh")),
+                        )
                             : Image.file(
-                                File(_image!.path),
-                                height: 100,
-                                width: 100,
-                                fit: BoxFit.cover,
-                              ),
+                          File(_image!.path),
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () => _pickImage(true),
                         child: _selfie == null
                             ? Container(
-                                height: 100,
-                                color: Colors.grey[200],
-                                child: Center(child: Text("Chọn ảnh Selfie")),
-                              )
+                          height: 100,
+                          color: Colors.grey[200],
+                          child: const Center(child: Text("Chọn ảnh Selfie")),
+                        )
                             : Image.file(
-                                File(_selfie!.path),
-                                height: 100,
-                                width: 100,
-                                fit: BoxFit.cover,
-                              ),
+                          File(_selfie!.path),
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                       const SizedBox(height: 30),
                       Row(
@@ -154,7 +151,7 @@ class _RegisterMallIdentificationScreenState
                                       _image != null &&
                                       _selfie != null) {
                                     final identification =
-                                        SellerIdentificationModel(
+                                    SellerIdentificationModel(
                                       type: _unitController.text,
                                       number: _descriptionController.text,
                                       name: _settingsController.text,
@@ -165,11 +162,11 @@ class _RegisterMallIdentificationScreenState
                                     // Call the BLoC to post data
                                     context
                                         .read<
-                                            SellerRegisterIdentificationBlocBloc>()
+                                        SellerRegisterIdentificationBlocBloc>()
                                         .add(
-                                          SellerRegisterIdentificationPostEvent(
-                                              identification: identification),
-                                        );
+                                      SellerRegisterIdentificationPostEvent(
+                                          identification: identification),
+                                    );
 
                                     // await showDialog(
                                     //   context: context,
@@ -261,7 +258,7 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                       blurRadius: 4)
                 ]),
             child: TextField(
-              maxLines: line ?? null,
+              maxLines: line,
               decoration: InputDecoration(
                 hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
                 hintText: hintText,

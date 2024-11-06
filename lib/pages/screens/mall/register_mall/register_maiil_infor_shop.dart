@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart'; // Import Dio
+// Import Dio
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
 
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/appbar/custome_appbar_circle.dart';
-import '../../../widget_small/text_form_field.dart';
 
 class RegisterMallinforShopScreen extends StatefulWidget {
   const RegisterMallinforShopScreen({super.key});
@@ -22,7 +21,7 @@ class _RegisterMallinforShopScreenState
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController settingsController = TextEditingController();
   final RestfulApiProviderImpl restfulApiProviderImpl =
-      RestfulApiProviderImpl();
+  RestfulApiProviderImpl();
 
   @override
   void dispose() {
@@ -61,12 +60,12 @@ class _RegisterMallinforShopScreenState
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Lỗi'),
-              content: Text('Đã xảy ra lỗi khi gửi thông tin.'),
+              title: const Text('Lỗi'),
+              content: const Text('Đã xảy ra lỗi khi gửi thông tin.'),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('Đóng'),
+                  child: const Text('Đóng'),
                 ),
               ],
             );
@@ -79,12 +78,12 @@ class _RegisterMallinforShopScreenState
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Lỗi'),
-            content: Text('Vui lòng điền đầy đủ thông tin.'),
+            title: const Text('Lỗi'),
+            content: const Text('Vui lòng điền đầy đủ thông tin.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('Đóng'),
+                child: const Text('Đóng'),
               ),
             ],
           );
@@ -222,7 +221,7 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                 ]),
             child: TextField(
               controller: controller,
-              maxLines: line ?? null,
+              maxLines: line,
               decoration: InputDecoration(
                 hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
                 hintText: hintText,
