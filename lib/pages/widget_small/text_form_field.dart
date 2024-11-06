@@ -13,7 +13,8 @@ class CustomTextField extends StatelessWidget {
     super.key,
     required this.hintText,
     required this.prefixIcon,
-    required this.bg, required this.colorText,
+    required this.bg,
+    required this.colorText,
   });
 
   @override
@@ -41,8 +42,8 @@ class CustomTextField extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17,
             ),
-            prefixIcon: prefixIcon
-        ),),
+            prefixIcon: prefixIcon),
+      ),
     );
   }
 }
@@ -80,10 +81,8 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                   BoxShadow(
                       color: Colors.black26,
                       offset: Offset(0, 4),
-                      blurRadius: 4
-                  )
-                ]
-            ),
+                      blurRadius: 4)
+                ]),
             child: TextField(
               controller:controller,
               maxLines: line ?? null,
@@ -94,11 +93,10 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                 fillColor: Styles.colorF9F9F9,
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none
+                    borderSide: BorderSide.none),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

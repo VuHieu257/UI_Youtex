@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/pages/screens/mall/register_mall/register_maiil_identification_shop.dart';
 import 'package:ui_youtex/pages/screens/mall/register_mall/register_maiil_infor_exhibit.dart';
 import 'package:ui_youtex/pages/screens/mall/register_mall/register_maiil_infor_shop.dart';
 import 'package:ui_youtex/pages/screens/mall/register_mall/register_mail_infor_banking.dart';
@@ -128,6 +129,17 @@ class SettingsList extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) =>
                           const RegisterMallinforShopScreen()));
+            },
+          ),
+          SettingsItem(
+            icon: Icons.people_outline,
+            text: 'Thông tin xác thực',
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const RegisterMallIdentificationScreen()));
             },
           ),
         ],

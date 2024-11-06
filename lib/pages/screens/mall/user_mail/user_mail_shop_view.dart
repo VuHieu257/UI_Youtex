@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_event.dart';
 import 'package:ui_youtex/core/colors/color.dart';
+import 'package:ui_youtex/core/model/store.info.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
-import 'package:ui_youtex/pages/screens/mall/user_mail/profile_mall.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_analyst_view.dart';
-import 'package:ui_youtex/pages/screens/user/user_profile/user_profile_settings.dart';
+import 'package:ui_youtex/services/restful_api_provider.dart';
 
 import '../../../../core/assets.dart';
 import '../../../widget_small/appbar/cus_appbar_background.dart';
@@ -14,31 +17,50 @@ class ShopOverviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          const UserInfoHeader(),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
+    return BlocProvider(
+      create: (context) => SellerRegisterBloc(
+        restfulApiProvider: RestfulApiProviderImpl(),
+      )..add(const LoadStoreInfo()),
+      child: Scaffold(
+        body: BlocBuilder<SellerRegisterBloc, SellerRegisterState>(
+          builder: (context, state) {
+            if (state is SellerRegisterLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is SellerRegisterLoaded) {
+              return Column(
                 children: [
-                  const WalletCard(),
-                  const OrderStatusSection(),
-                  const SalesOverviewSection(),
-                  SalesToolsSection(),
+                  UserStorageHeader(
+                      storeInfo: state
+                          .storeInfo), // Truyền storeInfo vào UserInfoHeader
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const WalletCard(),
+                          const OrderStatusSection(),
+                          const SalesOverviewSection(),
+                          SalesToolsSection(),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
-              ),
-            ),
-          ),
-        ],
+              );
+            } else if (state is SellerRegisterFailure) {
+              return Center(child: Text('Lỗi: ${state.error}'));
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ),
       ),
     );
   }
 }
 
-class UserInfoHeader extends StatelessWidget {
-  const UserInfoHeader({super.key});
-
+class UserStorageHeader extends StatelessWidget {
+  final StoreInfo storeInfo; // Nhận dữ liệu từ StoreInfo
+  const UserStorageHeader({super.key, required this.storeInfo});
   @override
   Widget build(BuildContext context) {
     return cusAppBarBackground(
@@ -138,7 +160,7 @@ class UserInfoHeader extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Nguyễn Văn A',
+                  Text(storeInfo.name,
                       style: context.theme.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold, color: Colors.white)),
                   const SizedBox(height: 4),
@@ -147,13 +169,13 @@ class UserInfoHeader extends StatelessWidget {
                       SizedBox(
                         width: 100,
                         child: Text(
-                          'Đơn hoàn tất',
+                          'Phone',
                           style: context.theme.textTheme.titleMedium?.copyWith(
                               color: Colors.white, fontWeight: FontWeight.w400),
                         ),
                       ),
                       Text(
-                        '91.00%',
+                        storeInfo.phone,
                         style: context.theme.textTheme.titleMedium?.copyWith(
                             color: Styles.color73FF83,
                             fontWeight: FontWeight.bold),
@@ -166,13 +188,13 @@ class UserInfoHeader extends StatelessWidget {
                       SizedBox(
                         width: 100,
                         child: Text(
-                          'Khiếu nại\t\t',
+                          'Mail\t\t',
                           style: context.theme.textTheme.titleMedium?.copyWith(
                               color: Colors.white, fontWeight: FontWeight.w400),
                         ),
                       ),
                       Text(
-                        '1.00%',
+                        storeInfo.email,
                         style: context.theme.textTheme.titleMedium?.copyWith(
                             color: Styles.colorFF6B6B,
                             fontWeight: FontWeight.bold),

@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:ui_youtex/bloc/address_bloc/address_bloc.dart';
@@ -13,6 +14,13 @@ import 'package:ui_youtex/bloc/forgot_password_bloc/forgot_password_bloc.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/friend_list_screen/friend_list_screen.dart';
+import 'package:ui_youtex/bloc_seller/bloc/bloc_seller_address_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_register_identification_bloc/seller_register_identification_bloc_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_event.dart';
+import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_register_product_bloc_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_register_tax_get_bloc/seller_register_tax_get_bloc_bloc.dart';
+import 'package:ui_youtex/core/model/store.info.dart';
+
 import 'dart:core';
 import 'package:ui_youtex/pages/screens/home/home.dart';
 import 'package:ui_youtex/pages/screens/home/product/adress/adress_screen.dart';
@@ -34,12 +42,14 @@ import 'package:ui_youtex/services/restful_api_provider.dart';
 import 'package:ui_youtex/util/constants.dart';
 import 'package:ui_youtex/util/token_manager.dart';
 import 'bloc/edit_profile_bloc/edit_profile_bloc.dart';
+import 'package:ui_youtex/services/restful_api_provider.dart';
 import 'bloc/login_bloc/login_bloc.dart';
 import 'bloc/register_bloc/register_bloc.dart';
 import 'bloc/search_user_bloc/fetch_user_by_phone_bloc.dart';
 import 'bloc/user_profile_bloc/user_profile_bloc.dart';
 import 'core/assets.dart';
 import 'core/colors/color.dart';
+import 'bloc_seller/seller_register_bloc/seller_register_bloc.dart';
 import 'core/themes/theme_data.dart';
 import 'pages/splash/Welcome/Register/login_screen.dart';
 
@@ -77,9 +87,12 @@ void main() async {
       create: (context) => UserProfileBloc()..add(FetchProfileEvent()),
       child: const CustomNavBar(),
     ),
+    BlocProvider(
+    create: (context) => SellerRegisterBloc(
+      restfulApiProvider: RestfulApiProviderImpl(),
+    ),
   ], child: const MyApp()));
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -91,13 +104,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       home: const WelcomeApp(),
-      // home: ChatListScreen(),
       // home: const CustomNavBar(),
-      // home: const UserScreen("0812507355"),
-      // home: const FriendListScreen(),
-      // home: const SearchUserByPhoneScreen(),
-      // home: const FriendListScreen(),
-      // home: const FriendsList(userId: '0812507355',),
+      // home: const RegisterMallScreen(),
       // home: const MessagesScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
