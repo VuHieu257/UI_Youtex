@@ -401,7 +401,7 @@ class ProfileScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    FriendListScreen(currentUserId: user.phone,))),
+                                    FriendListScreen(currentUserId: user.phone, nameCurrent: user.name, imgCurrentUser: "${user.image}",))),
                       ),
                     ],
                   ),

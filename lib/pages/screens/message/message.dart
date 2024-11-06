@@ -37,6 +37,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
           } else if (state is UserProfileLoaded) {
             final user = state.user;
             final currentUserId = user.phone;
+            final nameCurrentUser = user.name;
+            final imgCurrentUser = user.image;
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: Styles.blue,
@@ -53,7 +55,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 actions: [
                   InkWell(
                       onTap: () {
-                        Navigator.push(context,MaterialPageRoute(builder: (context) => FriendListScreen(currentUserId:currentUserId),));
+                        Navigator.push(context,MaterialPageRoute(builder: (context) => FriendListScreen(currentUserId:currentUserId,nameCurrent:nameCurrentUser,imgCurrentUser:"$imgCurrentUser"),));
                       },
                       child: const Icon(
                         Icons.edit_note_rounded,
@@ -157,6 +159,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => ChatScreen(
+                                              currentUserId: currentUserId,
                                               name: otherUserName,
                                               chatId: chat.id,
                                               receiverId: otherUserId,

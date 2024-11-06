@@ -16,8 +16,8 @@ class TokenManager {
   /// Lấy token từ SharedPreferences
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    // return prefs.getString(_accessTokenKey);
-    return "7|dUtvZ9D7TghcXdeVSZwLcOMOKfwIjgF8yP2yCxpw263fec8d";
+    return prefs.getString(_accessTokenKey);
+    // return "7|dUtvZ9D7TghcXdeVSZwLcOMOKfwIjgF8yP2yCxpw263fec8d";
   }
 
   /// Xóa token khi đăng xuất

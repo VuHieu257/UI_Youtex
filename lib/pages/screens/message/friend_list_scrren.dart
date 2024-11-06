@@ -11,11 +11,18 @@ import 'package:ui_youtex/pages/oder_manager/oder_manager_screen.dart';
 import '../../../bloc/search_user_bloc/fetch_user_by_phone_bloc.dart';
 import 'chat/chat_screen.dart';
 
-class FriendListScreen extends StatelessWidget {
+class FriendListScreen extends StatefulWidget {
   final String currentUserId;
+  final String nameCurrent;
+  final String imgCurrentUser;
 
-  const FriendListScreen({super.key, required this.currentUserId});
+  const FriendListScreen({super.key, required this.currentUserId, required this.nameCurrent, required this.imgCurrentUser});
 
+  @override
+  State<FriendListScreen> createState() => _FriendListScreenState();
+}
+
+class _FriendListScreenState extends State<FriendListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +81,7 @@ class FriendListScreen extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      showAddFriendDialog(context, currentUserId);
+                      showAddFriendDialog(context, idUser:widget.currentUserId,imgUser: widget.imgCurrentUser,nameUser: widget.nameCurrent );
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -124,40 +131,10 @@ class FriendListScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-              // child: StreamBuilder<QuerySnapshot>(
-              //   stream: FirebaseFirestore.instance
-              //       .collection('friendRequests')
-              //       // .where('receiverId', isEqualTo: "0332340187")
-              //       .where('receiverId', isEqualTo: currentUserId)
-              //       .snapshots(),
-              //   builder: (context, snapshot) {
-              //     if (snapshot.connectionState == ConnectionState.waiting) {
-              //       return const Center(child: CircularProgressIndicator());
-              //     }
-              //     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              //       return const Text("No friend requests.");
-              //     }
-              //     final friends = snapshot.data!.docs;
-              //     return ListView.builder(
-              //       itemCount: friends.length,
-              //       itemBuilder: (context, index) {
-              //         final friend = friends[index];
-              //         String friendRequestId = friend.id;
-              //         return FriendCard(
-              //           id: friend['receiverId'],
-              //           name: friend['name'],
-              //           img: friend['image'],
-              //           isFriend: friend['status'],
-              //           friendRequestId: friendRequestId,
-              //         );
-              //       },
-              //     );
-              //   },
-              // ),
               child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('friendRequests')
-                .where('receiverId', isEqualTo: currentUserId)
+                .where('receiverId', isEqualTo: widget.currentUserId)
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -168,7 +145,7 @@ class FriendListScreen extends StatelessWidget {
                 return StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('friendRequests')
-                      .where('senderId', isEqualTo: currentUserId)
+                      .where('senderId', isEqualTo: widget.currentUserId)
                       .snapshots(),
                   builder: (context, sentSnapshot) {
                     if (sentSnapshot.connectionState ==
@@ -187,10 +164,12 @@ class FriendListScreen extends StatelessWidget {
                         final friend = sentFriends[index];
                         String friendRequestId = friend.id;
                         return FriendCard(
-                          id:currentUserId ,
+                          imgUserCurrent: widget.imgCurrentUser,
+                          nameUserCurrent:widget.nameCurrent ,
+                          id:widget.currentUserId ,
                           idOtherUser: friend['receiverId'],
-                          name: friend['name'],
-                          img: friend['image'],
+                          name: friend['nameReceiver'],
+                          img: friend['nameReceiver'],
                           isFriend: friend['status'],
                           status: "sender",
                           friendRequestId: friendRequestId,
@@ -208,11 +187,14 @@ class FriendListScreen extends StatelessWidget {
                   final friend = friends[index];
                   String friendRequestId = friend.id;
                   return FriendCard(
-                    id:currentUserId ,
-                    idOtherUser: friend['receiverId'],
-                    name: friend['name'],
-                    img: friend['image'],
+                    imgUserCurrent: widget.imgCurrentUser,
+                    nameUserCurrent:widget.nameCurrent ,
+                    id:widget.currentUserId ,
+                    idOtherUser: friend['senderId'],
+                    name: friend['nameSender'],
+                    img: friend['imageSender'],
                     isFriend: friend['status'],
+                    status: "receiver",
                     friendRequestId: friendRequestId,
                   );
                 },
@@ -235,8 +217,10 @@ class FriendListScreen extends StatelessWidget {
 }
 
 class FriendCard extends StatelessWidget {
+  final String nameUserCurrent;
   final String name;
   final String img;
+  final String imgUserCurrent;
   final String id;
   final bool? isRow;
   final String? isFriend;
@@ -253,7 +237,7 @@ class FriendCard extends StatelessWidget {
       this.isFriend = "",
       this.idOtherUser = "",
       this.status = "",
-      this.friendRequestId = ""});
+      this.friendRequestId = "", required this.nameUserCurrent, required this.imgUserCurrent});
 
   @override
   Widget build(BuildContext context) {
@@ -442,7 +426,7 @@ class FriendCard extends StatelessWidget {
                             GestureDetector(
                               onTap: () {
                                 sendFriendRequest(
-                                    id, "$idOtherUser", name, img);
+                                  userId: id,friendId:"$idOtherUser",nameFriend:name,nameUser: nameUserCurrent,imaUrlFriend:img,imgUrl: imgUserCurrent);
                                 Navigator.pop(context);
                               },
                               child: Container(
@@ -479,7 +463,7 @@ class FriendCard extends StatelessWidget {
   }
 }
 
-void showAddFriendDialog(BuildContext context, String idUser) {
+void showAddFriendDialog(BuildContext context, {required String idUser,required String nameUser, required String imgUser}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -518,7 +502,7 @@ void showAddFriendDialog(BuildContext context, String idUser) {
                       Container(
                         alignment: Alignment.centerLeft,
                         child: const Text(
-                          'Nhập email hoặc memberID',
+                          'Nhập số điện thoại ',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -574,6 +558,8 @@ void showAddFriendDialog(BuildContext context, String idUser) {
                           height: 10,
                         ),
                         FriendCard(
+                          imgUserCurrent: imgUser,
+                          nameUserCurrent: nameUser,
                           id: idUser,
                           idOtherUser: state.phone,
                           name: state.name,
@@ -639,7 +625,7 @@ void showUnfollowDialog(
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 Future<void> sendFriendRequest(
-    String userId, String friendId, String name, String? imgUrl) async {
+{ required String userId, required  String friendId, required  String nameUser, required  String nameFriend,  String? imgUrl, String ?imaUrlFriend}) async {
   try {
     await _firestore
         .collection('friendRequests')
@@ -647,8 +633,10 @@ Future<void> sendFriendRequest(
         .set({
       'senderId': userId,
       'receiverId': friendId,
-      'name': name,
-      'image': imgUrl,
+      'nameReceiver': nameFriend,
+      'nameSender':nameUser,
+      'imageReceiver': imgUrl,
+      'imageSender': imgUrl,
       'status': 'pending',
       'requestedAt': FieldValue.serverTimestamp(),
     });
@@ -736,25 +724,82 @@ Future<void> removeFriend(
     }
   }
 }
-void createNewChat(BuildContext context,String currentUserId, String otherUserId,String name) async {
-  final chatDocRef = _firestore.collection('chats').doc();
+void createNewChat(BuildContext context, String currentUserId, String otherUserId, String name) async {
+  // Truy vấn Firestore để kiểm tra cuộc trò chuyện giữa currentUserId và otherUserId
+  final chatQuery = await _firestore
+      .collection('chats')
+      .where('participants', arrayContains: currentUserId)
+      .get();
 
-  await chatDocRef.set({
-    'participants': [currentUserId, otherUserId],
-    'lastMessage': '',
-    'lastTimestamp': FieldValue.serverTimestamp(),
-  });
+  String chatId="";
+  bool chatExists = false;
 
-  // Điều hướng tới màn hình chat
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => ChatScreen(
-        name: name,
-        chatId: chatDocRef.id,
-        receiverId: otherUserId,
-        receiverName: 'Tên của người nhận',
+  for (var doc in chatQuery.docs) {
+    List participants = doc.data()['participants'];
+    if (participants.contains(otherUserId)) {
+      chatExists = true;
+      chatId = doc.id;
+      break;
+    }
+  }
+
+  if (chatExists) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatScreen(
+          currentUserId: currentUserId,
+          name: name,
+          chatId: chatId,
+          receiverId: otherUserId,
+          receiverName: name,
+        ),
       ),
-    ),
-  );
+    );
+  } else {
+    final chatDocRef = _firestore.collection('chats').doc();
+
+    await chatDocRef.set({
+      'participants': [currentUserId, otherUserId],
+      'lastMessage': '',
+      'lastTimestamp': FieldValue.serverTimestamp(),
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatScreen(
+          currentUserId: currentUserId,
+          name: name,
+          chatId: chatDocRef.id,
+          receiverId: otherUserId,
+          receiverName: name,
+        ),
+      ),
+    );
+  }
 }
+
+// void createNewChat(BuildContext context,String currentUserId, String otherUserId,String name) async {
+//   final chatDocRef = _firestore.collection('chats').doc();
+//
+//   await chatDocRef.set({
+//     'participants': [currentUserId, otherUserId],
+//     'lastMessage': '',
+//     'lastTimestamp': FieldValue.serverTimestamp(),
+//   });
+//
+//   // Điều hướng tới màn hình chat
+//   Navigator.push(
+//     context,
+//     MaterialPageRoute(
+//       builder: (context) => ChatScreen(
+//         currentUserId: currentUserId,
+//         name: name,
+//         chatId: chatDocRef.id,
+//         receiverId: otherUserId,
+//         receiverName: name,
+//       ),
+//     ),
+//   );
+// }

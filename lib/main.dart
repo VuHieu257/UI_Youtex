@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:typed_data';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:ui_youtex/bloc/address_bloc/address_bloc.dart';
+import 'package:ui_youtex/bloc/forgot_password_bloc/forgot_password_bloc.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/friend_list_screen/friend_list_screen.dart';
@@ -61,6 +62,9 @@ void main() async {
       create: (context) => RegisterBloc(),
     ),
     BlocProvider(
+      create: (context) => ForgotPasswordBloc(),
+    ),
+    BlocProvider(
       create: (context) => EditProfileBloc(),
     ),
     BlocProvider(
@@ -86,9 +90,9 @@ class MyApp extends StatelessWidget {
       theme: MyAppThemes.lightTheme,
       debugShowCheckedModeBanner: false,
 
-      // home: const WelcomeApp(),
+      home: const WelcomeApp(),
       // home: ChatListScreen(),
-      home: const CustomNavBar(),
+      // home: const CustomNavBar(),
       // home: const UserScreen("0812507355"),
       // home: const FriendListScreen(),
       // home: const SearchUserByPhoneScreen(),

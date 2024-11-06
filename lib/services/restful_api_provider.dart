@@ -10,6 +10,7 @@ abstract class ApiPath {
   static const String login = 'login';
   static const String logout = 'auth/logout';
   static const String customer = 'auth/profile';
+  static const String forgotPassword = 'forgot-password';
   static const String searchByPhone = 'buyer/user/';
   static const String register = 'register';
   static const String buyerAddress = 'buyer/addresses';
@@ -189,6 +190,28 @@ class RestfulApiProviderImpl {
   ///******************************************************************
   ///---------------------------POST-----------------------------------
   ///******************************************************************
+  Future forgotPassword({
+    required String email,
+  }) async {
+    try {
+      final response = await dioClient.post(
+        ApiPath.forgotPassword,
+        body: {
+          "email": email,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      return response;
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error login: $error');
+      }
+      rethrow;
+    }
+  }
+
   Future addBankAccount({
     required String token,
     required String bank,
