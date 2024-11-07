@@ -171,12 +171,12 @@ class _RegisterMallIdentificationScreenState
                                               identification: identification),
                                         );
 
-                                    // await showDialog(
-                                    //   context: context,
-                                    //   builder: (BuildContext context) {
-                                    //     return const CardAddedSuccessDialog();
-                                    //   },
-                                    // );
+                                    await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return const CardAddedSuccessDialog();
+                                      },
+                                    );
                                     Navigator.pop(context);
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(

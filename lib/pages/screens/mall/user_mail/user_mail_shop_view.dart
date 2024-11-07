@@ -244,7 +244,7 @@ class WalletCard extends StatelessWidget {
           ),
           Spacer(),
           Text(
-            '160.100.111 đ',
+            '0 đ',
             style: TextStyle(
               fontSize: 14,
               color: Colors.blue,

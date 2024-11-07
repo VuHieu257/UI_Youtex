@@ -9,34 +9,25 @@ class LoadSellerRegisterBankAccountInfo
 class SellerRegisterBankAccountButtonPressed
     extends SellerRegisterBankAccountBlocEvent {
   // Trong SellerRegisterBankAccountButtonPressed
-  void validateInput() {
-    if (bankName.isEmpty)
-      throw ArgumentError('Tên ngân hàng không được để trống');
-    if (accountNumber.isEmpty)
-      throw ArgumentError('Số tài khoản không được để trống');
-    if (cardHolder.isEmpty)
-      throw ArgumentError('Tên chủ thẻ không được để trống');
-  }
 
-  final String bankName;
+  final String bank;
   final String branch;
-  final String accountNumber;
+  final String number;
   final String cardHolder;
   final bool isDefault;
 
   SellerRegisterBankAccountButtonPressed({
-    required this.bankName,
+    required this.bank,
     required this.branch,
-    required this.accountNumber,
+    required this.number,
     required this.cardHolder,
     required this.isDefault,
   });
   Map<String, dynamic> toJson() {
     return {
-      'bankName': bankName,
+      'bankName': bank,
       'branch': branch,
-      
-      'accountNumber': accountNumber,
+      'accountNumber': number,
       'cardHolder': cardHolder,
       'isDefault': isDefault,
     };

@@ -87,6 +87,7 @@ abstract class ApiPath {
   static const String sellerstorestatusGet = '/seller/store/status';
   static const String sellerstorestatussGetGet = '/seller/product/:id/status';
 
+
   ///*******************************DELETE***********************************
   static const String sellerRAddressDelete = 'seller/address/id';
 
@@ -103,7 +104,7 @@ class RestfulApiProviderImpl {
   final DioClient dioClient = DioClient();
   final Dio _dio = Dio();
   static const String authToken =
-      '2|TF2GUoa5kp1jaMHRDQbYRhymIzXrNChTYJ8Lq1xLe31b5005';
+      '26|Y4HoSC3Rlbegkjw47OKBdf1m1EXMeLyiLx5V8WsY20be74d7';
   static const String authType = 'Bearer';
 
   ///******************************************************************
@@ -199,7 +200,8 @@ class RestfulApiProviderImpl {
       });
 
       if (kDebugMode) {
-        print('Request URL: ${NetworkConstants.baseUrl}${ApiPath.store}');
+        print(
+            'Request URL: ${NetworkConstants.baseUrl}${ApiPath.sellerRegistorPost}');
         print('Request Data: ${formData.fields}');
       }
 
@@ -253,7 +255,7 @@ class RestfulApiProviderImpl {
           throw 'Kết nối tới server bị timeout. Vui lòng thử lại.';
         case DioExceptionType.badResponse:
           if (e.response?.statusCode == 404) {
-            throw 'Không tìm thấy API endpoint. Vui lòng kiểm tra lại URL.';
+            throw '${e.message}';
           }
           throw 'Lỗi từ server: ${e.response?.statusCode ?? "Unknown"}';
         case DioExceptionType.cancel:
@@ -316,7 +318,7 @@ class RestfulApiProviderImpl {
           throw 'Kết nối tới server bị timeout. Vui lòng thử lại.';
         case DioExceptionType.badResponse:
           if (e.response?.statusCode == 404) {
-            throw 'Không tìm thấy API endpoint. Vui lòng kiểm tra lại URL.';
+            throw '${e.response}.';
           } else if (e.response?.statusCode == 401) {
             throw 'Không có quyền truy cập. Vui lòng đăng nhập lại.';
           }
@@ -380,7 +382,7 @@ class RestfulApiProviderImpl {
         case DioExceptionType.badResponse:
           final statusCode = e.response?.statusCode;
           if (statusCode == 404) {
-            throw 'Không tìm thấy API endpoint. Vui lòng kiểm tra lại URL.';
+            throw '${e.response}.';
           }
           throw 'Lỗi từ server: $statusCode';
         case DioExceptionType.cancel:
@@ -466,7 +468,7 @@ class RestfulApiProviderImpl {
         case DioExceptionType.badResponse:
           final statusCode = e.response?.statusCode;
           if (statusCode == 404) {
-            throw 'Không tìm thấy API endpoint. Vui lòng kiểm tra lại URL.';
+            throw '${e.response}.';
           }
           throw 'Lỗi từ server: $statusCode';
         case DioExceptionType.cancel:
@@ -527,7 +529,7 @@ class RestfulApiProviderImpl {
         case DioExceptionType.badResponse:
           final statusCode = e.response?.statusCode;
           if (statusCode == 404) {
-            throw 'Không tìm thấy API endpoint. Vui lòng kiểm tra lại URL.';
+            throw '${e.response}.';
           }
           throw 'Lỗi từ server: $statusCode';
         case DioExceptionType.cancel:
@@ -601,7 +603,7 @@ class RestfulApiProviderImpl {
         case DioExceptionType.badResponse:
           final statusCode = e.response?.statusCode;
           if (statusCode == 404) {
-            throw 'Không tìm thấy API endpoint. Vui lòng kiểm tra lại URL.';
+            throw '${e.response}.';
           }
           throw 'Lỗi từ server: $statusCode';
         case DioExceptionType.cancel:
@@ -662,7 +664,7 @@ class RestfulApiProviderImpl {
         case DioExceptionType.badResponse:
           final statusCode = e.response?.statusCode;
           if (statusCode == 404) {
-            throw 'Không tìm thấy API endpoint. Vui lòng kiểm tra lại URL.';
+            throw '${e.response}.';
           }
           throw 'Lỗi từ server: $statusCode';
         case DioExceptionType.cancel:
@@ -752,7 +754,7 @@ class RestfulApiProviderImpl {
         case DioExceptionType.badResponse:
           final statusCode = e.response?.statusCode;
           if (statusCode == 404) {
-            throw 'Không tìm thấy API endpoint. Vui lòng kiểm tra lại URL.';
+            throw '${e.response}.';
           }
           throw 'Lỗi từ server: $statusCode';
         case DioExceptionType.cancel:
@@ -769,17 +771,16 @@ class RestfulApiProviderImpl {
   }
 
   Future<Response> postBankAccount({
-    required String bankName,
+    required String bank,
     required String branch,
-    required String accountNumber,
+    required String number,
     required String cardHolder,
     required bool isDefault,
   }) async {
-    // Create the request body with the required fields for a bank account
     final requestBody = {
-      'bank_name': bankName,
+      'bank': bank,
       'branch': branch,
-      'account_number': accountNumber,
+      'number': number,
       'card_holder': cardHolder,
       'is_default': isDefault,
     };
@@ -830,7 +831,7 @@ class RestfulApiProviderImpl {
         case DioExceptionType.badResponse:
           final statusCode = e.response?.statusCode;
           if (statusCode == 404) {
-            throw 'Không tìm thấy API endpoint. Vui lòng kiểm tra lại URL.';
+            throw '${e.response}.';
           }
           throw 'Lỗi từ server: $statusCode';
         case DioExceptionType.cancel:
@@ -891,7 +892,7 @@ class RestfulApiProviderImpl {
         case DioExceptionType.badResponse:
           final statusCode = e.response?.statusCode;
           if (statusCode == 404) {
-            throw 'Không tìm thấy API endpoint. Vui lòng kiểm tra lại URL.';
+            throw '${e.response}.';
           }
           throw 'Lỗi từ server: $statusCode';
         case DioExceptionType.cancel:
@@ -1027,7 +1028,7 @@ class RestfulApiProviderImpl {
         case DioExceptionType.badResponse:
           final statusCode = e.response?.statusCode;
           if (statusCode == 404) {
-            throw 'Không tìm thấy API endpoint. Vui lòng kiểm tra lại URL.';
+            throw '${e.response}.';
           } else if (statusCode == 422) {
             // Thêm xử lý lỗi chi tiết cho 422
             final errorData = e.response?.data;
@@ -1120,7 +1121,7 @@ class RestfulApiProviderImpl {
         case DioExceptionType.badResponse:
           final statusCode = e.response?.statusCode;
           if (statusCode == 404) {
-            throw 'Không tìm thấy API endpoint. Vui lòng kiểm tra lại URL.';
+            throw '${e.response}.';
           }
           throw 'Lỗi từ server: $statusCode';
         case DioExceptionType.cancel:
@@ -1134,6 +1135,67 @@ class RestfulApiProviderImpl {
         print('General Error: $error');
       }
       throw 'Đã xảy ra lỗi không xác định khi gửi thông tin tài khoản ngân hàng';
+    }
+  }
+   
+  Future<Response> getStatus() async {
+    if (kDebugMode) {
+      print('Request URL: ${NetworkConstants.baseUrl}${ApiPath.sellerstorestatusGet}');
+    }
+
+    try {
+      final response = await dioClient.get(
+        ApiPath.sellerstorestatusGet,
+        headers: {
+          'Content-Type': 'application/json',  
+
+          'Authorization': '$authType $authToken',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (kDebugMode) {
+        print('Getg Response Status Code: ${response.statusCode}');
+        print('GetG Response Data: ${response.data}');
+      }
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('Tax Get successfully');
+        return response;
+      } else if (response.statusCode == 401) {
+        throw 'Không có quyền truy cập. Vui lòng đăng nhập lại.';
+      } else {
+        throw Exception(
+            'Failed to post address. Status: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      if (kDebugMode) {
+        print('DioError Type: ${e.type}');
+        print('DioError Message: ${e.message}');
+        print('DioError Response: ${e.response?.data}');
+      }
+
+      switch (e.type) {
+        case DioExceptionType.connectionTimeout:
+        case DioExceptionType.sendTimeout:
+        case DioExceptionType.receiveTimeout:
+          throw 'Kết nối tới server bị timeout. Vui lòng thử lại.';
+        case DioExceptionType.badResponse:
+          final statusCode = e.response?.statusCode;
+          if (statusCode == 404) {
+            throw '${e.response}.';
+          }
+          throw 'Lỗi từ server: $statusCode';
+        case DioExceptionType.cancel:
+          throw 'Yêu cầu đã bị hủy';
+        default:
+          throw 'Lỗi kết nối: ${e.message}';
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('General Error: $error');
+      }
+      throw 'Đã xảy ra lỗi không xác định khi gửi Tax';
     }
   }
 }

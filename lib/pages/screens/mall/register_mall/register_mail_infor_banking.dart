@@ -17,6 +17,7 @@ class RegisterMallinforbankingScreen extends StatefulWidget {
 
 class _RegisterMallinforbankingScreenState
     extends State<RegisterMallinforbankingScreen> {
+  final _formKey = GlobalKey<FormState>();
   final _bankController = TextEditingController();
   final _branchController = TextEditingController();
   final _accountNumberController = TextEditingController();
@@ -25,6 +26,10 @@ class _RegisterMallinforbankingScreenState
   String? selectedBank;
   bool isEditable = true;
 
+  // Add form validation error states
+  String? _bankError;
+  String? _accountNumberError;
+
   @override
   void dispose() {
     _bankController.dispose();
@@ -32,6 +37,36 @@ class _RegisterMallinforbankingScreenState
     _accountNumberController.dispose();
     _cardHolderController.dispose();
     super.dispose();
+  }
+
+  bool _validateForm() {
+    setState(() {
+      _bankError = selectedBank?.isEmpty ?? true ? 'a.' : null;
+      _accountNumberError = _accountNumberController.text.isEmpty
+          ? 'Số tài khoản là bắt buộc.'
+          : null;
+    });
+    return (_bankError == null && _accountNumberError == null);
+  }
+
+  void _submitForm() {
+    if (_validateForm()) {
+      print(
+          "Bank: $selectedBank, Account Number: ${_accountNumberController.text}");
+      context.read<SellerRegisterBankAccountBloc>().add(
+            SellerRegisterBankAccountButtonPressed(
+              bank: selectedBank ?? 'SacomBank',
+              branch: _branchController.text,
+              number: _accountNumberController.text,
+              cardHolder: _cardHolderController.text,
+              isDefault: _isDefault,
+            ),
+          );
+      print(
+          "Bank: $selectedBank, Account Number: ${_accountNumberController.text}");
+    } else {
+      print("Validation failed: $_bankError, $_accountNumberError");
+    }
   }
 
   @override
@@ -56,21 +91,26 @@ class _RegisterMallinforbankingScreenState
                     builder: (context, state) {
                       if (state is SellerRegisterBankAccountLoading) {
                         return const Center(child: CircularProgressIndicator());
-                      } else if (state is SellerRegisterBankAccountLoaded) {
-                        // Đọc dữ liệu từ cards array
-                        final bankCard = state.bankAccountInfo.cards.isNotEmpty
-                            ? state.bankAccountInfo.cards.first
-                            : null;
+                      }
 
-                        // Cập nhật controllers và trạng thái chỉnh sửa nếu có dữ liệu
-                        if (bankCard != null) {
-                          selectedBank = bankCard.bank;
-                          _accountNumberController.text = bankCard.number;
-                          _isDefault = bankCard.isDefault == 1;
-                          isEditable = false;
-                        }
+                      final bankCard =
+                          (state is SellerRegisterBankAccountLoaded &&
+                                  state.bankAccountInfo.cards.isNotEmpty)
+                              ? state.bankAccountInfo.cards.first
+                              : null;
 
-                        return Column(
+                      if (bankCard != null) {
+                        selectedBank = bankCard.bank;
+                        _accountNumberController.text = bankCard.number;
+                        _isDefault = bankCard.isDefault == 1;
+                        isEditable = false;
+                      } else {
+                        isEditable = true;
+                      }
+
+                      return Form(
+                        key: _formKey,
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 10),
@@ -92,33 +132,52 @@ class _RegisterMallinforbankingScreenState
                                   ),
                                 ],
                               ),
-                              child: DropdownButtonFormField<String>(
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
-                                      borderSide: BorderSide.none),
-                                  filled: true,
-                                  fillColor: Styles.colorF9F9F9,
-                                ),
-                                dropdownColor: Styles.colorF9F9F9,
-                                value: selectedBank ?? 'Sacombank',
-                                isExpanded: true,
-                                items:
-                                    ['Vietcombank', 'Vietinbank', 'Sacombank']
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  DropdownButtonFormField<String>(
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15)),
+                                          borderSide: BorderSide.none),
+                                      filled: true,
+                                      fillColor: Styles.colorF9F9F9,
+                                    ),
+                                    dropdownColor: Styles.colorF9F9F9,
+                                    value: selectedBank ?? 'Sacombank',
+                                    isExpanded: true,
+                                    items: [
+                                      'Vietcombank',
+                                      'Vietinbank',
+                                      'Sacombank'
+                                    ]
                                         .map((type) => DropdownMenuItem(
                                               value: type,
                                               child: Text(type),
                                             ))
                                         .toList(),
-                                onChanged: isEditable
-                                    ? (value) {
-                                        setState(() {
-                                          selectedBank = value;
-                                        });
-                                      }
-                                    : null,
-                                icon: const Icon(Icons.arrow_drop_down),
+                                    onChanged: isEditable
+                                        ? (value) {
+                                            setState(() {
+                                              selectedBank = value;
+                                              _bankError = null;
+                                            });
+                                          }
+                                        : null,
+                                    icon: const Icon(Icons.arrow_drop_down),
+                                  ),
+                                  if (_bankError != null)
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 12, top: 8),
+                                      child: Text(
+                                        _bankError!,
+                                        style: TextStyle(
+                                            color: Colors.red, fontSize: 12),
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                             CustomTextFieldNoIcon(
@@ -127,11 +186,27 @@ class _RegisterMallinforbankingScreenState
                               hintText: "Tân Phú",
                               enabled: isEditable,
                             ),
-                            CustomTextFieldNoIcon(
-                              controller: _accountNumberController,
-                              label: "Số Tài khoản ngân hàng",
-                              hintText: bankCard?.number ?? "Nhập số tài khoản",
-                              enabled: isEditable,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomTextFieldNoIcon(
+                                  controller: _accountNumberController,
+                                  label: "Số Tài khoản ngân hàng",
+                                  hintText:
+                                      bankCard?.number ?? "Nhập số tài khoản",
+                                  enabled: isEditable,
+                                ),
+                                if (_accountNumberError != null)
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.only(left: 12, top: 8),
+                                    child: Text(
+                                      _accountNumberError!,
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 12),
+                                    ),
+                                  ),
+                              ],
                             ),
                             CustomTextFieldNoIcon(
                               controller: _cardHolderController,
@@ -178,44 +253,42 @@ class _RegisterMallinforbankingScreenState
                                       ),
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          context
-                                              .read<
-                                                  SellerRegisterBankAccountBloc>()
-                                              .add(
-                                                SellerRegisterBankAccountButtonPressed(
-                                                  bankName: selectedBank ??
-                                                      'Sacombank',
-                                                  branch:
-                                                      _branchController.text,
-                                                  accountNumber:
-                                                      _accountNumberController
-                                                          .text,
-                                                  cardHolder:
-                                                      _cardHolderController
-                                                          .text,
-                                                  isDefault: _isDefault,
-                                                ),
-                                              );
+                                          if (_validateForm()) {
+                                            context
+                                                .read<
+                                                    SellerRegisterBankAccountBloc>()
+                                                .add(
+                                                  SellerRegisterBankAccountButtonPressed(
+                                                    bank: selectedBank ??
+                                                        'Sacombank',
+                                                    branch:
+                                                        _branchController.text,
+                                                    number:
+                                                        _accountNumberController
+                                                                .text ??
+                                                            '1',
+                                                    cardHolder:
+                                                        _cardHolderController
+                                                            .text,
+                                                    isDefault: _isDefault,
+                                                  ),
+                                                );
+                                          }
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.transparent,
-                                          elevation: 0,
                                           shadowColor: Colors.transparent,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(30),
                                           ),
                                         ),
-                                        child: const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 15),
-                                          child: Text(
-                                            'Lưu thay đổi',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                        child: const Text(
+                                          "Lưu thông tin",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ),
@@ -224,11 +297,8 @@ class _RegisterMallinforbankingScreenState
                                 ],
                               ),
                           ],
-                        );
-                      } else if (state is SellerRegisterBankAccountFailure) {
-                        return Center(child: Text('Lỗi: ${state.error}'));
-                      }
-                      return const Center(child: Text('Không có dữ liệu'));
+                        ),
+                      );
                     },
                   ),
                 ),

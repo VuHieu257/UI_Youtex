@@ -38,12 +38,10 @@ class SellerRegisterBankAccountBloc extends Bloc<
     emit(SellerRegisterBankAccountLoading());
 
     try {
-      event.validateInput();
-
       final response = await restfulApiProvider.postBankAccount(
-        bankName: event.bankName,
+        bank: event.bank,
         branch: event.branch,
-        accountNumber: event.accountNumber,
+        number: event.number,
         cardHolder: event.cardHolder,
         isDefault: event.isDefault,
       );

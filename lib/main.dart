@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:ui_youtex/bloc_seller/bloc/bloc_seller_address_bloc.dart';
+import 'package:ui_youtex/bloc_seller/bloc_seller_register_status_bloc.dart/seller_register_status_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_identification_bloc/seller_register_identification_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_event.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_register_product_bloc_bloc.dart';
@@ -81,9 +82,14 @@ void main() async {
           //   create: (context) => SellerRegisterAddressBloc(
           //     restfulApiProvider: apiProvider,
           //   ),
-          // ),
+          // ),SellerRegisterStatusBloc
           BlocProvider(
             create: (context) => SellerRegisterTaxBloc(
+              restfulApiProvider: apiProvider,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => SellerRegisterStatusBloc(
               restfulApiProvider: apiProvider,
             ),
           ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_tax_get_bloc/seller_register_tax_get_bloc_bloc.dart';
+import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/pages/widget_small/appbar/custome_appbar_circle.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
 
@@ -93,13 +94,26 @@ class _RegisterMallinforExhibitiScreenState
         if (state is SellerRegisterTaxLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is SellerRegisterTaxLoaded) {
+          // Hiển thị dialog thành công
+          // WidgetsBinding.instance.addPostFrameCallback((_) {
+          //   showDialog(
+          //     context: context,
+          //     builder: (BuildContext context) {
+          //       return const CardAddedSuccessDialog();
+          //     },
+          //   );
+          // });
+
+          // Sau khi hiển thị dialog, trả về form
           return _buildForm(context, state.tax);
         } else if (state is SellerRegisterTaxCreatePrompt) {
           return _buildForm(context, null);
         } else if (state is SellerRegisterTaxError) {
-          return Center(child: Text(state.message));
+          return _buildForm(
+              context, null); // Trả về form đăng ký mà không có dữ liệu thuế
         } else {
-          return const Center(child: Text('Đang tải...'));
+          // Trả về form đăng ký trong trường hợp khác (kể cả khi dữ liệu chưa có)
+          return _buildForm(context, null);
         }
       },
     );
