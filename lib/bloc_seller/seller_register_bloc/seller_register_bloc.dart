@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_event.dart';
 import '../../core/model/store.info.dart';
 import '../../services/restful_api_provider.dart';
+import '../../util/token_manager.dart';
 
 part 'seller_register_state.dart';
 
@@ -20,7 +21,9 @@ class SellerRegisterBloc
     emit(SellerRegisterLoading());
 
     try {
-      final storeInfo = await restfulApiProvider.getStoreInfo();
+      final token = await TokenManager.getToken();
+
+      final storeInfo = await restfulApiProvider.getStoreInfo(token: token!);
       emit(SellerRegisterLoaded(
           storeInfo)); // Phát ra SellerRegisterLoaded với StoreInfo
     } catch (error) {
@@ -34,7 +37,9 @@ class SellerRegisterBloc
     emit(SellerRegisterLoading());
 
     try {
-      final response = await restfulApiProvider.registerStore(
+      final token = await TokenManager.getToken();
+
+      final response = await restfulApiProvider.registerStore( token: token!,
         name: event.name,
         imagePath: event.imagePath,
         phone: event.phone,

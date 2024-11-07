@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
+import 'package:ui_youtex/util/token_manager.dart';
 
 part 'seller_register_status_event.dart';
 part 'seller_register_status_state.dart';
@@ -21,8 +22,9 @@ class SellerRegisterStatusBloc
   ) async {
     try {
       emit(SellerRegisterStatusLoading());
+      final token = await TokenManager.getToken();
 
-      final response = await restfulApiProvider.getAddress();
+      final response = await restfulApiProvider.getStatus(token: token!);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         emit(SellerRegisterStatusSuccess(response.data));

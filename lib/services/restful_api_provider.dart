@@ -89,7 +89,6 @@ abstract class ApiPath {
   static const String sellerstorestatusGet = '/seller/store/status';
   static const String sellerstorestatussGetGet = '/seller/product/:id/status';
 
-
   ///*******************************DELETE***********************************
   static const String sellerRAddressDelete = 'seller/address/id';
 
@@ -148,7 +147,7 @@ class RestfulApiProviderImpl {
         ApiPath.logout,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer $token',
         },
       );
       if (response.statusCode == 200) {
@@ -175,7 +174,7 @@ class RestfulApiProviderImpl {
         ApiPath.paymentMethods,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer $token',
         },
       );
       return response.data;
@@ -193,7 +192,7 @@ class RestfulApiProviderImpl {
         '${ApiPath.searchByPhone}/$phone',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer $token',
         },
       );
       return response.data;
@@ -210,7 +209,7 @@ class RestfulApiProviderImpl {
         ApiPath.customer,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer $token',
         },
       );
       if (response.statusCode == 200) {
@@ -234,7 +233,7 @@ class RestfulApiProviderImpl {
         ApiPath.buyerAddress,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer $token',
         },
       );
       if (response.statusCode == 200) {
@@ -298,7 +297,7 @@ class RestfulApiProviderImpl {
         },
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer $token',
         },
       );
       return response;
@@ -334,7 +333,7 @@ class RestfulApiProviderImpl {
         },
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer $token',
         },
       );
       return response;
@@ -378,6 +377,7 @@ class RestfulApiProviderImpl {
 
   /// Seller a new store
   Future<Response> registerStore({
+    required String token,
     required String name,
     required String imagePath,
     required String phone,
@@ -396,9 +396,9 @@ class RestfulApiProviderImpl {
       });
 
       if (kDebugMode) {
-         print(
+        print(
             'Request URL: ${NetworkConstants.baseUrl}${ApiPath.sellerRegistorPost}');
- 
+
         print('Request Data: ${formData.fields}');
       }
 
@@ -407,7 +407,7 @@ class RestfulApiProviderImpl {
         ApiPath.sellerRegistorPost,
         body: formData,
         headers: {
-          'Authorization': '$authType $authToken',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
@@ -469,13 +469,14 @@ class RestfulApiProviderImpl {
   }
 
   Future<StoreInfo> getStoreInfo({
+    required String token,
     String authType = 'Bearer',
   }) async {
     try {
       final response = await dioClient.get(
         ApiPath.sellerRegistorGet,
         headers: {
-          'Authorization': '$authType $authToken',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
@@ -533,7 +534,9 @@ class RestfulApiProviderImpl {
     }
   }
 
-  Future<Response> getAddress() async {
+  Future<Response> getAddress({
+    required String token,
+  }) async {
     if (kDebugMode) {
       print(
           'Request URL: ${NetworkConstants.baseUrl}${ApiPath.sellerRAddressGet}');
@@ -545,7 +548,7 @@ class RestfulApiProviderImpl {
         headers: {
           'Content-Type': 'application/json', // Đảm bảo gửi dữ liệu JSON
 
-          'Authorization': '$authType $authToken',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
@@ -596,6 +599,7 @@ class RestfulApiProviderImpl {
   }
 
   Future<Response> postAddress({
+    required String token,
     required String name,
     required String phone,
     required String country,
@@ -631,7 +635,7 @@ class RestfulApiProviderImpl {
         headers: {
           'Content-Type': 'application/json', // Đảm bảo gửi dữ liệu JSON
 
-          'Authorization': '$authType $authToken',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
@@ -681,7 +685,9 @@ class RestfulApiProviderImpl {
     }
   }
 
-  Future<Response> getTax() async {
+  Future<Response> getTax({
+    required String token,
+  }) async {
     if (kDebugMode) {
       print('Request URL: ${NetworkConstants.baseUrl}${ApiPath.sellerTaxGet}');
     }
@@ -692,7 +698,7 @@ class RestfulApiProviderImpl {
         headers: {
           'Content-Type': 'application/json', // Đảm bảo gửi dữ liệu JSON
 
-          'Authorization': '$authType $authToken',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
@@ -742,7 +748,8 @@ class RestfulApiProviderImpl {
     }
   }
 
-  Future<bool> postTax(SellerRegisterTaxModel tax) async {
+  Future<bool> postTax(SellerRegisterTaxModel tax,
+      {required String token}) async {
     try {
       // Prepare FormData with the tax information
       final formData = FormData.fromMap({
@@ -765,7 +772,7 @@ class RestfulApiProviderImpl {
         body: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': '$authType $authToken',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
@@ -816,7 +823,9 @@ class RestfulApiProviderImpl {
     }
   }
 
-  Future<Response> getidentification() async {
+  Future<Response> getidentification({
+    required String token,
+  }) async {
     if (kDebugMode) {
       print(
           'Request URL: ${NetworkConstants.baseUrl}${ApiPath.selleridentificationPost}');
@@ -828,7 +837,7 @@ class RestfulApiProviderImpl {
         headers: {
           'Content-Type': 'application/json', // Đảm bảo gửi dữ liệu JSON
 
-          'Authorization': '$authType $authToken',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
@@ -878,7 +887,9 @@ class RestfulApiProviderImpl {
   }
 
   Future<bool> postIdentification(
-      SellerIdentificationModel identification) async {
+    SellerIdentificationModel identification, {
+    required String token,
+  }) async {
     try {
       // Prepare FormData with identification information
       final formData = FormData.fromMap({
@@ -915,7 +926,7 @@ class RestfulApiProviderImpl {
         body: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': '$authType $authToken',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
@@ -968,6 +979,7 @@ class RestfulApiProviderImpl {
   }
 
   Future<Response> postBankAccount({
+    required String token,
     required String bank,
     required String branch,
     required String number,
@@ -994,7 +1006,7 @@ class RestfulApiProviderImpl {
         body: requestBody, // Use 'data' instead of 'body' for Dio requests
         headers: {
           'Content-Type': 'application/json', // Ensure JSON data format
-          'Authorization': '$authType $authToken',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
@@ -1043,7 +1055,9 @@ class RestfulApiProviderImpl {
     }
   }
 
-  Future<BankAccountResponse> sellerpaymentmethodssGet() async {
+  Future<BankAccountResponse> sellerpaymentmethodssGet({
+    required String token,
+  }) async {
     if (kDebugMode) {
       print(
           'Request URL: ${NetworkConstants.baseUrl}${ApiPath.selleridentificationPost}');
@@ -1054,7 +1068,7 @@ class RestfulApiProviderImpl {
         ApiPath.sellerpaymentmethodssGet,
         headers: {
           'Content-Type': 'application/json', // Ensure JSON data format
-          'Authorization': '$authType $authToken',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
@@ -1103,12 +1117,14 @@ class RestfulApiProviderImpl {
     }
   }
 
-  Future<List<SellerRegisterProductModel>?> getProduct() async {
+  Future<List<SellerRegisterProductModel>?> getProduct({
+    required String token,
+  }) async {
     try {
       final response = await dioClient.get(
         ApiPath.sellerRegisterProductGet,
         headers: {
-          'Authorization': '$authType $authToken',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
@@ -1164,7 +1180,7 @@ class RestfulApiProviderImpl {
         body: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer $token',
         },
       );
       if (response.statusCode == 200) {
@@ -1206,7 +1222,7 @@ class RestfulApiProviderImpl {
         },
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer $token',
         },
       );
       print(response);
@@ -1235,7 +1251,7 @@ class RestfulApiProviderImpl {
         "${ApiPath.buyerDeleteAddress}/$id",
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer $token',
         },
       );
       if (response.statusCode == 200) {
@@ -1251,7 +1267,10 @@ class RestfulApiProviderImpl {
     }
   }
 
-  Future<bool> postProduct(ProductPostModel product) async {
+  Future<bool> postProduct(
+    ProductPostModel product, {
+    required String token,
+  }) async {
     try {
       // Kiểm tra xem tất cả các hình ảnh có tồn tại không
       for (String imagePath in product.images) {
@@ -1294,7 +1313,7 @@ class RestfulApiProviderImpl {
         body: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': '$authType $authToken',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
@@ -1353,6 +1372,7 @@ class RestfulApiProviderImpl {
   Future<bool> sendShippingData(
       {String shippingUnit = 'Default Shipping Unit',
       String description = 'Default Description',
+      required String token,
       Map<String, dynamic> settings = const {
         'is_cod': 1,
         'is_active': 1
@@ -1385,7 +1405,7 @@ class RestfulApiProviderImpl {
         headers: {
           'Content-Type':
               'application/json', // Đảm bảo gửi dữ liệu dưới dạng JSON
-          'Authorization': '$authType $authToken',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );
@@ -1439,19 +1459,21 @@ class RestfulApiProviderImpl {
       throw 'Đã xảy ra lỗi không xác định khi gửi thông tin tài khoản ngân hàng';
     }
   }
-   
-  Future<Response> getStatus() async {
+
+  Future<Response> getStatus({
+    required String token,
+  }) async {
     if (kDebugMode) {
-      print('Request URL: ${NetworkConstants.baseUrl}${ApiPath.sellerstorestatusGet}');
+      print(
+          'Request URL: ${NetworkConstants.baseUrl}${ApiPath.sellerstorestatusGet}');
     }
 
     try {
       final response = await dioClient.get(
         ApiPath.sellerstorestatusGet,
         headers: {
-          'Content-Type': 'application/json',  
-
-          'Authorization': '$authType $authToken',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
       );

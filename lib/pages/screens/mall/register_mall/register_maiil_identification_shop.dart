@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_identification_bloc/seller_register_identification_bloc_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/appbar/custome_appbar_circle.dart';
