@@ -7,15 +7,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_manager/photo_manager.dart';
- import 'package:ui_youtex/bloc_seller/bloc/bloc_seller_address_bloc.dart';
+import 'package:ui_youtex/bloc/forgot_password_bloc/forgot_password_bloc.dart';
+import 'package:ui_youtex/bloc_seller/bloc/bloc_seller_address_bloc.dart';
 import 'package:ui_youtex/bloc_seller/bloc_seller_register_status_bloc.dart/seller_register_status_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_identification_bloc/seller_register_identification_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_event.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_register_product_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_tax_get_bloc/seller_register_tax_get_bloc_bloc.dart';
 import 'package:ui_youtex/core/model/store.info.dart';
+import 'package:ui_youtex/core/size/size.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
- 
 import 'dart:core';
 import 'package:ui_youtex/pages/screens/home/home.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_product.dart';
@@ -54,7 +56,7 @@ void main() async {
               projectId: 'mangxahoi-sotavn',
               storageBucket: "mangxahoi-sotavn.appspot.com"))
       : await Firebase.initializeApp();
-   final apiProvider = RestfulApiProviderImpl();
+  final apiProvider = RestfulApiProviderImpl();
 
   runApp(
     MultiRepositoryProvider(
@@ -65,6 +67,15 @@ void main() async {
       ],
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (context) => RegisterBloc(),
+          ),
+          BlocProvider(
+            create: (context) => UserProfileBloc(),
+          ),
+          BlocProvider(
+            create: (context) => ForgotPasswordBloc(),
+          ),
           BlocProvider(
             create: (context) => LoginBloc(),
           ),
@@ -106,11 +117,10 @@ void main() async {
         ],
         child: const MyApp(),
       ),
- 
     ),
-    ),
-  ], child: const MyApp()));
+  );
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -238,7 +248,11 @@ class _SearchUserByPhoneScreenState extends State<SearchUserByPhoneScreen> {
                 ],
               ),
               if (state is UserLoaded) ...{
-                FriendCard(id:state.id,name: state.name,img: "${state.img}",),
+                FriendCard(
+                  id: state.id,
+                  name: state.name,
+                  img: "${state.img}",
+                ),
               }
             ],
           ),
@@ -247,11 +261,18 @@ class _SearchUserByPhoneScreenState extends State<SearchUserByPhoneScreen> {
     );
   }
 }
+
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-Future<void> addFriend(String userId, String friendId, String name, String? imgUrl) async {
+Future<void> addFriend(
+    String userId, String friendId, String name, String? imgUrl) async {
   try {
-    await _firestore.collection('users').doc(userId).collection('friends').doc(friendId).set({
+    await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('friends')
+        .doc(friendId)
+        .set({
       'id': friendId,
       'name': name,
       'image': imgUrl,
@@ -266,7 +287,9 @@ Future<void> addFriend(String userId, String friendId, String name, String? imgU
     }
   }
 }
-void createNewChat(BuildContext context,String currentUserId, String otherUserId) async {
+
+void createNewChat(
+    BuildContext context, String currentUserId, String otherUserId) async {
   final chatDocRef = _firestore.collection('chats').doc();
 
   await chatDocRef.set({
@@ -287,11 +310,13 @@ void createNewChat(BuildContext context,String currentUserId, String otherUserId
   //   ),
   // );
 }
+
 class FriendCard extends StatelessWidget {
   final String name;
   final String img;
   final String id;
-  const FriendCard({super.key, required this.name, required this.img, required this.id});
+  const FriendCard(
+      {super.key, required this.name, required this.img, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -309,10 +334,14 @@ class FriendCard extends StatelessWidget {
               Container(
                 height: context.width * 0.15,
                 width: context.width * 0.15,
-                decoration:  BoxDecoration(
-                  borderRadius:const BorderRadius.all(Radius.circular(12)),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
                   image: DecorationImage(
-                      image:img.isEmpty||img=="null"?const AssetImage(Asset.bgImageAvatar):NetworkImage("${NetworkConstants.urlImage}/storage/$img")as ImageProvider,
+                      image: img.isEmpty || img == "null"
+                          ? const AssetImage(Asset.bgImageAvatar)
+                          : NetworkImage(
+                                  "${NetworkConstants.urlImage}/storage/$img")
+                              as ImageProvider,
                       fit: BoxFit.cover),
                 ),
               ),
@@ -337,7 +366,11 @@ class FriendCard extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () => createNewChat(context,"0812507355","0812507356",),
+                onTap: () => createNewChat(
+                  context,
+                  "0812507355",
+                  "0812507356",
+                ),
                 child: Container(
                   margin: const EdgeInsets.only(right: 10),
                   padding: const EdgeInsets.all(10),
@@ -361,7 +394,7 @@ class FriendCard extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  addFriend("0812507355","0812507356",name,img);
+                  addFriend("0812507355", "0812507356", name, img);
                 },
                 child: Container(
                   padding: const EdgeInsets.all(10),
@@ -442,12 +475,9 @@ class FriendsList extends StatelessWidget {
         .doc(userId)
         .collection('friends')
         .snapshots()
-        .map((snapshot) => snapshot.docs
-        .map((doc) => doc.data())
-        .toList());
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 }
-
 
 class ChatListScreen extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;

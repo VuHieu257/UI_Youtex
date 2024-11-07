@@ -131,7 +131,7 @@ class UserStorageHeader extends StatelessWidget {
                 width: 100,
                 height: 100,
                 padding: const EdgeInsets.all(3),
-                margin: const EdgeInsets.only(left: 30),
+                margin: const EdgeInsets.only(left: 10),
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,

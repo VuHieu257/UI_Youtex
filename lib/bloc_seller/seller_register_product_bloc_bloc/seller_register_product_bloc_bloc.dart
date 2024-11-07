@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
 import 'package:ui_youtex/util/constants.dart';
+import 'package:ui_youtex/util/token_manager.dart';
 
 part 'seller_register_product_bloc_event.dart';
 part 'seller_register_product_bloc_state.dart';
@@ -17,31 +18,32 @@ class SellerRegisterProductBloc extends Bloc<SellerRegisterProductBlocEvent,
     on<SellerRegisterProductPostEvent>(_onPostProduct);
   }
 
- Future<void> _onGetProduct(
-  SellerRegisterProductGetEvent event,
-  Emitter<SellerRegisterProductBlocState> emit,
-) async {
-  try {
-    emit(SellerRegisterProductLoading());
+  Future<void> _onGetProduct(
+    SellerRegisterProductGetEvent event,
+    Emitter<SellerRegisterProductBlocState> emit,
+  ) async {
+    try {
+      emit(SellerRegisterProductLoading());
+      final token = await TokenManager.getToken();
 
-    final products = await restfulApiProvider.getProduct();
+      final products = await restfulApiProvider.getProduct(token: token!);
 
-    if (products != null && products.isNotEmpty) {
-      emit(SellerRegisterProductLoaded(products));
-    } else {
-      emit(SellerRegisterProductCreatePrompt(
-          'Không tìm thấy sản phẩm nào. Vui lòng tạo thông tin sản phẩm.'));
+      if (products != null && products.isNotEmpty) {
+        emit(SellerRegisterProductLoaded(products));
+      } else {
+        emit(SellerRegisterProductCreatePrompt(
+            'Không tìm thấy sản phẩm nào. Vui lòng tạo thông tin sản phẩm.'));
+      }
+    } on DioException catch (dioError) {
+      // Xử lý lỗi cụ thể của Dio
+      print('Dio error: ${dioError.message}');
+      emit(SellerRegisterProductError('Đã xảy ra lỗi khi kết nối với API.'));
+    } catch (e, stackTrace) {
+      print('Error getting products: $e');
+      print(stackTrace);
+      emit(SellerRegisterProductError('Đã xảy ra lỗi khi lấy sản phẩm.'));
     }
-  } on DioException catch (dioError) {
-    // Xử lý lỗi cụ thể của Dio
-    print('Dio error: ${dioError.message}');
-    emit(SellerRegisterProductError('Đã xảy ra lỗi khi kết nối với API.'));
-  } catch (e, stackTrace) {
-    print('Error getting products: $e');
-    print(stackTrace);
-    emit(SellerRegisterProductError('Đã xảy ra lỗi khi lấy sản phẩm.'));
   }
-}
 
   Future<void> _onPostProduct(
     SellerRegisterProductPostEvent event,
@@ -49,10 +51,11 @@ class SellerRegisterProductBloc extends Bloc<SellerRegisterProductBlocEvent,
   ) async {
     try {
       emit(SellerRegisterProductLoading());
+      final token = await TokenManager.getToken();
 
-      final success = await restfulApiProvider.postProduct(event.model);
+      final success = await restfulApiProvider.postProduct(event.model,token: token!);
       if (success) {
-        final updatedProducts = await restfulApiProvider.getProduct();
+        final updatedProducts = await restfulApiProvider.getProduct(token: token!);
         if (updatedProducts != null) {
           emit(SellerRegisterProductSuccess('Thêm sản phẩm thành công'));
           emit(SellerRegisterProductLoaded(updatedProducts));

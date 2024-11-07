@@ -1,7 +1,7 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
+import 'package:ui_youtex/util/token_manager.dart';
 
 part 'seller_register_tax_get_bloc_event.dart';
 part 'seller_register_tax_get_bloc_state.dart';
@@ -25,9 +25,10 @@ class SellerRegisterTaxBloc
       if (event.model != null) {
         emit(SellerRegisterTaxLoaded(event.model!));
       } else {
-        final response = await restfulApiProvider.getTax();
-        if (response.statusCode == 200 &&
-            response.data != null) {
+        final token = await TokenManager.getToken();
+
+        final response = await restfulApiProvider.getTax(token: token!);
+        if (response.statusCode == 200 && response.data != null) {
           final tax = SellerRegisterTaxModel.fromJson(response.data);
           emit(SellerRegisterTaxLoaded(tax));
         } else {
@@ -46,7 +47,10 @@ class SellerRegisterTaxBloc
   ) async {
     emit(SellerRegisterTaxLoading());
     try {
-      final success = await restfulApiProvider.postTax(event.model);
+      final token = await TokenManager.getToken();
+
+      final success =
+          await restfulApiProvider.postTax(event.model, token: token!);
       if (success) {
         emit(SellerRegisterTaxLoaded(event.model));
       } else {

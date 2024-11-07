@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:ui_youtex/core/model/bank.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
+import 'package:ui_youtex/util/token_manager.dart';
 
 part 'seller_register_bank_account_bloc_event.dart';
 part 'seller_register_bank_account_bloc_state.dart';
@@ -22,8 +23,10 @@ class SellerRegisterBankAccountBloc extends Bloc<
     emit(SellerRegisterBankAccountLoading());
 
     try {
+      final token = await TokenManager.getToken();
+
       final bankAccountInfo =
-          await restfulApiProvider.sellerpaymentmethodssGet();
+          await restfulApiProvider.sellerpaymentmethodssGet(token: token!);
       emit(SellerRegisterBankAccountLoaded(bankAccountInfo));
     } catch (error) {
       emit(SellerRegisterBankAccountFailure(error: error.toString()));
@@ -36,7 +39,9 @@ class SellerRegisterBankAccountBloc extends Bloc<
     emit(SellerRegisterBankAccountLoading());
 
     try {
-      final response = await restfulApiProvider.postBankAccount(
+      final token = await TokenManager.getToken();
+
+      final response = await restfulApiProvider.postBankAccount(token: token!,
         bank: event.bank,
         branch: event.branch,
         number: event.number,

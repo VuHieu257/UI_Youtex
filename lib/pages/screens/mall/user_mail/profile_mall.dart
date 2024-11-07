@@ -40,7 +40,7 @@ class _SellerStatusPageState extends State<SellerStatusPage> {
             onPressed: () {
               Navigator.of(context).pop(); // Đóng dialog
               // Chuyển về trang đăng ký
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (_) => const MallInfoScreen(),
                 ),
@@ -430,7 +430,7 @@ class UserStorageHeader extends StatelessWidget {
                 width: 100,
                 height: 100,
                 padding: const EdgeInsets.all(3),
-                margin: const EdgeInsets.only(left: 30),
+                margin: const EdgeInsets.only(left: 10),
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,

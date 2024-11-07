@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
+import 'package:ui_youtex/util/token_manager.dart';
 
 part 'seller_register_identification_bloc_event.dart';
 part 'seller_register_identification_bloc_state.dart';
@@ -26,7 +27,9 @@ class SellerRegisterIdentificationBlocBloc extends Bloc<
       if (event.identification != null) {
         emit(SellerRegisterIdentificationLoaded(event.identification!));
       } else {
-        final response = await restfulApiProvider.getidentification();
+        final token = await TokenManager.getToken();
+
+        final response = await restfulApiProvider.getidentification(token: token!);
         if (response.statusCode == 200) {
           final identification =
               SellerIdentificationModel.fromJson(response.data);
@@ -48,8 +51,10 @@ class SellerRegisterIdentificationBlocBloc extends Bloc<
   ) async {
     emit(SellerRegisterIdentificationLoading());
     try {
+      final token = await TokenManager.getToken();
+
       final success =
-          await restfulApiProvider.postIdentification(event.identification);
+          await restfulApiProvider.postIdentification(event.identification,token: token!);
       if (success) {
         emit(SellerRegisterIdentificationLoaded(event.identification));
       } else {

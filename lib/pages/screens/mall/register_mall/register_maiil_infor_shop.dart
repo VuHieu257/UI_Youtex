@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
+import 'package:ui_youtex/util/token_manager.dart';
 
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/appbar/custome_appbar_circle.dart';
@@ -21,7 +22,7 @@ class _RegisterMallinforShopScreenState
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController settingsController = TextEditingController();
   final RestfulApiProviderImpl restfulApiProviderImpl =
-  RestfulApiProviderImpl();
+      RestfulApiProviderImpl();
 
   @override
   void dispose() {
@@ -33,6 +34,8 @@ class _RegisterMallinforShopScreenState
 
   // Hàm gửi dữ liệu
   Future<void> saveData() async {
+    final token = await TokenManager.getToken();
+
     String shippingUnit = shippingUnitController.text;
     String description = descriptionController.text;
     Map<String, dynamic> settings = const {'is_cod': 1, 'is_active': 1};
@@ -41,6 +44,7 @@ class _RegisterMallinforShopScreenState
         description.isNotEmpty &&
         settings.isNotEmpty) {
       bool success = await restfulApiProviderImpl.sendShippingData(
+        token: token!,
         shippingUnit: shippingUnit,
         description: description,
         settings: settings,
