@@ -41,7 +41,7 @@ class SellerRegisterBloc
         email: event.email,
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         emit(SellerRegisterSuccess());
         // Tải lại thông tin cửa hàng sau khi đăng ký thành công
         add(const LoadStoreInfo()); // Sử dụng add() để phát sự kiện LoadStoreInfo

@@ -11,213 +11,6 @@ import '../../../../core/colors/color.dart';
 import '../../../../services/restful_api_provider.dart';
 import '../../../widget_small/appbar/custome_appbar_circle.dart';
 import '../user_mail/profile_mall.dart';
-// class RegisterMallScreen extends StatelessWidget {
-//   const RegisterMallScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Column(
-//         children: [
-//           Padding(
-//             padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-//             child: cusAppBarCircle(context, title: "Đăng ký Mall"),
-//           ),
-//           Expanded(
-//             child: SingleChildScrollView(
-//               child: Padding(
-//                 padding: const EdgeInsets.all(16.0),
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     const SizedBox(height: 10,),
-//                     const CustomTextFieldNoIcon(label: "Tên Mall",hintText:"Điển thông tin tại đây"),
-//                     const CustomTextFieldNoIcon(label: "Mã số thuế doanh nghiệp",hintText:"Điển thông tin tại đây"),
-//                     const CustomTextFieldNoIcon(label: "Địa chỉ đăng ký kinh doanh",hintText:"Điển thông tin tại đây"),
-//                     const  CustomTextFieldNoIcon(label: "Số giấy phép kinh doanh",hintText:"Điển thông tin tại đây"),
-//                     Text("Loại giấy tờ (CCCD/CMND/Hộ Chiếu)",style: context.theme.textTheme.headlineSmall?.copyWith(
-//                         fontWeight: FontWeight.w600
-//                     ),),
-//                     Container(
-//                       margin: const EdgeInsets.symmetric(vertical: 10),
-//                       decoration: const BoxDecoration(
-//                         borderRadius: BorderRadius.all(Radius.circular(15)),
-//                         boxShadow: [
-//                           BoxShadow(
-//                             color: Colors.black26,
-//                             offset: Offset(0, 4),
-//                             blurRadius: 4,
-//                           ),
-//                         ],
-//                       ),
-//                       child: DropdownButtonFormField<String>(
-//                         decoration: const InputDecoration(
-//                           border: OutlineInputBorder(
-//                               borderRadius: BorderRadius.all(Radius.circular(15)),
-//                               borderSide: BorderSide.none
-//                           ),
-//                           filled: true,
-//                           fillColor: Styles.colorF9F9F9,
-//                         ),
-//                         dropdownColor: Styles.colorF9F9F9,
-//                         value: 'CCCD', // Giá trị mặc định, nếu cần
-//                         isExpanded: true,
-//                         items: ['CCCD', 'CMND', 'Hộ Chiếu']
-//                             .map((type) => DropdownMenuItem(
-//                           value: type,
-//                           child: Text(type),
-//                         ))
-//                             .toList(),
-//                         onChanged: (value) {
-//                           // Xử lý khi chọn loại giấy tờ
-//                         },
-//                         icon: const Icon(Icons.arrow_drop_down),
-//                       ),
-//                     ),
-//                     const CustomTextFieldNoIcon(label: "Số giấy tờ",hintText:"Điển thông tin tại đây"),
-//                     const SizedBox(height: 20),
-//                     Text('Ảnh giấy tờ',style: context.theme.textTheme.headlineMedium?.copyWith(
-//                         fontWeight: FontWeight.bold
-//                     ),),
-
-//                     Column(
-//                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                       children: [
-//                         Container(
-//                           margin: const EdgeInsets.symmetric(vertical: 10),
-//                           decoration: const BoxDecoration(
-//                               color: Styles.colorF9F9F9,
-//                               borderRadius: BorderRadius.all(Radius.circular(15)),
-//                               boxShadow: [
-//                                 BoxShadow(
-//                                     color: Colors.black26,
-//                                     offset: Offset(0, 4),
-//                                     blurRadius: 4
-//                                 )
-//                               ]
-//                           ),
-//                           child: Row(
-//                             children: [
-//                               Container(
-//                                 margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
-//                                 padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 8),
-//                                 decoration: BoxDecoration(
-//                                     color: Styles.colorF9F9F9,
-//                                     borderRadius: const BorderRadius.all(Radius.circular(15)),
-//                                     border: Border.all(width: 1)
-//                                 ),
-//                                 child:const Text('Choose File',style: TextStyle(color: Styles.nearPrimary),),
-//                               ),
-//                               const Text('Ảnh mặt trước.png'),
-//                             ],
-//                           ),
-//                         ),
-//                         Container(
-//                           margin: const EdgeInsets.symmetric(vertical: 10),
-//                           decoration: const BoxDecoration(
-//                               color: Styles.colorF9F9F9,
-//                               borderRadius: BorderRadius.all(Radius.circular(15)),
-//                               boxShadow: [
-//                                 BoxShadow(
-//                                     color: Colors.black26,
-//                                     offset: Offset(0, 4),
-//                                     blurRadius: 4
-//                                 )
-//                               ]
-//                           ),
-//                           child: Row(
-//                             children: [
-//                               Container(
-//                                 margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
-//                                 padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 8),
-//                                 decoration: BoxDecoration(
-//                                     color: Styles.colorF9F9F9,
-//                                     borderRadius: const BorderRadius.all(Radius.circular(15)),
-//                                     border: Border.all(width: 1)
-//                                 ),
-//                                 child:const Text('Choose File',style: TextStyle(color: Styles.nearPrimary),),
-//                               ),
-//                               const Text('Ảnh mặt sau.png'),
-//                             ],
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                     const SizedBox(height: 30),
-//                     Row(
-//                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                       children: [
-//                         Expanded(
-//                           child: Container(
-//                             margin: const EdgeInsets.symmetric(horizontal: 15),
-//                             decoration: BoxDecoration(
-//                               gradient: const LinearGradient(
-//                                 colors: [
-//                                   Color(0xFF218FF2), // Light blue
-//                                   Color(0xFF13538C), // Dark blue
-//                                 ],
-//                                 begin: Alignment.centerLeft,
-//                                 end: Alignment.centerRight,
-//                               ),
-//                               borderRadius: BorderRadius.circular(30),
-//                             ),
-//                             child: IconButton(
-//                               icon: const Icon(Icons.refresh,color: Colors.white,),
-//                               onPressed: () {
-//                               },
-//                               style: ElevatedButton.styleFrom(
-//                                 backgroundColor: Colors.transparent,
-//                                 elevation: 0,
-//                                 shadowColor: Colors.transparent,
-//                                 shape: RoundedRectangleBorder(
-//                                   borderRadius: BorderRadius.circular(30),
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                         Expanded(
-//                           child: Container(
-//                             margin: const EdgeInsets.symmetric(horizontal: 15),
-//                             decoration: BoxDecoration(
-//                               gradient: const LinearGradient(
-//                                 colors: [
-//                                   Color(0xFF218FF2), // Light blue
-//                                   Color(0xFF13538C), // Dark blue
-//                                 ],
-//                                 begin: Alignment.centerLeft,
-//                                 end: Alignment.centerRight,
-//                               ),
-//                               borderRadius: BorderRadius.circular(30),
-//                             ),
-//                             child: IconButton(
-//                               icon: const Icon(Icons.arrow_forward,color: Colors.white,),
-//                               onPressed: () {
-//                                 Navigator.push(context, MaterialPageRoute(builder: (context) =>const RegisterMallDetailScreen(),));
-//                               },
-//                               style: ElevatedButton.styleFrom(
-//                                 backgroundColor: Colors.transparent,
-//                                 elevation: 0,
-//                                 shadowColor: Colors.transparent,
-//                                 shape: RoundedRectangleBorder(
-//                                   borderRadius: BorderRadius.circular(30),
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }import 'package:flutter/material.dart';
 
 class RegisterMallDetailScreen extends StatefulWidget {
   const RegisterMallDetailScreen({super.key});
@@ -243,14 +36,21 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
     });
   }
 
+  late SellerRegisterBloc _sellerRegisterBloc;
+
   @override
   void initState() {
     super.initState();
-    // Gọi sự kiện LoadStoreInfo khi màn hình khởi tạo
-    context.read<SellerRegisterBloc>().add(const LoadStoreInfo());
+     _sellerRegisterBloc = SellerRegisterBloc(
+      restfulApiProvider: RestfulApiProviderImpl(),
+    );
+    _loadInitialData();
+  }
+ 
 
-    // Lắng nghe thay đổi trạng thái từ SellerRegisterBloc
-    context.read<SellerRegisterBloc>().stream.listen((state) {
+  void _loadInitialData() {
+    _sellerRegisterBloc.add(const LoadStoreInfo());
+    _sellerRegisterBloc.stream.listen((state) {
       if (state is SellerRegisterLoaded) {
         // Nếu có dữ liệu cửa hàng, điều hướng ngay lập tức
         Navigator.pushReplacement(
@@ -259,10 +59,10 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
             builder: (context) => const UserMailDetailsShop(),
           ),
         );
-      } else if (state is SellerRegisterInitial) {
-        // Nếu không có dữ liệu, hiển thị giao diện đăng ký
+      } else if (state is SellerRegisterFailure) {
+        // Nếu có lỗi (không tìm thấy cửa hàng), hiển thị form đăng ký
         setState(() {
-          isLoading = false; // Dừng hiển thị màn hình loading
+          isLoading = false;
         });
       }
     });
@@ -270,14 +70,11 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SellerRegisterBloc(
-        restfulApiProvider: RestfulApiProviderImpl(),
-      ),
+    return BlocProvider.value(
+      value: _sellerRegisterBloc,
       child: BlocConsumer<SellerRegisterBloc, SellerRegisterState>(
         listener: (context, state) {
           if (state is SellerRegisterSuccess) {
-            // Đăng ký thành công
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Đăng ký thành công!")),
             );
@@ -288,15 +85,17 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
               ),
             );
           } else if (state is SellerRegisterFailure) {
-            // Đăng ký thất bại
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("Lỗi: ${state.error}")),
             );
+            setState(() {
+              isLoading = false;
+            });
           }
         },
         builder: (context, state) {
-          // Hiển thị màn hình loading nếu isLoading là true
-          if (isLoading) {
+           if (isLoading && state is! SellerRegisterFailure) {
+  
             return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
@@ -304,7 +103,6 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
             );
           }
 
-          // Hiển thị giao diện đăng ký khi isLoading là false
           return Scaffold(
             body: Column(
               children: [
@@ -436,9 +234,6 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
                                       color: Colors.white,
                                     ),
                                     onPressed: () {
-                                      _nameController.clear();
-                                      _phoneController.clear();
-                                      _emailController.clear();
                                       setState(() {
                                         isCheck = false;
                                       });
@@ -464,6 +259,21 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
                                   child: TextButton(
                                     onPressed: () {
                                       if (isCheck) {
+                                        if (_nameController.text.isEmpty ||
+                                            _phoneController.text.isEmpty ||
+                                            _emailController.text.isEmpty) {
+                                          // Hiển thị lỗi nếu các trường bắt buộc chưa được nhập
+                                          print(_nameController);
+                                          print(_phoneController);
+                                          print(_emailController);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                                content: Text(
+                                                    'Vui lòng điền đầy đủ tên cửa hàng, số điện thoại và email')),
+                                          );
+                                          return;
+                                        }
                                         context.read<SellerRegisterBloc>().add(
                                           SellerRegisterButtonPressed(
                                             name: _nameController.text,
@@ -515,13 +325,14 @@ class CustomTextFieldNoIcon extends StatelessWidget {
   final String label;
   final String hintText;
   final int? line;
+  final TextEditingController controller;
 
   const CustomTextFieldNoIcon({
     super.key,
     required this.hintText,
     required this.label,
     this.line,
-    required TextEditingController controller,
+    required this.controller,
   });
 
   @override
@@ -548,7 +359,9 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                       blurRadius: 4)
                 ]),
             child: TextField(
-              maxLines: line,
+               controller: controller, // Bind the controller here
+              maxLines: line ?? null,
+ 
               decoration: InputDecoration(
                 hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
                 hintText: hintText,

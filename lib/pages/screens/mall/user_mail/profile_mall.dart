@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ui_youtex/bloc_seller/bloc_seller_register_status_bloc.dart/seller_register_status_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_event.dart';
 import 'package:ui_youtex/core/model/store.info.dart';
@@ -12,6 +13,165 @@ import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/appbar/cus_appbar_background.dart';
 import '../user_mail_settings/mail_infor_view.dart';
+
+class SellerStatusPage extends StatefulWidget {
+  const SellerStatusPage({Key? key}) : super(key: key);
+
+  @override
+  State<SellerStatusPage> createState() => _SellerStatusPageState();
+}
+
+class _SellerStatusPageState extends State<SellerStatusPage> {
+  @override
+  void initState() {
+    super.initState();
+    // Trigger lấy status ngay khi vào trang
+    context.read<SellerRegisterStatusBloc>().add(GetSellerStatusEvent());
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Thông báo'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Đóng dialog
+              // Chuyển về trang đăng ký
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const MallInfoScreen(),
+                ),
+              );
+            },
+            child: const Text('Đồng ý'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child:
+            BlocConsumer<SellerRegisterStatusBloc, SellerRegisterStatusState>(
+          listener: (context, state) {
+            if (state is SellerRegisterStatusError) {
+              _showErrorDialog(state.message);
+            }
+          },
+          builder: (context, state) {
+            if (state is SellerRegisterStatusLoading) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CircularProgressIndicator(),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Đang kiểm tra trạng thái...',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
+              );
+            } else if (state is SellerRegisterStatusSuccess) {
+              // Delay một chút để hiển thị animation loading
+              Future.delayed(const Duration(seconds: 1), () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        const ShopOverviewScreen(), // Trang thành công
+                  ),
+                );
+              });
+
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const CircularProgressIndicator(),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Đang chuyển trang...',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            // Initial state hoặc các state khác
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+// LoadingIndicator Widget riêng để tái sử dụng
+class LoadingIndicator extends StatelessWidget {
+  final String message;
+
+  const LoadingIndicator({
+    Key? key,
+    this.message = 'Đang xử lý...',
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: Colors.black.withOpacity(0.3),
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 32.0,
+            vertical: 24.0,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                width: 50,
+                height: 50,
+                child: CircularProgressIndicator(),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                message,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class UserMailDetailsShop extends StatelessWidget {
   const UserMailDetailsShop({super.key});
@@ -124,7 +284,7 @@ class SettingsList extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ShopOverviewScreen()));
+                      builder: (context) => const SellerStatusPage()));
             },
           ),
           SettingsItem(

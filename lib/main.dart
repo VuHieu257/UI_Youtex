@@ -7,10 +7,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:ui_youtex/bloc/address_bloc/address_bloc.dart';
-import 'package:ui_youtex/bloc/forgot_password_bloc/forgot_password_bloc.dart';
-import 'package:ui_youtex/core/size/size.dart';
-import 'package:ui_youtex/core/themes/theme_extensions.dart';
+ import 'package:ui_youtex/bloc_seller/bloc/bloc_seller_address_bloc.dart';
+import 'package:ui_youtex/bloc_seller/bloc_seller_register_status_bloc.dart/seller_register_status_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_register_identification_bloc/seller_register_identification_bloc_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_event.dart';
+import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_register_product_bloc_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_register_tax_get_bloc/seller_register_tax_get_bloc_bloc.dart';
+import 'package:ui_youtex/core/model/store.info.dart';
+
+ 
 import 'dart:core';
 import 'package:ui_youtex/pages/screens/home/home.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_product.dart';
@@ -49,32 +54,59 @@ void main() async {
               projectId: 'mangxahoi-sotavn',
               storageBucket: "mangxahoi-sotavn.appspot.com"))
       : await Firebase.initializeApp();
-  runApp(MultiBlocProvider(providers: [
-    BlocProvider(
-      create: (context) => LoginBloc(),
-    ),
-    BlocProvider(
-      create: (context) => RegisterBloc(),
-    ),
-    BlocProvider(
-      create: (context) => ForgotPasswordBloc(),
-    ),
-    BlocProvider(
-      create: (context) => EditProfileBloc(),
-    ),
-    BlocProvider(
-      create: (context) => AddressBloc(),
-    ),
-    BlocProvider(
-      create: (context) => FetchUserByPhoneBloc(),
-    ),
-    BlocProvider(
-      create: (context) => UserProfileBloc()..add(FetchProfileEvent()),
-      child: const CustomNavBar(),
-    ),
-    BlocProvider(
-    create: (context) => SellerRegisterBloc(
-      restfulApiProvider: RestfulApiProviderImpl(),
+   final apiProvider = RestfulApiProviderImpl();
+
+  runApp(
+    MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<RestfulApiProviderImpl>.value(
+          value: apiProvider,
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => LoginBloc(),
+          ),
+          BlocProvider(
+            create: (context) => SellerAddressBloc(
+              restfulApiProvider: apiProvider,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => SellerRegisterProductBloc(
+              restfulApiProvider: apiProvider,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => SellerRegisterIdentificationBlocBloc(
+              restfulApiProvider: apiProvider,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => SellerRegisterBloc(
+              restfulApiProvider: apiProvider,
+            ),
+          ),
+          // BlocProvider(
+          //   create: (context) => SellerRegisterAddressBloc(
+          //     restfulApiProvider: apiProvider,
+          //   ),
+          // ),SellerRegisterStatusBloc
+          BlocProvider(
+            create: (context) => SellerRegisterTaxBloc(
+              restfulApiProvider: apiProvider,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => SellerRegisterStatusBloc(
+              restfulApiProvider: apiProvider,
+            ),
+          ),
+        ],
+        child: const MyApp(),
+      ),
+ 
     ),
     ),
   ], child: const MyApp()));
