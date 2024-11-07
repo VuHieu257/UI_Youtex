@@ -1,12 +1,13 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:typed_data';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:ui_youtex/bloc_seller/bloc/bloc_seller_address_bloc.dart';
+ import 'package:ui_youtex/bloc_seller/bloc/bloc_seller_address_bloc.dart';
 import 'package:ui_youtex/bloc_seller/bloc_seller_register_status_bloc.dart/seller_register_status_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_identification_bloc/seller_register_identification_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_event.dart';
@@ -14,6 +15,7 @@ import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_r
 import 'package:ui_youtex/bloc_seller/seller_register_tax_get_bloc/seller_register_tax_get_bloc_bloc.dart';
 import 'package:ui_youtex/core/model/store.info.dart';
 
+ 
 import 'dart:core';
 import 'package:ui_youtex/pages/screens/home/home.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_product.dart';
@@ -26,9 +28,17 @@ import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/forgotPass_Scr
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassDone_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassOtp_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPass_screen.dart';
+import 'package:ui_youtex/pages/splash/Welcome/welcome.dart';
 import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
+import 'package:ui_youtex/util/constants.dart';
+import 'bloc/edit_profile_bloc/edit_profile_bloc.dart';
 import 'bloc/login_bloc/login_bloc.dart';
+import 'bloc/register_bloc/register_bloc.dart';
+import 'bloc/search_user_bloc/fetch_user_by_phone_bloc.dart';
+import 'bloc/user_profile_bloc/user_profile_bloc.dart';
+import 'core/assets.dart';
+import 'core/colors/color.dart';
 import 'bloc_seller/seller_register_bloc/seller_register_bloc.dart';
 import 'core/themes/theme_data.dart';
 import 'pages/splash/Welcome/Register/login_screen.dart';
@@ -44,7 +54,7 @@ void main() async {
               projectId: 'mangxahoi-sotavn',
               storageBucket: "mangxahoi-sotavn.appspot.com"))
       : await Firebase.initializeApp();
-  final apiProvider = RestfulApiProviderImpl();
+   final apiProvider = RestfulApiProviderImpl();
 
   runApp(
     MultiRepositoryProvider(
@@ -96,10 +106,11 @@ void main() async {
         ],
         child: const MyApp(),
       ),
+ 
     ),
-  );
+    ),
+  ], child: const MyApp()));
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -110,18 +121,10 @@ class MyApp extends StatelessWidget {
       theme: MyAppThemes.lightTheme,
       debugShowCheckedModeBanner: false,
 
-      home: BlocProvider(
-        create: (context) => SellerRegisterBloc(
-          restfulApiProvider: RestfulApiProviderImpl(),
-        ),
-        child: CustomNavBar(),
-        // child: AddressScreen(),
-      ), // home: const CustomNavBar(),
+      home: const WelcomeApp(),
+      // home: const CustomNavBar(),
       // home: const RegisterMallScreen(),
       // home: const MessagesScreen(),
-      // home: const GridGallery(),
-      // home: CustomBackground(),
-      // home: MembershipPaymentScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
@@ -141,6 +144,654 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+class SearchUserByPhoneScreen extends StatefulWidget {
+  const SearchUserByPhoneScreen({super.key});
+
+  @override
+  _SearchUserByPhoneScreenState createState() =>
+      _SearchUserByPhoneScreenState();
+}
+
+class _SearchUserByPhoneScreenState extends State<SearchUserByPhoneScreen> {
+  final TextEditingController _phoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Search User by Phone'),
+      ),
+      body: BlocBuilder<FetchUserByPhoneBloc, FetchUserByPhoneState>(
+          builder: (context, state) {
+        if (state is UserLoading) {
+          return const CircularProgressIndicator();
+        }
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Container(
+                      // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: const Color(0xffF3F3F3),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.25),
+                            offset: const Offset(0, 4),
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: _phoneController,
+                        decoration: const InputDecoration(
+                          hintText: 'Tìm kiếm bạn bè',
+                          prefixIcon: Icon(Icons.search),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        final phone = _phoneController.text;
+                        if (phone.isNotEmpty) {
+                          // Dispatch the event to the bloc
+                          context
+                              .read<FetchUserByPhoneBloc>()
+                              .add(FetchUserByPhone(phone));
+                          FocusScope.of(context).unfocus(); // Hide the keyboard
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 8),
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black.withOpacity(0.25),
+                                  offset: const Offset(0, 4),
+                                  blurRadius: 4)
+                            ],
+                            borderRadius: BorderRadius.circular(18),
+                            color: const Color(0xffF3F3F3)),
+                        child: const Icon(Icons.done_all),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              if (state is UserLoaded) ...{
+                FriendCard(id:state.id,name: state.name,img: "${state.img}",),
+              }
+            ],
+          ),
+        );
+      }),
+    );
+  }
+}
+final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+Future<void> addFriend(String userId, String friendId, String name, String? imgUrl) async {
+  try {
+    await _firestore.collection('users').doc(userId).collection('friends').doc(friendId).set({
+      'id': friendId,
+      'name': name,
+      'image': imgUrl,
+      'addedAt': FieldValue.serverTimestamp(),
+    });
+    if (kDebugMode) {
+      print("Friend added successfully");
+    }
+  } catch (e) {
+    if (kDebugMode) {
+      print("Failed to add friend: $e");
+    }
+  }
+}
+void createNewChat(BuildContext context,String currentUserId, String otherUserId) async {
+  final chatDocRef = _firestore.collection('chats').doc();
+
+  await chatDocRef.set({
+    'participants': [currentUserId, otherUserId],
+    'lastMessage': '',
+    'lastTimestamp': FieldValue.serverTimestamp(),
+  });
+
+  // Điều hướng tới màn hình chat
+  // Navigator.push(
+  //   context,
+  //   MaterialPageRoute(
+  //     builder: (context) => ChatScreen(
+  //       chatId: chatDocRef.id,
+  //       receiverId: otherUserId,
+  //       receiverName: 'Tên của người nhận',
+  //     ),
+  //   ),
+  // );
+}
+class FriendCard extends StatelessWidget {
+  final String name;
+  final String img;
+  final String id;
+  const FriendCard({super.key, required this.name, required this.img, required this.id});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Card(
+        color: const Color(0xffF3F3F3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Container(
+                height: context.width * 0.15,
+                width: context.width * 0.15,
+                decoration:  BoxDecoration(
+                  borderRadius:const BorderRadius.all(Radius.circular(12)),
+                  image: DecorationImage(
+                      image:img.isEmpty||img=="null"?const AssetImage(Asset.bgImageAvatar):NetworkImage("${NetworkConstants.urlImage}/storage/$img")as ImageProvider,
+                      fit: BoxFit.cover),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: context.theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'Member ID: $id',
+                      style: context.theme.textTheme.titleMedium?.copyWith(
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () => createNewChat(context,"0812507355","0812507356",),
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: const Offset(0, 4),
+                          blurRadius: 4),
+                    ],
+                    color: Styles.blue,
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: Text(
+                    'Nhắn tin',
+                    style: context.theme.textTheme.titleSmall?.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  addFriend("0812507355","0812507356",name,img);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: const Offset(0, 4),
+                          blurRadius: 4),
+                    ],
+                    color: const Color(0xffFF6B6B),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
+                  child: Text(
+                    'Kết bạn',
+                    style: context.theme.textTheme.titleSmall?.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class FriendsList extends StatelessWidget {
+  final String userId;
+
+  const FriendsList({super.key, required this.userId});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<List<Map<String, dynamic>>>(
+        stream: getFriends(userId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+
+          if (snapshot.hasError) {
+            return Text("Error: ${snapshot.error}");
+          }
+
+          final friends = snapshot.data;
+
+          if (friends == null || friends.isEmpty) {
+            return const Text("No friends added yet.");
+          }
+
+          return ListView.builder(
+            itemCount: friends.length,
+            itemBuilder: (context, index) {
+              final friend = friends[index];
+              return ListTile(
+                leading: friend['image'] != null
+                    ? Image.network(friend['image'], width: 50, height: 50)
+                    : const Icon(Icons.person, size: 50),
+                title: Text(friend['name'] ?? 'Unknown'),
+                subtitle: Text(friend['addedAt'] != null
+                    ? 'Added on ${friend['addedAt'].toDate()}'
+                    : 'Date not available'),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Stream<List<Map<String, dynamic>>> getFriends(String userId) {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('friends')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+        .map((doc) => doc.data())
+        .toList());
+  }
+}
+
+
+class ChatListScreen extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  ChatListScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // String currentUserId = _auth.currentUser!.uid;
+    void createNewChat(String currentUserId, String otherUserId) async {
+      final chatDocRef = _firestore.collection('chats').doc();
+
+      await chatDocRef.set({
+        'participants': [currentUserId, otherUserId],
+        'lastMessage': '',
+        'lastTimestamp': FieldValue.serverTimestamp(),
+      });
+
+      // Điều hướng tới màn hình chat
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => ChatScreen(
+      //       chatId: chatDocRef.id,
+      //       receiverId: otherUserId,
+      //       receiverName: 'Tên của người nhận',
+      //     ),
+      //   ),
+      // );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Các cuộc trò chuyện"),
+        actions: [
+          InkWell(
+              onTap: () {
+                createNewChat("user1", "user2");
+              },
+              child: const Icon(Icons.add_box_outlined))
+        ],
+      ),
+      body: StreamBuilder(
+        stream: _firestore
+            .collection('chats')
+            // .where('participants', arrayContains: currentUserId)
+            .where('participants', arrayContains: "user1")
+            .orderBy('lastTimestamp', descending: true)
+            .snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          var chatDocs = snapshot.data!.docs;
+
+          if (chatDocs.isEmpty) {
+            return const Center(child: Text("Không có cuộc trò chuyện nào"));
+          }
+
+          return ListView.builder(
+            itemCount: chatDocs.length,
+            itemBuilder: (context, index) {
+              var chat = chatDocs[index];
+              var participants = chat['participants'] as List;
+
+              // Lấy ra ID của người nhận (người không phải là user hiện tại)
+              // String otherUserId = participants.firstWhere((id) => id != currentUserId);
+              String otherUserId =
+                  participants.firstWhere((id) => id != "user1");
+
+              return FutureBuilder(
+                future: _firestore.collection('users').doc("user2").get(),
+                // Lấy thông tin người nhận
+                builder:
+                    (context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                  if (!userSnapshot.hasData) {
+                    return const ListTile(title: Text("Loading..."));
+                  }
+
+                  var userData =
+                      userSnapshot.data!.data() as Map<String, dynamic>;
+                  String otherUserName = userData['name'];
+
+                  return ListTile(
+                    title: Text(otherUserName),
+                    subtitle: Text(chat['lastMessage']),
+                    onTap: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => ChatScreen(
+                      //       chatId: chat.id,
+                      //       receiverId: otherUserId,
+                      //       receiverName: otherUserName,
+                      //     ),
+                      //   ),
+                      // );
+                    },
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+// class AddressScreen extends StatelessWidget {
+//   const AddressScreen({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: const Text('Address List')),
+//       body: BlocProvider(
+//         create: (context) => AddressBloc()..add(FetchAddresses()),
+//         child: BlocBuilder<AddressBloc, AddressState>(
+//           builder: (context, state) {
+//             if (state is AddressLoading) {
+//               return const Center(child: CircularProgressIndicator());
+//             } else if (state is AddressLoaded) {
+//               return ListView.builder(
+//                 itemCount: state.addresses.length,
+//                 itemBuilder: (context, index) {
+//                   final address = state.addresses[index];
+//                   return ListTile(
+//                     title: Text(address.name),
+//                     subtitle: Text(address.address),
+//                     trailing: Row(
+//                       mainAxisSize: MainAxisSize.min,
+//                       children: [
+//                         IconButton(
+//                           icon: const Icon(Icons.edit),
+//                           onPressed: () {
+//
+//                           },
+//                         ),
+//                         IconButton(
+//                           icon: const Icon(Icons.delete),
+//                           onPressed: () {
+//                             context
+//                                 .read<AddressBloc>()
+//                                 .add(DeleteAddress(address.id));
+//                           },
+//                         ),
+//                       ],
+//                     ),
+//                   );
+//                 },
+//               );
+//             } else if (state is AddressError) {
+//               return Center(child: Text(state.message));
+//             }
+//             return const Center(child: Text('No addresses found.'));
+//           },
+//         ),
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: () {
+//         },
+//         child: const Icon(Icons.add),
+//       ),
+//     );
+//   }
+// }
+
+// class GridGallery extends StatefulWidget {
+//   final ScrollController? scrollCtr;
+//
+//   const GridGallery({super.key, this.scrollCtr});
+//
+//   @override
+//   _GridGalleryState createState() => _GridGalleryState();
+// }
+//
+// class _GridGalleryState extends State<GridGallery> {
+//   List<Widget> _mediaList = [];
+//   List<Widget> _confirmedImages = []; // List to display confirmed images
+//   int currentPage = 0;
+//   int? lastPage;
+//   Set<AssetEntity> _selectedImages = {};
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     _fetchNewMedia();
+//   }
+//
+//   _handleScrollEvent(ScrollNotification scroll) {
+//     if (scroll.metrics.pixels / scroll.metrics.maxScrollExtent > 0.33) {
+//       if (currentPage != lastPage) {
+//         _fetchNewMedia();
+//       }
+//     }
+//   }
+//
+//   _fetchNewMedia() async {
+//     lastPage = currentPage;
+//     final PermissionState _ps = await PhotoManager.requestPermissionExtend();
+//
+//     if (_ps.isAuth) {
+//       List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
+//         type: RequestType.image,
+//         onlyAll: true,
+//       );
+//
+//       if (albums.isNotEmpty) {
+//         List<AssetEntity> media = await albums[0].getAssetListPaged(
+//           page: currentPage,
+//           size: 60,
+//         );
+//
+//         List<Widget> temp = media.map((asset) {
+//           return GestureDetector(
+//             onTap: () {
+//               setState(() {
+//                 if (_selectedImages.contains(asset)) {
+//                   _selectedImages.remove(asset);
+//                 } else {
+//                   _selectedImages.add(asset);
+//                 }
+//               });
+//             },
+//             child: Stack(
+//               children: [
+//                 FutureBuilder<Uint8List?>(
+//                   future: asset.thumbnailDataWithSize(const ThumbnailSize(200, 200)),
+//                   builder: (context, snapshot) {
+//                     if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
+//                       return Positioned.fill(
+//                         child: Image.memory(
+//                           snapshot.data!,
+//                           fit: BoxFit.cover,
+//                         ),
+//                       );
+//                     }
+//                     return Container(color: Colors.grey);
+//                   },
+//                 ),
+//                 // Align(
+//                 //   alignment: Alignment.topRight,
+//                 //   child: Checkbox(
+//                 //     value: _selectedImages.contains(asset),
+//                 //     onChanged: (isSelected) {
+//                 //       setState(() {
+//                 //         if (isSelected == true) {
+//                 //           _selectedImages.add(asset);
+//                 //         } else {
+//                 //           _selectedImages.remove(asset);
+//                 //         }
+//                 //       });
+//                 //     },
+//                 //     checkColor: Colors.white,
+//                 //     activeColor: Colors.blue,
+//                 //   ),
+//                 // ),
+//                 Align(
+//                     alignment: Alignment.topRight,
+//                   child: Container(
+//                     margin:const EdgeInsets.only(top: 10,right: 10),
+//                     height: 20,
+//                     width: 20,
+//                     decoration:BoxDecoration(
+//                         shape: BoxShape.circle,
+//                         color: Colors.white
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           );
+//         }).toList();
+//
+//         setState(() {
+//           _mediaList.addAll(temp);
+//           currentPage++;
+//         });
+//       }
+//     } else {
+//       PhotoManager.openSetting();
+//     }
+//   }
+//
+//   // Confirm and display selected images on the main screen
+//   void _confirmSelection() async {
+//     List<Widget> selectedWidgets = _selectedImages.map((asset) {
+//       return FutureBuilder<Uint8List?>(
+//         future: asset.thumbnailDataWithSize(const ThumbnailSize(200, 200)),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
+//             return Image.memory(snapshot.data!, fit: BoxFit.cover);
+//           }
+//           return Container(color: Colors.grey);
+//         },
+//       );
+//     }).toList();
+//
+//     setState(() {
+//       _confirmedImages = selectedWidgets;
+//       _selectedImages.clear(); // Clear selection after confirmation
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Column(
+//         children: [
+//           // Display confirmed images at the top of the screen
+//           if (_confirmedImages.isNotEmpty)
+//             Expanded(
+//               child: GridView.count(
+//                 crossAxisCount: 3,
+//                 children: _confirmedImages,
+//               ),
+//             ),
+//           Expanded(
+//             child: NotificationListener<ScrollNotification>(
+//               onNotification: (ScrollNotification scroll) {
+//                 _handleScrollEvent(scroll);
+//                 return false;
+//               },
+//               child: GridView.builder(
+//                 controller: widget.scrollCtr,
+//                 itemCount: _mediaList.length,
+//                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+//                 itemBuilder: (context, index) {
+//                   return _mediaList[index];
+//                 },
+//               ),
+//             ),
+//           ),
+//           ElevatedButton(
+//             onPressed: _selectedImages.isNotEmpty ? _confirmSelection : null,
+//             child: const Text('Confirm Selection'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class GridGallery extends StatefulWidget {
   final ScrollController? scrollCtr;
@@ -309,619 +960,3 @@ class _GridGalleryState extends State<GridGallery> {
     );
   }
 }
-
-// class SellerRegisterScreen extends StatefulWidget {
-//   @override
-//   _SellerRegisterScreenState createState() => _SellerRegisterScreenState();
-// }
-
-// class _SellerRegisterScreenState extends State<SellerRegisterScreen> {
-//   final TextEditingController _nameController = TextEditingController();
-//   final TextEditingController _phoneController = TextEditingController();
-//   final TextEditingController _emailController = TextEditingController();
-//   String? _imagePath;
-//   final ImagePicker _picker = ImagePicker();
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     // Gửi sự kiện để tải thông tin cửa hàng khi màn hình khởi động
-//     context.read<SellerRegisterBloc>().add(LoadStoreInfo());
-//   }
-
-//   @override
-//   void dispose() {
-//     _nameController.dispose();
-//     _phoneController.dispose();
-//     _emailController.dispose();
-//     super.dispose();
-//   }
-
-//   Future<void> _pickImage() async {
-//     try {
-//       final XFile? pickedFile = await _picker.pickImage(
-//         source: ImageSource.gallery,
-//         maxWidth: 1800,
-//         maxHeight: 1800,
-//         imageQuality: 85,
-//       );
-
-//       if (pickedFile != null) {
-//         setState(() {
-//           _imagePath = pickedFile.path;
-//         });
-//       }
-//     } catch (e) {
-//       _showError('Error picking image: ${e.toString()}');
-//     }
-//   }
-
-//   void _showError(String message) {
-//     if (!mounted) return;
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(
-//         content: Text(message),
-//         backgroundColor: Colors.red,
-//         duration: Duration(seconds: 3),
-//       ),
-//     );
-//   }
-
-//   void _showSuccess(String message) {
-//     if (!mounted) return;
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(content: Text(message), backgroundColor: Colors.green),
-//     );
-//   }
-
-//   bool _validateInputs() {
-//     if (_nameController.text.isEmpty) {
-//       _showError('Vui lòng nhập tên cửa hàng');
-//       return false;
-//     }
-//     if (_phoneController.text.isEmpty) {
-//       _showError('Vui lòng nhập số điện thoại');
-//       return false;
-//     }
-//     if (_emailController.text.isEmpty) {
-//       _showError('Vui lòng nhập email');
-//       return false;
-//     }
-//     if (_imagePath == null) {
-//       _showError('Vui lòng chọn ảnh cửa hàng');
-//       return false;
-//     }
-//     return true;
-//   }
-
-//   void _updateFormData(StoreInfo data) {
-//     print(
-//         "Updating form data: Name: ${data.name}, Phone: ${data.phone}, Email: ${data.email}, ImagePath: ${data.imagePath}");
-//     _nameController.text = data.name;
-//     _phoneController.text = data.phone;
-//     _emailController.text = data.email;
-//     setState(() {
-//       _imagePath = data.imagePath;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Thông tin cửa hàng'),
-//         actions: [
-//           IconButton(
-//             icon: Icon(Icons.refresh),
-//             onPressed: () {
-//               context.read<SellerRegisterBloc>().add(LoadStoreInfo());
-//             },
-//           ),
-//         ],
-//       ),
-//       body: SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.all(16.0),
-//           child: BlocConsumer<SellerRegisterBloc, SellerRegisterState>(
-//             listener: (context, state) {
-//               if (state is SellerRegisterSuccess) {
-//                 _showSuccess('Cập nhật thông tin thành công!');
-//               } else if (state is SellerRegisterFailure) {
-//                 _showError(state.error);
-//               } else if (state is SellerRegisterLoaded) {
-//                 _updateFormData(state.storeInfo); // Đảm bảo đây là StoreInfo
-//                 _showSuccess('Đã tải thông tin cửa hàng');
-//               }
-//             },
-//             builder: (context, state) {
-//               if (state is SellerRegisterLoading) {
-//                 return Center(
-//                   child: Column(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       CircularProgressIndicator(),
-//                       SizedBox(height: 16),
-//                       Text('Đang tải thông tin...'),
-//                     ],
-//                   ),
-//                 );
-//               }
-
-//               return Column(
-//                 crossAxisAlignment: CrossAxisAlignment.stretch,
-//                 children: [
-//                   TextField(
-//                     controller: _nameController,
-//                     decoration: InputDecoration(
-//                       labelText: 'Tên cửa hàng',
-//                       border: OutlineInputBorder(),
-//                       prefixIcon: Icon(Icons.store),
-//                     ),
-//                   ),
-//                   SizedBox(height: 16),
-//                   TextField(
-//                     controller: _phoneController,
-//                     keyboardType: TextInputType.phone,
-//                     decoration: InputDecoration(
-//                       labelText: 'Số điện thoại',
-//                       border: OutlineInputBorder(),
-//                       prefixIcon: Icon(Icons.phone),
-//                     ),
-//                   ),
-//                   SizedBox(height: 16),
-//                   TextField(
-//                     controller: _emailController,
-//                     keyboardType: TextInputType.emailAddress,
-//                     decoration: InputDecoration(
-//                       labelText: 'Email',
-//                       border: OutlineInputBorder(),
-//                       prefixIcon: Icon(Icons.email),
-//                     ),
-//                   ),
-//                   SizedBox(height: 24),
-//                   ElevatedButton.icon(
-//                     onPressed: _pickImage,
-//                     icon: Icon(Icons.image),
-//                     label: Text('Chọn ảnh cửa hàng'),
-//                     style: ElevatedButton.styleFrom(
-//                       padding: EdgeInsets.symmetric(vertical: 12),
-//                     ),
-//                   ),
-//                   if (_imagePath != null) ...[
-//                     SizedBox(height: 16),
-//                     ClipRRect(
-//                       borderRadius: BorderRadius.circular(8),
-//                       child: _imagePath!.startsWith('http')
-//                           ? Image.network(
-//                               _imagePath!,
-//                               width: 150,
-//                               height: 150,
-//                               fit: BoxFit.cover,
-//                             )
-//                           : Image.file(
-//                               File(_imagePath!),
-//                               width: 150,
-//                               height: 150,
-//                               fit: BoxFit.cover,
-//                             ),
-//                     ),
-//                   ],
-//                   SizedBox(height: 24),
-//                   ElevatedButton(
-//                     onPressed: () {
-//                       if (_validateInputs()) {
-//                         context.read<SellerRegisterBloc>().add(
-//                               SellerRegisterButtonPressed(
-//                                 name: _nameController.text,
-//                                 phone: _phoneController.text,
-//                                 email: _emailController.text,
-//                                 imagePath: _imagePath!,
-//                               ),
-//                             );
-//                       }
-//                     },
-//                     style: ElevatedButton.styleFrom(
-//                       padding: EdgeInsets.symmetric(vertical: 16),
-//                       backgroundColor: Theme.of(context).primaryColor,
-//                     ),
-//                     child: Text(
-//                       'Cập nhật thông tin',
-//                       style: TextStyle(fontSize: 16),
-//                     ),
-//                   ),
-//                 ],
-//               );
-//             },
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }import 'package:flutter/material.dart';
-
-// class AddressScreen extends StatefulWidget {
-//   @override
-//   _AddressScreenState createState() => _AddressScreenState();
-// }
-
-// class _AddressScreenState extends State<AddressScreen> {
-//   final _formKey = GlobalKey<FormState>();
-//   final _nameController = TextEditingController();
-//   final _phoneController = TextEditingController();
-//   final _countryController = TextEditingController();
-//   final _provinceController = TextEditingController();
-//   final _wardController = TextEditingController();
-//   final _addressController = TextEditingController();
-//   final _longitudeController = TextEditingController();
-//   final _latitudeController = TextEditingController();
-//   bool _isDefault = false;
-
-//   @override
-//   void dispose() {
-//     _nameController.dispose();
-//     _phoneController.dispose();
-//     _countryController.dispose();
-//     _provinceController.dispose();
-//     _wardController.dispose();
-//     _addressController.dispose();
-//     _longitudeController.dispose();
-//     _latitudeController.dispose();
-//     super.dispose();
-//   }
-
-//   void _submitForm() {
-//     if (_formKey.currentState?.validate() ?? false) {
-//       context.read<SellerRegisterAddressBloc>().add(
-//             SellerRegisterAddressSubmitted(
-//               name: _nameController.text,
-//               phone: _phoneController.text,
-//               country: _countryController.text,
-//               province: _provinceController.text,
-//               ward: _wardController.text,
-//               address: _addressController.text,
-//               longitude: _longitudeController.text,
-//               latitude: _latitudeController.text,
-//               isDefault: _isDefault,
-//             ),
-//           );
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Address Information'),
-//         actions: [
-//           IconButton(
-//             icon: const Icon(Icons.location_on),
-//             onPressed: () {
-//               context
-//                   .read<SellerRegisterAddressGetBlocBloc>()
-//                   .add(FetchAddressEvent());
-//             },
-//           ),
-//         ],
-//       ),
-//       body: BlocListener<SellerRegisterAddressBloc, SellerRegisterAddressState>(
-//         listener: (context, state) {
-//           if (state is SellerRegisterAddressSuccess) {
-//             ScaffoldMessenger.of(context).showSnackBar(
-//               const SnackBar(content: Text('Address saved successfully')),
-//             );
-//           } else if (state is SellerRegisterAddressFailure) {
-//             ScaffoldMessenger.of(context).showSnackBar(
-//               SnackBar(content: Text('Error: ${state.error}')),
-//             );
-//           }
-//         },
-//         child: SingleChildScrollView(
-//           padding: const EdgeInsets.all(16),
-//           child: Form(
-//             key: _formKey,
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.stretch,
-//               children: [
-//                 BlocBuilder<SellerRegisterAddressGetBlocBloc,
-//                     SellerRegisterAddressGetBlocState>(
-//                   builder: (context, state) {
-//                     if (state is SellerRegisterAddressLoaded) {
-//                       // Auto-fill form fields with fetched data
-//                       // You'll need to modify this based on your actual data structure
-//                       return Card(
-//                         child: Padding(
-//                           padding: const EdgeInsets.all(8.0),
-//                           child: Text('Fetched Address: ${state.data}'),
-//                         ),
-//                       );
-//                     } else if (state is SellerRegisterAddressError) {
-//                       return Card(
-//                         color: Colors.red[100],
-//                         child: Padding(
-//                           padding: const EdgeInsets.all(8.0),
-//                           child: Text('Error: ${state.errorMessage}'),
-//                         ),
-//                       );
-//                     }
-//                     return const SizedBox.shrink();
-//                   },
-//                 ),
-//                 const SizedBox(height: 16),
-//                 TextFormField(
-//                   controller: _nameController,
-//                   decoration: const InputDecoration(
-//                     labelText: 'Name',
-//                     border: OutlineInputBorder(),
-//                   ),
-//                   validator: (value) {
-//                     if (value?.isEmpty ?? true) return 'Please enter a name';
-//                     return null;
-//                   },
-//                 ),
-//                 const SizedBox(height: 16),
-//                 TextFormField(
-//                   controller: _phoneController,
-//                   decoration: const InputDecoration(
-//                     labelText: 'Phone',
-//                     border: OutlineInputBorder(),
-//                   ),
-//                   validator: (value) {
-//                     if (value?.isEmpty ?? true)
-//                       return 'Please enter a phone number';
-//                     return null;
-//                   },
-//                 ),
-//                 const SizedBox(height: 16),
-//                 TextFormField(
-//                   controller: _countryController,
-//                   decoration: const InputDecoration(
-//                     labelText: 'Country',
-//                     border: OutlineInputBorder(),
-//                   ),
-//                   validator: (value) {
-//                     if (value?.isEmpty ?? true) return 'Please enter a country';
-//                     return null;
-//                   },
-//                 ),
-//                 const SizedBox(height: 16),
-//                 TextFormField(
-//                   controller: _provinceController,
-//                   decoration: const InputDecoration(
-//                     labelText: 'Province',
-//                     border: OutlineInputBorder(),
-//                   ),
-//                   validator: (value) {
-//                     if (value?.isEmpty ?? true)
-//                       return 'Please enter a province';
-//                     return null;
-//                   },
-//                 ),
-//                 const SizedBox(height: 16),
-//                 TextFormField(
-//                   controller: _wardController,
-//                   decoration: const InputDecoration(
-//                     labelText: 'Ward',
-//                     border: OutlineInputBorder(),
-//                   ),
-//                   validator: (value) {
-//                     if (value?.isEmpty ?? true) return 'Please enter a ward';
-//                     return null;
-//                   },
-//                 ),
-//                 const SizedBox(height: 16),
-//                 TextFormField(
-//                   controller: _addressController,
-//                   decoration: const InputDecoration(
-//                     labelText: 'Address',
-//                     border: OutlineInputBorder(),
-//                   ),
-//                   validator: (value) {
-//                     if (value?.isEmpty ?? true)
-//                       return 'Please enter an address';
-//                     return null;
-//                   },
-//                 ),
-//                 const SizedBox(height: 16),
-//                 Row(
-//                   children: [
-//                     Expanded(
-//                       child: TextFormField(
-//                         controller: _longitudeController,
-//                         decoration: const InputDecoration(
-//                           labelText: 'Longitude',
-//                           border: OutlineInputBorder(),
-//                         ),
-//                         validator: (value) {
-//                           if (value?.isEmpty ?? true)
-//                             return 'Please enter longitude';
-//                           return null;
-//                         },
-//                       ),
-//                     ),
-//                     const SizedBox(width: 16),
-//                     Expanded(
-//                       child: TextFormField(
-//                         controller: _latitudeController,
-//                         decoration: const InputDecoration(
-//                           labelText: 'Latitude',
-//                           border: OutlineInputBorder(),
-//                         ),
-//                         validator: (value) {
-//                           if (value?.isEmpty ?? true)
-//                             return 'Please enter latitude';
-//                           return null;
-//                         },
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//                 const SizedBox(height: 16),
-//                 CheckboxListTile(
-//                   title: const Text('Set as default address'),
-//                   value: _isDefault,
-//                   onChanged: (value) {
-//                     setState(() {
-//                       _isDefault = value ?? false;
-//                     });
-//                   },
-//                 ),
-//                 const SizedBox(height: 24),
-//                 BlocBuilder<SellerRegisterAddressBloc,
-//                     SellerRegisterAddressState>(
-//                   builder: (context, state) {
-//                     return ElevatedButton(
-//                       onPressed: _submitForm,
-//                       child: const Text('Save Address'),
-//                     );
-//                   },
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-// class SellerRegisterTaxScreen extends StatefulWidget {
-//   @override
-//   _SellerRegisterTaxScreenState createState() =>
-//       _SellerRegisterTaxScreenState();
-// }
-
-// class _SellerRegisterTaxScreenState extends State<SellerRegisterTaxScreen> {
-//   File? _selectedImage; // Biến lưu ảnh đã chọn
-//   final ImagePicker _picker = ImagePicker(); // Khởi tạo image picker
-
-//   // Hàm chọn ảnh từ thư viện hoặc chụp ảnh từ máy ảnh
-//   Future<void> _pickImage() async {
-//     final pickedFile = await _picker.pickImage(
-//         source: ImageSource.gallery); // Hoặc ImageSource.camera để chụp ảnh
-//     if (pickedFile != null) {
-//       setState(() {
-//         _selectedImage =
-//             File(pickedFile.path); // Lưu ảnh vào biến _selectedImage
-//       });
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final taxBloc = context.read<SellerRegisterTaxBloc>();
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Thông tin thuế'),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.stretch,
-//           children: [
-//             ElevatedButton(
-//               onPressed: _pickImage, // Gọi hàm chọn ảnh
-//               child: Text('Chọn ảnh giấy phép kinh doanh'),
-//             ),
-//             if (_selectedImage != null)
-//               Image.file(
-//                 _selectedImage!,
-//                 height: 200,
-//               ),
-//             ElevatedButton(
-//               onPressed: () {
-//                 // Nếu có ảnh đã chọn thì gửi yêu cầu
-//                 if (_selectedImage != null) {
-//                   final taxModel = SellerRegisterTaxModel(
-//                     type: "personal",
-//                     address: "123 Business St",
-//                     email: "business@example.com",
-//                     taxCode: "TAX123456",
-//                     name: "Test Business",
-//                     businessLicense: _selectedImage!.path,
-//                   );
-//                   taxBloc.add(SellerRegisterTaxPostBlocEvent(model: taxModel));
-//                 } else {
-//                   ScaffoldMessenger.of(context).showSnackBar(
-//                     SnackBar(content: Text('Vui lòng chọn ảnh trước khi gửi')),
-//                   );
-//                 }
-//               },
-//               child: Text('Gửi thông tin thuế'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class SellerRegisterIdentificationScreen extends StatefulWidget {
-//   @override
-//   _SellerRegisterIdentificationScreenState createState() =>
-//       _SellerRegisterIdentificationScreenState();
-// }
-
-// class _SellerRegisterIdentificationScreenState
-//     extends State<SellerRegisterIdentificationScreen> {
-//   File? _selectedImage; // Biến lưu ảnh đã chọn
-//   final ImagePicker _picker = ImagePicker(); // Khởi tạo image picker
-
-//   // Hàm chọn ảnh từ thư viện hoặc chụp ảnh từ máy ảnh
-//   Future<void> _pickImage() async {
-//     final pickedFile = await _picker.pickImage(
-//         source: ImageSource.gallery); // Hoặc ImageSource.camera để chụp ảnh
-//     if (pickedFile != null) {
-//       setState(() {
-//         _selectedImage =
-//             File(pickedFile.path); // Lưu ảnh vào biến _selectedImage
-//       });
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final taxBloc = context.read<SellerRegisterTaxBloc>();
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Thông tin thuế'),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.stretch,
-//           children: [
-//             ElevatedButton(
-//               onPressed: _pickImage, // Gọi hàm chọn ảnh
-//               child: Text('Chọn ảnh giấy phép kinh doanh'),
-//             ),
-//             if (_selectedImage != null)
-//               Image.file(
-//                 _selectedImage!,
-//                 height: 200,
-//               ),
-//             ElevatedButton(
-//               onPressed: () {
-//                 // Nếu có ảnh đã chọn thì gửi yêu cầu
-//                 if (_selectedImage != null) {
-//                   final taxModel = SellerIdentificationModel(
-//                     type: "personal",
-//                     address: "123 Business St",
-//                     email: "business@example.com",
-//                     taxCode: "TAX123456",
-//                     name: "Test Business",
-//                     businessLicense: _selectedImage!.path,
-//                   );
-//                   taxBloc.add(SellerRegisterTaxPostBlocEvent(model: taxModel));
-//                 } else {
-//                   ScaffoldMessenger.of(context).showSnackBar(
-//                     SnackBar(content: Text('Vui lòng chọn ảnh trước khi gửi')),
-//                   );
-//                 }
-//               },
-//               child: Text('Gửi thông tin thuế'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

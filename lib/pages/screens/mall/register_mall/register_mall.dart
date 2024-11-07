@@ -10,7 +10,6 @@ import '../../../../bloc_seller/seller_register_bloc/seller_register_event.dart'
 import '../../../../core/colors/color.dart';
 import '../../../../services/restful_api_provider.dart';
 import '../../../widget_small/appbar/custome_appbar_circle.dart';
-import '../../../widget_small/text_form_field.dart';
 import '../user_mail/profile_mall.dart';
 
 class RegisterMallDetailScreen extends StatefulWidget {
@@ -30,8 +29,8 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
   bool isLoading = true;
 
   Future<void> _pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
       _selectedImage = image;
     });
@@ -42,11 +41,12 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
   @override
   void initState() {
     super.initState();
-    _sellerRegisterBloc = SellerRegisterBloc(
+     _sellerRegisterBloc = SellerRegisterBloc(
       restfulApiProvider: RestfulApiProviderImpl(),
     );
     _loadInitialData();
   }
+ 
 
   void _loadInitialData() {
     _sellerRegisterBloc.add(const LoadStoreInfo());
@@ -94,7 +94,8 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
           }
         },
         builder: (context, state) {
-          if (isLoading && state is! SellerRegisterFailure) {
+           if (isLoading && state is! SellerRegisterFailure) {
+  
             return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
@@ -107,7 +108,7 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
               children: [
                 Padding(
                   padding:
-                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                  EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                   child: cusAppBarCircle(context, title: "Đăng ký Mall"),
                 ),
                 Expanded(
@@ -143,7 +144,7 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
                             decoration: const BoxDecoration(
                                 color: Styles.colorF9F9F9,
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
+                                BorderRadius.all(Radius.circular(15)),
                                 boxShadow: [
                                   BoxShadow(
                                       color: Colors.black26,
@@ -167,17 +168,17 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
                                     child: const Text(
                                       'Choose File',
                                       style:
-                                          TextStyle(color: Styles.nearPrimary),
+                                      TextStyle(color: Styles.nearPrimary),
                                     ),
                                   ),
                                 ),
                                 _selectedImage != null
                                     ? Image.file(
-                                        File(_selectedImage!.path),
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover,
-                                      )
+                                  File(_selectedImage!.path),
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.cover,
+                                )
                                     : const Text('No file chosen'),
                               ],
                             ),
@@ -274,18 +275,18 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
                                           return;
                                         }
                                         context.read<SellerRegisterBloc>().add(
-                                              SellerRegisterButtonPressed(
-                                                name: _nameController.text,
-                                                imagePath:
-                                                    _selectedImage?.path ?? '',
-                                                phone: _phoneController.text,
-                                                email: _emailController.text,
-                                              ),
-                                            );
+                                          SellerRegisterButtonPressed(
+                                            name: _nameController.text,
+                                            imagePath:
+                                            _selectedImage?.path ?? '',
+                                            phone: _phoneController.text,
+                                            email: _emailController.text,
+                                          ),
+                                        );
                                       } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
-                                          SnackBar(
+                                          const SnackBar(
                                               content: Text(
                                                   "Vui lòng chấp nhận điều khoản")),
                                         );
@@ -358,8 +359,9 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                       blurRadius: 4)
                 ]),
             child: TextField(
-              controller: controller, // Bind the controller here
+               controller: controller, // Bind the controller here
               maxLines: line ?? null,
+ 
               decoration: InputDecoration(
                 hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
                 hintText: hintText,

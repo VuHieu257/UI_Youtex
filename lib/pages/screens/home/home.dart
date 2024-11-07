@@ -9,6 +9,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final token = context.read<LoginBloc>().token;
     return Scaffold(
       appBar: AppBar(
         leading: null,
@@ -43,7 +44,7 @@ class HomePage extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+            Text(
                 'Doanh nghiệp nổi bật',
                 style: context.theme.textTheme.headlineLarge,
               ),

@@ -173,28 +173,28 @@ class _PremiumUnlockScreenState extends State<PremiumUnlockScreen> {
   }
 
   Widget _buildTrialSwitch() {
-    return Row(
+    return const Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
+        Text(
           'Bắt đầu dùng thử miễn phí 7 ngày',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
         ),
-        Switch(
-          value: switchValue,
-          activeColor: Colors.white,
-          activeTrackColor:Colors.blue,
-          inactiveTrackColor: Colors.white,
-          inactiveThumbColor: Colors.blue,
-          onChanged: (bool newValue) {
-            setState(() {
-              switchValue = newValue;
-            });
-          },
-        ),
+        // Switch(
+        //   value: switchValue,
+        //   activeColor: Colors.white,
+        //   activeTrackColor:Colors.blue,
+        //   inactiveTrackColor: Colors.white,
+        //   inactiveThumbColor: Colors.blue,
+        //   onChanged: (bool newValue) {
+        //     setState(() {
+        //       switchValue = newValue;
+        //     });
+        //   },
+        // ),
       ],
     );
   }

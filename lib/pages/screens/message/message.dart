@@ -1,140 +1,188 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
- import '../../../core/assets.dart';
+import '../../../bloc/user_profile_bloc/user_profile_bloc.dart';
+import '../../../core/assets.dart';
 import '../../../core/colors/color.dart';
 import '../../widget_small/widget.dart';
 import 'chat/chat_screen.dart';
-class MessagesScreen extends StatelessWidget {
+import 'friend_list_scrren.dart';
+
+class MessagesScreen extends StatefulWidget {
   const MessagesScreen({super.key});
 
   @override
+  State<MessagesScreen> createState() => _MessagesScreenState();
+}
+
+class _MessagesScreenState extends State<MessagesScreen> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<UserProfileBloc>(context).add(FetchProfileEvent());
+  }
+  @override
   Widget build(BuildContext context) {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-    return Scaffold(
-      appBar:AppBar(
-        backgroundColor: Styles.blue,
-        centerTitle: true,
-        leading: null,
-        automaticallyImplyLeading: false,
-        title: Text('Message',style: context.theme.textTheme.headlineMedium?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: Styles.light,
-        ),),
-        actions: [
-          InkWell(
-              // onTap: () => Navigator.pop(context),
-              onTap: () {
-              },
-              child: const Icon(Icons.edit_note_rounded,color: Styles.light,)),
-        ],
-      ),
-      body: Column(
-        children: [
-          Container(
-            height: 100,
-            padding: const EdgeInsets.all(8),
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                _buildOnlineFriend("Christopher",Asset.bgImageAvatar),
-                _buildOnlineFriend("Reese", Asset.bgImageAvatar),
-                _buildOnlineFriend("Jeffrey", Asset.bgImageAvatar),
-                _buildOnlineFriend("Laura", Asset.bgImageAvatar),
-              ],
-            ),
-          ),
-          Expanded(
-            child: StreamBuilder(
-              stream: firestore
-                  .collection('chats')
-              // .where('participants', arrayContains: currentUserId)
-                  .where('participants', arrayContains: "user1")
-                  .orderBy('lastTimestamp', descending: true)
-                  .snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                var chatDocs = snapshot.data!.docs;
-
-                if (chatDocs.isEmpty) {
-                  return const Center(child: Text("Không có cuộc trò chuyện nào"));
-                }
-                return ListView.builder(
-                  itemCount: chatDocs.length,
-                  itemBuilder: (context, index) {
-                    var chat = chatDocs[index];
-                    var participants = chat['participants'] as List;
-
-                    // Lấy ra ID của người nhận (người không phải là user hiện tại)
-                    // String otherUserId = participants.firstWhere((id) => id != currentUserId);
-                    String otherUserId = participants.firstWhere((id) => id != "user1");
-
-                    return FutureBuilder(
-                      future: firestore.collection('users').doc("user2").get(), // Lấy thông tin người nhận
-                      builder: (context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
-                        if (!userSnapshot.hasData) {
-                          return const ListTile(title: Text("Loading..."));
-                        }
-                        var userData = userSnapshot.data!.data() as Map<String, dynamic>;
-                        String otherUserName = userData['name'];
-                        return
-                          Slidable(
-                            key: const ValueKey(0),
-                            endActionPane: ActionPane(
-                              motion: const ScrollMotion(),
-                              dismissible: DismissiblePane(onDismissed: () {}),
-                              children:   [
-                                SlidableAction(
-                                  flex: 1,
-                                  // onPressed: (context) => customShowReportSheet(context),
-                                  onPressed: (context) => customShowBlockSheet(context),
-                                  foregroundColor: Colors.black,
-                                  icon: Icons.clear_all_sharp,
-                                  // borderRadius: BorderRadius.all(Radius.circular(50)),
-                                ),
-                                SlidableAction(
-                                  onPressed: (context) => customShowBottomSheet(context),
-                                  // backgroundColor: Color(0xFF0392CF),
-                                  foregroundColor: Colors.black,
-                                  icon: Icons.notifications,
-                                ),
-                                SlidableAction(
-                                  onPressed: (context) => doNothing(context,chat.id),
-                                  // backgroundColor: Color(0xFF0392CF),
-                                  foregroundColor: Colors.black,
-                                  icon: Icons.delete,
-                                ),
-                              ],
-                            ),
-                            child:  _buildMessageTile(otherUserName, chat['lastMessage'], formatTimestamp(chat['lastTimestamp']),() {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ChatScreen(
-                                      chatId: chat.id,
-                                      receiverId: otherUserId,
-                                      receiverName: otherUserName,
-                                    ),
-                                  ),
-                                );
-                              },)
-                            );
+    return BlocBuilder<UserProfileBloc, UserProfileState>(
+        builder: (context, state) {
+          if (state is UserProfileLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is UserProfileError) {
+            return Text(state.message);
+          } else if (state is UserProfileLoaded) {
+            final user = state.user;
+            final currentUserId = user.phone;
+            final nameCurrentUser = user.name;
+            final imgCurrentUser = user.image;
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Styles.blue,
+                centerTitle: true,
+                leading: null,
+                automaticallyImplyLeading: false,
+                title: Text(
+                  'Message',
+                  style: context.theme.textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Styles.light,
+                  ),
+                ),
+                actions: [
+                  InkWell(
+                      onTap: () {
+                        Navigator.push(context,MaterialPageRoute(builder: (context) => FriendListScreen(currentUserId:currentUserId,nameCurrent:nameCurrentUser,imgCurrentUser:"$imgCurrentUser"),));
                       },
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+                      child: const Icon(
+                        Icons.edit_note_rounded,
+                        color: Styles.light,
+                      )),
+                ],
+              ),
+              body: Column(
+                children: [
+                  Container(
+                    height: 100,
+                    padding: const EdgeInsets.all(8),
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        _buildOnlineFriend("Christopher", Asset.bgImageAvatar),
+                        _buildOnlineFriend("Reese", Asset.bgImageAvatar),
+                        _buildOnlineFriend("Jeffrey", Asset.bgImageAvatar),
+                        _buildOnlineFriend("Laura", Asset.bgImageAvatar),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: StreamBuilder(
+                      stream: firestore
+                          .collection('chats')
+                      .where('participants', arrayContains: currentUserId)
+                          // .where('participants', arrayContains: "user1")
+                          .orderBy('lastTimestamp', descending: true)
+                          .snapshots(),
+                      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData) {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+
+                        var chatDocs = snapshot.data!.docs;
+
+                        if (chatDocs.isEmpty) {
+                          return const Center(
+                              child: Text("Không có cuộc trò chuyện nào"));
+                        }
+                        return ListView.builder(
+                          itemCount: chatDocs.length,
+                          itemBuilder: (context, index) {
+                            var chat = chatDocs[index];
+                            var participants = chat['participants'] as List;
+
+                            String otherUserId = participants.firstWhere((id) => id != currentUserId);
+                            // String otherUserId =
+                            // participants.firstWhere((id) => id != "user1");
+                            return FutureBuilder(
+                              future: firestore.collection('users').doc(otherUserId).get(),
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                                if (!userSnapshot.hasData) {
+                                  return const ListTile(title: Text("Loading..."));
+                                }
+                                if (!userSnapshot.hasData || !userSnapshot.data!.exists) {
+                                  return const Center(child:Text(""));
+                                }
+                                var userData =
+                                userSnapshot.data!.data() as Map<String, dynamic>;
+                                String otherUserName = userData['name'];
+                                return Slidable(
+                                    key: const ValueKey(0),
+                                    endActionPane: ActionPane(
+                                      motion: const ScrollMotion(),
+                                      dismissible: DismissiblePane(onDismissed: () {}),
+                                      children: [
+                                        SlidableAction(
+                                          flex: 1,
+                                          // onPressed: (context) => customShowReportSheet(context),
+                                          onPressed: (context) =>
+                                              customShowBlockSheet(context),
+                                          foregroundColor: Colors.black,
+                                          icon: Icons.clear_all_sharp,
+                                          // borderRadius: BorderRadius.all(Radius.circular(50)),
+                                        ),
+                                        SlidableAction(
+                                          onPressed: (context) =>
+                                              customShowBottomSheet(context),
+                                          // backgroundColor: Color(0xFF0392CF),
+                                          foregroundColor: Colors.black,
+                                          icon: Icons.notifications,
+                                        ),
+                                        SlidableAction(
+                                          onPressed: (context) =>
+                                              doNothing(context, chat.id),
+                                          // backgroundColor: Color(0xFF0392CF),
+                                          foregroundColor: Colors.black,
+                                          icon: Icons.delete,
+                                        ),
+                                      ],
+                                    ),
+                                    child: _buildMessageTile(
+                                      otherUserName,
+                                      chat['lastMessage'],
+                                      formatTimestamp(chat['lastTimestamp']),
+                                          () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ChatScreen(
+                                              currentUserId: currentUserId,
+                                              name: otherUserName,
+                                              chatId: chat.id,
+                                              receiverId: otherUserId,
+                                              receiverName: otherUserName,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ));
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          return const Center(
+            child: Text("Có lỗi xảy ra"),
+          );
+        });
   }
 
   String formatTimestamp(Timestamp timestamp) {
@@ -174,7 +222,9 @@ class MessagesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMessageTile(String name, String message, String time,void Function()? onTap, [String? unreadCount]) {
+  Widget _buildMessageTile(
+      String name, String message, String time, void Function()? onTap,
+      [String? unreadCount]) {
     return GestureDetector(
       onTap: onTap,
       child: ListTile(
@@ -182,7 +232,8 @@ class MessagesScreen extends StatelessWidget {
           children: [
             const CircleAvatar(
               radius: 25,
-              backgroundImage: AssetImage(Asset.bgImageAvatar), // Replace with your image assets
+              backgroundImage: AssetImage(
+                  Asset.bgImageAvatar), // Replace with your image assets
             ),
             const Positioned(
               top: 0,
@@ -203,21 +254,30 @@ class MessagesScreen extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 10,
                   backgroundColor: Colors.red,
-                  child: Text(unreadCount, style: const TextStyle(fontSize: 12, color: Colors.white)),
+                  child: Text(unreadCount,
+                      style:
+                          const TextStyle(fontSize: 12, color: Colors.white)),
                 ),
               )
           ],
         ),
         title: Text(name),
-        subtitle: Row(children: [
-          Text(message),
-          const SizedBox(width:10,),
-          Text(time, style: const TextStyle(fontSize: 12)),
-        ],),
+        subtitle: Row(
+          children: [
+            Text(message),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(time, style: const TextStyle(fontSize: 12)),
+          ],
+        ),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            unreadCount == null? const Icon(Icons.check_circle, color: Colors.grey, size: 16):const Icon(Icons.circle_outlined, color: Colors.grey, size: 16),
+            unreadCount == null
+                ? const Icon(Icons.check_circle, color: Colors.grey, size: 16)
+                : const Icon(Icons.circle_outlined,
+                    color: Colors.grey, size: 16),
           ],
         ),
       ),
@@ -225,7 +285,7 @@ class MessagesScreen extends StatelessWidget {
   }
 }
 
-Future<void> doNothing(BuildContext context,String messageId) async {
+Future<void> doNothing(BuildContext context, String messageId) async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   var messages = await firestore
       .collection('chats')

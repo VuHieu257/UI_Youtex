@@ -24,7 +24,8 @@ class CustomTextField extends StatelessWidget {
       child: TextFormField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-            filled: true, // Cho phép tô màu nền
+            filled: true,
+            // Cho phép tô màu nền
             fillColor: bg,
             // border: const OutlineInputBorder(
             //   borderRadius: BorderRadius.all(
@@ -51,12 +52,14 @@ class CustomTextFieldNoIcon extends StatelessWidget {
   final String label;
   final String hintText;
   final int? line;
+  final TextEditingController? controller;
 
   const CustomTextFieldNoIcon({
     super.key,
     required this.hintText,
     required this.label,
     this.line,
+    this.controller
   });
 
   @override
@@ -67,11 +70,9 @@ class CustomTextFieldNoIcon extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: context.theme.textTheme.headlineSmall
-                ?.copyWith(fontWeight: FontWeight.w600),
-          ),
+          Text(label, style: context.theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w600
+          ),),
           Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
             decoration: const BoxDecoration(
@@ -83,7 +84,8 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                       blurRadius: 4)
                 ]),
             child: TextField(
-              maxLines: line ?? null,
+              controller:controller,
+              maxLines: line,
               decoration: InputDecoration(
                 hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
                 hintText: hintText,
@@ -92,9 +94,9 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide.none),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

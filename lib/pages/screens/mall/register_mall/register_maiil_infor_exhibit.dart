@@ -197,7 +197,7 @@ class _RegisterMallinforExhibitiScreenState
         decoration: BoxDecoration(
           color: Colors.grey[200],
           borderRadius: BorderRadius.circular(15),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black26,
               offset: Offset(0, 4),
@@ -262,9 +262,9 @@ class _RegisterMallinforExhibitiScreenState
                     taxModel.email.isEmpty ||
                     taxModel.taxCode.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                         content:
-                            Text('Vui lòng điền đầy đủ các trường bắt buộc.')),
+                        Text('Vui lòng điền đầy đủ các trường bắt buộc.')),
                   );
                   return;
                 }
@@ -335,7 +335,7 @@ class CustomTextFieldNoIcon extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.grey[200],
               borderRadius: const BorderRadius.all(Radius.circular(15)),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Colors.black26,
                   offset: Offset(0, 4),

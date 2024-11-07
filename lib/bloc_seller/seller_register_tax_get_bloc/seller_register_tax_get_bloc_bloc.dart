@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -27,8 +26,7 @@ class SellerRegisterTaxBloc
         emit(SellerRegisterTaxLoaded(event.model!));
       } else {
         final response = await restfulApiProvider.getTax();
-        if (response != null &&
-            response.statusCode == 200 &&
+        if (response.statusCode == 200 &&
             response.data != null) {
           final tax = SellerRegisterTaxModel.fromJson(response.data);
           emit(SellerRegisterTaxLoaded(tax));

@@ -13,12 +13,16 @@ import '../../../widget_small/chat/chat_bubble.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatId;
+  final String name;
+  final String currentUserId;
   final String receiverId;
   final String receiverName;
 
   const ChatScreen({super.key,
     required this.chatId,
+    required this.name,
     required this.receiverId,
+    required this.currentUserId,
     required this.receiverName,
   });
 
@@ -43,7 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (message.isEmpty) return;
 
     // String currentUserId = _auth.currentUser!.uid;
-    String currentUserId = "user1";
+    String currentUserId = widget.currentUserId;
 
     var messageRef = _fireStore
         .collection('chats')
@@ -98,7 +102,7 @@ class _ChatScreenState extends State<ChatScreen> {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Martha Craig',style: context.theme.textTheme.headlineSmall?.copyWith(color: Colors.white,fontWeight: FontWeight.w500),),
+              Text(widget.name,style: context.theme.textTheme.headlineSmall?.copyWith(color: Colors.white,fontWeight: FontWeight.w500),),
               Text('Đang hoạt động',style: context.theme.textTheme.titleSmall?.copyWith(color: Colors.white,fontWeight: FontWeight.w500),),
             ],
           ),
@@ -145,10 +149,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     itemCount: messages.length+1,
                     itemBuilder: (context, index) {
                       if (index == messages.length) {
-                        return _buildMessageCard(context);
+                        return _buildMessageCard(context,widget.name);
                       }
                       var messageData = messages[index];
-                      bool isMe = messageData['senderId'] == "user1";
+                      bool isMe = messageData['senderId'] == widget.currentUserId;
                       String messageId = messageData.id;
 
                       bool isSelected = selectedMessages.contains(messageId);
@@ -390,11 +394,11 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-Widget _buildMessageCard(BuildContext context) {
+Widget _buildMessageCard(BuildContext context,String name) {
   return Container(
     height: context.height*0.25,
     width: context.width*0.9,
-    padding: const EdgeInsets.all(10),
+    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
     alignment: Alignment.bottomLeft,
     decoration: const BoxDecoration(
         image: DecorationImage(image: AssetImage(Asset.bgCardMessage),fit: BoxFit.contain)
@@ -403,7 +407,7 @@ Widget _buildMessageCard(BuildContext context) {
       leading: const CircleAvatar(
         backgroundImage: AssetImage(Asset.bgImageAvatar),
       ),
-      title: Text('Martha Craig',style: context.theme.textTheme.titleMedium,),
+      title: Text(name,style: context.theme.textTheme.titleMedium,),
       subtitle: Text("Let's start this conversation with great stories",style: context.theme.textTheme.titleSmall?.copyWith(fontSize: 10),),
     ),
   );

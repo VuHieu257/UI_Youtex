@@ -47,18 +47,18 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
     if (hasExistingAddress) return; // Prevent submission if address exists
 
     context.read<SellerAddressBloc>().add(
-          SubmitAddressEvent(
-            name: _nameController.text,
-            phone: _phoneController.text,
-            country: _countryController.text,
-            province: _provinceController.text,
-            ward: _wardController.text,
-            address: _addressController.text,
-            longitude: "0",
-            latitude: "0",
-            isDefault: isDefault,
-          ),
-        );
+      SubmitAddressEvent(
+        name: _nameController.text,
+        phone: _phoneController.text,
+        country: _countryController.text,
+        province: _provinceController.text,
+        ward: _wardController.text,
+        address: _addressController.text,
+        longitude: "0",
+        latitude: "0",
+        isDefault: isDefault,
+      ),
+    );
   }
 
   @override
@@ -107,9 +107,9 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
             children: [
               Padding(
                 padding:
-                    EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                 child:
-                    cusAppBarCircle(context, title: "Thông tin doanh nghiệp"),
+                cusAppBarCircle(context, title: "Thông tin doanh nghiệp"),
               ),
               Expanded(
                 child: SingleChildScrollView(
@@ -203,7 +203,7 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
                                     ),
                                     child: const Padding(
                                       padding:
-                                          EdgeInsets.symmetric(vertical: 15),
+                                      EdgeInsets.symmetric(vertical: 15),
                                       child: Text(
                                         'Lưu thay đổi',
                                         style: TextStyle(
@@ -267,16 +267,16 @@ class CustomTextFieldNoIcon extends StatelessWidget {
               boxShadow: readOnly
                   ? []
                   : const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        offset: Offset(0, 4),
-                        blurRadius: 4,
-                      )
-                    ],
+                BoxShadow(
+                  color: Colors.black26,
+                  offset: Offset(0, 4),
+                  blurRadius: 4,
+                )
+              ],
             ),
             child: TextField(
               controller: controller,
-              maxLines: line ?? null,
+              maxLines: line,
               readOnly: readOnly,
               style: TextStyle(
                 color: readOnly ? Colors.grey : Colors.black,

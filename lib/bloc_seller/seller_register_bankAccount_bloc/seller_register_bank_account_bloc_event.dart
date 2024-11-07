@@ -8,7 +8,7 @@ class LoadSellerRegisterBankAccountInfo
 
 class SellerRegisterBankAccountButtonPressed
     extends SellerRegisterBankAccountBlocEvent {
-  // Trong SellerRegisterBankAccountButtonPressed
+ 
 
   final String bank;
   final String branch;

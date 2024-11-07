@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 class ShippingUnit {
   final int id;

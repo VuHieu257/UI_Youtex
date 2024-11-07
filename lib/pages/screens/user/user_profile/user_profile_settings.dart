@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ui_youtex/util/show_snack_bar.dart';
+
+import '../../../../bloc/login_bloc/login_bloc.dart';
+import '../../../widget_small/bottom_navigation/bottom_navigation.dart';
+import '../../home/product/adress/adress_screen.dart';
+import '../edit_profile/edit_profile_screen.dart';
 
 class AccountSettingsScreen extends StatelessWidget {
   const AccountSettingsScreen({super.key});
@@ -12,8 +19,8 @@ class AccountSettingsScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
-            // Handle back action
+            // Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>const CustomNavBar(),));
           },
         ),
         title: const Text(
@@ -34,10 +41,24 @@ class AccountSettingsScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              _buildSettingItem('Tài khoản & bảo mật', Icons.security, () {}),
-              _buildSettingItem('Địa chỉ', Icons.location_on, () {}),
+              _buildSettingItem('Tài khoản & bảo mật', Icons.security, () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EditProfileScreen(),
+                    ));
+              }),
+              _buildSettingItem('Địa chỉ', Icons.location_on, () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AddressScreen(),
+                    ));
+              }),
               _buildSettingItem(
-                  'Tài khoản/Thẻ ngân hàng', Icons.credit_card, () {}),
+                  'Tài khoản/Thẻ ngân hàng', Icons.credit_card, () {
+                Navigator.pushNamed(context, '/PaymentMethodPayScreen');
+              }),
               _buildSettingItem('Quốc gia: 🇻🇳 Vietnam', Icons.flag, () {}),
               _buildSettingItem(
                   'Cài đặt thông báo', Icons.notifications, () {}),
@@ -59,22 +80,40 @@ class AccountSettingsScreen extends StatelessWidget {
 
               const SizedBox(height: 40),
 
-              // Logout Button
-              Center(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-                    backgroundColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+              BlocListener<LoginBloc, LoginState>(
+                listener: (context, state) {
+                  if (state is LogoutLoading) {
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is LogoutSuccess) {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/login',
+                      (Route<dynamic> route) => false,
+                    );
+                  } else if (state is LogoutFailure) {
+                    SnackBarUtils.showWarningSnackBar(context,
+                        message: state.error);
+                  }
+                },
+                child: Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 12),
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
-                  ),
-                  onPressed: () {
-                    // Handle log out
-                  },
-                  child: const Text(
-                    'Đăng xuất tài khoản',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    onPressed: () {
+                      context.read<LoginBloc>().add(LogoutButtonPressed());
+                    },
+                    child: const Text(
+                      'Đăng xuất tài khoản',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
                   ),
                 ),
               ),
@@ -85,10 +124,9 @@ class AccountSettingsScreen extends StatelessWidget {
     );
   }
 
-  // Helper widget for creating each setting item
   Widget _buildSettingItem(String title, IconData icon, VoidCallback onTap) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8,top: 4),
+      margin: const EdgeInsets.only(bottom: 8, top: 4),
       decoration: BoxDecoration(
         color: const Color(0xffF3F3F3),
         borderRadius: BorderRadius.circular(8),

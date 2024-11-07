@@ -95,7 +95,7 @@ class EmployeeListScreen extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => EmployeeaddScreen()));
+                  MaterialPageRoute(builder: (context) => const EmployeeaddScreen()));
             },
             child: Row(
               children: [
@@ -114,13 +114,13 @@ class EmployeeListScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(18),
                     color: const Color(0xffF3F3F3),
                   ),
-                  child: Row(
+                  child: const Row(
                     children: [
-                      const Icon(Icons.group_add_outlined),
-                      const SizedBox(
+                      Icon(Icons.group_add_outlined),
+                      SizedBox(
                           width:
                               8), // Add some spacing between the icon and text
-                      const Text(
+                      Text(
                         'Thêm nhân viên',
                         style: TextStyle(
                           fontSize: 16,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/core/colors/color.dart';
-import 'package:ui_youtex/pages/screens/mall/register_mall/register_mall.dart';
 import 'package:ui_youtex/pages/widget_small/appbar/custome_appbar_circle.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_bankAccount_bloc/seller_register_bank_account_bloc_bloc.dart';
@@ -123,7 +122,7 @@ class _RegisterMallinforbankingScreenState
                               margin: const EdgeInsets.symmetric(vertical: 10),
                               decoration: const BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
+                                BorderRadius.all(Radius.circular(15)),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black26,
@@ -132,7 +131,7 @@ class _RegisterMallinforbankingScreenState
                                   ),
                                 ],
                               ),
-                              child: Column(
+                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   DropdownButtonFormField<String>(
@@ -178,6 +177,7 @@ class _RegisterMallinforbankingScreenState
                                       ),
                                     ),
                                 ],
+ 
                               ),
                             ),
                             CustomTextFieldNoIcon(
@@ -220,10 +220,10 @@ class _RegisterMallinforbankingScreenState
                                   value: _isDefault,
                                   onChanged: isEditable
                                       ? (value) {
-                                          setState(() {
-                                            _isDefault = value ?? false;
-                                          });
-                                        }
+                                    setState(() {
+                                      _isDefault = value ?? false;
+                                    });
+                                  }
                                       : null,
                                 ),
                                 Text(
@@ -253,7 +253,7 @@ class _RegisterMallinforbankingScreenState
                                       ),
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          if (_validateForm()) {
+                                           if (_validateForm()) {
                                             context
                                                 .read<
                                                     SellerRegisterBankAccountBloc>()
@@ -274,13 +274,14 @@ class _RegisterMallinforbankingScreenState
                                                   ),
                                                 );
                                           }
+ 
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.transparent,
                                           shadowColor: Colors.transparent,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(30),
+                                            BorderRadius.circular(30),
                                           ),
                                         ),
                                         child: const Text(

@@ -32,7 +32,7 @@ class SellerRegisterProductBloc extends Bloc<SellerRegisterProductBlocEvent,
       emit(SellerRegisterProductCreatePrompt(
           'Không tìm thấy sản phẩm nào. Vui lòng tạo thông tin sản phẩm.'));
     }
-  } on DioError catch (dioError) {
+  } on DioException catch (dioError) {
     // Xử lý lỗi cụ thể của Dio
     print('Dio error: ${dioError.message}');
     emit(SellerRegisterProductError('Đã xảy ra lỗi khi kết nối với API.'));
@@ -60,7 +60,7 @@ class SellerRegisterProductBloc extends Bloc<SellerRegisterProductBlocEvent,
       } else {
         emit(SellerRegisterProductError('Không thể thêm sản phẩm'));
       }
-    } on DioError catch (dioError) {
+    } on DioException catch (dioError) {
       print('Dio error: ${dioError.message}');
       emit(SellerRegisterProductError('Đã xảy ra lỗi khi kết nối với API.'));
     } catch (e, stackTrace) {
