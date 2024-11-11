@@ -3,8 +3,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'user_profile.g.dart';
 @JsonSerializable()
 class Profile {
-  final int id;
-  @JsonKey(name: 'image', defaultValue: "") // Gán giá trị mặc định nếu null
+  final String id;
+  @JsonKey(name: 'image', defaultValue: "")
   final String? image;
   final String name;
   final String email;

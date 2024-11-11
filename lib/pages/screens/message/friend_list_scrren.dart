@@ -7,6 +7,7 @@ import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/oder_manager/oder_manager_screen.dart';
+import 'package:ui_youtex/util/constants.dart';
 
 import '../../../bloc/search_user_bloc/fetch_user_by_phone_bloc.dart';
 import 'chat/chat_screen.dart';
@@ -16,7 +17,11 @@ class FriendListScreen extends StatefulWidget {
   final String nameCurrent;
   final String imgCurrentUser;
 
-  const FriendListScreen({super.key, required this.currentUserId, required this.nameCurrent, required this.imgCurrentUser});
+  const FriendListScreen(
+      {super.key,
+      required this.currentUserId,
+      required this.nameCurrent,
+      required this.imgCurrentUser});
 
   @override
   State<FriendListScreen> createState() => _FriendListScreenState();
@@ -81,7 +86,10 @@ class _FriendListScreenState extends State<FriendListScreen> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      showAddFriendDialog(context, idUser:widget.currentUserId,imgUser: widget.imgCurrentUser,nameUser: widget.nameCurrent );
+                      showAddFriendDialog(context,
+                          idUser: widget.currentUserId,
+                          imgUser: widget.imgCurrentUser,
+                          nameUser: widget.nameCurrent);
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -146,6 +154,7 @@ class _FriendListScreenState extends State<FriendListScreen> {
                   stream: FirebaseFirestore.instance
                       .collection('friendRequests')
                       .where('senderId', isEqualTo: widget.currentUserId)
+                      // .where('senderId', isEqualTo: "0859372470")
                       .snapshots(),
                   builder: (context, sentSnapshot) {
                     if (sentSnapshot.connectionState ==
@@ -165,11 +174,11 @@ class _FriendListScreenState extends State<FriendListScreen> {
                         String friendRequestId = friend.id;
                         return FriendCard(
                           imgUserCurrent: widget.imgCurrentUser,
-                          nameUserCurrent:widget.nameCurrent ,
-                          id:widget.currentUserId ,
+                          nameUserCurrent: widget.nameCurrent,
+                          id: widget.currentUserId,
                           idOtherUser: friend['receiverId'],
                           name: friend['nameReceiver'],
-                          img: friend['nameReceiver'],
+                          img: friend['imageReceiver'],
                           isFriend: friend['status'],
                           status: "sender",
                           friendRequestId: friendRequestId,
@@ -188,8 +197,8 @@ class _FriendListScreenState extends State<FriendListScreen> {
                   String friendRequestId = friend.id;
                   return FriendCard(
                     imgUserCurrent: widget.imgCurrentUser,
-                    nameUserCurrent:widget.nameCurrent ,
-                    id:widget.currentUserId ,
+                    nameUserCurrent: widget.nameCurrent,
+                    id: widget.currentUserId,
                     idOtherUser: friend['senderId'],
                     name: friend['nameSender'],
                     img: friend['imageSender'],
@@ -237,7 +246,9 @@ class FriendCard extends StatelessWidget {
       this.isFriend = "",
       this.idOtherUser = "",
       this.status = "",
-      this.friendRequestId = "", required this.nameUserCurrent, required this.imgUserCurrent});
+      this.friendRequestId = "",
+      required this.nameUserCurrent,
+      required this.imgUserCurrent});
 
   @override
   Widget build(BuildContext context) {
@@ -255,10 +266,13 @@ class FriendCard extends StatelessWidget {
                   Container(
                     height: context.width * 0.15,
                     width: context.width * 0.15,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
                       image: DecorationImage(
-                          image: AssetImage(Asset.bgImageAvatar),
+                          image: img.isEmpty
+                              ? const AssetImage(Asset.bgImageUser)
+                              : NetworkImage("${NetworkConstants.urlImage}$img") as ImageProvider<Object>,
                           fit: BoxFit.cover),
                     ),
                   ),
@@ -283,7 +297,8 @@ class FriendCard extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => createNewChat(context,id,"$idOtherUser",name),
+                    onTap: () =>
+                        createNewChat(context, id, "$idOtherUser", name),
                     child: Container(
                       margin: const EdgeInsets.only(right: 10),
                       padding: const EdgeInsets.all(10),
@@ -295,7 +310,8 @@ class FriendCard extends StatelessWidget {
                               blurRadius: 4),
                         ],
                         color: Styles.blue,
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
                       ),
                       child: Text(
                         'Nhắn tin',
@@ -307,11 +323,27 @@ class FriendCard extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      isFriend == "pending"
-                          ? acceptFriendRequest("$friendRequestId", "$isFriend",
-                              "$idOtherUser", name, img)
-                          : showUnfollowDialog(context, "$isFriend",
-                              "$idOtherUser", "$friendRequestId");
+                      if (status == "sender") {
+                        if (isFriend == "pending") {
+                          return;
+                        } else {
+                          showUnfollowDialog(context,friendId:"$idOtherUser",requestId:"$friendRequestId", userId: id);
+                        }
+                      } else {
+                        if (isFriend == "pending") {
+                          acceptFriendRequest(
+                              friendId: "$idOtherUser",
+                              requestId: "$friendRequestId",
+                              name: name,
+                              userId: id,
+                              imgUrl: img,
+                              nameCurrent: nameUserCurrent,
+                              imgCurrent: imgUserCurrent
+                          );
+                        } else {
+                          showUnfollowDialog(context,friendId:"$idOtherUser",requestId:"$friendRequestId", userId: id);
+                        }
+                      }
                     },
                     child: Container(
                       padding: const EdgeInsets.all(10),
@@ -323,16 +355,20 @@ class FriendCard extends StatelessWidget {
                               blurRadius: 4),
                         ],
                         color: status == "sender"
-                            ? Colors.grey
-                            : isFriend == "pending"
+                            ? isFriend == "pending"
+                                ? Colors.grey
+                                : Colors.red
+                            : (isFriend == "pending"
                                 ? Colors.green
-                                : const Color(0xffFF6B6B),
+                                : const Color(0xffFF6B6B)),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(10)),
                       ),
                       child: Text(
                         status == "sender"
-                            ? "Chờ"
+                            ? isFriend == "pending"
+                                ? "Chờ"
+                                : "Hủy kết bạn"
                             : isFriend == "pending"
                                 ? "Chấp nhận"
                                 : 'hủy kết bạn ',
@@ -396,7 +432,8 @@ class FriendCard extends StatelessWidget {
                         child: Row(
                           children: [
                             GestureDetector(
-                              onTap: () => createNewChat(context,id,"$idOtherUser",name),
+                              onTap: () => createNewChat(
+                                  context, id, "$idOtherUser", name),
                               child: Container(
                                 margin: const EdgeInsets.only(right: 10),
                                 padding: const EdgeInsets.all(10),
@@ -408,8 +445,8 @@ class FriendCard extends StatelessWidget {
                                         blurRadius: 4),
                                   ],
                                   color: Styles.blue,
-                                  borderRadius:
-                                      const BorderRadius.all(Radius.circular(10)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10)),
                                 ),
                                 child: Text(
                                   'Nhắn tin',
@@ -426,7 +463,12 @@ class FriendCard extends StatelessWidget {
                             GestureDetector(
                               onTap: () {
                                 sendFriendRequest(
-                                  userId: id,friendId:"$idOtherUser",nameFriend:name,nameUser: nameUserCurrent,imaUrlFriend:img,imgUrl: imgUserCurrent);
+                                    userId: id,
+                                    friendId: "$idOtherUser",
+                                    nameFriend: name,
+                                    nameUser: nameUserCurrent,
+                                    imaUrlFriend: img,
+                                    imgUrl: imgUserCurrent);
                                 Navigator.pop(context);
                               },
                               child: Container(
@@ -463,7 +505,10 @@ class FriendCard extends StatelessWidget {
   }
 }
 
-void showAddFriendDialog(BuildContext context, {required String idUser,required String nameUser, required String imgUser}) {
+void showAddFriendDialog(BuildContext context,
+    {required String idUser,
+    required String nameUser,
+    required String imgUser}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -581,9 +626,11 @@ void showAddFriendDialog(BuildContext context, {required String idUser,required 
 
 void showUnfollowDialog(
   BuildContext context,
-  String userId,
-  String friendId,
-  String requestId,
+{
+  required String userId,
+  required String friendId,
+  required String requestId,
+}
 ) {
   showDialog(
     context: context,
@@ -625,7 +672,12 @@ void showUnfollowDialog(
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 Future<void> sendFriendRequest(
-{ required String userId, required  String friendId, required  String nameUser, required  String nameFriend,  String? imgUrl, String ?imaUrlFriend}) async {
+    {required String userId,
+    required String friendId,
+    required String nameUser,
+    required String nameFriend,
+    String? imgUrl,
+    String? imaUrlFriend}) async {
   try {
     await _firestore
         .collection('friendRequests')
@@ -634,7 +686,7 @@ Future<void> sendFriendRequest(
       'senderId': userId,
       'receiverId': friendId,
       'nameReceiver': nameFriend,
-      'nameSender':nameUser,
+      'nameSender': nameUser,
       'imageReceiver': imgUrl,
       'imageSender': imgUrl,
       'status': 'pending',
@@ -650,8 +702,14 @@ Future<void> sendFriendRequest(
   }
 }
 
-Future<void> acceptFriendRequest(String requestId, String userId,
-    String friendId, String name, String? imgUrl) async {
+Future<void> acceptFriendRequest(
+    {required String requestId,
+    required String userId,
+    required String friendId,
+    required String name,
+    String? imgUrl,
+    required String nameCurrent,
+    String? imgCurrent}) async {
   try {
     // Update the request status to accepted
     await _firestore
@@ -671,7 +729,6 @@ Future<void> acceptFriendRequest(String requestId, String userId,
       'image': imgUrl,
       'addedAt': FieldValue.serverTimestamp(),
     });
-
     await _firestore
         .collection('users')
         .doc(friendId)
@@ -679,11 +736,10 @@ Future<void> acceptFriendRequest(String requestId, String userId,
         .doc(userId)
         .set({
       'id': userId,
-      'name': name,
-      'image': imgUrl,
+      'name': nameCurrent,
+      'image': imgCurrent,
       'addedAt': FieldValue.serverTimestamp(),
     });
-
     if (kDebugMode) {
       print("Friend request accepted and friend added successfully");
     }
@@ -724,14 +780,16 @@ Future<void> removeFriend(
     }
   }
 }
-void createNewChat(BuildContext context, String currentUserId, String otherUserId, String name) async {
+
+void createNewChat(BuildContext context, String currentUserId,
+    String otherUserId, String name) async {
   // Truy vấn Firestore để kiểm tra cuộc trò chuyện giữa currentUserId và otherUserId
   final chatQuery = await _firestore
       .collection('chats')
       .where('participants', arrayContains: currentUserId)
       .get();
 
-  String chatId="";
+  String chatId = "";
   bool chatExists = false;
 
   for (var doc in chatQuery.docs) {

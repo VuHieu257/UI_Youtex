@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:meta/meta.dart';
@@ -19,7 +20,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   final RestfulApiProviderImpl _restfulApiProviderImpl =
       RestfulApiProviderImpl();
-
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   Future<void> _onLoginButtonPressed(
     LoginButtonPressed event,
     Emitter<LoginState> emit,
@@ -31,6 +32,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         userName: event.email,
         password: event.password,
       );
+      // await _firebaseAuth.signInWithEmailAndPassword(
+      //   email: event.email,
+      //   password: event.password,
+      // );
       final token = response.data['access_token'];
 
       TokenManager.saveToken(token);
@@ -67,6 +72,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final response = await _restfulApiProviderImpl.logout(token: "$token");
       if (response.statusCode == 200) {
         TokenManager.deleteToken();
+        await _firebaseAuth.signOut();
         emit(LogoutSuccess());
       }
     } catch (error) {

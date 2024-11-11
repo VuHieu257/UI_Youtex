@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
@@ -226,44 +227,63 @@ class ProfileScreen extends StatelessWidget {
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white)),
                                     const SizedBox(height: 4),
-                                    Text(
-                                      "@${convertToUnaccentedNoSpace(user.name)}_${user.id}",
-                                      style: context.theme.textTheme.titleMedium
-                                          ?.copyWith(color: Colors.white),
+                                    SizedBox(
+                                      width: context.width * 0.5,
+                                      child: Text(
+                                        "@${NetworkConstants.convertToUnaccentedNoSpace(user.name)}_${user.id}",
+                                        style: context
+                                            .theme.textTheme.titleMedium
+                                            ?.copyWith(
+                                                color: Colors.white,
+                                                overflow:
+                                                    TextOverflow.ellipsis),
+                                      ),
                                     ),
                                     const SizedBox(width: 8),
                                     const SizedBox(height: 2),
                                     Row(
                                       children: [
-                                        Text(
-                                          'Member ID: ${user.id}*${convertToUnaccentedNoSpace(user.name)}',
-                                          style: context
-                                              .theme.textTheme.titleMedium
-                                              ?.copyWith(
-                                                  color: Colors.white
-                                                      .withOpacity(0.71),
-                                                  fontWeight: FontWeight.w300),
+                                        SizedBox(
+                                          width: context.width * 0.4,
+                                          child: Text(
+                                            'Member ID: ${user.id}*${NetworkConstants.convertToUnaccentedNoSpace(user.name)}',
+                                            style: context
+                                                .theme.textTheme.titleMedium
+                                                ?.copyWith(
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    color: Colors.white
+                                                        .withOpacity(0.71),
+                                                    fontWeight:
+                                                        FontWeight.w300),
+                                          ),
                                         ),
                                         const SizedBox(
                                           width: 10,
                                         ),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8, vertical: 2),
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xff4A85D4)
-                                                .withOpacity(0.78),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          child: Text(
-                                            'Sao chép',
-                                            style: context
-                                                .theme.textTheme.titleSmall
-                                                ?.copyWith(
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                        InkWell(
+                                          onTap: () {
+                                            Clipboard.setData(
+                                                ClipboardData(text: user.id));
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 2),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xff4A85D4)
+                                                  .withOpacity(0.78),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Text(
+                                              'Sao chép',
+                                              style: context
+                                                  .theme.textTheme.titleSmall
+                                                  ?.copyWith(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -399,8 +419,11 @@ class ProfileScreen extends StatelessWidget {
                         onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    FriendListScreen(currentUserId: user.phone, nameCurrent: user.name, imgCurrentUser: "${user.image}",))),
+                                builder: (context) => FriendListScreen(
+                                      currentUserId: user.phone,
+                                      nameCurrent: user.name,
+                                      imgCurrentUser: "${user.image}",
+                                    ))),
                       ),
                     ],
                   ),
@@ -516,22 +539,3 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-String convertToUnaccentedNoSpace(String input) {
-  const accents =
-      'áàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ';
-  const unaccented =
-      'aaaaaaaaaaaaaaaaaeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyyd';
-
-  String result = '';
-  for (int i = 0; i < input.length; i++) {
-    final char = input[i];
-    final index = accents.indexOf(char);
-    if (index != -1) {
-      result += unaccented[index];
-    } else if (char != ' ') {
-      result += char;
-    }
-  }
-
-  return result;
-}
