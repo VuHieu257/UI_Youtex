@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_tax_get_bloc/seller_register_tax_get_bloc_bloc.dart';
+import 'package:ui_youtex/core/colors/color.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/pages/widget_small/appbar/custome_appbar_circle.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
@@ -40,21 +42,15 @@ class _RegisterMallinforExhibitiScreenState
     });
   }
 
+  String selectedGroup = 'business';
+
   void _updateControllers(SellerRegisterTaxModel? tax) {
     if (tax != null) {
       setState(() {
-        taxTypeController.text = tax.type ?? 'Business';
         taxNameController.text = tax.name ?? '';
         addressController.text = tax.address ?? '';
         emailController.text = tax.email ?? '';
         taxCodeController.text = tax.taxCode ?? '';
-
-        // Debugging values of controllers
-        print("Tax Type: ${taxTypeController.text}");
-        print("Name: ${taxNameController.text}");
-        print("Address: ${addressController.text}");
-        print("Email: ${emailController.text}");
-        print("Tax Code: ${taxCodeController.text}");
       });
     }
   }
@@ -88,39 +84,50 @@ class _RegisterMallinforExhibitiScreenState
     );
   }
 
+  void _showMessage(String title, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(message),
+          ],
+        ),
+        backgroundColor: title == 'Thành Công' ? Colors.green : Colors.red,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   Widget _buildBlocContent(BuildContext context) {
-    return BlocBuilder<SellerRegisterTaxBloc, SellerRegisterTaxBlocState>(
+    return BlocConsumer<SellerRegisterTaxBloc, SellerRegisterTaxBlocState>(
+      listener: (context, state) {
+        if (state is SellerRegisterTaxLoaded) {
+          _showMessage('Thành Công', 'Lấy thông tin Thuế thành công!');
+        }
+      },
       builder: (context, state) {
         if (state is SellerRegisterTaxLoading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state is SellerRegisterTaxLoaded) {
-          // Hiển thị dialog thành công
-          // WidgetsBinding.instance.addPostFrameCallback((_) {
-          //   showDialog(
-          //     context: context,
-          //     builder: (BuildContext context) {
-          //       return const CardAddedSuccessDialog();
-          //     },
-          //   );
-          // });
-
-          // Sau khi hiển thị dialog, trả về form
-          return _buildForm(context, state.tax);
-        } else if (state is SellerRegisterTaxCreatePrompt) {
-          return _buildForm(context, null);
-        } else if (state is SellerRegisterTaxError) {
-          return _buildForm(
-              context, null); // Trả về form đăng ký mà không có dữ liệu thuế
-        } else {
-          // Trả về form đăng ký trong trường hợp khác (kể cả khi dữ liệu chưa có)
-          return _buildForm(context, null);
         }
+
+        if (state is SellerRegisterTaxLoaded) {
+          return _buildForm(context, state.tax);
+        }
+
+        return _buildForm(context, null);
       },
     );
   }
 
   Widget _buildForm(BuildContext context, SellerRegisterTaxModel? tax) {
     final isReadOnly = tax != null;
+    taxNameController.text = tax?.name ?? '';
+    addressController.text = tax?.address ?? '';
+    emailController.text = tax?.email ?? '';
+    taxCodeController.text = tax?.taxCode ?? '';
 
     return SingleChildScrollView(
       child: Padding(
@@ -128,15 +135,16 @@ class _RegisterMallinforExhibitiScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomTextFieldNoIcon(
-              label: "Loại giấy tờ",
-              hintText: "Business",
-              controller: taxTypeController,
-              line: 1,
-              isReadOnly: isReadOnly,
+            _buildSectionTitle(context, "Loại giấy tờ"),
+            _buildDropdownButton(
+              value: selectedGroup,
+              items: ['business', 'personal'],
+              onChanged: isReadOnly
+                  ? null // If read-only, set onChanged to null
+                  : (value) => setState(() => selectedGroup = value!),
             ),
             CustomTextFieldNoIcon(
-              label: "Tên",
+              label: "Tên người sở hữu",
               hintText: "Điền thông tin tại đây",
               controller: taxNameController,
               line: 1,
@@ -169,6 +177,55 @@ class _RegisterMallinforExhibitiScreenState
             if (!isReadOnly) _buildSaveButton(context),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(BuildContext context, String title) {
+    return Text(
+      title,
+      style: context.theme.textTheme.headlineSmall
+          ?.copyWith(fontWeight: FontWeight.w600),
+    );
+  }
+
+  Widget _buildDropdownButton({
+    required String value,
+    required List<String> items,
+    required ValueChanged<String?>? onChanged, // onChanged is nullable
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            offset: Offset(0, 4),
+            blurRadius: 4,
+          ),
+        ],
+      ),
+      child: DropdownButtonFormField<String>(
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+            borderSide: BorderSide.none,
+          ),
+          filled: true,
+          fillColor: Styles.colorF9F9F9,
+        ),
+        dropdownColor: Styles.colorF9F9F9,
+        value: value,
+        isExpanded: true,
+        items: items
+            .map((item) => DropdownMenuItem(
+                  value: item,
+                  child: Text(item),
+                ))
+            .toList(),
+        onChanged: onChanged, // If null, dropdown will be read-only
+        icon: const Icon(Icons.arrow_drop_down),
       ),
     );
   }
@@ -248,26 +305,13 @@ class _RegisterMallinforExhibitiScreenState
             child: ElevatedButton(
               onPressed: () {
                 final taxModel = SellerRegisterTaxModel(
-                  type: taxTypeController.text,
+                  type: selectedGroup,
                   address: addressController.text,
                   email: emailController.text,
                   taxCode: taxCodeController.text,
                   name: taxNameController.text,
                   businessLicense: _selectedImage?.path,
                 );
-
-                if (taxModel.type.isEmpty ||
-                    taxModel.name.isEmpty ||
-                    taxModel.address.isEmpty ||
-                    taxModel.email.isEmpty ||
-                    taxModel.taxCode.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content:
-                        Text('Vui lòng điền đầy đủ các trường bắt buộc.')),
-                  );
-                  return;
-                }
 
                 context
                     .read<SellerRegisterTaxBloc>()

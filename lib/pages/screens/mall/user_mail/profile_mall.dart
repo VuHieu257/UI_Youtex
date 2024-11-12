@@ -29,24 +29,41 @@ class _SellerStatusPageState extends State<SellerStatusPage> {
     context.read<SellerRegisterStatusBloc>().add(GetSellerStatusEvent());
   }
 
-  void _showErrorDialog(String message) {
+  void _showErrorDialog(String title, String message,
+      {bool isSuccess = false}) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Thông báo'),
-        content: Text(message),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: isSuccess ? Colors.green : Colors.red, // Success/Error color
+          ),
+        ),
+        content: Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text(
+            message,
+            style: const TextStyle(fontSize: 16),
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Đóng dialog
-              // Chuyển về trang đăng ký
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (_) => const MallInfoScreen(),
-                ),
-              );
+              Navigator.of(context).pop(); // Close dialog
+              if (!isSuccess) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (_) => const MallInfoScreen(),
+                  ),
+                );
+              }
             },
-            child: const Text('Đồng ý'),
+            child: const Text(
+              'Đồng ý',
+              style: TextStyle(color: Colors.blue), // Color for button text
+            ),
           ),
         ],
       ),
@@ -61,7 +78,7 @@ class _SellerStatusPageState extends State<SellerStatusPage> {
             BlocConsumer<SellerRegisterStatusBloc, SellerRegisterStatusState>(
           listener: (context, state) {
             if (state is SellerRegisterStatusError) {
-              _showErrorDialog(state.message);
+              _showErrorDialog('Thông Báo', state.message);
             }
           },
           builder: (context, state) {

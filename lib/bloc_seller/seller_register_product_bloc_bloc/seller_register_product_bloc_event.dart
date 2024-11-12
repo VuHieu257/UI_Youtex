@@ -11,12 +11,11 @@ class SellerRegisterProductPostEvent extends SellerRegisterProductBlocEvent {
   SellerRegisterProductPostEvent({required this.model});
 }
 
-// Models
 class SellerRegisterProductModel {
-  final int id;
+  final String id;
   final String image;
   final String name;
-  final bool isActive;
+  final bool status;
   final int quantity;
   final int soldQuantity;
   final double originalPrice;
@@ -34,7 +33,7 @@ class SellerRegisterProductModel {
     required this.id,
     required this.image,
     required this.name,
-    required this.isActive,
+    required this.status,
   });
 
   String get fullImageUrl {
@@ -48,14 +47,15 @@ class SellerRegisterProductModel {
 
   factory SellerRegisterProductModel.fromJson(Map<String, dynamic> json) {
     return SellerRegisterProductModel(
-      id: json['id'],
+      id: json['uuid'],
       image: json['image'],
       name: json['name'],
-      isActive: json['is_active'] == 1, // chuyển đổi từ 0/1 sang bool
+      // Chuyển đổi `status` sang `isActive` (giả định 'verified' là true)
+      status: json['status'] == 'verified',
       quantity: json['quantity'],
       soldQuantity: json['sold_quantity'],
-      originalPrice: json['original_price'].toDouble(),
-      discountPrice: json['discount_price'].toDouble(),
+      originalPrice: (json['original_price'] as num).toDouble(),
+      discountPrice: (json['discount_price'] as num).toDouble(),
       discountPercentage: json['discount_percentage'],
       description: json['description'],
     );
@@ -63,10 +63,11 @@ class SellerRegisterProductModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'uuid': id,
       'image': image,
       'name': name,
-      'is_active': isActive ? 1 : 0, // chuyển đổi từ bool sang 0/1
+      // Chuyển đổi `isActive` thành `status`
+      'status': status ? 'verified' : 'unverified',
       'quantity': quantity,
       'sold_quantity': soldQuantity,
       'original_price': originalPrice,

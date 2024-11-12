@@ -1,5 +1,6 @@
-import 'package:json_annotation/json_annotation.dart';
+  import 'package:json_annotation/json_annotation.dart';
 
+ 
 part 'user_profile.g.dart';
 @JsonSerializable()
 class Profile {
@@ -20,34 +21,34 @@ class Profile {
   // final String createdAt;
   // @JsonKey(name: 'updated_at')
   // final String updatedAt;
+ 
+    Profile({
+      required this.id,
+      this.image,
+      required this.name,
+      required this.email,
+      required this.phone,
+      this.gender,
+      this.birthday,
+      required this.type,
+      // this.emailVerifiedAt,
+      // required this.createdAt,
+      // required this.updatedAt,
+    });
 
-  Profile({
-    required this.id,
-    this.image,
-    required this.name,
-    required this.email,
-    required this.phone,
-    this.gender,
-    this.birthday,
-    required this.type,
-    // this.emailVerifiedAt,
-    // required this.createdAt,
-    // required this.updatedAt,
-  });
+    factory Profile.fromJson(Map<String, dynamic> json) => _$ProfileFromJson(json);
 
-  factory Profile.fromJson(Map<String, dynamic> json) => _$ProfileFromJson(json);
+    Map<String, dynamic> toJson() => _$ProfileToJson(this);
 
-  Map<String, dynamic> toJson() => _$ProfileToJson(this);
+    String get imageUrl {
+      return image ?? 'Null'; // Trả về 'Null' nếu image là null
+    }
 
-  String get imageUrl {
-    return image ?? 'Null'; // Trả về 'Null' nếu image là null
+    String get birthdayST {
+      return birthday ?? 'Chưa xác định'; // Trả về 'Chưa xác định' nếu birthday là null
+    }
+
+    String get genderDisplay {
+      return gender ?? 'Không xác định'; // Trả về 'Không xác định' nếu gender là null
+    }
   }
-
-  String get birthdayST {
-    return birthday ?? 'Chưa xác định'; // Trả về 'Chưa xác định' nếu birthday là null
-  }
-
-  String get genderDisplay {
-    return gender ?? 'Không xác định'; // Trả về 'Không xác định' nếu gender là null
-  }
-}

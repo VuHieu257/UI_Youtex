@@ -18,7 +18,7 @@ class BankAccountResponse {
 }
 
 class BankCard {
-  final int id;
+  final String id;
   final String bank;
   final String number;
   final int isDefault;
@@ -32,7 +32,7 @@ class BankCard {
 
   factory BankCard.fromJson(Map<String, dynamic> json) {
     return BankCard(
-      id: json['id'] as int,
+      id: json['uuid'] as String, // Updated to match 'uuid' in JSON
       bank: json['bank'] as String,
       number: json['number'] as String,
       isDefault: json['is_default'] as int,

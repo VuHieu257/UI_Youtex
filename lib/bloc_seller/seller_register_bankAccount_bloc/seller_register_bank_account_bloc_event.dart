@@ -8,8 +8,6 @@ class LoadSellerRegisterBankAccountInfo
 
 class SellerRegisterBankAccountButtonPressed
     extends SellerRegisterBankAccountBlocEvent {
- 
-
   final String bank;
   final String branch;
   final String number;
@@ -29,7 +27,7 @@ class SellerRegisterBankAccountButtonPressed
       'branch': branch,
       'accountNumber': number,
       'cardHolder': cardHolder,
-      'isDefault': isDefault,
+      'isDefault': isDefault ? 1 : 0, // Chuyển đổi `bool` sang `int` (0 hoặc 1)
     };
   }
 }

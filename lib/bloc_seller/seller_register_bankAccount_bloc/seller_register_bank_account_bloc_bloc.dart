@@ -41,7 +41,8 @@ class SellerRegisterBankAccountBloc extends Bloc<
     try {
       final token = await TokenManager.getToken();
 
-      final response = await restfulApiProvider.postBankAccount(token: token!,
+      final response = await restfulApiProvider.postBankAccount(
+        token: token!,
         bank: event.bank,
         branch: event.branch,
         number: event.number,
@@ -50,7 +51,7 @@ class SellerRegisterBankAccountBloc extends Bloc<
       );
 
       if (response.statusCode == 200) {
-        emit(SellerRegisterBankAccountRegisterSuccess());
+        emit(SellerRegisterBankAccountRegisterSuccess(response.data));
         add(LoadSellerRegisterBankAccountInfo());
       } else {
         emit(SellerRegisterBankAccountFailure(

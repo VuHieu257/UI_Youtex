@@ -17,7 +17,11 @@ class SellerRegisterBankAccountLoaded
 }
 
 class SellerRegisterBankAccountRegisterSuccess
-    extends SellerRegisterBankAccountBlocState {}
+    extends SellerRegisterBankAccountBlocState {
+  final String message;
+
+  SellerRegisterBankAccountRegisterSuccess(this.message);
+}
 
 class SellerRegisterBankAccountFailure
     extends SellerRegisterBankAccountBlocState {

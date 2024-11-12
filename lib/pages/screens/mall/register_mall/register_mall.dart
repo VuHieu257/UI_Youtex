@@ -41,12 +41,11 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
   @override
   void initState() {
     super.initState();
-     _sellerRegisterBloc = SellerRegisterBloc(
+    _sellerRegisterBloc = SellerRegisterBloc(
       restfulApiProvider: RestfulApiProviderImpl(),
     );
     _loadInitialData();
   }
- 
 
   void _loadInitialData() {
     _sellerRegisterBloc.add(const LoadStoreInfo());
@@ -75,8 +74,12 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
       child: BlocConsumer<SellerRegisterBloc, SellerRegisterState>(
         listener: (context, state) {
           if (state is SellerRegisterSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Đăng ký thành công!")),
+            _showMessage("Thành Công", "Đăng ký thành công!");
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const UserMailDetailsShop(),
+              ),
             );
             Navigator.pushReplacement(
               context,
@@ -85,17 +88,14 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
               ),
             );
           } else if (state is SellerRegisterFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Lỗi: ${state.error}")),
-            );
+            _showMessage("Lỗi", state.error);
             setState(() {
               isLoading = false;
             });
           }
         },
         builder: (context, state) {
-           if (isLoading && state is! SellerRegisterFailure) {
-  
+          if (isLoading && state is! SellerRegisterFailure) {
             return const Scaffold(
               body: Center(
                 child: CircularProgressIndicator(),
@@ -108,7 +108,7 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
               children: [
                 Padding(
                   padding:
-                  EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                      EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                   child: cusAppBarCircle(context, title: "Đăng ký Mall"),
                 ),
                 Expanded(
@@ -144,7 +144,7 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
                             decoration: const BoxDecoration(
                                 color: Styles.colorF9F9F9,
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(15)),
+                                    BorderRadius.all(Radius.circular(15)),
                                 boxShadow: [
                                   BoxShadow(
                                       color: Colors.black26,
@@ -168,17 +168,17 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
                                     child: const Text(
                                       'Choose File',
                                       style:
-                                      TextStyle(color: Styles.nearPrimary),
+                                          TextStyle(color: Styles.nearPrimary),
                                     ),
                                   ),
                                 ),
                                 _selectedImage != null
                                     ? Image.file(
-                                  File(_selectedImage!.path),
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.cover,
-                                )
+                                        File(_selectedImage!.path),
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover,
+                                      )
                                     : const Text('No file chosen'),
                               ],
                             ),
@@ -275,14 +275,14 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
                                           return;
                                         }
                                         context.read<SellerRegisterBloc>().add(
-                                          SellerRegisterButtonPressed(
-                                            name: _nameController.text,
-                                            imagePath:
-                                            _selectedImage?.path ?? '',
-                                            phone: _phoneController.text,
-                                            email: _emailController.text,
-                                          ),
-                                        );
+                                              SellerRegisterButtonPressed(
+                                                name: _nameController.text,
+                                                imagePath:
+                                                    _selectedImage?.path ?? '',
+                                                phone: _phoneController.text,
+                                                email: _emailController.text,
+                                              ),
+                                            );
                                       } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
@@ -316,6 +316,23 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  void _showMessage(String title, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(message),
+          ],
+        ),
+        backgroundColor: title == 'Thành Công' ? Colors.green : Colors.red,
+        duration: const Duration(seconds: 2),
       ),
     );
   }
@@ -359,9 +376,9 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                       blurRadius: 4)
                 ]),
             child: TextField(
-               controller: controller, // Bind the controller here
+              controller: controller, // Bind the controller here
               maxLines: line ?? null,
- 
+
               decoration: InputDecoration(
                 hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
                 hintText: hintText,

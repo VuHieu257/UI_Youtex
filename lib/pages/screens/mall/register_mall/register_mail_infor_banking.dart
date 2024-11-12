@@ -40,7 +40,6 @@ class _RegisterMallinforbankingScreenState
 
   bool _validateForm() {
     setState(() {
-      _bankError = selectedBank?.isEmpty ?? true ? 'a.' : null;
       _accountNumberError = _accountNumberController.text.isEmpty
           ? 'Số tài khoản là bắt buộc.'
           : null;
@@ -50,8 +49,6 @@ class _RegisterMallinforbankingScreenState
 
   void _submitForm() {
     if (_validateForm()) {
-      print(
-          "Bank: $selectedBank, Account Number: ${_accountNumberController.text}");
       context.read<SellerRegisterBankAccountBloc>().add(
             SellerRegisterBankAccountButtonPressed(
               bank: selectedBank ?? 'SacomBank',
@@ -61,11 +58,24 @@ class _RegisterMallinforbankingScreenState
               isDefault: _isDefault,
             ),
           );
-      print(
-          "Bank: $selectedBank, Account Number: ${_accountNumberController.text}");
-    } else {
-      print("Validation failed: $_bankError, $_accountNumberError");
-    }
+    } else {}
+  }
+
+  void _showMessage(String title, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(message),
+          ],
+        ),
+        backgroundColor: title == 'Thành Công' ? Colors.green : Colors.red,
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
@@ -97,6 +107,10 @@ class _RegisterMallinforbankingScreenState
                                   state.bankAccountInfo.cards.isNotEmpty)
                               ? state.bankAccountInfo.cards.first
                               : null;
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        _showMessage('Thành Công',
+                            'Lấy thông tin tài khoản ngân hàng thành công!');
+                      });
 
                       if (bankCard != null) {
                         selectedBank = bankCard.bank;
@@ -122,7 +136,7 @@ class _RegisterMallinforbankingScreenState
                               margin: const EdgeInsets.symmetric(vertical: 10),
                               decoration: const BoxDecoration(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(15)),
+                                    BorderRadius.all(Radius.circular(15)),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.black26,
@@ -131,7 +145,7 @@ class _RegisterMallinforbankingScreenState
                                   ),
                                 ],
                               ),
-                               child: Column(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   DropdownButtonFormField<String>(
@@ -177,7 +191,6 @@ class _RegisterMallinforbankingScreenState
                                       ),
                                     ),
                                 ],
- 
                               ),
                             ),
                             CustomTextFieldNoIcon(
@@ -208,30 +221,34 @@ class _RegisterMallinforbankingScreenState
                                   ),
                               ],
                             ),
-                            CustomTextFieldNoIcon(
-                              controller: _cardHolderController,
-                              label: "Tên Chủ tài khoản",
-                              hintText: "Nhập tên chủ tài khoản",
-                              enabled: isEditable,
-                            ),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  value: _isDefault,
-                                  onChanged: isEditable
-                                      ? (value) {
-                                    setState(() {
-                                      _isDefault = value ?? false;
-                                    });
-                                  }
-                                      : null,
-                                ),
-                                Text(
-                                  "Đặt làm tài khoản mặc định",
-                                  style: context.theme.textTheme.bodyMedium,
-                                ),
-                              ],
-                            ),
+                            if (bankCard == null)
+                              CustomTextFieldNoIcon(
+                                controller: _cardHolderController,
+                                label: "Tên Chủ tài khoản",
+                                hintText: "Nhập tên chủ tài khoản",
+                                enabled: isEditable,
+                              ),
+                            if (bankCard ==
+                                null) // Conditionally show this field
+
+                              Row(
+                                children: [
+                                  Checkbox(
+                                    value: _isDefault,
+                                    onChanged: isEditable
+                                        ? (value) {
+                                            setState(() {
+                                              _isDefault = value ?? false;
+                                            });
+                                          }
+                                        : null,
+                                  ),
+                                  Text(
+                                    "Đặt làm tài khoản mặc định",
+                                    style: context.theme.textTheme.bodyMedium,
+                                  ),
+                                ],
+                              ),
                             if (isEditable) const SizedBox(height: 30),
                             if (isEditable)
                               Row(
@@ -253,7 +270,7 @@ class _RegisterMallinforbankingScreenState
                                       ),
                                       child: ElevatedButton(
                                         onPressed: () {
-                                           if (_validateForm()) {
+                                          if (_validateForm()) {
                                             context
                                                 .read<
                                                     SellerRegisterBankAccountBloc>()
@@ -273,15 +290,31 @@ class _RegisterMallinforbankingScreenState
                                                     isDefault: _isDefault,
                                                   ),
                                                 );
+
+                                            // Listen to the Bloc's state changes to determine success or failure
+                                            context
+                                                .read<
+                                                    SellerRegisterBankAccountBloc>()
+                                                .stream
+                                                .listen((state) {
+                                              if (state
+                                                  is SellerRegisterBankAccountBloc) {
+                                                _showMessage('Thành Công',
+                                                    'Thông tin tài khoản ngân hàng đã được lưu thành công.');
+                                              } else if (state
+                                                  is SellerRegisterBankAccountButtonPressed) {
+                                                _showMessage('Lỗi',
+                                                    'Lưu thông tin tài khoản ngân hàng không thành công. Vui lòng thử lại.');
+                                              }
+                                            });
                                           }
- 
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.transparent,
                                           shadowColor: Colors.transparent,
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                            BorderRadius.circular(30),
+                                                BorderRadius.circular(30),
                                           ),
                                         ),
                                         child: const Text(

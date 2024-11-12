@@ -7,10 +7,9 @@ import '../../../../core/size/size.dart';
 import '../../../widget_small/product/product_card.dart';
 import '../../shopping_cart_page/shopping_cart_page.dart';
 
-
 class CategoryScreen extends StatefulWidget {
   String? category;
-  CategoryScreen({super.key,required this.category});
+  CategoryScreen({super.key, required this.category});
 
   @override
   State<CategoryScreen> createState() => _CategoryScreenState();
@@ -18,7 +17,7 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   final List<Map<String, String>> categories = [
-    {'name': 'Máy móc và thiết bị may', 'image':  Asset.bgImageCategory},
+    {'name': 'Máy móc và thiết bị may', 'image': Asset.bgImageCategory},
     {'name': 'Vải và nguyên liệu', 'image': Asset.bgImageCategory},
     {'name': 'Dụng cụ may', 'image': Asset.bgImageCategory},
     {'name': 'Hệ thống hỗ trợ', 'image': Asset.bgImageCategory},
@@ -94,15 +93,19 @@ class _CategoryScreenState extends State<CategoryScreen> {
             children: [
               Container(
                 padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).padding.top+10,
-                    left: MediaQuery.of(context).padding.left+15,
-                    right: MediaQuery.of(context).padding.right+10,
-                    bottom: 15
-                ),
+                    top: MediaQuery.of(context).padding.top + 10,
+                    left: MediaQuery.of(context).padding.left + 15,
+                    right: MediaQuery.of(context).padding.right + 10,
+                    bottom: 15),
                 color: Styles.blue,
                 child: Row(
                   children: [
-                    InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.arrow_back_ios,color: Colors.white,)),
+                    InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: const Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.white,
+                        )),
                     const SizedBox(width: 10),
                     Expanded(
                       child: TextField(
@@ -110,76 +113,84 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           hintText: 'Tìm kiếm',
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25),
-                              borderSide: BorderSide.none
-                          ),
+                              borderSide: BorderSide.none),
                           hintStyle: const TextStyle(color: Colors.grey),
-                          prefixIcon: const Icon(Icons.search,color: Colors.grey,),
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                          ),
                           filled: true,
                           fillColor: Colors.white,
                         ),
                       ),
                     ),
                     const SizedBox(width: 10),
-                    InkWell(onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) => const ShoppingCartPage(),)),child: const Icon(Icons.shopping_cart_outlined,color: Styles.light,)),
+                    InkWell(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ShoppingCartPage(),
+                            )),
+                        child: const Icon(
+                          Icons.shopping_cart_outlined,
+                          color: Styles.light,
+                        )),
                     const SizedBox(width: 10),
                     // const Icon(Icons.message_outlined,color: Styles.light,),
-                    Image.asset(Asset.iconMessage,width: context.width*0.06,),
+                    Image.asset(
+                      Asset.iconMessage,
+                      width: context.width * 0.06,
+                    ),
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                 child: Row(
                   children: [
                     Text(
                       "${widget.category}",
-                      style: context.theme.textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.bold
-                      ),
+                      style: context.theme.textTheme.headlineMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const Spacer(),
                     Container(
                       margin: const EdgeInsets.only(right: 13),
-                      padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Styles.light,
+                          color: Styles.light,
                           borderRadius: BorderRadius.circular(6),
                           boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 8
-                            )
-                          ]
-                      ),
-                      child:Row(
+                            BoxShadow(color: Colors.black26, blurRadius: 8)
+                          ]),
+                      child: Row(
                         children: [
                           Text(
                             'Loại',
-                            style: context.theme.textTheme.titleSmall?.copyWith(
-                            ),
+                            style:
+                                context.theme.textTheme.titleSmall?.copyWith(),
                           ),
                           const Icon(Icons.compare_arrows),
                         ],
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                           color: Styles.light,
                           borderRadius: BorderRadius.circular(6),
                           boxShadow: const [
-                            BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 8
-                            )
-                          ]
-                      ),
-                      child:Row(
+                            BoxShadow(color: Colors.black26, blurRadius: 8)
+                          ]),
+                      child: Row(
                         children: [
                           Text(
                             'Lọc',
-                            style: context.theme.textTheme.titleSmall?.copyWith(
-                            ),
+                            style:
+                                context.theme.textTheme.titleSmall?.copyWith(),
                           ),
                           const Icon(Icons.filter_list_alt),
                         ],
@@ -202,7 +213,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ),
                 itemCount: products.length,
                 itemBuilder: (context, index) {
-                  return ProductCard(product: products[index]);
+                  // return ProductCard(product: products[index]);
                 },
               ),
             ],
