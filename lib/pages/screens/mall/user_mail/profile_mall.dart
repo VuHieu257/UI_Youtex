@@ -509,11 +509,14 @@ class UserStorageHeader extends StatelessWidget {
                               color: Colors.white, fontWeight: FontWeight.w400),
                         ),
                       ),
-                      Text(
-                        storeInfo.email,
-                        style: context.theme.textTheme.titleMedium?.copyWith(
-                            color: Styles.colorFF6B6B,
-                            fontWeight: FontWeight.bold),
+                      SizedBox(
+                        width: 100,
+                        child: Text(
+                          storeInfo.email,
+                          style: context.theme.textTheme.titleMedium?.copyWith(
+                              color: Styles.colorFF6B6B,
+                              fontWeight: FontWeight.bold),overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),

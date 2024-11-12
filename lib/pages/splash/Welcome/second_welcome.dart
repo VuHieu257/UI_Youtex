@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui_youtex/core/colors/color.dart';
 
 class WelcomeScreen2 extends StatelessWidget {
   final String title;
@@ -27,9 +28,9 @@ class WelcomeScreen2 extends StatelessWidget {
             right: MediaQuery.of(context).size.width / 24,
             child: CircleAvatar(
               radius: 25,
-              backgroundColor: Colors.white,
+              backgroundColor: const Color(0xff333333),
               child: IconButton(
-                icon: const Icon(Icons.arrow_forward_ios, color: Colors.blue),
+                icon: const Icon(Icons.arrow_forward_ios, color: Colors.white),
                 onPressed: onPressed,
               ),
             ),

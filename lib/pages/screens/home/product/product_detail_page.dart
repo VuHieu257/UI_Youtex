@@ -1,48 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/shopping_cart_page.dart';
 
-class ProductDetailPage extends StatelessWidget {
+import '../../../../bloc_seller/seller_product_details_bloc_bloc/seller_product_details_bloc_bloc.dart';
+import '../../../../services/restful_api_provider.dart';
+
+class ProductDetailPage extends StatefulWidget {
   final ProductBuyer product;
 
   const ProductDetailPage({super.key, required this.product});
 
   @override
+  State<ProductDetailPage> createState() => _ProductDetailPageState();
+}
+
+class _ProductDetailPageState extends State<ProductDetailPage> {
+  final apiProvider = RestfulApiProviderImpl();
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController.addListener(() {
+      setState(() {
+        _currentPage = _pageController.page!.round();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Styles.blue,
-        centerTitle: true,
-        leading: InkWell(
-          onTap: () => Navigator.pop(context),
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: Styles.light,
-          ),
-        ),
-        title: Text(
-          'Chi tiết sản phẩm',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Styles.light,
-              ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.shopping_cart_outlined,
+    return BlocProvider(
+      create: (context) => ProductBlocBloc(restfulApiProvider: apiProvider)
+        ..add(ProductDetailBuyer(uuId: "${widget.product.uuid}")),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Styles.blue,
+          centerTitle: true,
+          leading: InkWell(
+            onTap: () => Navigator.pop(context),
+            child: const Icon(
+              Icons.arrow_back_ios,
               color: Styles.light,
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ShoppingCartPage(),
-                ),
-              );
-            },
           ),
+          title: Text(
+            'Chi tiết sản phẩm',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Styles.light,
+                ),
+          ),
+// <<<<<<< update11-12
         ],
       ),
       body: SingleChildScrollView(
@@ -61,53 +78,141 @@ class ProductDetailPage extends StatelessWidget {
                   image: DecorationImage(
                     image: NetworkImage(product.fullImageUrl),
                     fit: BoxFit.cover,
+// =======
+//           actions: [
+//             IconButton(
+//               icon: const Icon(
+//                 Icons.shopping_cart_outlined,
+//                 color: Styles.light,
+//               ),
+//               onPressed: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                     builder: (context) => const ShoppingCartPage(),
+// >>>>>>> main
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                );
+              },
+            ),
+          ],
+        ),
+        body: BlocBuilder<ProductBlocBloc, ProductBlocState>(
+            builder: (context, state) {
+          if (state is ProductLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state is ProductDetailLoadedState) {
+            final product = state.product;
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildImageIndicator(isActive: true),
-                    _buildImageIndicator(),
-                    _buildImageIndicator(),
-                    _buildImageIndicator(),
+                    Text(product.name),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      padding: const EdgeInsets.only(bottom: 10),
+                      alignment: Alignment.bottomCenter,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(26),
+                        image: DecorationImage(
+                          image: NetworkImage(product.images[_currentPage]),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: PageView.builder(
+                              controller: _pageController,
+                              itemCount: product.images.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(26),
+                                    image: DecorationImage(
+                                      image: NetworkImage(product.images[index]),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(product.images.length, (index) {
+                              return _buildImageIndicator(isActive: index == _currentPage);
+                            }),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Container(
+                    //   height: MediaQuery.of(context).size.height * 0.4,
+                    //   width: MediaQuery.of(context).size.width * 0.9,
+                    //   padding: const EdgeInsets.only(bottom: 10),
+                    //   alignment: Alignment.bottomCenter,
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(26),
+                    //     image: DecorationImage(
+                    //       image: AssetImage(widget.product.fullImageUrl),
+                    //       fit: BoxFit.cover,
+                    //     ),
+                    //   ),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       _buildImageIndicator(isActive: true),
+                    //       _buildImageIndicator(),
+                    //       _buildImageIndicator(),
+                    //       _buildImageIndicator(),
+                    //     ],
+                    //   ),
+                    // ),
+                    const SizedBox(height: 16),
+                    Text(
+                      widget.product.name,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineLarge
+                          ?.copyWith(fontSize: 24),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '${widget.product.originalPrice}',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium
+                          ?.copyWith(color: Colors.blue),
+                    ),
+                    const SizedBox(height: 8),
+                    _buildRatingsAndReviewCount(),
+                    const SizedBox(height: 16),
+                    const Divider(),
+                    _buildSellerInfo(context),
+                    const Divider(),
+                    const SizedBox(height: 16),
+                    _buildQuantitySelector(context),
+                    const SizedBox(height: 16),
+                    _buildColorOptions(context),
+                    const SizedBox(height: 10),
+                    _buildProductDescription(context),
+                    const SizedBox(height: 16),
+                    _buildReviewsSection(context),
                   ],
                 ),
               ),
-              const SizedBox(height: 16),
-              Text(
-                product.name,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineLarge
-                    ?.copyWith(fontSize: 24),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                '${product.originalPrice}',
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineMedium
-                    ?.copyWith(color: Colors.blue),
-              ),
-              const SizedBox(height: 8),
-              _buildRatingsAndReviewCount(),
-              const SizedBox(height: 16),
-              const Divider(),
-              _buildSellerInfo(context),
-              const Divider(),
-              const SizedBox(height: 16),
-              _buildQuantitySelector(context),
-              const SizedBox(height: 16),
-              _buildColorOptions(context),
-              const SizedBox(height: 10),
-              _buildProductDescription(context),
-              const SizedBox(height: 16),
-              _buildReviewsSection(context),
-            ],
-          ),
-        ),
+            );
+          }
+          return const Center(child: CircularProgressIndicator(),);
+        }),
+        bottomNavigationBar: _buildBottomNavigationBar(context),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(context),
     );
   }
 
@@ -124,16 +229,16 @@ class ProductDetailPage extends StatelessWidget {
   }
 
   Row _buildRatingsAndReviewCount() {
-    return Row(
+    return const Row(
       children: [
-        const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-        const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-        const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-        const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-        const Icon(Icons.star_half, color: Styles.nearPrimary, size: 16),
-        const SizedBox(width: 8),
+        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+        Icon(Icons.star_half, color: Styles.nearPrimary, size: 16),
+        SizedBox(width: 8),
         Text('4.7 (143 Reviews)'),
-        const SizedBox(width: 8),
+        SizedBox(width: 8),
         Text('Đã bán: 63'),
       ],
     );
@@ -277,7 +382,7 @@ class ProductDetailPage extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          product.description,
+          widget.product.description,
           style: Theme.of(context).textTheme.headlineSmall,
           textAlign: TextAlign.justify,
         ),

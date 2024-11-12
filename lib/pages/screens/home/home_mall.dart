@@ -8,6 +8,7 @@ import 'package:ui_youtex/model/industry.dart';
 import 'package:ui_youtex/pages/screens/home/product/product_detail_page.dart';
 import 'package:ui_youtex/pages/screens/home/search_page/search_page.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
+import 'package:ui_youtex/util/constants.dart';
 import '../../../core/assets.dart';
 import '../../widget_small/product/product_card.dart';
 import '../shopping_cart_page/shopping_cart_page.dart';
@@ -30,13 +31,13 @@ class HomeMall extends StatelessWidget {
         BlocProvider(
           create: (context) => ProductBlocBloc(
             restfulApiProvider: context.read<RestfulApiProviderImpl>(),
-          )..add(FetchProductsEvent()),
+          )..add(const FetchProductsEvent()),
         ),
         BlocProvider(
           create: (context) => IndustryBloc(
             restfulApiProvider: context.read<RestfulApiProviderImpl>(),
           )..add(
-              LoadIndustries()), // Khởi động sự kiện load dữ liệu cho IndustryBloc
+              LoadIndustries()),
         ),
       ],
       child: Scaffold(
@@ -78,7 +79,7 @@ class HomeMall extends StatelessWidget {
               BlocBuilder<IndustryBloc, IndustryState>(
                 builder: (context, state) {
                   if (state is IndustryLoading) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (state is IndustryLoaded) {
                     return _buildIndustrySection(context, state.industries);
                   } else if (state is IndustryError) {
@@ -155,7 +156,7 @@ class HomeMall extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 30,
-                        backgroundImage: NetworkImage(industries[index].image),
+                        backgroundImage: NetworkImage("${NetworkConstants.urlImage}${industries[index].image}"),
                       ),
                       const SizedBox(height: 5),
                       SizedBox(
