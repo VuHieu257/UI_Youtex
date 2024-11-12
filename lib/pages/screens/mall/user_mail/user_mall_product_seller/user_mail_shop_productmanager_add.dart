@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_register_product_bloc_bloc.dart';
 import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
+import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_view.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mall_product_seller/user_mail_shop_product.dart';
 
 import '../../../../../core/colors/color.dart';
@@ -47,6 +48,23 @@ class _ProductaddScreenState extends State<ProductaddScreen> {
     }
   }
 
+  void _showMessage(String title, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(message),
+          ],
+        ),
+        backgroundColor: title == 'Thành Công' ? Colors.green : Colors.red,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,13 +94,13 @@ class _ProductaddScreenState extends State<ProductaddScreen> {
                         imageFile: coverImageFile,
                       ),
                     ),
-                    GestureDetector(
-                      // onTap: _pickAdditionalImage,
-                      child: ImagePickerField(
-                        label: "Hình ảnh/Video",
-                        imageFile: additionalImageFile,
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   // onTap: _pickAdditionalImage,
+                    //   child: ImagePickerField(
+                    //     label: "Hình ảnh/Video",
+                    //     imageFile: additionalImageFile,
+                    //   ),
+                    // ),
                     _buildDropdownSection(
                         "Loại hàng hóa", selectedGroup, ['May Mặc', 'Điện Tử'],
                         (value) {
@@ -190,14 +208,11 @@ class _ProductaddScreenState extends State<ProductaddScreen> {
           SellerRegisterProductPostEvent(model: productModel),
         );
 
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return const CardAddedSuccessDialog();
-      },
-    );
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ProductManagementScreen()));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showMessage('Thành Công', 'Tạo sản phẩm  thành công!');
+    });
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ShopOverviewScreen()));
   }
 }
 

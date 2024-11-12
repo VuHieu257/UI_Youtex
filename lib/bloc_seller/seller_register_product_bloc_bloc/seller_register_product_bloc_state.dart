@@ -30,3 +30,16 @@ class SellerRegisterProductSuccess extends SellerRegisterProductBlocState {
 
   SellerRegisterProductSuccess(this.message);
 }
+
+class SellerRegisterProductActivating extends SellerRegisterProductBlocState {}
+
+class SellerRegisterProductActivated extends SellerRegisterProductBlocState {
+  final String message;
+  SellerRegisterProductActivated(this.message);
+}
+
+class SellerRegisterProductActivationError
+    extends SellerRegisterProductBlocState {
+  final String error;
+  SellerRegisterProductActivationError(this.error);
+}

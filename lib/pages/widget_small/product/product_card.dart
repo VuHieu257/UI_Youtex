@@ -96,7 +96,7 @@ class ProductCard extends StatelessWidget {
                   const Icon(Icons.discount_outlined,
                       color: Styles.nearPrimary, size: 16),
                   Text(
-                    '-${product.discountPercentage.toStringAsFixed(0)}%',
+                    '${product.discountPercentage.toStringAsFixed(0)}%',
                     style: context.theme.textTheme.titleMedium
                         ?.copyWith(color: Styles.nearPrimary),
                   ),

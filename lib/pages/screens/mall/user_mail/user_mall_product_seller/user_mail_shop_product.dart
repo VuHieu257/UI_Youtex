@@ -14,8 +14,40 @@ import 'package:ui_youtex/services/restful_api_provider.dart';
 
 import '../../../../../bloc_seller/seller_register_product_bloc_bloc/seller_register_product_bloc_bloc.dart';
 
-class ProductManagementScreen extends StatelessWidget {
+class ProductManagementScreen extends StatefulWidget {
   const ProductManagementScreen({super.key});
+
+  @override
+  State<ProductManagementScreen> createState() =>
+      _ProductManagementScreenState();
+}
+
+class _ProductManagementScreenState extends State<ProductManagementScreen> {
+  void _showMessage(String title, String message, BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: "$title\n",
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              TextSpan(
+                text: message,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: title == 'Thành Công' ? Colors.green : Colors.red,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,98 +209,136 @@ class ProductManagementScreen extends StatelessWidget {
 
                 // Product List with BLoC Builder
                 Expanded(
-                  child: BlocBuilder<SellerRegisterProductBloc,
+                  child: BlocListener<SellerRegisterProductBloc,
                       SellerRegisterProductBlocState>(
-                    builder: (context, state) {
-                      if (state is SellerRegisterProductLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (state is SellerRegisterProductLoaded) {
-                        final products = state.products;
-                        return ListView.builder(
-                          itemCount: products.length,
-                          itemBuilder: (context, index) {
-                            final product = products[index];
-                            return ProductCard(
-                              status: product.status,
-                              id: product.id,
-                              imageUrl: product.fullImageUrl,
-                              productName: product.name,
-                              description: product.description,
-                              isActive: product.status,
-                              quantity: product.quantity,
-                              soldQuantity: product.soldQuantity,
-                              originalPrice: product.originalPrice,
-                              discountPrice: product.discountPrice,
-                              discountPercentage: product.discountPercentage,
-                              onEdit: () async {
-                                final result = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductActiveDetailsScreen(
-                                            productId: product.id),
-                                  ),
-                                );
-                                if (result == true) {
-                                  if (!context.mounted) return;
-                                  context
-                                      .read<SellerRegisterProductBloc>()
-                                      .add(SellerRegisterProductGetEvent());
-                                }
-                              },
-                              onDelete: () async {
-                                // Add delete confirmation dialog
-                                final shouldDelete = await showDialog<bool>(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: const Text('Xác nhận xóa'),
-                                    content: const Text(
-                                        'Bạn có chắc chắn muốn xóa sản phẩm này?'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, false),
-                                        child: const Text('Hủy'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, true),
-                                        child: const Text('Xóa'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-
-                                if (shouldDelete == true) {
-                                  if (!context.mounted) return;
-                                  context
-                                      .read<SellerRegisterProductBloc>()
-                                      .add(SellerRegisterProductGetEvent());
-                                }
-                              },
-                            );
-                          },
-                        );
+                    listener: (context, state) {
+                      if (state is SellerRegisterProductSuccess) {
+                        _showMessage('Thành Công', state.message, context);
                       } else if (state is SellerRegisterProductError) {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(state.message),
-                              ElevatedButton(
-                                onPressed: () {
-                                  context
-                                      .read<SellerRegisterProductBloc>()
-                                      .add(SellerRegisterProductGetEvent());
-                                },
-                                child: const Text('Thử lại'),
-                              ),
-                            ],
-                          ),
-                        );
+                        _showMessage('Thất Bại', state.message, context);
                       }
-                      return const SizedBox.shrink();
                     },
+                    child: BlocBuilder<SellerRegisterProductBloc,
+                        SellerRegisterProductBlocState>(
+                      builder: (context, state) {
+                        if (state is SellerRegisterProductLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (state is SellerRegisterProductLoaded) {
+                          final products = state.products;
+                          return ListView.builder(
+                            itemCount: products.length,
+                            itemBuilder: (context, index) {
+                              final product = products[index];
+                              return ProductCard(
+                                formattedOriginalPrice: product.discountPrice,
+                                formattedPrice: product.originalPrice,
+                                price: product.originalPrice,
+                                status: product.status,
+                                id: product.id,
+                                imageUrl: product.fullImageUrl,
+                                productName: product.name,
+                                description: product.description,
+                                quantity: product.quantity,
+                                soldQuantity: product.soldQuantity,
+                                discountPrice: product.discountPrice,
+                                discountPercentage: product.discountPercentage,
+                                onEdit: () async {
+                                  final result = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProductActiveDetailsScreen(
+                                              productId: product.id),
+                                    ),
+                                  );
+                                  if (result == true && context.mounted) {
+                                    context
+                                        .read<SellerRegisterProductBloc>()
+                                        .add(SellerRegisterProductGetEvent());
+                                  }
+                                },
+                                onDelete: () async {
+                                  final shouldDelete = await showDialog<bool>(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text('Xác nhận xóa'),
+                                      content: const Text(
+                                          'Bạn có chắc chắn muốn xóa sản phẩm này?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, false),
+                                          child: const Text('Hủy'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, true),
+                                          child: const Text('Xóa'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  // if (shouldDelete == true && context.mounted) {
+                                  //   context
+                                  //       .read<SellerRegisterProductBloc>()
+                                  //       .add(SellerRegisterProductDeleteEvent(
+                                  //           product.id));
+                                  // }
+                                },
+                                onActive: () async {
+                                  final shouldActivate = await showDialog<bool>(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text('Kích hoạt sản phẩm'),
+                                      content: const Text(
+                                          'Bạn đã bổ sung đủ thông tin sản phẩm yêu cầu chưa?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, false),
+                                          child: const Text('Hủy'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, true),
+                                          child: const Text('Kích hoạt'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  if (shouldActivate == true &&
+                                      context.mounted) {
+                                    context
+                                        .read<SellerRegisterProductBloc>()
+                                        .add(SellerRegisterProductActivateEvent(
+                                            product.id));
+                                  }
+                                },
+                              );
+                            },
+                          );
+                        } else if (state is SellerRegisterProductError) {
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(state.message),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    context
+                                        .read<SellerRegisterProductBloc>()
+                                        .add(SellerRegisterProductGetEvent());
+                                  },
+                                  child: const Text('Thử lại'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -281,334 +351,366 @@ class ProductManagementScreen extends StatelessWidget {
 }
 
 class ProductCard extends StatelessWidget {
-  final String? id;
-  final bool? status;
   final String? imageUrl;
   final String productName;
+  final String id;
   final String description;
-  final bool isActive;
   final int quantity;
   final int soldQuantity;
-  final double originalPrice;
+  final double price;
   final double discountPrice;
   final int discountPercentage;
-  final VoidCallback? onEdit;
-  final VoidCallback? onDelete;
+  final double formattedPrice;
+  final double formattedOriginalPrice;
+  final VoidCallback onEdit;
+  final VoidCallback onActive;
+
+  final VoidCallback onDelete;
+  final bool status;
 
   const ProductCard({
     Key? key,
-    required this.id,
-    required this.status,
     this.imageUrl,
-    this.productName = 'Tên sản phẩm',
-    this.description = 'Mô tả sản phẩm',
-    required this.isActive,
+    required this.productName,
+    required this.id,
+    required this.description,
     required this.quantity,
     required this.soldQuantity,
-    required this.originalPrice,
+    required this.price,
     required this.discountPrice,
     required this.discountPercentage,
-    this.onEdit,
-    this.onDelete,
+    required this.formattedPrice,
+    required this.formattedOriginalPrice,
+    required this.onEdit,
+    required this.onActive,
+    required this.onDelete,
+    required this.status,
   }) : super(key: key);
-
-  String _formatPrice(double price) {
-    if (price <= 0) return 'Liên hệ';
-    final formatter = NumberFormat('#,###', 'vi_VN');
-    return '${formatter.format(price)} đ';
-  }
 
   @override
   Widget build(BuildContext context) {
-    final price = discountPrice > 0 ? discountPrice : originalPrice;
-    final formattedPrice = _formatPrice(price);
-    final formattedOriginalPrice = _formatPrice(originalPrice);
-
     return Container(
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 0,
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.3),
+            spreadRadius: 1,
+            blurRadius: 15,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
-          onTap: () {}, // Có thể thêm onTap callback nếu cần
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Product Image with Discount Badge
-                Stack(
+          borderRadius: BorderRadius.circular(20),
+          onTap: () {},
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth:
+                    MediaQuery.of(context).size.width - 32, // Trừ đi margin
+                maxWidth: 800, // Maximum width cho nội dung
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            spreadRadius: 0,
-                            blurRadius: 5,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image(
-                          image: imageUrl != null
-                              ? NetworkImage(imageUrl!) as ImageProvider
-                              : const AssetImage('assets/images/default.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    if (discountPercentage > 0)
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(12),
-                              bottomLeft: Radius.circular(12),
+                    // Enhanced Product Image
+                    Stack(
+                      children: [
+                        Hero(
+                          tag: 'product-$id',
+                          child: Container(
+                            width: 200,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.08),
+                                  spreadRadius: 0,
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
                             ),
-                          ),
-                          child: Text(
-                            '-$discountPercentage%',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image(
+                                image: imageUrl != null
+                                    ? NetworkImage(imageUrl!) as ImageProvider
+                                    : const AssetImage(
+                                        'assets/images/default.png'),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                  ],
-                ),
-                const SizedBox(width: 16),
-
-                // Product Details
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Product Name and ID
-                      Text(
-                        productName,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                        // Status Badge
+                        Positioned(
+                          top: 8,
+                          left: 8,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: status == true
+                                  ? Colors.green.shade600
+                                  : Colors.grey[600],
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: (status == true
+                                          ? Colors.green
+                                          : Colors.grey)
+                                      .withOpacity(0.2),
+                                  spreadRadius: 0,
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  status == true
+                                      ? Icons.check_circle
+                                      : Icons.pending,
+                                  size: 12,
+                                  color: Colors.white,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  status == true ? 'Đã lên sàn' : 'Chờ duyệt',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'ID: $id',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.grey[600],
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 8),
-
-                      // Description
-                      Text(
-                        description,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[700],
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 8),
-
-                      // Status Badges
-                      Row(
-                        children: [
-                          if (status != null)
-                            Container(
+                        if (discountPercentage > 0)
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 8,
                                 vertical: 4,
                               ),
                               decoration: BoxDecoration(
-                                color: status == true
-                                    ? Colors.green.withOpacity(0.1)
-                                    : Colors.orange.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: status == true
-                                      ? Colors.green
-                                      : Colors.orange,
-                                  width: 1,
-                                ),
+                                color: Colors.red.shade600,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.red.withOpacity(0.2),
+                                    spreadRadius: 0,
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
                               ),
                               child: Text(
-                                status == true ? 'Đã lên sàn' : 'Chưa lên sàn',
-                                style: TextStyle(
+                                '-$discountPercentage%',
+                                style: const TextStyle(
+                                  color: Colors.white,
                                   fontSize: 12,
-                                  color: status == true
-                                      ? Colors.green
-                                      : Colors.orange,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(width: 16),
 
-                      Row(
+                    // Enhanced Product Information
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(Icons.inventory_2_outlined,
-                              size: 16, color: Colors.grey[600]),
-                          const SizedBox(width: 4),
+                          SizedBox(
+                            child: Text(
+                              productName,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                                height: 1.2,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
                           Text(
-                            'SL: $quantity',
+                            'ID: $id',
                             style: TextStyle(
                               fontSize: 13,
                               color: Colors.grey[600],
+                              fontWeight: FontWeight.w500,
                             ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          const SizedBox(width: 16),
-                          Icon(Icons.shopping_cart_outlined,
-                              size: 16, color: Colors.grey[600]),
-                          const SizedBox(width: 4),
-                          Text(
-                            'Đã bán: $soldQuantity',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-
-                      // Price
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
-                        children: [
-                          Text(
-                            formattedPrice,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          if (discountPrice > 0) ...[
-                            const SizedBox(width: 8),
-                            Text(
-                              formattedOriginalPrice,
+                          const SizedBox(height: 8),
+                          SizedBox(
+                            child: Text(
+                              description,
                               style: TextStyle(
                                 fontSize: 14,
-                                color: Colors.grey[500],
-                                decoration: TextDecoration.lineThrough,
-                                decorationColor: Colors.grey[400],
-                                decorationThickness: 2,
+                                color: Colors.grey[700],
+                                height: 1.4,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+
+                          // Enhanced Stats Row with Horizontal Scroll
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey[50],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.inventory_2_outlined,
+                                      size: 16, color: Colors.blue[700]),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'SL: $quantity',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.blue[700],
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Icon(Icons.shopping_cart_outlined,
+                                      size: 16, color: Colors.green[700]),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Đã bán: $soldQuantity',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.green[700],
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                          ),
+                          const SizedBox(height: 12),
 
-                // Action Buttons
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: onEdit,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        elevation: 2,
-                      ),
-                      child: const Text(
-                        'Thêm thông tin',
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    ElevatedButton(
-                      onPressed: onEdit,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        elevation: 2,
-                      ),
-                      child: const Text(
-                        'Kích hoạt',
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    ElevatedButton(
-                      onPressed: onDelete,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        elevation: 2,
-                      ),
-                      child: const Text(
-                        'Xóa',
-                        style: TextStyle(
-                            fontSize: 13, fontWeight: FontWeight.w600),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                Text(
+                                  formattedPrice.toString(),
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.red[700],
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                if (discountPrice > 0) ...[
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    formattedOriginalPrice.toString(),
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey[500],
+                                      decoration: TextDecoration.lineThrough,
+                                      decorationColor: Colors.grey[400],
+                                      decorationThickness: 2,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              _buildActionButton(
+                                onPressed: onEdit,
+                                label: 'Thêm',
+                                backgroundColor: Colors.blue[600]!,
+                                icon: Icons.add,
+                              ),
+                              const SizedBox(width: 10),
+                              _buildActionButton(
+                                onPressed: onActive,
+                                label: 'Kích hoạt',
+                                backgroundColor: Colors.green[600]!,
+                                icon: Icons.check_circle_outline,
+                              ),
+                              const SizedBox(width: 10),
+                              _buildActionButton(
+                                onPressed: onDelete,
+                                label: 'Xóa',
+                                backgroundColor: Colors.red[600]!,
+                                icon: Icons.delete_outline,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionButton({
+    required VoidCallback onPressed,
+    required String label,
+    required Color backgroundColor,
+    required IconData icon,
+  }) {
+    return SizedBox(
+      width: 110, // Fixed width cho buttons
+      child: ElevatedButton.icon(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          elevation: 0,
+        ),
+        icon: Icon(icon, size: 18),
+        label: Text(
+          label,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

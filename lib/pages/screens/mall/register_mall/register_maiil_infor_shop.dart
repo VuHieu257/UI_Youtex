@@ -32,6 +32,23 @@ class _RegisterMallinforShopScreenState
     super.dispose();
   }
 
+  void _showMessage(String title, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(message),
+          ],
+        ),
+        backgroundColor: title == 'Thành Công' ? Colors.green : Colors.red,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   // Hàm gửi dữ liệu
   Future<void> saveData() async {
     final token = await TokenManager.getToken();
@@ -50,30 +67,16 @@ class _RegisterMallinforShopScreenState
       );
 
       if (success) {
-        // Nếu thành công, hiển thị dialog
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return const CardAddedSuccessDialog(); // Dialog thành công
-          },
-        );
+        // Nếu thành công, hiển thị thông báo SnackBar với nội dung thành công
+        _showMessage('Thành Công', 'Đã thêm thành công!');
+
+        // Đợi thời gian của SnackBar trước khi đóng màn hình
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.pop(context);
+        });
       } else {
         // Nếu có lỗi
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Lỗi'),
-              content: const Text('Đã xảy ra lỗi khi gửi thông tin.'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('Đóng'),
-                ),
-              ],
-            );
-          },
-        );
+        _showMessage('Lỗi', 'Đã xảy ra lỗi khi gửi thông tin.');
       }
     } else {
       // Hiển thị thông báo lỗi nếu có trường nào bỏ trống
@@ -126,7 +129,7 @@ class _RegisterMallinforShopScreenState
                     ),
                     CustomTextFieldNoIcon(
                       controller: settingsController,
-                      label: "Settings",
+                      label: "Thông tin",
                       hintText: "Điền thông tin tại đây",
                       line: 1,
                     ),

@@ -50,7 +50,7 @@ class SellerRegisterBankAccountBloc extends Bloc<
         isDefault: event.isDefault,
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         emit(SellerRegisterBankAccountRegisterSuccess(response.data));
         add(LoadSellerRegisterBankAccountInfo());
       } else {

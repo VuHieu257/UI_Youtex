@@ -16,6 +16,7 @@ class SellerRegisterProductBloc extends Bloc<SellerRegisterProductBlocEvent,
       : super(SellerRegisterProductBlocInitial()) {
     on<SellerRegisterProductGetEvent>(_onGetProduct);
     on<SellerRegisterProductPostEvent>(_onPostProduct);
+    on<SellerRegisterProductActivateEvent>(_onActivateProduct);
   }
 
   Future<void> _onGetProduct(
@@ -53,9 +54,11 @@ class SellerRegisterProductBloc extends Bloc<SellerRegisterProductBlocEvent,
       emit(SellerRegisterProductLoading());
       final token = await TokenManager.getToken();
 
-      final success = await restfulApiProvider.postProduct(event.model,token: token!);
+      final success =
+          await restfulApiProvider.postProduct(event.model, token: token!);
       if (success) {
-        final updatedProducts = await restfulApiProvider.getProduct(token: token!);
+        final updatedProducts =
+            await restfulApiProvider.getProduct(token: token!);
         if (updatedProducts != null) {
           emit(SellerRegisterProductSuccess('Thêm sản phẩm thành công'));
           emit(SellerRegisterProductLoaded(updatedProducts));
@@ -70,6 +73,36 @@ class SellerRegisterProductBloc extends Bloc<SellerRegisterProductBlocEvent,
       print('Error posting product: $e');
       print(stackTrace);
       emit(SellerRegisterProductError('Đã xảy ra lỗi khi thêm sản phẩm'));
+    }
+  }
+
+  Future<void> _onActivateProduct(
+    SellerRegisterProductActivateEvent event,
+    Emitter<SellerRegisterProductBlocState> emit,
+  ) async {
+    try {
+      emit(SellerRegisterProductLoading());
+      final token = await TokenManager.getToken();
+
+      final success = await restfulApiProvider.activateProduct(
+        token: token!,
+        uuid: event.uuid,
+      );
+
+      if (success) {
+        emit(SellerRegisterProductSuccess(
+            'Sản phẩm đã được kích hoạt thành công!'));
+        add(SellerRegisterProductGetEvent()); // Làm mới danh sách sản phẩm
+      } else {
+        emit(SellerRegisterProductError('Kích hoạt sản phẩm thất bại'));
+      }
+    } on DioException catch (dioError) {
+      print('Dio error: ${dioError.message}');
+      emit(SellerRegisterProductError('Đã xảy ra lỗi khi kết nối với API.'));
+    } catch (e, stackTrace) {
+      print('Error activating product: $e');
+      print(stackTrace);
+      emit(SellerRegisterProductError('Đã xảy ra lỗi khi kích hoạt sản phẩm.'));
     }
   }
 }

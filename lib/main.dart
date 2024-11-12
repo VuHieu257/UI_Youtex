@@ -164,8 +164,8 @@ class MyApp extends StatelessWidget {
       theme: MyAppThemes.lightTheme,
       debugShowCheckedModeBanner: false,
 
-      // home: const WelcomeApp(),
-      home: const CustomNavBar(),
+      home: const WelcomeApp(),
+      // home: const CustomNavBar(),
       // home: const RegisterMallScreen(),
       // home: const MessagesScreen(),
       routes: {

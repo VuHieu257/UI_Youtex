@@ -59,7 +59,7 @@ class ProductDetailPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(26),
                   image: DecorationImage(
-                    image: AssetImage(product.fullImageUrl),
+                    image: NetworkImage(product.fullImageUrl),
                     fit: BoxFit.cover,
                   ),
                 ),
