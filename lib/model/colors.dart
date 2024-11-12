@@ -2,18 +2,18 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'colors.g.dart';
 @JsonSerializable()
-class Colors {
+class ColorsProduct {
   final int id;
   final String name;
   final String hexCode;
 
-  Colors({
+  ColorsProduct({
     required this.id,
     required this.name,
     required this.hexCode,
   });
 
-  factory Colors.fromJson(Map<String, dynamic> json) => _$ColorsFromJson(json);
+  factory ColorsProduct.fromJson(Map<String, dynamic> json) => _$ColorsProductFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ColorsToJson(this);
+  Map<String, dynamic> toJson() => _$ColorsProductToJson(this);
 }

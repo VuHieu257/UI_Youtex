@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/util/constants.dart';
 
 import '../../../core/colors/color.dart';
 class CartItem extends StatelessWidget {
@@ -8,6 +9,7 @@ class CartItem extends StatelessWidget {
   final String name;
   final String type;
   final int price;
+  final int amount;
   final bool isSelected;
   final ValueChanged<bool?> onSelected;
 
@@ -17,6 +19,7 @@ class CartItem extends StatelessWidget {
     required this.type,
     required this.price,
     required this.isSelected,
+    required this.amount,
     required this.onSelected,
   });
 
@@ -34,7 +37,7 @@ class CartItem extends StatelessWidget {
               value: isSelected,
               onChanged: onSelected,
             ),
-            Image.asset(imageUrl, width: context.height*0.1, height: context.height*0.1,fit: BoxFit.fill,),
+            Image.network("${NetworkConstants.urlImage}$imageUrl", width: context.height*0.1, height: context.height*0.1,fit: BoxFit.fill,),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
@@ -72,7 +75,7 @@ class CartItem extends StatelessWidget {
                               icon: const Icon(Icons.remove),
                               onPressed: () {},
                             ),
-                            Text('1',style: context.theme.textTheme.titleMedium?.copyWith(),),
+                            Text("$amount",style: context.theme.textTheme.titleMedium?.copyWith(),),
                             IconButton(
                               icon: const Icon(Icons.add),
                               onPressed: () {},

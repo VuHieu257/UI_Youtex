@@ -11,7 +11,7 @@ class NetworkConstants {
 
   static const String urlImage =
   //server testing
-      "http://52.77.246.91/";
+      "http://52.77.246.91/storage/";
   static const Duration receiveTimeout = Duration(milliseconds: 5000);
 
   static const Duration connectionTimeout = Duration(milliseconds: 5000);

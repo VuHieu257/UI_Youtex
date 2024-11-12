@@ -164,7 +164,7 @@ class ProfileScreen extends StatelessWidget {
                                               Asset.bgImageAvatar,
                                             )
                                           : NetworkImage(
-                                                  "${NetworkConstants.urlImage}storage/${user.image}")
+                                                  "${NetworkConstants.urlImage}${user.image}")
                                               as ImageProvider),
                                 ),
                                 const SizedBox(width: 12),

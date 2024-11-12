@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:ui_youtex/bloc/cart_bloc/cart_bloc.dart';
 import 'package:ui_youtex/bloc/forgot_password_bloc/forgot_password_bloc.dart';
 import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/bloc_seller_address_bloc/bloc_seller_address_bloc.dart';
@@ -100,6 +101,9 @@ void main() async {
           ),
           BlocProvider(
             create: (context) => FetchUserByPhoneBloc(),
+          ),
+          BlocProvider(
+            create: (context) => CartBloc(),
           ),
           BlocProvider(
             create: (context) => ProductBlocBloc(

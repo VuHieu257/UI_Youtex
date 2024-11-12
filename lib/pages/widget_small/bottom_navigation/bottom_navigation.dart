@@ -268,7 +268,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
                       backgroundImage: user.image != null &&
                               user.image!.isNotEmpty
                           ? NetworkImage(
-                                  "${NetworkConstants.urlImage}storage/${user.image}")
+                                  "${NetworkConstants.urlImage}${user.image}")
                               as ImageProvider
                           : const AssetImage(Asset.bgImageAvatar),
                     ),

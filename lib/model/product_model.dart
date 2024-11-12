@@ -31,7 +31,7 @@ class ProductModel {
   final String sku;
   final StoreProductDetail store;
   final List<Sizes> sizes;
-  final List<Colors> colors;
+  final List<ColorsProduct> colors;
   final List<Options> options;
 
   ProductModel({

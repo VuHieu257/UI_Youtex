@@ -12,6 +12,8 @@ import 'package:ui_youtex/model/industry.dart';
 
 import '../core/base/base_dio.dart';
 import '../model/address.dart';
+import '../model/cart.dart';
+import '../model/cart_sponse.dart';
 import '../model/product_model.dart';
 import '../util/constants.dart';
 
@@ -41,9 +43,11 @@ abstract class ApiPath {
   static const String BuyerindustryproductsGet = 'buyer/products';
   static const String BuyerUUIDproductsGet = 'buyer/products';
   static const String BuyeIndustrysGet = 'buyer/industries';
+  static const String buyerGetCart = 'buyer/cart';
 
 
   static String buyerGetProductDetail(uuid) => 'buyer/product/$uuid';
+  static String addCart(uuid) => 'buyer/product/$uuid/add-cart';
 
   ///*******************************ALL***********************************
   ///*******************************POST***********************************
@@ -161,6 +165,29 @@ class RestfulApiProviderImpl {
   ///******************************************************************
   ///---------------------------GET-----------------------------------
   ///******************************************************************
+  Future<List<Cart>> getCart({
+    required String token,
+  }) async {
+    try {
+      final response = await dioClient.get(
+        ApiPath.buyerGetCart,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.data != null && response.data['carts'] != null) {
+        final data = (response.data['carts'] as List)
+            .map((json) => Cart.fromJson(json))
+            .toList();
+        return data;
+      }
+      return [];
+    } catch (e) {
+      print(e);
+      throw Exception('Failed to load user');
+    }
+  }
   Future<Map<String, dynamic>> getAllPaymentMethods({
     required String token,
   }) async {
@@ -331,6 +358,35 @@ class RestfulApiProviderImpl {
   ///******************************************************************
   ///---------------------------POST-----------------------------------
   ///******************************************************************
+  Future addCart({
+    required String uuid,
+    required String token,
+    required String colorId,
+    required String sizeId,
+    required String quantity,
+  }) async {
+    try {
+      final response = await dioClient.post(
+        ApiPath.addCart(uuid),
+        body: {
+          "quantity":quantity,
+          "size_id":sizeId,
+          "color_id":colorId,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      return response;
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error login: $error');
+      }
+      rethrow;
+    }
+  }
+
   Future forgotPassword({
     required String email,
   }) async {
