@@ -1,26 +1,27 @@
   import 'package:json_annotation/json_annotation.dart';
 
-  part 'user_profile.g.dart';
-  @JsonSerializable()
-  class Profile {
-    final int id;
-    @JsonKey(name: 'image', defaultValue: "") // Gán giá trị mặc định nếu null
-    final String? image;
-    final String name;
-    final String email;
-    final String phone;
-    @JsonKey(name: 'gender', defaultValue: "Không xác định",nullable: true)
-    final String? gender;
-    @JsonKey(name: 'birthday', defaultValue: "Chưa xác định",nullable: true)
-    final String? birthday;
-    final String type;
-    // @JsonKey(name: 'email_verified_at', nullable: true)
-    // final String? emailVerifiedAt;
-    // @JsonKey(name: 'created_at')
-    // final String createdAt;
-    // @JsonKey(name: 'updated_at')
-    // final String updatedAt;
-
+ 
+part 'user_profile.g.dart';
+@JsonSerializable()
+class Profile {
+  final String id;
+  @JsonKey(name: 'image', defaultValue: "")
+  final String? image;
+  final String name;
+  final String email;
+  final String phone;
+  @JsonKey(name: 'gender', defaultValue: "Không xác định",nullable: true)
+  final String? gender;
+  @JsonKey(name: 'birthday', defaultValue: "Chưa xác định",nullable: true)
+  final String? birthday;
+  final String type;
+  // @JsonKey(name: 'email_verified_at', nullable: true)
+  // final String? emailVerifiedAt;
+  // @JsonKey(name: 'created_at')
+  // final String createdAt;
+  // @JsonKey(name: 'updated_at')
+  // final String updatedAt;
+ 
     Profile({
       required this.id,
       this.image,

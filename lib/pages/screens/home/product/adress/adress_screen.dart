@@ -4,6 +4,7 @@ import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../../bloc/address_bloc/address_bloc.dart';
 import '../../../../../core/colors/color.dart';
+import '../../../../../model/user_profile.dart';
 import '../../../../widget_small/custom_button.dart';
 import '../../../user/user_profile/user_profile_settings.dart';
 import 'adress_add_screen.dart';
@@ -171,7 +172,7 @@ class _AddressScreenState extends State<AddressScreen> {
         backgroundColor: Styles.blue,
         centerTitle: true,
         leading: InkWell(
-            onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) => const AccountSettingsScreen(),)),
+            onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) =>  AccountSettingsScreen(),)),
             child: const Icon(
               Icons.arrow_back_ios,
               color: Styles.light,

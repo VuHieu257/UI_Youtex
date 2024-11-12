@@ -1,13 +1,33 @@
 {
   "project_info": {
-    "project_number": "57983356211",
-    "project_id": "mangxahoi-sotavn",
-    "storage_bucket": "mangxahoi-sotavn.appspot.com"
+    "project_number": "966122516663",
+    "firebase_url": "https://b-idea-b5e02-default-rtdb.firebaseio.com",
+    "project_id": "b-idea-b5e02",
+    "storage_bucket": "b-idea-b5e02.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:57983356211:android:5fd331cd4ef5361fea4246",
+        "mobilesdk_app_id": "1:966122516663:android:670e20e49319be6a325d32",
+        "android_client_info": {
+          "package_name": "com.example.blog_idea_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa58C3JobxigKYnj-kfdDztCOZc-ycCQE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966122516663:android:9af90fab33266ced325d32",
         "android_client_info": {
           "package_name": "com.example.youtext_app"
         }
@@ -15,76 +35,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCU66WlqitlSdBipwdwb_69uuRnJNupI0s"
-        },
-        {
-          "current_key": "AIzaSyDLSJIrb2VOvcfAe7yG9DLrl1GR__SjKtc"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:57983356211:android:7100f5dfd4112970ea4246",
-        "android_client_info": {
-          "package_name": "com.sota.mang_xa_hoi"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCU66WlqitlSdBipwdwb_69uuRnJNupI0s"
-        },
-        {
-          "current_key": "AIzaSyDLSJIrb2VOvcfAe7yG9DLrl1GR__SjKtc"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:57983356211:android:26e5c64a4cc3746fea4246",
-        "android_client_info": {
-          "package_name": "com.sotavn.mang_xa_hoi"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCU66WlqitlSdBipwdwb_69uuRnJNupI0s"
-        },
-        {
-          "current_key": "AIzaSyDLSJIrb2VOvcfAe7yG9DLrl1GR__SjKtc"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:57983356211:android:30ad1e17fe638e50ea4246",
-        "android_client_info": {
-          "package_name": "com.youtextile.mang_xa_hoi"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCU66WlqitlSdBipwdwb_69uuRnJNupI0s"
-        },
-        {
-          "current_key": "AIzaSyDLSJIrb2VOvcfAe7yG9DLrl1GR__SjKtc"
+          "current_key": "AIzaSyAa58C3JobxigKYnj-kfdDztCOZc-ycCQE"
         }
       ],
       "services": {

@@ -5,6 +5,7 @@ class Styles {
   static const Color nearPrimary = Color(0xff113A71); // Example color, replace with your primary color
   static const Color color005B99 = Color(0xff005B99); // Example color, replace with your primary color
   static const Color colorF3F3F3 = Color(0xffF3F3F3); // Example color, replace with your primary color
+  static const Color color3D6190 = Color(0xff3D6190); // Example color, replace with your primary color
   static const Color colorF9F9F9 = Color(0xffF9F9F9); // Example color, replace with your primary color
   static const Color colorFF6B6B = Color(0xffFF6B6B); // Example color, replace with your primary color
   static const Color color73FF83 = Color(0xff73FF83); // Example color, replace with your primary color

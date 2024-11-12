@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/model/user_profile.dart';
 import 'package:ui_youtex/util/show_snack_bar.dart';
 
 import '../../../../bloc/login_bloc/login_bloc.dart';
+import '../../../../core/colors/color.dart';
 import '../../../widget_small/bottom_navigation/bottom_navigation.dart';
 import '../../home/product/adress/adress_screen.dart';
 import '../edit_profile/edit_profile_screen.dart';
@@ -14,21 +17,24 @@ class AccountSettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 2.0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            // Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>const CustomNavBar(),));
-          },
-        ),
-        title: const Text(
-          'Thiết lập tài khoản',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
+        backgroundColor: Styles.blue,
         centerTitle: true,
+        leading: InkWell(
+            onTap: () =>            Navigator.push(context, MaterialPageRoute(builder: (context) =>const CustomNavBar(),)),
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Styles.light,
+            )),
+        title: Text(
+          'Thiết lập tài khoản',
+          style: context.theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: Styles.light,
+            fontSize: 17
+          ),
+        ),
       ),
+
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -52,7 +58,7 @@ class AccountSettingsScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const AddressScreen(),
+                      builder: (context) =>  const AddressScreen(),
                     ));
               }),
               _buildSettingItem(

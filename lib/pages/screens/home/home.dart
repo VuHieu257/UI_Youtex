@@ -184,7 +184,7 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return isRow!=true?Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(18.0),
       child: GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => const DetailArticle(),));

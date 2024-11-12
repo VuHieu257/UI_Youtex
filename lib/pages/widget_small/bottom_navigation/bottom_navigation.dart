@@ -4,6 +4,7 @@ import 'package:ui_youtex/bloc/user_profile_bloc/user_profile_bloc.dart';
 import 'package:ui_youtex/util/constants.dart';
 
 import '../../../core/assets.dart';
+import '../../../main.dart';
 import '../../screens/home/home.dart';
 import '../../screens/home/home_mall.dart';
 import '../../screens/live/live.dart';
@@ -25,6 +26,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
     HomeMall(),
     const LiveScreen(),
     const MessagesScreen(),
+    // const ImageGalleryScreen(),
     const ProfileScreen(),
   ];
   @override
@@ -180,15 +182,20 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 tabs: [
                   GButton(
                     icon: Icons.home_outlined,
-                    leading: Image.asset(
-                      Asset.iconHome,
-                      color:
-                          _selectedIndex == 0 ? Colors.blue : Colors.grey[800],
-                      fit: BoxFit.fitHeight,
-                      height: 20,
-                      width: 20,
-                    ),
-                    text: 'Trang chủ',
+ 
+                    leading:
+                    SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: Image.asset(
+                        Asset.iconHome,
+                        color: _selectedIndex == 0 ? Colors.blue : Colors.grey[800],
+                        fit: BoxFit.fitHeight,
+                        height: 20,
+                        width: 20,
+                      ),
+                     ),
+                    // text: 'Trang chủ',
                     iconColor: Colors.transparent, // Làm icon trở nên vô hình
                   ),
                   GButton(
@@ -208,7 +215,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
                         width: 20,
                       ),
                     ),
-                    text: 'Mall',
+                    // text: 'Mall',
                     iconColor: Colors.transparent, //
                   ),
                   GButton(
@@ -245,7 +252,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
                         width: 20,
                       ),
                     ),
-                    text: 'Tin Nhắn',
+                    // text: 'Tin Nhắn',
                     iconColor: Colors.transparent, //
                   ),
                   GButton(
@@ -264,7 +271,6 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 ],
               );
             }
-
             return Container();
           },
         ),

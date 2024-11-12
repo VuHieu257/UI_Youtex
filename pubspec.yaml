@@ -37,6 +37,7 @@ dependencies:
   dio: ^5.7.0
   firebase_core: ^2.31.0
   firebase_auth: ^4.19.5
+  firebase_storage: ^11.0.16
   cloud_firestore: ^4.17.3
   cupertino_icons: ^1.0.8
   flutter_slidable: ^3.1.1
@@ -53,9 +54,13 @@ dependencies:
   permission_handler: ^10.2.0
   shared_preferences: ^2.0.13
   image_picker: ^0.8.7+4
-  firebase_storage: ^11.0.16
+   firebase_storage: ^11.0.16
   cached_network_image: ^3.4.0
-  #  flutter_sound: ^9.16.0
+   flutter_sound: ^9.1.8
+#  just_audio: ^0.9.18
+  audioplayers: ^6.1.0
+  #  path: any
+   #  flutter_sound: ^9.16.0
 #  permission_handler: ^11.3.1
 
 dev_dependencies:

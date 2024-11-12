@@ -52,6 +52,7 @@ class CustomTextFieldNoIcon extends StatelessWidget {
   final String label;
   final String hintText;
   final int? line;
+  final bool? readOnly;
   final TextEditingController? controller;
 
   const CustomTextFieldNoIcon({
@@ -59,7 +60,7 @@ class CustomTextFieldNoIcon extends StatelessWidget {
     required this.hintText,
     required this.label,
     this.line,
-    this.controller
+    this.controller, this.readOnly
   });
 
   @override
@@ -84,6 +85,7 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                       blurRadius: 4)
                 ]),
             child: TextField(
+              readOnly: readOnly??false,
               controller:controller,
               maxLines: line,
               decoration: InputDecoration(

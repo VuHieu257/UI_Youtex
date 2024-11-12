@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 import 'package:ui_youtex/bloc/register_bloc/register_state.dart';
 
@@ -15,6 +16,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
   final RestfulApiProviderImpl _restfulApiProviderImpl =
   RestfulApiProviderImpl();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   Future<void> _onRegister(
       SubmitRegister event,
       Emitter<RegisterState> emit,
@@ -29,6 +31,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         passwordConfirmation: event.passwordConfirmation,
       );
       if (response.statusCode == 201) {
+        // await _firebaseAuth.createUserWithEmailAndPassword(
+        //   email: event.email,
+        //   password: event.password,
+        // );
         emit(RegisterSuccess(response.data["message"] ?? "Đăng ký thành công!"));
       } else {
         emit(const RegisterFailure(error:'Failed to register'));

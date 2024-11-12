@@ -46,6 +46,8 @@ class Asset {
   static const String bgImagePremium = '$_img/background_users.png';
   static const String bgImageAvatar =
       '$_img/anh-gai-dep-de-thuong-k7-k8-2k7-2k8_100015595.jpg';
+  static const String bgImageUser =
+      '$_img/images.png';
 
   static const String bg_ava = '$_img/1523107190ffd3b67f393f0636a7ecc7.jpg';
   static const String bg_ava_ = '$_img/5432689438a0de5026c27269c380ba9e.jpg';
