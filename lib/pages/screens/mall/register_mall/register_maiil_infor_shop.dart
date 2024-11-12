@@ -39,7 +39,6 @@ class _RegisterMallinforShopScreenState
     String shippingUnit = shippingUnitController.text;
     String description = descriptionController.text;
     Map<String, dynamic> settings = const {'is_cod': 1, 'is_active': 1};
-    // Nếu các trường thông tin không rỗng, gửi dữ liệu
     if (shippingUnit.isNotEmpty &&
         description.isNotEmpty &&
         settings.isNotEmpty) {

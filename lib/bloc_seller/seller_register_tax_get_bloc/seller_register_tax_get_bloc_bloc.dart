@@ -28,7 +28,7 @@ class SellerRegisterTaxBloc
         final token = await TokenManager.getToken();
 
         final response = await restfulApiProvider.getTax(token: token!);
-        if (response.statusCode == 200 && response.data != null) {
+        if (response.statusCode == 200) {
           final tax = SellerRegisterTaxModel.fromJson(response.data);
           emit(SellerRegisterTaxLoaded(tax));
         } else {

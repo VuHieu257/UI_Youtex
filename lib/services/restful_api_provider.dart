@@ -2,11 +2,14 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_identification_bloc/seller_register_identification_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_register_product_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_tax_get_bloc/seller_register_tax_get_bloc_bloc.dart';
 import 'package:ui_youtex/core/model/bank.dart';
 import 'package:ui_youtex/core/model/store.info.dart';
+import 'package:ui_youtex/model/industry.dart';
+import 'package:ui_youtex/model/product.dart';
 
 import '../core/base/base_dio.dart';
 import '../model/address.dart';
@@ -47,8 +50,18 @@ abstract class ApiPath {
 //     "address": "Tân Phú",
 //     "postal_code": "720000"
 // }
+  ///*******************************BuyerProduct*******************************
+  ///******************************GET************************************
+  ///
 
-  ///*******************************MALL***********************************
+  static const String BuyerproductsGet = 'buyer/products';
+  static const String BuyerbestproductsGet = 'buyer/products/best-sellers';
+  static const String BuyersearcnproductsGet = 'buyer/search/products';
+  static const String BuyerindustryproductsGet = 'buyer/products';
+  static const String BuyerUUIDproductsGet = 'buyer/products';
+  static const String BuyeIndustrysGet = 'buyer/industries';
+
+  ///*******************************ALL***********************************
   ///*******************************POST***********************************
 
   static const String sellerRegistorPost = 'seller/store';
@@ -150,7 +163,7 @@ class RestfulApiProviderImpl {
           'Authorization': 'Bearer $token',
         },
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return response;
       } else {
         throw Exception('Failed to login');
@@ -236,7 +249,7 @@ class RestfulApiProviderImpl {
           'Authorization': 'Bearer $token',
         },
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         List<Address> listAddresses = (response.data['addresses'] as List)
             .map((json) => Address.fromJson(json))
             .toList();
@@ -248,6 +261,58 @@ class RestfulApiProviderImpl {
       if (kDebugMode) {
         print('Error fetch addresses: $error');
       }
+      rethrow;
+    }
+  }
+
+  Future<List<ProductBuyer>> fetchProductBuyer({
+    required String token,
+  }) async {
+    try {
+      final response = await dioClient.get(
+        ApiPath.BuyerproductsGet,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final products = (response.data['products'] as List)
+            .map((productJson) => ProductBuyer.fromJson(productJson))
+            .toList();
+        return products;
+      } else {
+        throw Exception('Failed to fetch product: ${response.statusMessage}');
+      }
+    } catch (error) {
+      print('Error fetching product: $error');
+      rethrow;
+    }
+  }
+
+  Future<List<Industry>> fetchIndustryBuyer({
+    required String token,
+  }) async {
+    try {
+      final response = await dioClient.get(
+        ApiPath.BuyeIndustrysGet,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final industryList = (response.data['industries'] as List)
+            .map((industryJson) => Industry.fromJson(industryJson))
+            .toList();
+        return industryList;
+      } else {
+        throw Exception('Failed to fetch industry: ${response.statusMessage}');
+      }
+    } catch (error) {
+      print('Error fetching industry: $error');
       rethrow;
     }
   }
@@ -444,7 +509,6 @@ class RestfulApiProviderImpl {
         }
       }
 
-      // Handle specific error cases
       switch (e.type) {
         case DioExceptionType.connectionTimeout:
         case DioExceptionType.sendTimeout:
@@ -486,7 +550,7 @@ class RestfulApiProviderImpl {
         print('GET Response Data: ${response.data}');
       }
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         // Kiểm tra xem response.data có phải là Map không
         if (response.data is Map<String, dynamic>) {
           // Lấy thông tin store từ response
@@ -600,6 +664,7 @@ class RestfulApiProviderImpl {
 
   Future<Response> postAddress({
     required String token,
+    required String label,
     required String name,
     required String phone,
     required String country,
@@ -611,6 +676,7 @@ class RestfulApiProviderImpl {
     required bool isDefault,
   }) async {
     final requestBody = {
+      'label': label,
       'name': name,
       'phone': phone,
       'country': country,
@@ -1080,6 +1146,7 @@ class RestfulApiProviderImpl {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return BankAccountResponse.fromJson(response.data);
+        // return reponse;
       } else if (response.statusCode == 401) {
         throw 'Không có quyền truy cập. Vui lòng đăng nhập lại.';
       } else {
@@ -1134,7 +1201,7 @@ class RestfulApiProviderImpl {
         print('Get Product Response Data: ${response.data}');
       }
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         // Extract the products array from the response
         final Map<String, dynamic> responseData = response.data;
         if (responseData.containsKey('products')) {
@@ -1183,7 +1250,7 @@ class RestfulApiProviderImpl {
           'Authorization': 'Bearer $token',
         },
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return response;
       } else {
         throw Exception('Failed to login');
@@ -1226,7 +1293,7 @@ class RestfulApiProviderImpl {
         },
       );
       print(response);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return response;
       } else {
         throw Exception('Failed to fetch addresses');
@@ -1234,6 +1301,210 @@ class RestfulApiProviderImpl {
     } catch (error) {
       if (kDebugMode) {
         print('Error fetch addresses: $error');
+      }
+      rethrow;
+    }
+  }
+
+  Future postProductDetail({
+    required String token,
+    required String product_id,
+    required String brand,
+    required String gender,
+    required String origin,
+    required String material,
+    required String occasion,
+    required String manufacturer,
+    required String manufacturer_address,
+  }) async {
+    try {
+      final url = '${ApiPath.sellersproductdetailsPost}/$product_id';
+
+      final response = await dioClient.post(
+        url,
+        body: {
+          "product_id": product_id,
+          "brand": brand,
+          "gender": gender,
+          "origin": origin,
+          "material": material,
+          "occasion": occasion,
+          "manufacturer": manufacturer,
+          "manufacturer_address": manufacturer_address,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = response.data; // `data` is now a Map or List if it's JSON.
+
+        return response;
+      } else {
+        throw Exception('Failed to post productdetail');
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error post productdetail: $error');
+      }
+      rethrow;
+    }
+  }
+
+  Future<bool> postproductsales({
+    required String token,
+    required String product_id,
+    required String original_price,
+    required String discount_price,
+    required String quantity,
+    required String min_order,
+    required String max_order,
+    required String size_chart,
+  }) async {
+    try {
+      // Prepare FormData with the tax information
+      final formData = FormData.fromMap({
+        'product_id': product_id,
+        'original_price': original_price,
+        'discount_price': discount_price,
+        'quantity': quantity,
+        'min_order': min_order,
+        'max_order': max_order,
+        'size_chart': size_chart != null
+            ? await MultipartFile.fromFile(
+                size_chart!,
+                filename: 'size_chart.jpg',
+              )
+            : null,
+      });
+      final url = '${ApiPath.sellersproductsalesPost}/$product_id';
+
+      // Send POST request to update tax information
+      final response = await dioClient.post(
+        url,
+        body: formData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (kDebugMode) {
+        print('Post   Response Status Code: ${response.statusCode}');
+        print('Post   Response Data: ${response.data}');
+      }
+
+      // Check response status
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('  information posted successfully');
+        return true;
+      } else if (response.statusCode == 401) {
+        throw 'Không có quyền truy cập. Vui lòng đăng nhập lại.';
+      } else {
+        throw Exception(
+            'Failed to post   information. Status: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      if (kDebugMode) {
+        print('DioError Type: ${e.type}');
+        print('DioError Message: ${e.message}');
+        print('DioError Response: ${e.response?.data}');
+      }
+
+      switch (e.type) {
+        case DioExceptionType.connectionTimeout:
+        case DioExceptionType.sendTimeout:
+        case DioExceptionType.receiveTimeout:
+          throw 'Kết nối tới server bị timeout. Vui lòng thử lại.';
+        case DioExceptionType.badResponse:
+          final statusCode = e.response?.statusCode;
+          if (statusCode == 404) {
+            throw '${e.response}.';
+          }
+          throw 'Lỗi từ server: $statusCode';
+        case DioExceptionType.cancel:
+          throw 'Yêu cầu đã bị hủy';
+        default:
+          throw 'Lỗi kết nối: ${e.message}';
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('General Error: $error');
+      }
+      throw 'Đã xảy ra lỗi không xác định khi gửi  ';
+    }
+  }
+
+  Future postProductShipping({
+    required String token,
+    required String product_id,
+    required int weight,
+    required String dimension,
+  }) async {
+    try {
+      final url = '${ApiPath.sellersproductshippingPost}/$product_id';
+
+      final response = await dioClient.post(
+        url,
+        body: {
+          "product_id": product_id,
+          "weight": weight,
+          "dimension": '20x20x20',
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response);
+      if (response.statusCode == 201) {
+        return response;
+      } else {
+        throw Exception('Failed to post  ');
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error post  : $error');
+      }
+      rethrow;
+    }
+  }
+
+  Future postProductExtra({
+    required String token,
+    required String product_id,
+    required String is_pre_order,
+    required String status,
+    required String sku,
+  }) async {
+    try {
+      final url = '${ApiPath.sellersproductextra}/$product_id';
+
+      final response = await dioClient.post(
+        url,
+        body: {
+          "product_id": product_id,
+          "is_pre_order": is_pre_order,
+          "status": status,
+          "sku": 'SKU5332485739845348539845',
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      print(response);
+      if (response.statusCode == 201) {
+        return response;
+      } else {
+        throw Exception('Failed to post  ');
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error post  : $error');
       }
       rethrow;
     }
@@ -1254,7 +1525,7 @@ class RestfulApiProviderImpl {
           'Authorization': 'Bearer $token',
         },
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return response;
       } else {
         throw Exception('Failed to fetch addresses');

@@ -31,6 +31,7 @@ class SellerAddressBloc extends Bloc<SellerAddressEvent, SellerAddressState> {
         final token = await TokenManager.getToken();
 
         final response = await restfulApiProvider.postAddress(
+          label: event.label,
           token: token!,
           name: event.name,
           phone: event.phone,

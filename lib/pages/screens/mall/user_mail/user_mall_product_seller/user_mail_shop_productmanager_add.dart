@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_register_product_bloc_bloc.dart';
 import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
+import 'package:ui_youtex/pages/screens/mall/user_mail/user_mall_product_seller/user_mail_shop_product.dart';
 
-import '../../../../core/colors/color.dart';
-import '../../../widget_small/appbar/custome_appbar_circle.dart';
-
+import '../../../../../core/colors/color.dart';
+import '../../../../widget_small/appbar/custome_appbar_circle.dart';
 
 class ProductaddScreen extends StatefulWidget {
   const ProductaddScreen({super.key});
@@ -162,7 +162,8 @@ class _ProductaddScreenState extends State<ProductaddScreen> {
         productDescription.isEmpty ||
         coverImageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Vui lòng nhập đầy đủ thông tin và chọn ảnh")),
+        const SnackBar(
+            content: Text("Vui lòng nhập đầy đủ thông tin và chọn ảnh")),
       );
       return;
     }
@@ -195,7 +196,8 @@ class _ProductaddScreenState extends State<ProductaddScreen> {
         return const CardAddedSuccessDialog();
       },
     );
-    Navigator.pop(context);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ProductManagementScreen()));
   }
 }
 

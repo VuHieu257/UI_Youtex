@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ui_youtex/bloc_seller/bloc/bloc_seller_address_bloc.dart';
+import 'package:ui_youtex/bloc_seller/bloc_seller_address_bloc/bloc_seller_address_bloc.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/core/colors/color.dart';
@@ -16,6 +16,8 @@ class RegisterMallinforScreen extends StatefulWidget {
 
 class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
   final _nameController = TextEditingController();
+  final _labelController = TextEditingController();
+
   final _phoneController = TextEditingController();
   final _countryController = TextEditingController();
   final _provinceController = TextEditingController();
@@ -24,6 +26,7 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
   final _businessAddressController = TextEditingController();
   bool isDefault = true;
   bool hasExistingAddress = false;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -34,6 +37,7 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    _labelController.dispose();
     _phoneController.dispose();
     _countryController.dispose();
     _provinceController.dispose();
@@ -47,16 +51,34 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
     if (hasExistingAddress) return; // Prevent submission if address exists
 
     context.read<SellerAddressBloc>().add(
-      SubmitAddressEvent(
-        name: _nameController.text,
-        phone: _phoneController.text,
-        country: _countryController.text,
-        province: _provinceController.text,
-        ward: _wardController.text,
-        address: _addressController.text,
-        longitude: "0",
-        latitude: "0",
-        isDefault: isDefault,
+          SubmitAddressEvent(
+            label: _labelController.text,
+            name: _nameController.text,
+            phone: _phoneController.text,
+            country: _countryController.text,
+            province: _provinceController.text,
+            ward: _wardController.text,
+            address: _addressController.text,
+            longitude: "0",
+            latitude: "0",
+            isDefault: isDefault,
+          ),
+        );
+  }
+
+  void _showMessage(String title, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(message),
+          ],
+        ),
+        backgroundColor: title == 'Thành Công' ? Colors.green : Colors.red,
+        duration: const Duration(seconds: 2),
       ),
     );
   }
@@ -74,9 +96,10 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
               },
             ).then((_) => Navigator.pop(context));
           } else if (state is SellerAddressError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage)),
-            );
+            _showMessage("Thông Báo", state.errorMessage);
+            setState(() {
+              isLoading = false;
+            });
           }
         },
         builder: (context, state) {
@@ -93,6 +116,8 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
               final address = response['addresses'][0]; // Get first address
 
               // Fill the controllers with existing data
+              _labelController.text = address['label'] ?? '';
+
               _nameController.text = address['name'] ?? '';
               _phoneController.text = address['phone'] ?? '';
               _countryController.text = address['country'] ?? '';
@@ -107,9 +132,9 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
             children: [
               Padding(
                 padding:
-                EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                    EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                 child:
-                cusAppBarCircle(context, title: "Thông tin doanh nghiệp"),
+                    cusAppBarCircle(context, title: "Thông tin doanh nghiệp"),
               ),
               Expanded(
                 child: SingleChildScrollView(
@@ -119,6 +144,12 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 10),
+                        CustomTextFieldNoIcon(
+                          label: "Nhãn Hàng",
+                          hintText: "Điền thông tin tại đây",
+                          controller: _labelController,
+                          readOnly: hasExistingAddress,
+                        ),
                         CustomTextFieldNoIcon(
                           label: "Tên Mall",
                           hintText: "Điền thông tin tại đây",
@@ -203,7 +234,7 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
                                     ),
                                     child: const Padding(
                                       padding:
-                                      EdgeInsets.symmetric(vertical: 15),
+                                          EdgeInsets.symmetric(vertical: 15),
                                       child: Text(
                                         'Lưu thay đổi',
                                         style: TextStyle(
@@ -267,12 +298,12 @@ class CustomTextFieldNoIcon extends StatelessWidget {
               boxShadow: readOnly
                   ? []
                   : const [
-                BoxShadow(
-                  color: Colors.black26,
-                  offset: Offset(0, 4),
-                  blurRadius: 4,
-                )
-              ],
+                      BoxShadow(
+                        color: Colors.black26,
+                        offset: Offset(0, 4),
+                        blurRadius: 4,
+                      )
+                    ],
             ),
             child: TextField(
               controller: controller,

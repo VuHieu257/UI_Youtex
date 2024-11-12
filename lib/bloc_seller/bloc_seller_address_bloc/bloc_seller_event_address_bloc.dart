@@ -1,11 +1,12 @@
 part of 'bloc_seller_address_bloc.dart';
 
 @immutable
- abstract class SellerAddressEvent {}
+abstract class SellerAddressEvent {}
 
 class FetchAddressEvent extends SellerAddressEvent {}
 
 class SubmitAddressEvent extends SellerAddressEvent {
+  final String label;
   final String name;
   final String phone;
   final String country;
@@ -17,6 +18,7 @@ class SubmitAddressEvent extends SellerAddressEvent {
   final bool isDefault;
 
   SubmitAddressEvent({
+    required this.label,
     required this.name,
     required this.phone,
     required this.country,

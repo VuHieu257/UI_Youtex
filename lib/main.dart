@@ -8,8 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:ui_youtex/bloc/forgot_password_bloc/forgot_password_bloc.dart';
-import 'package:ui_youtex/bloc_seller/bloc/bloc_seller_address_bloc.dart';
+import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
+import 'package:ui_youtex/bloc_seller/bloc_seller_address_bloc/bloc_seller_address_bloc.dart';
 import 'package:ui_youtex/bloc_seller/bloc_seller_register_status_bloc.dart/seller_register_status_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_product_Shiping_bloc_bloc/seller_product_extra_bloc_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_product_details_bloc_bloc/seller_product_details_bloc_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_product_extra_bloc_bloc/seller_product_extra_bloc_bloc.dart';
+import 'package:ui_youtex/bloc_seller/seller_product_sales_bloc_bloc/seller_product_sales_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_identification_bloc/seller_register_identification_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_bloc/seller_register_event.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_register_product_bloc_bloc.dart';
@@ -20,7 +25,7 @@ import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import 'dart:core';
 import 'package:ui_youtex/pages/screens/home/home.dart';
-import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_product.dart';
+import 'package:ui_youtex/pages/screens/mall/user_mail/user_mall_product_seller/user_mail_shop_product.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_packagePayment.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen%20copy.dart';
@@ -71,6 +76,9 @@ void main() async {
             create: (context) => RegisterBloc(),
           ),
           BlocProvider(
+            create: (context) => EditProfileBloc(),
+          ),
+          BlocProvider(
             create: (context) => UserProfileBloc(),
           ),
           BlocProvider(
@@ -81,6 +89,11 @@ void main() async {
           ),
           BlocProvider(
             create: (context) => SellerAddressBloc(
+              restfulApiProvider: apiProvider,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => ProductBlocBloc(
               restfulApiProvider: apiProvider,
             ),
           ),
@@ -114,6 +127,26 @@ void main() async {
               restfulApiProvider: apiProvider,
             ),
           ),
+          BlocProvider(
+            create: (context) => ProductDetailsBloc(
+              restfulApiProvider: apiProvider,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => SellerProductSalesBloc(
+              restfulApiProvider: apiProvider,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => SellerProductExtraBloc(
+              restfulApiProvider: apiProvider,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => SellerProductShipingBloc(
+              restfulApiProvider: apiProvider,
+            ),
+          ),
         ],
         child: const MyApp(),
       ),
@@ -131,14 +164,14 @@ class MyApp extends StatelessWidget {
       theme: MyAppThemes.lightTheme,
       debugShowCheckedModeBanner: false,
 
-      home: const WelcomeApp(),
-      // home: const CustomNavBar(),
+      // home: const WelcomeApp(),
+      home: const CustomNavBar(),
       // home: const RegisterMallScreen(),
       // home: const MessagesScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
-        '/home': (context) => const HomePage(),
+        // '/home': (context) => const HomePage(),
         '/memberVip': (context) => const FreeTrialTimeline(),
         '/CustomNavBar': (context) => const CustomNavBar(),
         '/Forgot': (context) => const ForgotScreen(),

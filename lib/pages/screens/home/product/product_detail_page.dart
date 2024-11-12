@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:ui_youtex/core/size/size.dart';
-import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
+import 'package:ui_youtex/core/colors/color.dart';
+import 'package:ui_youtex/pages/screens/shopping_cart_page/shopping_cart_page.dart';
 
-import '../../../../core/assets.dart';
-import '../../../../core/colors/color.dart';
-import '../../shopping_cart_page/shopping_cart_page.dart';
 class ProductDetailPage extends StatelessWidget {
-  final Map<String, dynamic> product;
+  final ProductBuyer product;
 
-  const ProductDetailPage({super.key,
-    required this.product
-  });
+  const ProductDetailPage({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -18,22 +14,34 @@ class ProductDetailPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Styles.blue,
         centerTitle: true,
-        leading: InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.arrow_back_ios,color: Styles.light,)),
-        title: Text('Chi tiết sản phẩm',style: context.theme.textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: Styles.light,
-        ),),
+        leading: InkWell(
+          onTap: () => Navigator.pop(context),
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Styles.light,
+          ),
+        ),
+        title: Text(
+          'Chi tiết sản phẩm',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Styles.light,
+              ),
+        ),
         actions: [
-          const SizedBox(width: 10),
           IconButton(
-            icon:const Icon(Icons.shopping_cart_outlined,color: Styles.light,),
+            icon: const Icon(
+              Icons.shopping_cart_outlined,
+              color: Styles.light,
+            ),
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ShoppingCartPage(),
-                  ));
-                          },
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ShoppingCartPage(),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -43,314 +51,342 @@ class ProductDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Product Image
               Container(
-                height: context.height*0.4,
-                width: context.width*0.9,
+                height: MediaQuery.of(context).size.height * 0.4,
+                width: MediaQuery.of(context).size.width * 0.9,
                 padding: const EdgeInsets.only(bottom: 10),
                 alignment: Alignment.bottomCenter,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(26),
-                    // image: const DecorationImage(image: AssetImage(Asset.bgImageProduct,
-                    image: DecorationImage(image: AssetImage( product['image'],
-                    ),fit: BoxFit.cover,)
+                  borderRadius: BorderRadius.circular(26),
+                  image: DecorationImage(
+                    image: AssetImage(product.fullImageUrl),
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      height: 15,
-                      width: 15,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Styles.blue
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      height: 15,
-                      width: 15,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Styles.light
-                      ),
-                    ),
-                    Container(
-                      height: 15,
-                      width: 15,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Styles.light
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      height: 15,
-                      width: 15,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Styles.light
-                      ),
-                    ),
+                    _buildImageIndicator(isActive: true),
+                    _buildImageIndicator(),
+                    _buildImageIndicator(),
+                    _buildImageIndicator(),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
-
-              // Product Title and Price
               Text(
-                product['name'],
-                style: context.theme.textTheme.headlineLarge?.copyWith(
-                  fontSize: 24,
-                ),
-                // style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                product.name,
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineLarge
+                    ?.copyWith(fontSize: 24),
               ),
               const SizedBox(height: 8),
               Text(
-                '${product['price']}đ',
-                style: context.theme.textTheme.headlineMedium?.copyWith(
-                  color: Colors.blue,
-                ),
+                '${product.originalPrice}',
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineMedium
+                    ?.copyWith(color: Colors.blue),
               ),
               const SizedBox(height: 8),
-              // Ratings and Review Count
-              Row(
-                children: [
-                  const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-                  const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-                  const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-                  const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-                  const Icon(Icons.star_half, color:  Styles.nearPrimary, size: 16),
-                  const SizedBox(width: 8),
-                  Text('4.7 (143 Reviews)',
-                    style: context.theme.textTheme.titleSmall?.copyWith(
-                    ),),
-                  const SizedBox(width: 8),
-                  Text('Đã bán: 63' ,style: context.theme.textTheme.titleSmall?.copyWith(
-                  ),),
-                ],
-              ),
+              _buildRatingsAndReviewCount(),
               const SizedBox(height: 16),
               const Divider(),
-              Row(
-                children: [
-                  const CircleAvatar(
-                    backgroundImage: AssetImage(
-                        Asset.bgImageAvatar), // Replace with user's image
-                    radius: 25,
-                  ),
-                  const SizedBox(width: 10),
-                  Text('Phan Hiền',style: context.theme.textTheme.titleSmall?.copyWith(
-                  ),),
-                  const Spacer(),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 12),
-                    padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Styles.blue,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child:  Text('Theo dõi',style: context.theme.textTheme.titleSmall?.copyWith(
-                      color: Colors.white,
-                    ),),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Styles.blue)
-                    ),
-                    child:  Text('Nhắn tin',style: context.theme.textTheme.titleSmall?.copyWith(
-                      color: Colors.black87,
-                    ),),
-                  ),
-                ],
-              ),
+              _buildSellerInfo(context),
               const Divider(),
               const SizedBox(height: 16),
-              // Quantity Selector
-              Row(
-                children: [
-                  Text('Số lượng',style: context.theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),),
-                  const Spacer(),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 1,color: Colors.grey.shade400),
-                        borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.remove),
-                          onPressed: () {},
-                        ),
-                        Text('1',style: context.theme.textTheme.titleMedium?.copyWith(),),
-                        IconButton(
-                          icon: const Icon(Icons.add),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                  ),
-
-                ],
-              ),
-              // Product Description
-              Text('Màu sắc',style: context.theme.textTheme.titleMedium?.copyWith(),),
-              Wrap(
-                children: [
-                  customColor(context,"xanh nayy",true),
-                  customColor(context,"Xanh Lá Mạ",false),
-                  customColor(context,"Xanh Lá Mạ",false),
-                  customColor(context,"Xanh Lá Mạ",false),
-                  customColor(context,"Xanh Lá Mạ",false),
-                  customColor(context,"Xanh Lá Mạ",false),
-                ],
-              ),
-             const SizedBox(height: 10,),
-              Text(
-                'Giới thiệu về sản phẩm này'
-                ,style: context.theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold
-              ),),
-              const SizedBox(height: 8),
-              Text(
-                'Máy khâu bao Kachi KC9-200-2 đang cầm tay được nhiều người ưa chuộng '
-                    'tín dùng, máy hoạt động với tốc độ cao, thực hiện công việc nhanh và hiệu quả.'
-                    'Máy khâu bao  Kachi KC9-200-2 dạng cầm tay được nhiều người ưa chuộng tin dùng, máy hoạt động với tốc độ cao, thực hiện công việc nhanh chóng hiệu quả.Máy khâu bao bì cầm tay Kachi KC9-200-2 được sản xuất có sự cải tiến mới, bổ sung thêm một số tính năng nổi bật nhằm mang lại sự hài lòng cao cho người tiêu dùng.'
-                    'Trọng lượng máy nhỏ gọn chỉ 2.8kg, kết cấu đơn giản, tốc độ khâu của kim từ 1500-1700 lần kim/phút, hiệu suất làm việc tốt, giúp giảm cường độ làm việc của người dùng.'
-                    'Máy may bao  Kachi KC9-200-2 được ứng dụng rộng rãi trong việc đóng gói bao bì cho các sản phẩm như ngũ cốc, đường, chè, muối, mỏ, than đá,... thuận tiện cho vận chuyển hàng hóa đến nhiều nơi mà không lo ảnh hưởng đến chất lượng sản phẩm. Máy hoạt động ổn định, động cơ chạy êm ái, ít phát ra tiếng ồn tạo cảm giác thoải mái khi sử dụng cũng như không làm ảnh hưởng đến mọi người xung quanh. Máy được làm từ vật liệu thép không gỉ, chịu được nhiệt tốt, chống ăn mòn giúp máy hoạt động tốt trong mọi điều kiện làm việc.'
-                    'rong quá trình sử dụng máy khâu bao  Kachi KC9-200-2 sẽ không tránh khỏi việc máy bị bám bụi bẩn, trầy xước hay va đập, chính vì những nguyên nhân đó sẽ làm ảnh hưởng đến tuổi thọ máy nghiêm trọng.'
-                    'Để bảo đảm cho máy hoạt động một cách tốt nhất, bạn nên đặt máy ở nơi khô ráo, sạch sẽ, dùng khăn phủ lên máy khi không sử dụng.'
-                    'Nên để máy lên tấm vải dày hay một vận dụng có độ êm để tránh máy bị trầy xước trong quá trình hoạt động máy.'
-                    'Nên thường xuyên kiểm tra các bộ phận máy xem thiết bị có bị hư hỏng, cần phải bảo dưỡng sửa chữa hay không.'
-                    'Do hoạt động ở nhiều môi trường khác nhau, máy may bao cầm tay sẽ không tránh khỏi việc bị bụi bẩn bám vào nên bạn hãy thường xuyên vệ sinh, lau chùi để máy luôn ổn định, sạch đẹp.',
-                style: context.theme.textTheme.headlineSmall?.copyWith(
-                ),
-                textAlign: TextAlign.justify,
-              ),
+              _buildQuantitySelector(context),
               const SizedBox(height: 16),
-              Text(
-                'Đánh giá'
-                ,style: context.theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold
-              ),),
-             const Divider(),
-               Row(
-                children: [
-                  const CircleAvatar(
-                    backgroundImage: AssetImage(
-                        Asset.bgImageAvatar), // Replace with user's image
-                    radius: 15,
-                  ),
-                  const SizedBox(width: 10,),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "user1"
-                        ,style: context.theme.textTheme.headlineSmall?.copyWith(),),
-                      const Row(children: [
-                        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-                        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-                        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-                        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-                        Icon(Icons.star_half, color:  Styles.nearPrimary, size: 16),
-                        SizedBox(width: 8),
-                      ],),
-                    ],
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left:10.0,top: 5),
-                child: Text(
-                  'Sản phẩm này oke nha'
-                  ,style: context.theme.textTheme.headlineSmall?.copyWith(),),
-              ),
-              Container(
-                height: 100,
-                width: 100,
-                margin: const EdgeInsets.only(left:10.0,top: 2,bottom: 2),
-                decoration: const BoxDecoration(
-                  image: DecorationImage(image:AssetImage(Asset.bgImageProduct))
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left:10.0,top: 5),
-                child: Text(
-                  '10/10/2024'
-                  ,style: context.theme.textTheme.headlineSmall?.copyWith(),),
-              ),
-              const Divider(),
+              _buildColorOptions(context),
+              const SizedBox(height: 10),
+              _buildProductDescription(context),
+              const SizedBox(height: 16),
+              _buildReviewsSection(context),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        color: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Styles.blue)
-              ),
-              child:  Row(
-                children: [
-                  const Icon(Icons.shopping_cart_outlined,color: Styles.blue),
-                  Text('Thêm vào Giỏ hàng',style: context.theme.textTheme.titleSmall?.copyWith(
-                      color: Styles.blue
-                  ),),
-                ],
-              ),
-            ),
-            const SizedBox(width: 16),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 14),
-              decoration: BoxDecoration(
-                color: Styles.blue,
-                borderRadius: BorderRadius.circular(10),
-                // border: Border.all(color: Styles.blue)
-              ),
-              child:  Row(
-                children: [
-                  Text('Mua ngay',style: context.theme.textTheme.titleSmall?.copyWith(
-                      color: Styles.light
-                  ),),
-                ],
-              ),
-            ),
-          ],
-        ),
+      bottomNavigationBar: _buildBottomNavigationBar(context),
+    );
+  }
+
+  Widget _buildImageIndicator({bool isActive = false}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      height: 15,
+      width: 15,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: isActive ? Styles.blue : Styles.light,
       ),
     );
   }
-  Container customColor(BuildContext context,String title,bool isCheck){
-    return  Container(
-      margin: const EdgeInsets.symmetric(horizontal: 5,vertical: 5),
-      padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+
+  Row _buildRatingsAndReviewCount() {
+    return Row(
+      children: [
+        const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+        const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+        const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+        const Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+        const Icon(Icons.star_half, color: Styles.nearPrimary, size: 16),
+        const SizedBox(width: 8),
+        Text('4.7 (143 Reviews)'),
+        const SizedBox(width: 8),
+        Text('Đã bán: 63'),
+      ],
+    );
+  }
+
+  Row _buildSellerInfo(BuildContext context) {
+    return Row(
+      children: [
+        const CircleAvatar(
+          backgroundImage: AssetImage(
+              'assets/images/avatar.png'), // Placeholder for user image
+          radius: 25,
+        ),
+        const SizedBox(width: 10),
+        Text(
+          'Phan Hiền',
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+        const Spacer(),
+        _buildFollowButton(context),
+        _buildMessageButton(context),
+      ],
+    );
+  }
+
+  Container _buildFollowButton(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color:isCheck?Styles.blue:Styles.light,
+        color: Styles.blue,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        'Theo dõi',
+        style: Theme.of(context)
+            .textTheme
+            .titleSmall
+            ?.copyWith(color: Colors.white),
+      ),
+    );
+  }
+
+  Container _buildMessageButton(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Styles.blue),
+      ),
+      child: Text(
+        'Nhắn tin',
+        style: Theme.of(context)
+            .textTheme
+            .titleSmall
+            ?.copyWith(color: Colors.black87),
+      ),
+    );
+  }
+
+  Row _buildQuantitySelector(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          'Số lượng',
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        const Spacer(),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(width: 1, color: Colors.grey.shade400),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.remove),
+                onPressed: () {},
+              ),
+              Text('1'),
+              IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () {},
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Wrap _buildColorOptions(BuildContext context) {
+    return Wrap(
+      children: [
+        _buildColorOption(context, "xanh navy", true),
+        _buildColorOption(context, "Xanh Lá Mạ", false),
+        _buildColorOption(context, "Đỏ", false),
+      ],
+    );
+  }
+
+  Container _buildColorOption(
+      BuildContext context, String title, bool isSelected) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: isSelected ? Styles.blue : Styles.light,
         boxShadow: [
           BoxShadow(
-            offset:const Offset(0, 4),
+            offset: const Offset(0, 4),
             color: Colors.black.withOpacity(0.25),
-            blurRadius: 4
+            blurRadius: 4,
           )
-        ]
+        ],
       ),
-      child: Text(title,style: context.theme.textTheme.titleSmall?.copyWith(
-          color: isCheck?Styles.light:Styles.dark,
-          fontWeight: FontWeight.bold
-      ),),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: isSelected ? Styles.light : Styles.dark,
+              fontWeight: FontWeight.bold,
+            ),
+      ),
+    );
+  }
+
+  Column _buildProductDescription(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Giới thiệu về sản phẩm này',
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          product.description,
+          style: Theme.of(context).textTheme.headlineSmall,
+          textAlign: TextAlign.justify,
+        ),
+      ],
+    );
+  }
+
+  Column _buildReviewsSection(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Đánh giá',
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        const Divider(),
+        Row(
+          children: [
+            const CircleAvatar(
+              backgroundImage: AssetImage(
+                  'assets/images/avatar.png'), // Placeholder for user image
+              radius: 15,
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("User1"),
+                Row(
+                  children: const [
+                    Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+                    Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+                    Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+                    Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+                    Icon(Icons.star_half, color: Styles.nearPrimary, size: 16),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Hàng giao đúng mô tả, chất lượng tuyệt vời!',
+          textAlign: TextAlign.justify,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+
+  Container _buildBottomNavigationBar(BuildContext context) {
+    return Container(
+      height: 70,
+      padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+        color: Styles.light,
+        border: Border(
+          top: BorderSide(
+            width: 1,
+            color: Colors.grey,
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildBottomButton(
+              context,
+              title: 'Thêm vào giỏ hàng',
+              backgroundColor: Colors.grey,
+              onPressed: () {},
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: _buildBottomButton(
+              context,
+              title: 'Mua ngay',
+              backgroundColor: Styles.blue,
+              onPressed: () {},
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _buildBottomButton(BuildContext context,
+      {required String title,
+      required Color backgroundColor,
+      required VoidCallback onPressed}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      alignment: Alignment.center,
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+      ),
     );
   }
 }

@@ -54,6 +54,7 @@ dependencies:
   shared_preferences: ^2.0.13
   image_picker: ^0.8.7+4
   firebase_storage: ^11.0.16
+  cached_network_image: ^3.4.0
   #  flutter_sound: ^9.16.0
 #  permission_handler: ^11.3.1
 

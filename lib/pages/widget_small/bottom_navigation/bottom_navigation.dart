@@ -11,8 +11,6 @@ import '../../screens/message/message.dart';
 import '../../screens/user/user_profile/user_profile.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
-
 class CustomNavBar extends StatefulWidget {
   const CustomNavBar({super.key});
 
@@ -34,6 +32,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
     super.initState();
     BlocProvider.of<UserProfileBloc>(context).add(FetchProfileEvent());
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,15 +59,15 @@ class _CustomNavBarState extends State<CustomNavBar> {
             if (state is UserProfileLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is UserProfileError) {
-              return Text(state.message);
-            } else if (state is UserProfileLoaded) {
-              final user = state.user;
+              // return Text(state.message);
+              // final user = state.user;
               return GNav(
                 color: Colors.grey[800],
                 activeColor: Colors.blue,
                 hoverColor: Colors.blue.shade100,
                 tabBackgroundColor: Colors.blue.shade100.withOpacity(0.5),
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 duration: const Duration(milliseconds: 800),
                 selectedIndex: _selectedIndex,
                 onTabChange: (index) {
@@ -81,7 +80,8 @@ class _CustomNavBarState extends State<CustomNavBar> {
                     icon: Icons.home_outlined,
                     leading: Image.asset(
                       Asset.iconHome,
-                      color: _selectedIndex == 0 ? Colors.blue : Colors.grey[800],
+                      color:
+                          _selectedIndex == 0 ? Colors.blue : Colors.grey[800],
                       fit: BoxFit.fitHeight,
                       height: 20,
                       width: 20,
@@ -98,7 +98,9 @@ class _CustomNavBarState extends State<CustomNavBar> {
                       margin: const EdgeInsets.symmetric(horizontal: 5),
                       child: Image.asset(
                         Asset.iconMarket,
-                        color: _selectedIndex == 1 ? Colors.blue : Colors.grey[800],
+                        color: _selectedIndex == 1
+                            ? Colors.blue
+                            : Colors.grey[800],
                         fit: BoxFit.fitHeight,
                         height: 20,
                         width: 20,
@@ -133,7 +135,111 @@ class _CustomNavBarState extends State<CustomNavBar> {
                       margin: const EdgeInsets.symmetric(horizontal: 5),
                       child: Image.asset(
                         Asset.iconMessage1,
-                        color: _selectedIndex == 2 ? Colors.blue : Colors.grey[800],
+                        color: _selectedIndex == 2
+                            ? Colors.blue
+                            : Colors.grey[800],
+                        fit: BoxFit.fitHeight,
+                        height: 20,
+                        width: 20,
+                      ),
+                    ),
+                    text: 'Tin Nhắn',
+                    iconColor: Colors.transparent, //
+                  ),
+                  GButton(
+                    icon: Icons.person,
+                    // text: user.name,
+                    // leading: CircleAvatar(
+                    //   radius: 15,
+                    //   backgroundImage: user.image != null &&
+                    //           user.image!.isNotEmpty
+                    //       ? NetworkImage(
+                    //               "${NetworkConstants.urlImage}storage/${user.image}")
+                    //           as ImageProvider
+                    //       : const AssetImage(Asset.bgImageAvatar),
+                    // ),
+                  ),
+                ],
+              );
+            } else if (state is UserProfileLoaded) {
+              final user = state.user;
+              return GNav(
+                color: Colors.grey[800],
+                activeColor: Colors.blue,
+                hoverColor: Colors.blue.shade100,
+                tabBackgroundColor: Colors.blue.shade100.withOpacity(0.5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                duration: const Duration(milliseconds: 800),
+                selectedIndex: _selectedIndex,
+                onTabChange: (index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
+                tabs: [
+                  GButton(
+                    icon: Icons.home_outlined,
+                    leading: Image.asset(
+                      Asset.iconHome,
+                      color:
+                          _selectedIndex == 0 ? Colors.blue : Colors.grey[800],
+                      fit: BoxFit.fitHeight,
+                      height: 20,
+                      width: 20,
+                    ),
+                    text: 'Trang chủ',
+                    iconColor: Colors.transparent, // Làm icon trở nên vô hình
+                  ),
+                  GButton(
+                    // iconMarket
+                    icon: Icons.notifications_none,
+                    leading: Container(
+                      height: 16,
+                      width: 16,
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Image.asset(
+                        Asset.iconMarket,
+                        color: _selectedIndex == 1
+                            ? Colors.blue
+                            : Colors.grey[800],
+                        fit: BoxFit.fitHeight,
+                        height: 20,
+                        width: 20,
+                      ),
+                    ),
+                    text: 'Mall',
+                    iconColor: Colors.transparent, //
+                  ),
+                  GButton(
+                    icon: Icons.notifications_none,
+                    backgroundColor: Colors.red.shade200.withOpacity(0.3),
+                    leading: Container(
+                      height: 16,
+                      width: 16,
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Image.asset(
+                        Asset.iconLive,
+                        color: _selectedIndex == 1 ? Colors.red : Colors.red,
+                        fit: BoxFit.fitHeight,
+                        height: 20,
+                        width: 20,
+                      ),
+                    ),
+                    iconColor: Colors.transparent, //
+                  ),
+                  GButton(
+                    // iconMarket
+                    icon: Icons.notifications_none,
+                    leading: Container(
+                      height: 16,
+                      width: 16,
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Image.asset(
+                        Asset.iconMessage1,
+                        color: _selectedIndex == 2
+                            ? Colors.blue
+                            : Colors.grey[800],
                         fit: BoxFit.fitHeight,
                         height: 20,
                         width: 20,
@@ -147,9 +253,11 @@ class _CustomNavBarState extends State<CustomNavBar> {
                     // text: user.name,
                     leading: CircleAvatar(
                       radius: 15,
-                      backgroundImage:
-                          user.image != null && user.image!.isNotEmpty
-                          ? NetworkImage("${NetworkConstants.urlImage}storage/${user.image}") as ImageProvider
+                      backgroundImage: user.image != null &&
+                              user.image!.isNotEmpty
+                          ? NetworkImage(
+                                  "${NetworkConstants.urlImage}storage/${user.image}")
+                              as ImageProvider
                           : const AssetImage(Asset.bgImageAvatar),
                     ),
                   ),

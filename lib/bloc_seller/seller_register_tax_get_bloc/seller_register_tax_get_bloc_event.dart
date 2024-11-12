@@ -16,44 +16,42 @@ class SellerRegisterTaxPostBlocEvent extends SellerRegisterTaxBlocEvent {
 }
 
 class SellerRegisterTaxModel {
-  final String type;
-  final String address;
-  final String email;
-  final String taxCode;
-  final String name;
+  final String? type;
+  final String? name;
+  final String? address;
+  final String? email;
+  final String? taxCode;
   final String? businessLicense;
 
   SellerRegisterTaxModel({
-    required this.type,
-    required this.address,
-    required this.email,
-    required this.taxCode,
-    required this.name,
-    required this.businessLicense,
+    this.type,
+    this.name,
+    this.address,
+    this.email,
+    this.taxCode,
+    this.businessLicense,
   });
 
   factory SellerRegisterTaxModel.fromJson(Map<String, dynamic> json) {
+    // Parse from the 'tax' object in the response
+    final taxData = json['tax'] as Map<String, dynamic>? ?? json;
+
     return SellerRegisterTaxModel(
-      type: json['type'] ?? '',
-      address: json['address'] ?? '',
-      email: json['email'] ?? '',
-      taxCode: json['tax_code'] ?? '',
-      name: json['name'] ?? '',
-      businessLicense: json['business_license'] ?? '',
+      type: taxData['type'] as String?,
+      name: taxData['name'] as String?,
+      address: taxData['address'] as String?,
+      email: taxData['email'] as String?,
+      taxCode: taxData['tax_code'] as String?,
+      businessLicense: taxData['business_license'] as String?,
     );
   }
-  @override
-  String toString() {
-    return 'SellerRegisterTaxModel(type: $type, name: $name, address: $address, email: $email, taxCode: $taxCode, businessLicense: $businessLicense)';
-  }
-
   Map<String, dynamic> toJson() {
     return {
       'type': type,
+      'name': name,
       'address': address,
       'email': email,
       'tax_code': taxCode,
-      'name': name,
       'business_license': businessLicense,
     };
   }
