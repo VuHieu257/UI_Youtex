@@ -1237,6 +1237,23 @@ class RestfulApiProviderImpl {
     }
   }
 
+  Future<bool> activateProduct(
+      {required String uuid, required String token}) async {
+    try {
+      final response = await dioClient.get(
+        'http://52.77.246.91/api/v1/seller/product/$uuid/status',
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+      return response.statusCode == 200;
+    } on DioException catch (e) {
+      print('Error activating product: ${e.message}');
+       return false;
+    }
+  }
+
   Future editProfile(
       {required String name,
       required String gender,
@@ -1329,7 +1346,9 @@ class RestfulApiProviderImpl {
     required String manufacturer_address,
   }) async {
     try {
-      final url = '${ApiPath.sellersproductdetailsPost}/$product_id';
+      // final url = '${ApiPath.sellersproductdetailsPost}/$product_id';
+      final url =
+          'http://52.77.246.91/api/v1/seller/product/$product_id/detail';
 
       final response = await dioClient.post(
         url,
@@ -1390,7 +1409,9 @@ class RestfulApiProviderImpl {
               )
             : null,
       });
-      final url = '${ApiPath.sellersproductsalesPost}/$product_id';
+      // final url = '${ApiPath.sellersproductsalesPost}/$product_id';
+      final url = 'http://52.77.246.91/api/v1/seller/product/$product_id/sales';
+      ;
 
       // Send POST request to update tax information
       final response = await dioClient.post(
@@ -1456,7 +1477,9 @@ class RestfulApiProviderImpl {
     required String dimension,
   }) async {
     try {
-      final url = '${ApiPath.sellersproductshippingPost}/$product_id';
+      // final url = '${ApiPath.sellersproductshippingPost}/$product_id';
+      final url =
+          'http://52.77.246.91/api/v1/seller/product/$product_id/shipping';
 
       final response = await dioClient.post(
         url,
@@ -1492,7 +1515,8 @@ class RestfulApiProviderImpl {
     required String sku,
   }) async {
     try {
-      final url = '${ApiPath.sellersproductextra}/$product_id';
+      // final url = '${ApiPath.sellersproductextra}/$product_id';
+      final url = 'http://52.77.246.91/api/v1/seller/product/$product_id/extra';
 
       final response = await dioClient.post(
         url,

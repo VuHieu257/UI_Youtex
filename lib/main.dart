@@ -176,8 +176,8 @@ class MyApp extends StatelessWidget {
 
       home: const WelcomeApp(),
       // home: const CustomNavBar(),
-      // home: const GroupChatSettings(),
-      // home: const RegisterMallScreen(),
+        // home: const GroupChatSettings(),
+       // home: const RegisterMallScreen(),
       // home: const UploadImageScreen(),
       // home: const ImageGalleryScreen(),
       routes: {

@@ -11,6 +11,12 @@ class SellerRegisterProductPostEvent extends SellerRegisterProductBlocEvent {
   SellerRegisterProductPostEvent({required this.model});
 }
 
+class SellerRegisterProductActivateEvent
+    extends SellerRegisterProductBlocEvent {
+  final String uuid;
+  SellerRegisterProductActivateEvent(this.uuid);
+}
+
 class SellerRegisterProductModel {
   final String id;
   final String image;
@@ -51,7 +57,7 @@ class SellerRegisterProductModel {
       image: json['image'],
       name: json['name'],
       // Chuyển đổi `status` sang `isActive` (giả định 'verified' là true)
-      status: json['status'] == 'verified',
+      status: json['status'] == 'active',
       quantity: json['quantity'],
       soldQuantity: json['sold_quantity'],
       originalPrice: (json['original_price'] as num).toDouble(),
@@ -67,7 +73,7 @@ class SellerRegisterProductModel {
       'image': image,
       'name': name,
       // Chuyển đổi `isActive` thành `status`
-      'status': status ? 'verified' : 'unverified',
+      'status': status ? 'active' : 'unverified',
       'quantity': quantity,
       'sold_quantity': soldQuantity,
       'original_price': originalPrice,

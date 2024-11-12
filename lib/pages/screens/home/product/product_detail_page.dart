@@ -59,17 +59,38 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   color: Styles.light,
                 ),
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.shopping_cart_outlined,
-                color: Styles.light,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ShoppingCartPage(),
+// <<<<<<< update11-12
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.4,
+                width: MediaQuery.of(context).size.width * 0.9,
+                padding: const EdgeInsets.only(bottom: 10),
+                alignment: Alignment.bottomCenter,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(26),
+                  image: DecorationImage(
+                    image: NetworkImage(product.fullImageUrl),
+                    fit: BoxFit.cover,
+// =======
+//           actions: [
+//             IconButton(
+//               icon: const Icon(
+//                 Icons.shopping_cart_outlined,
+//                 color: Styles.light,
+//               ),
+//               onPressed: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                     builder: (context) => const ShoppingCartPage(),
+// >>>>>>> main
                   ),
                 );
               },

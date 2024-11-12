@@ -14,6 +14,15 @@ class FetchProductsEvent extends ProductBlocEvent {
   List<Object> get props => [];
 }
 
+class SearchProductsEvent extends ProductBlocEvent {
+  final String searchQuery;
+
+  const SearchProductsEvent(this.searchQuery);
+
+  @override
+  List<Object> get props => [searchQuery];
+}
+
 class ProductBuyer extends Equatable {
   final String? uuid; // Changed to accept String
   final String image;
