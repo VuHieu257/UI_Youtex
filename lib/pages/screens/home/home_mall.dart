@@ -15,13 +15,6 @@ import '../shopping_cart_page/shopping_cart_page.dart';
 import 'category/category_screen.dart';
 
 class HomeMall extends StatelessWidget {
-  final List<Map<String, String>> categories = [
-    {'name': 'Máy móc và thiết bị may', 'image': Asset.bgImageCategory},
-    {'name': 'Vải và nguyên liệu', 'image': Asset.bgImageCategory},
-    {'name': 'Dụng cụ may', 'image': Asset.bgImageCategory},
-    {'name': 'Hệ thống hỗ trợ', 'image': Asset.bgImageCategory},
-  ];
-
   HomeMall({super.key});
 
   @override
@@ -36,8 +29,7 @@ class HomeMall extends StatelessWidget {
         BlocProvider(
           create: (context) => IndustryBloc(
             restfulApiProvider: context.read<RestfulApiProviderImpl>(),
-          )..add(
-              LoadIndustries()),
+          )..add(LoadIndustries()),
         ),
       ],
       child: Scaffold(
@@ -143,20 +135,21 @@ class HomeMall extends StatelessWidget {
             itemCount: industries.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        CategoryScreen(category: industries[index].name),
-                  ),
-                ),
+                // onTap: () => Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) =>
+                //         CategoryScreen(category: industries[index].name),
+                //   ),
+                // ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     children: [
                       CircleAvatar(
-                        radius: 30,
-                        backgroundImage: NetworkImage("${NetworkConstants.urlImage}${industries[index].image}"),
+                        radius: 40,
+                        backgroundImage: NetworkImage(
+                            "${NetworkConstants.urlImage}/storage/${industries[index].image}"),
                       ),
                       const SizedBox(height: 5),
                       SizedBox(
