@@ -538,4 +538,3 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
-

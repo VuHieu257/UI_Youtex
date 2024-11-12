@@ -20,7 +20,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   final apiProvider = RestfulApiProviderImpl();
   final PageController _pageController = PageController();
   int _currentPage = 0;
-
   @override
   void initState() {
     super.initState();
@@ -36,6 +35,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     _pageController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -59,38 +59,17 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   color: Styles.light,
                 ),
           ),
-// <<<<<<< update11-12
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.4,
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: const EdgeInsets.only(bottom: 10),
-                alignment: Alignment.bottomCenter,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(26),
-                  image: DecorationImage(
-                    image: NetworkImage(product.fullImageUrl),
-                    fit: BoxFit.cover,
-// =======
-//           actions: [
-//             IconButton(
-//               icon: const Icon(
-//                 Icons.shopping_cart_outlined,
-//                 color: Styles.light,
-//               ),
-//               onPressed: () {
-//                 Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                     builder: (context) => const ShoppingCartPage(),
-// >>>>>>> main
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.shopping_cart_outlined,
+                color: Styles.light,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ShoppingCartPage(),
                   ),
                 );
               },
@@ -110,7 +89,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(product.name),
                     Container(
                       height: MediaQuery.of(context).size.height * 0.4,
                       width: MediaQuery.of(context).size.width * 0.9,
@@ -119,7 +97,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(26),
                         image: DecorationImage(
-                          image: NetworkImage(product.images[_currentPage]),
+                          image:
+                              NetworkImage(product.fullImageUrls[_currentPage]),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -135,7 +114,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(26),
                                     image: DecorationImage(
-                                      image: NetworkImage(product.images[index]),
+                                      image: NetworkImage(
+                                          product.fullImageUrls[index]),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -145,8 +125,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(product.images.length, (index) {
-                              return _buildImageIndicator(isActive: index == _currentPage);
+                            children: List.generate(
+                                product.fullImageUrls.length, (index) {
+                              return _buildImageIndicator(
+                                  isActive: index == _currentPage);
                             }),
                           ),
                         ],
@@ -209,7 +191,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
             );
           }
-          return const Center(child: CircularProgressIndicator(),);
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }),
         bottomNavigationBar: _buildBottomNavigationBar(context),
       ),

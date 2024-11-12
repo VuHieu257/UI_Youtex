@@ -13,16 +13,33 @@ class ProductLoadingState extends ProductBlocState {}
 
 class ProductLoadedState extends ProductBlocState {
   final List<ProductBuyer> products;
+  final List<ProductBuyer> filteredProducts;
   final String message;
 
   const ProductLoadedState({
+    // required this.products,
+    // required this.message,
     required this.products,
+    required this.filteredProducts,
     required this.message,
   });
 
   @override
-  List<Object> get props => [products, message];
+  List<Object> get props => [products, filteredProducts, message];
+
+  ProductLoadedState copyWith({
+    List<ProductBuyer>? products,
+    List<ProductBuyer>? filteredProducts,
+    String? message,
+  }) {
+    return ProductLoadedState(
+      products: products ?? this.products,
+      filteredProducts: filteredProducts ?? this.filteredProducts,
+      message: message ?? this.message,
+    );
+  }
 }
+
 class ProductDetailLoadedState extends ProductBlocState {
   final ProductModel product;
   final String message;

@@ -15,21 +15,15 @@ class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
   ProductBlocBloc({required this.restfulApiProvider})
       : super(ProductBlocInitial()) {
     on<FetchProductsEvent>(_onFetchProducts);
-     on<SearchProductsEvent>(_onSearchProducts);
+    on<SearchProductsEvent>(_onSearchProducts);
+
+    on<ProductDetailBuyer>(_onFetchProductDetail);
   }
+
   Future<void> _onFetchProducts(
     FetchProductsEvent event,
     Emitter<ProductBlocState> emit,
   ) async {
-// =======
-//     on<ProductDetailBuyer>(_onFetchProductDetail);
-//   }
-
-//   Future<void> _onFetchProducts(
-//       FetchProductsEvent event,
-//       Emitter<ProductBlocState> emit,
-//       ) async {
-// >>>>>>> main
     try {
       emit(ProductLoadingState());
       final token = await TokenManager.getToken();
@@ -42,22 +36,48 @@ class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
       final products = await restfulApiProvider.fetchProductBuyer(token: token);
 
       emit(ProductLoadedState(
-          products: products, message: 'Lấy danh sách sản phẩm thành công!'));
+        products: products,
+        filteredProducts: const [], // Để trống cho trang HomeMall
+        message: 'Lấy danh sách sản phẩm thành công!',
+      ));
     } catch (error) {
       emit(ProductErrorState(error: error.toString()));
     }
   }
 
-   Future<void> _onSearchProducts(
+  Future<void> _onSearchProducts(
     SearchProductsEvent event,
     Emitter<ProductBlocState> emit,
   ) async {
-// =======
-//   Future<void> _onFetchProductDetail(
-//       ProductDetailBuyer event,
-//       Emitter<ProductBlocState> emit,
-//       ) async {
-// >>>>>>> main
+    if (state is ProductLoadedState) {
+      final currentState = state as ProductLoadedState;
+      final query = event.searchQuery.toLowerCase();
+
+      // Nếu query rỗng, reset về trạng thái ban đầu
+      if (query.isEmpty) {
+        emit(currentState.copyWith(
+          filteredProducts: currentState.products, // Thay vì const []
+          message: 'Hiển thị tất cả sản phẩm',
+        ));
+        return;
+      }
+
+      // Lọc sản phẩm theo query
+      final filtered = currentState.products
+          .where((product) => product.name.toLowerCase().contains(query))
+          .toList();
+
+      emit(currentState.copyWith(
+        filteredProducts: filtered,
+        message: 'Tìm thấy ${filtered.length} sản phẩm',
+      ));
+    }
+  }
+
+  Future<void> _onFetchProductDetail(
+    ProductDetailBuyer event,
+    Emitter<ProductBlocState> emit,
+  ) async {
     try {
       emit(ProductLoadingState());
       final token = await TokenManager.getToken();
@@ -67,38 +87,14 @@ class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
         return;
       }
 
-// <<<<<<< update11-12
-      final products = await restfulApiProvider.fetchProductBuyer(token: token);
+      final productDetail = await restfulApiProvider.fetchProductDetailBuyer(
+        token: token,
+        uuid: event.uuId,
+      );
 
-      // In chi tiết từng sản phẩm để kiểm tra
-      print('Search Query: ${event.searchQuery}');
-      for (var product in products) {
-        print('Product Name: ${product.name}');
-      }
-
-      // Lọc sản phẩm
-      final filteredProducts = products
-          .where((product) => product.name
-              .toLowerCase()
-              .contains(event.searchQuery.toLowerCase()))
-          .toList();
-
-      print(
-          'Filtered Products: $filteredProducts'); // In ra kết quả sau khi lọc
-
-      emit(ProductLoadedState(
-          products: List.from(filteredProducts),
-          message: 'Tìm kiếm sản phẩm thành công!'));
-// =======
-//       final productDetail = await restfulApiProvider.fetchProductDetailBuyer(
-//         token: token,
-//         uuid: event.uuId,
-//       );
-
-//       emit(ProductDetailLoadedState(
-//           product: productDetail,
-//           message: 'Lấy chi tiết sản phẩm thành công!'));
-// >>>>>>> main
+      emit(ProductDetailLoadedState(
+          product: productDetail,
+          message: 'Lấy chi tiết sản phẩm thành công!'));
     } catch (error) {
       emit(ProductErrorState(error: error.toString()));
     }

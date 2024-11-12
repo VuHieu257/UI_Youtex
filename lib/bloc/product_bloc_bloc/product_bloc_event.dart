@@ -81,6 +81,7 @@ class ProductBuyer extends Equatable {
         discountPercentage,
       ];
 }
+
 class ProductDetailBuyer extends ProductBlocEvent {
   final String uuId;
 

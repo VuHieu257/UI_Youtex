@@ -7,6 +7,7 @@ import 'package:ui_youtex/core/model/store.info.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_employee.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_view.dart';
+import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
 
 import '../../../../core/assets.dart';
@@ -391,7 +392,11 @@ class UserStorageHeader extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CustomNavBar()),
+                    );
                   },
                   child: Container(
                     padding: const EdgeInsets.all(5),
@@ -515,7 +520,8 @@ class UserStorageHeader extends StatelessWidget {
                           storeInfo.email,
                           style: context.theme.textTheme.titleMedium?.copyWith(
                               color: Styles.colorFF6B6B,
-                              fontWeight: FontWeight.bold),overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],

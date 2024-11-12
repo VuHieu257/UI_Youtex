@@ -17,9 +17,15 @@ class SearchPage extends StatefulWidget {
   _SearchPageState createState() => _SearchPageState();
 }
 
-final TextEditingController searchController = TextEditingController();
-
 class _SearchPageState extends State<SearchPage> {
+  final TextEditingController searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -27,7 +33,7 @@ class _SearchPageState extends State<SearchPage> {
         BlocProvider(
           create: (context) => ProductBlocBloc(
             restfulApiProvider: context.read<RestfulApiProviderImpl>(),
-          )..add(FetchProductsEvent()),
+          )..add(const FetchProductsEvent()),
         ),
       ],
       child: Scaffold(
@@ -46,36 +52,37 @@ class _SearchPageState extends State<SearchPage> {
               child: Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      controller: searchController,
-                      onChanged: (query) {
-                        print('Search Query from UI: $query');
-                        if (query.isNotEmpty) {
-                          context
-                              .read<ProductBlocBloc>()
-                              .add(SearchProductsEvent(query));
-                        } else {
-                          context
-                              .read<ProductBlocBloc>()
-                              .add(FetchProductsEvent());
-                        }
-                        setState(
-                            () {}); // Thêm dòng này để kiểm tra việc làm mới UI
+                    child: BlocBuilder<ProductBlocBloc, ProductBlocState>(
+                      builder: (context, state) {
+                        return TextField(
+                          controller: searchController,
+                          onChanged: (query) {
+                            if (query.isEmpty) {
+                              context
+                                  .read<ProductBlocBloc>()
+                                  .add(const FetchProductsEvent());
+                            } else {
+                              context
+                                  .read<ProductBlocBloc>()
+                                  .add(SearchProductsEvent(query));
+                            }
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Tìm kiếm',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                              borderSide: BorderSide.none,
+                            ),
+                            hintStyle: const TextStyle(color: Colors.grey),
+                            prefixIcon: const Icon(
+                              Icons.search,
+                              color: Colors.grey,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        );
                       },
-                      decoration: InputDecoration(
-                        hintText: 'Tìm kiếm',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(25),
-                          borderSide: BorderSide.none,
-                        ),
-                        hintStyle: const TextStyle(color: Colors.grey),
-                        prefixIcon: const Icon(
-                          Icons.search,
-                          color: Colors.grey,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -103,25 +110,24 @@ class _SearchPageState extends State<SearchPage> {
                       child: CircularProgressIndicator(),
                     );
                   } else if (state is ProductLoadedState) {
-                    print('UI Updated with Products: ${state.products}');
-                    // Kiểm tra số lượng sản phẩm hiển thị
-                    print('Product Count: ${state.products.length}');
-                    if (state.products.isNotEmpty) {
-                      return _buildProductGrid(context, state);
-                    } else {
+                    final productsToShow = state.filteredProducts.isEmpty
+                        ? state.products
+                        : state.filteredProducts;
+
+                    if (productsToShow.isEmpty) {
                       return const Center(
-                        child: Text('No products found for your search'),
+                        child: Text('Không tìm thấy sản phẩm nào'),
                       );
                     }
+                    return _buildProductGrid(state.copyWith(
+                      filteredProducts: productsToShow,
+                    ));
                   } else if (state is ProductErrorState) {
                     return Center(
                       child: Text('Error: ${state.error}'),
                     );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
                   }
+                  return const SizedBox();
                 },
               ),
             ),
@@ -131,36 +137,31 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget _buildProductGrid(BuildContext context, ProductBlocState state) {
-    if (state is ProductLoadedState) {
-      return GridView.builder(
-        padding: const EdgeInsets.all(10),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 0.75,
-        ),
-        itemCount: state.products.length,
-        itemBuilder: (context, index) {
-          final product = state.products[index];
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProductDetailPage(product: product),
-                ),
-              );
-            },
-            child: ProductCard(product: product),
-          );
-        },
-      );
-    } else {
-      return const Center(
-        child: Text('No products available'),
-      );
-    }
+  Widget _buildProductGrid(ProductLoadedState state) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(10),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 0.75,
+      ),
+      // Sử dụng filteredProducts thay vì products
+      itemCount: state.filteredProducts.length,
+      itemBuilder: (context, index) {
+        final product = state.filteredProducts[index];
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProductDetailPage(product: product),
+              ),
+            );
+          },
+          child: ProductCard(product: product),
+        );
+      },
+    );
   }
 }
