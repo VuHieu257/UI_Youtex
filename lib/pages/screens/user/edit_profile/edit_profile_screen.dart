@@ -152,8 +152,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          blurRadius: 10,
+                          color: Colors.black.withOpacity(0.25),
+                          blurRadius: 4,
                           offset: const Offset(0, 4),
                         ),
                       ],

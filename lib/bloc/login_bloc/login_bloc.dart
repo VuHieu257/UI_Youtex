@@ -44,12 +44,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginSuccess(token));
     } on DioException catch (e) {
       final errors = e.response?.data['errors'];
+      final message=e.response?.data['message'];
       final emailError = errors['email']?[0];
       final passwordError = errors['password']?[0];
 
       emit(LoginFailure(
         emailError: emailError,
         passwordError: passwordError,
+        generalError: message
       ));
       emit(LoginInitial());
     } catch (error) {

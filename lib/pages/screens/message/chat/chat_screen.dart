@@ -18,6 +18,7 @@ import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import '../../../widget_small/showdialog/showdialog.dart';
 import '../../../../core/assets.dart';
 import '../../../widget_small/chat/chat_bubble.dart';
+import '../group_chat_settings/group_chat_settings.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatId;
@@ -486,7 +487,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       icon:
                           const Icon(Icons.list_outlined, color: Colors.white),
                       onPressed: () {
-                        showFeatureUnavailableDialog(context);
+                        Navigator.push(context,  MaterialPageRoute(builder: (context) => const GroupChatSettings(),));
+                        // showFeatureUnavailableDialog(context);
                       },
                     ),
                   ],
@@ -929,7 +931,7 @@ Widget _buildMessageCard(BuildContext context, String name) {
             image: AssetImage(Asset.bgCardMessage), fit: BoxFit.fitWidth)),
     child: ListTile(
       leading: const CircleAvatar(
-        backgroundImage: AssetImage(Asset.bgImageAvatar),
+        backgroundImage: AssetImage(Asset.bgImageUser),
       ),
       title: Text(
         name,

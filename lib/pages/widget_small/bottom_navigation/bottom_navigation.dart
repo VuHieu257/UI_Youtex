@@ -29,6 +29,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
     // const ImageGalleryScreen(),
     const ProfileScreen(),
   ];
+
   @override
   void initState() {
     super.initState();
@@ -61,8 +62,11 @@ class _CustomNavBarState extends State<CustomNavBar> {
             if (state is UserProfileLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is UserProfileError) {
+              // return const Center(child: CircularProgressIndicator());
+              return Text(state.message);
+            } else if (state is UserProfileLoaded) {
               // return Text(state.message);
-              // final user = state.user;
+              final user = state.user;
               return GNav(
                 color: Colors.grey[800],
                 activeColor: Colors.blue,
@@ -151,15 +155,15 @@ class _CustomNavBarState extends State<CustomNavBar> {
                   GButton(
                     icon: Icons.person,
                     // text: user.name,
-                    // leading: CircleAvatar(
-                    //   radius: 15,
-                    //   backgroundImage: user.image != null &&
-                    //           user.image!.isNotEmpty
-                    //       ? NetworkImage(
-                    //               "${NetworkConstants.urlImage}storage/${user.image}")
-                    //           as ImageProvider
-                    //       : const AssetImage(Asset.bgImageAvatar),
-                    // ),
+                    leading: CircleAvatar(
+                      radius: 15,
+                      backgroundImage: user.image != null &&
+                              user.image!.isNotEmpty
+                          ? NetworkImage(
+                                  "${NetworkConstants.urlImage}storage/${user.image}")
+                              as ImageProvider
+                          : const AssetImage(Asset.bgImageAvatar),
+                    ),
                   ),
                 ],
               );
@@ -182,19 +186,20 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 tabs: [
                   GButton(
                     icon: Icons.home_outlined,
- 
-                    leading:
-                    SizedBox(
+
+                    leading: SizedBox(
                       height: 16,
                       width: 16,
                       child: Image.asset(
                         Asset.iconHome,
-                        color: _selectedIndex == 0 ? Colors.blue : Colors.grey[800],
+                        color: _selectedIndex == 0
+                            ? Colors.blue
+                            : Colors.grey[800],
                         fit: BoxFit.fitHeight,
                         height: 20,
                         width: 20,
                       ),
-                     ),
+                    ),
                     // text: 'Trang chủ',
                     iconColor: Colors.transparent, // Làm icon trở nên vô hình
                   ),

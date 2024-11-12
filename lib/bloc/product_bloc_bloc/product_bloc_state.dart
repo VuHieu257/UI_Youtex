@@ -23,6 +23,18 @@ class ProductLoadedState extends ProductBlocState {
   @override
   List<Object> get props => [products, message];
 }
+class ProductDetailLoadedState extends ProductBlocState {
+  final ProductModel product;
+  final String message;
+
+  const ProductDetailLoadedState({
+    required this.product,
+    required this.message,
+  });
+
+  @override
+  List<Object> get props => [product, message];
+}
 
 class ProductErrorState extends ProductBlocState {
   final String error;

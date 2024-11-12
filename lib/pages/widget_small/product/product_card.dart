@@ -25,8 +25,8 @@ class ProductCard extends StatelessWidget {
             child: Container(
               height: 100,
               width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),

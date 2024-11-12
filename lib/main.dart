@@ -27,6 +27,7 @@ import 'package:ui_youtex/pages/screens/home/home.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mall_product_seller/user_mail_shop_product.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_packagePayment.dart';
+import 'package:ui_youtex/pages/screens/message/group_chat_settings/group_chat_settings.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen%20copy.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
@@ -98,10 +99,13 @@ void main() async {
             ),
           ),
           BlocProvider(
+            create: (context) => FetchUserByPhoneBloc(),
+          ),
+          BlocProvider(
             create: (context) => ProductBlocBloc(
               restfulApiProvider: apiProvider,
             ),
-            create: (context) => FetchUserByPhoneBloc(),
+            // create: (context) => FetchUserByPhoneBloc(),
           ),
           BlocProvider(
             create: (context) => SellerRegisterProductBloc(
@@ -170,12 +174,12 @@ class MyApp extends StatelessWidget {
       theme: MyAppThemes.lightTheme,
       debugShowCheckedModeBanner: false,
 
-      // home: const WelcomeApp(),
-      home: const CustomNavBar(),
+      home: const WelcomeApp(),
+      // home: const CustomNavBar(),
+      // home: const GroupChatSettings(),
       // home: const RegisterMallScreen(),
       // home: const UploadImageScreen(),
       // home: const ImageGalleryScreen(),
-      // home: const ProfileSettingsScreen(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
@@ -195,124 +199,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-class ProfileSettingsScreen extends StatelessWidget {
-  const ProfileSettingsScreen({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            // Go back action
-          },
-        ),
-        title: Text('Tài khoản & bảo mật'),
-        backgroundColor: Colors.blue,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Profile Header
-            Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 35,
-                    backgroundImage: AssetImage('assets/profile_image.png'), // Replace with your profile image
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Nguyễn Văn A',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        Text('Ngày sinh: 10/10/2010'),
-                        SizedBox(width: 10),
-                        Row(
-                          children: [
-                            Text('@cute\t\t'),
-                            Text('Giới tính: Nữ'),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      // Edit profile action
-                    },
-                    child: Text(
-                      'Chỉnh sửa',
-                      style: TextStyle(color: Colors.blue),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-
-            // Phone Number Option
-            ListTile(
-              title: Text('Số điện thoại'),
-              subtitle: Text('*******470'),
-              trailing: Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                // Navigate to phone number settings
-              },
-            ),
-
-            Divider(),
-
-            // Email Option
-            ListTile(
-              title: const Text('Địa chỉ email'),
-              subtitle: const Text('u******3@gmail.com'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                // Navigate to email settings
-              },
-            ),
-
-            const Divider(),
-
-            // Change Password Option
-            ListTile(
-              title: Text('Đổi mật khẩu'),
-              trailing: IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () {
-                  // Action to close/change password screen
-                },
-              ),
-              onTap: () {
-                // Navigate to change password screen
-              },
-            ),
-          ],
-        ),
-      ),
-      backgroundColor: Colors.grey[200],
-    );
-  }
-}
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 

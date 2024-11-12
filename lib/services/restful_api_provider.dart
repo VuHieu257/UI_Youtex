@@ -9,10 +9,10 @@ import 'package:ui_youtex/bloc_seller/seller_register_tax_get_bloc/seller_regist
 import 'package:ui_youtex/core/model/bank.dart';
 import 'package:ui_youtex/core/model/store.info.dart';
 import 'package:ui_youtex/model/industry.dart';
-import 'package:ui_youtex/model/product.dart';
 
 import '../core/base/base_dio.dart';
 import '../model/address.dart';
+import '../model/product_model.dart';
 import '../util/constants.dart';
 
 abstract class ApiPath {
@@ -31,25 +31,6 @@ abstract class ApiPath {
   static const String bankAccount = 'buyer/bank-account';
   static const String creditCard = 'buyer/credit-card';
 
-// buyer/payment-methods
-// api/v1/buyer/bank-account
-//{
-//   "bank": "Sacombank",
-//   "branch": "Tân Phú",
-//   "number": "1234567811",
-//   "card_holder": "Lư Hữu Đức",
-//   "is_default": true
-// }
-//pi/v1/buyer/credit-card
-//{
-//     "type": "visa",
-//     "number": "1111111111111112",
-//     "expiration": "29/12",
-//     "cvv": "123",
-//     "card_holder": "Lư Hữu Đức",
-//     "address": "Tân Phú",
-//     "postal_code": "720000"
-// }
   ///*******************************BuyerProduct*******************************
   ///******************************GET************************************
   ///
@@ -61,6 +42,9 @@ abstract class ApiPath {
   static const String BuyerUUIDproductsGet = 'buyer/products';
   static const String BuyeIndustrysGet = 'buyer/industries';
 
+
+  static String buyerGetProductDetail(uuid) => 'buyer/product/$uuid';
+
   ///*******************************ALL***********************************
   ///*******************************POST***********************************
 
@@ -71,8 +55,7 @@ abstract class ApiPath {
   static const String selleridentificationPost = 'seller/identification';
   static const String sellershippingunitsPost = 'seller/shipping-unit';
 
-  // static const String sellerpaymentmethodssPost = 'seller/payment-methods';
-  // static const String sellerswalletPost = 'seller/shipping-wallet';
+
   static const String sellerscategoriesPost = 'seller/category';
   static const String sellersproductsPost = 'seller/products';
   static const String sellersproductdetailsPost = 'seller/product-detail';
@@ -116,7 +99,6 @@ abstract class ApiPath {
 
 class RestfulApiProviderImpl {
   final DioClient dioClient = DioClient();
-  final Dio _dio = Dio();
   static const String authToken =
       '26|Y4HoSC3Rlbegkjw47OKBdf1m1EXMeLyiLx5V8WsY20be74d7';
   static const String authType = 'Bearer';
@@ -265,6 +247,31 @@ class RestfulApiProviderImpl {
     }
   }
 
+  Future<ProductModel> fetchProductDetailBuyer({
+    required String token,
+    required String uuid,
+  }) async {
+    try {
+      final response = await dioClient.get(
+        ApiPath.buyerGetProductDetail(uuid),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return ProductModel.fromJson(response.data['product']);
+      } else {
+        throw Exception('Failed to fetch product: ${response.statusMessage}');
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error fetching product: $error');
+      }
+      rethrow;
+    }
+  }
   Future<List<ProductBuyer>> fetchProductBuyer({
     required String token,
   }) async {
@@ -286,7 +293,9 @@ class RestfulApiProviderImpl {
         throw Exception('Failed to fetch product: ${response.statusMessage}');
       }
     } catch (error) {
-      print('Error fetching product: $error');
+      if (kDebugMode) {
+        print('Error fetching product: $error');
+      }
       rethrow;
     }
   }
@@ -312,7 +321,9 @@ class RestfulApiProviderImpl {
         throw Exception('Failed to fetch industry: ${response.statusMessage}');
       }
     } catch (error) {
-      print('Error fetching industry: $error');
+      if (kDebugMode) {
+        print('Error fetching industry: $error');
+      }
       rethrow;
     }
   }

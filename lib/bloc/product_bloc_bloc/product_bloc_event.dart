@@ -72,3 +72,10 @@ class ProductBuyer extends Equatable {
         discountPercentage,
       ];
 }
+class ProductDetailBuyer extends ProductBlocEvent {
+  final String uuId;
+
+  const ProductDetailBuyer({required this.uuId});
+  @override
+  List<Object> get props => [uuId];
+}
