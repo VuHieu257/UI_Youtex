@@ -8,10 +8,9 @@ part of 'cart.dart';
 
 Cart _$CartFromJson(Map<String, dynamic> json) => Cart(
       store: Store.fromJson(json['store'] as Map<String, dynamic>),
-      cartItems: (json['cart_items'] as List<dynamic>?)
-              ?.map((e) => CartItem.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
+      cartItems: (json['cart_items'] as List<dynamic>)
+          .map((e) => CartItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$CartToJson(Cart instance) => <String, dynamic>{
@@ -38,8 +37,8 @@ CartItem _$CartItemFromJson(Map<String, dynamic> json) => CartItem(
       originalPrice: json['original_price'] as String,
       discountPrice: json['discount_price'] as String,
       discountPercentage: json['discount_percentage'] as String,
-      size: json['size'] as String? ?? 'N/A',
-      color: json['color'] as String? ?? 'N/A',
+      size: json['size'] as String?,
+      color: json['color'] as String?,
       images:
           (json['images'] as List<dynamic>).map((e) => e as String).toList(),
       options: json['options'] == null
@@ -61,14 +60,8 @@ Map<String, dynamic> _$CartItemToJson(CartItem instance) => <String, dynamic>{
     };
 
 Options _$OptionsFromJson(Map<String, dynamic> json) => Options(
-      sizes: (json['sizes'] as List<dynamic>?)
-              ?.map((e) => SizeOption.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      colors: (json['colors'] as List<dynamic>?)
-              ?.map((e) => ColorOption.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
+      sizes: Options._parseSizes(json['sizes']),
+      colors: Options._parseColors(json['colors']),
     );
 
 Map<String, dynamic> _$OptionsToJson(Options instance) => <String, dynamic>{
