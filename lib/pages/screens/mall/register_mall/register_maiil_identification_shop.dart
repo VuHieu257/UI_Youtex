@@ -101,32 +101,33 @@ class _RegisterMallIdentificationScreenState
                         onTap: () => _pickImage(false),
                         child: _image == null
                             ? Container(
-                          height: 100,
-                          color: Colors.grey[200],
-                          child: const Center(child: Text("Chọn ảnh")),
-                        )
+                                height: 100,
+                                color: Colors.grey[200],
+                                child: const Center(child: Text("Chọn ảnh")),
+                              )
                             : Image.file(
-                          File(_image!.path),
-                          height: 100,
-                          width: 100,
-                          fit: BoxFit.cover,
-                        ),
+                                File(_image!.path),
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () => _pickImage(true),
                         child: _selfie == null
                             ? Container(
-                          height: 100,
-                          color: Colors.grey[200],
-                          child: const Center(child: Text("Chọn ảnh Selfie")),
-                        )
+                                height: 100,
+                                color: Colors.grey[200],
+                                child: const Center(
+                                    child: Text("Chọn ảnh Selfie")),
+                              )
                             : Image.file(
-                          File(_selfie!.path),
-                          height: 100,
-                          width: 100,
-                          fit: BoxFit.cover,
-                        ),
+                                File(_selfie!.path),
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                       const SizedBox(height: 30),
                       Row(
@@ -152,8 +153,8 @@ class _RegisterMallIdentificationScreenState
                                       _image != null &&
                                       _selfie != null) {
                                     final identification =
-                                    SellerIdentificationModel(
-                                      type: _unitController.text,
+                                        SellerIdentificationModel(
+                                      type: 'id_card',
                                       number: _descriptionController.text,
                                       name: _settingsController.text,
                                       image: _image!.path,
@@ -163,11 +164,11 @@ class _RegisterMallIdentificationScreenState
                                     // Call the BLoC to post data
                                     context
                                         .read<
-                                        SellerRegisterIdentificationBlocBloc>()
+                                            SellerRegisterIdentificationBlocBloc>()
                                         .add(
-                                      SellerRegisterIdentificationPostEvent(
-                                          identification: identification),
-                                    );
+                                          SellerRegisterIdentificationPostEvent(
+                                              identification: identification),
+                                        );
 
                                     await showDialog(
                                       context: context,
