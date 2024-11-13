@@ -10,12 +10,12 @@ ColorsProduct _$ColorsProductFromJson(Map<String, dynamic> json) =>
     ColorsProduct(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
-      hexCode: json['hexCode'] as String,
+      hexCode: json['hex_code'] as String,
     );
 
 Map<String, dynamic> _$ColorsProductToJson(ColorsProduct instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'hexCode': instance.hexCode,
+      'hex_code': instance.hexCode,
     };

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
 import 'package:ui_youtex/core/colors/color.dart';
+import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/shopping_cart_page.dart';
 import 'package:ui_youtex/util/constants.dart';
 import 'package:ui_youtex/util/show_snack_bar.dart';
@@ -139,49 +140,59 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      padding: const EdgeInsets.only(bottom: 10),
-                      alignment: Alignment.bottomCenter,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(26),
-                        image: DecorationImage(
-                          image: NetworkImage(product.images[_currentPage]),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                    SizedBox(
+                      height: context.height*0.4,
+                      child: Stack(
                         children: [
-                          Expanded(
-                            child: PageView.builder(
-                              controller: _pageController,
-                              itemCount: product.images.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  alignment: Alignment.bottomCenter,
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(26),
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                          "${NetworkConstants.urlImage}${product.images[index]}"),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(
-                                        product.images.length, (index) {
-                                      return _buildImageIndicator(
-                                          isActive: index == _currentPage);
-                                    }),
-                                  ),
-                                );
-                              },
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.4,
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            padding: const EdgeInsets.only(bottom: 10),
+                            alignment: Alignment.bottomCenter,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(26),
+                              image: DecorationImage(
+                                image: NetworkImage(product.images[_currentPage]),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  child: PageView.builder(
+                                    controller: _pageController,
+                                    itemCount: product.images.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        alignment: Alignment.bottomCenter,
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(26),
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                                "${NetworkConstants.urlImage}${product.images[index]}"),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: List.generate(
+                                              product.images.length, (index) {
+                                            return _buildImageIndicator(
+                                                isActive: index == _currentPage);
+                                          }),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),
