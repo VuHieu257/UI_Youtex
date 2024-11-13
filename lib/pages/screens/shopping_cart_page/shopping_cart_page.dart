@@ -61,6 +61,13 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
             );
           }
           if (state is GetCartSuccess) {
+            double totalAmount = 0;
+            for (var cart in state.carts) {
+              for (var cartItem in cart.cartItems) {
+                double price = double.parse(cartItem.discountPrice ?? cartItem.originalPrice);
+                totalAmount += price * cartItem.quantity;
+              }
+            }
             return SingleChildScrollView(
               child: Column(
                 children: state.carts.map((cart) {
@@ -93,7 +100,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                             imageUrl: cartItem.images[0],
                             name: cartItem.name,
                             type:"${cartItem.options?.sizes[0].name},${cartItem.options?.colors[0].name}",
-                            price: int.tryParse(cartItem.discountPrice) ?? 0,
+                            price: cartItem.discountPrice,
                             isSelected: _isSelected[0],
                             amount: cartItem.quantity,
                             onSelected: (bool? value) {
@@ -104,6 +111,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                           );
                         }).toList(),
                       ),
+                     const SizedBox(height: 100,),
+                      SummarySection(price: "${totalAmount.toInt()}",),
                     ],
                   );
                 }).toList(),
@@ -125,7 +134,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
 }
 
 class SummarySection extends StatelessWidget {
-  const SummarySection({super.key});
+  final String price;
+  const SummarySection({super.key, required this.price});
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +148,7 @@ class SummarySection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Tạm tính', style: context.theme.textTheme.headlineSmall),
-              Text('123,000đ', style: context.theme.textTheme.headlineSmall),
+              Text(price, style: context.theme.textTheme.headlineSmall),
             ],
           ),
           SizedBox(height: context.height * 0.02),
@@ -161,7 +171,7 @@ class SummarySection extends StatelessWidget {
               Text('Tổng cộng',
                   style: context.theme.textTheme.headlineMedium
                       ?.copyWith(fontWeight: FontWeight.bold)),
-              Text('123,000đ',
+              Text(price,
                   style: context.theme.textTheme.headlineMedium
                       ?.copyWith(fontWeight: FontWeight.bold)),
             ],

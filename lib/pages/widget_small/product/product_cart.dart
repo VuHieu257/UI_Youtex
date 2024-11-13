@@ -8,7 +8,7 @@ class CartItem extends StatelessWidget {
   final String imageUrl;
   final String name;
   final String type;
-  final int price;
+  final String price;
   final int amount;
   final bool isSelected;
   final ValueChanged<bool?> onSelected;
