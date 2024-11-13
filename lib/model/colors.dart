@@ -5,6 +5,7 @@ part 'colors.g.dart';
 class ColorsProduct {
   final int id;
   final String name;
+  @JsonKey(name: 'hex_code')
   final String hexCode;
 
   ColorsProduct({

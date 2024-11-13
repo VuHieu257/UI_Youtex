@@ -27,15 +27,18 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
       status: json['status'] as String,
       sku: json['sku'] as String,
       store: StoreProductDetail.fromJson(json['store'] as Map<String, dynamic>),
-      sizes: (json['sizes'] as List<dynamic>)
-          .map((e) => Sizes.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      colors: (json['colors'] as List<dynamic>)
-          .map((e) => ColorsProduct.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      options: (json['options'] as List<dynamic>)
-          .map((e) => Options.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      sizes: (json['sizes'] as List<dynamic>?)
+              ?.map((e) => Sizes.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      colors: (json['colors'] as List<dynamic>?)
+              ?.map((e) => ColorsProduct.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      options: (json['options'] as List<dynamic>?)
+              ?.map((e) => Options.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          null,
     );
 
 Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>

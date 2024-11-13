@@ -27,14 +27,30 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   int _currentPage = 0;
   int _quantity = 1;
   int? selectedColorId;
+  String errorText = "";
 
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<ProductBlocBloc>(context).add(ProductDetailBuyer(
+      uuId: "${widget.product.uuid}",
+    ));
     _pageController.addListener(() {
       setState(() {
         _currentPage = _pageController.page!.round();
       });
+    });
+  }
+
+  void textErrorCart() {
+    BlocProvider.of<CartBloc>(context).stream.listen((CartState state) {
+      if (mounted) {
+        if (state is CartError) {
+          setState(() {
+            errorText = (state.message ?? "null");
+          });
+        }
+      }
     });
   }
 
@@ -43,23 +59,264 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     _pageController.dispose();
     super.dispose();
   }
+  // @override
+  // Widget build(BuildContext context) {
+  //   return BlocBuilder<ProductBlocBloc, ProductBlocState>(
+  //       builder: (context, state) {
+  //         if (state is ProductLoading) {
+  //           return Scaffold(
+  //               appBar: AppBar(
+  //                 backgroundColor: Styles.blue,
+  //                 centerTitle: true,
+  //                 leading: InkWell(
+  //                   onTap: () => Navigator.pop(context),
+  //                   child: const Icon(
+  //                     Icons.arrow_back_ios,
+  //                     color: Styles.light,
+  //                   ),
+  //                 ),
+  //                 title: Text(
+  //                   'Chi tiết sản phẩm',
+  //                   style: Theme
+  //                       .of(context)
+  //                       .textTheme
+  //                       .titleMedium
+  //                       ?.copyWith(
+  //                     fontWeight: FontWeight.bold,
+  //                     color: Styles.light,
+  //                   ),
+  //                 ),
+  //                 actions: [
+  //                   IconButton(
+  //                     icon: const Icon(
+  //                       Icons.shopping_cart_outlined,
+  //                       color: Styles.light,
+  //                     ),
+  //                     onPressed: () {
+  //                       Navigator.push(
+  //                         context,
+  //                         MaterialPageRoute(
+  //                           builder: (context) => const ShoppingCartPage(),
+  //                         ),
+  //                       );
+  //                     },
+  //                   ),
+  //                 ],
+  //               ),
+  //               body: const Center(child: CircularProgressIndicator()));
+  //         }
+  //         if (state is ProductDetailLoadedState) {
+  //           final product = state.product;
+  //           _quantity = product.minOrder;
+  //           return Scaffold(
+  //             appBar: AppBar(
+  //               backgroundColor: Styles.blue,
+  //               centerTitle: true,
+  //               leading: InkWell(
+  //                 onTap: () => Navigator.pop(context),
+  //                 child: const Icon(
+  //                   Icons.arrow_back_ios,
+  //                   color: Styles.light,
+  //                 ),
+  //               ),
+  //               title: Text(
+  //                 'Chi tiết sản phẩm',
+  //                 style: Theme
+  //                     .of(context)
+  //                     .textTheme
+  //                     .titleMedium
+  //                     ?.copyWith(
+  //                   fontWeight: FontWeight.bold,
+  //                   color: Styles.light,
+  //                 ),
+  //               ),
+  //               actions: [
+  //                 IconButton(
+  //                   icon: const Icon(
+  //                     Icons.shopping_cart_outlined,
+  //                     color: Styles.light,
+  //                   ),
+  //                   onPressed: () {
+  //                     Navigator.push(
+  //                       context,
+  //                       MaterialPageRoute(
+  //                         builder: (context) => const ShoppingCartPage(),
+  //                       ),
+  //                     );
+  //                   },
+  //                 ),
+  //               ],
+  //             ),
+  //             body: SingleChildScrollView(
+  //               child: Padding(
+  //                 padding: const EdgeInsets.all(16.0),
+  //                 child: Column(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: [
+  //                     SizedBox(
+  //                       height: context.height * 0.4,
+  //                       child: Stack(
+  //                         children: [
+  //                           Container(
+  //                             height: MediaQuery
+  //                                 .of(context)
+  //                                 .size
+  //                                 .height * 0.4,
+  //                             width: MediaQuery
+  //                                 .of(context)
+  //                                 .size
+  //                                 .width * 0.9,
+  //                             padding: const EdgeInsets.only(bottom: 10),
+  //                             alignment: Alignment.bottomCenter,
+  //                             decoration: BoxDecoration(
+  //                               borderRadius: BorderRadius.circular(26),
+  //                               image: DecorationImage(
+  //                                 image:
+  //                                 NetworkImage(product.images[_currentPage]),
+  //                                 fit: BoxFit.cover,
+  //                               ),
+  //                             ),
+  //                           ),
+  //                           Align(
+  //                             alignment: Alignment.bottomCenter,
+  //                             child: Column(
+  //                               mainAxisAlignment: MainAxisAlignment.end,
+  //                               children: [
+  //                                 Expanded(
+  //                                   child: PageView.builder(
+  //                                     controller: _pageController,
+  //                                     itemCount: product.images.length,
+  //                                     itemBuilder: (context, index) {
+  //                                       return Container(
+  //                                         alignment: Alignment.bottomCenter,
+  //                                         padding: const EdgeInsets.all(10),
+  //                                         decoration: BoxDecoration(
+  //                                           borderRadius:
+  //                                           BorderRadius.circular(26),
+  //                                           image: DecorationImage(
+  //                                             image: NetworkImage(
+  //                                                 "${NetworkConstants
+  //                                                     .urlImage}${product
+  //                                                     .images[index]}"),
+  //                                             fit: BoxFit.cover,
+  //                                           ),
+  //                                         ),
+  //                                         child: Row(
+  //                                           mainAxisAlignment:
+  //                                           MainAxisAlignment.center,
+  //                                           children: List.generate(
+  //                                               product.images.length, (
+  //                                               index) {
+  //                                             return _buildImageIndicator(
+  //                                                 isActive:
+  //                                                 index == _currentPage);
+  //                                           }),
+  //                                         ),
+  //                                       );
+  //                                     },
+  //                                   ),
+  //                                 ),
+  //                               ],
+  //                             ),
+  //                           )
+  //                         ],
+  //                       ),
+  //                     ),
+  //                     const SizedBox(height: 16),
+  //                     Text(
+  //                       product.name,
+  //                       style: Theme
+  //                           .of(context)
+  //                           .textTheme
+  //                           .headlineLarge
+  //                           ?.copyWith(fontSize: 24),
+  //                     ),
+  //                     const SizedBox(height: 8),
+  //                     Row(
+  //                       children: [
+  //                         Text(
+  //                           product.discountPrice,
+  //                           style: Theme
+  //                               .of(context)
+  //                               .textTheme
+  //                               .headlineMedium
+  //                               ?.copyWith(color: Colors.blue),
+  //                         ),
+  //                         const SizedBox(
+  //                           width: 10,
+  //                         ),
+  //                         Text(
+  //                           product.originalPrice,
+  //                           style: Theme
+  //                               .of(context)
+  //                               .textTheme
+  //                               .headlineSmall
+  //                               ?.copyWith(
+  //                             decoration: TextDecoration.lineThrough,
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     const SizedBox(height: 8),
+  //                     _buildRatingsAndReviewCount(),
+  //                     const SizedBox(height: 16),
+  //                     const Divider(),
+  //                     _buildSellerInfo(
+  //                         context, product.store.image, product.store.name),
+  //                     const Divider(),
+  //                     const SizedBox(height: 16),
+  //                     _buildQuantitySelector(
+  //                         context, product.minOrder, product.maxOrder),
+  //                     const SizedBox(height: 16),
+  //                     _buildColorOptions(context, product.colors),
+  //                     const SizedBox(height: 10),
+  //                     _buildProductDescription(context),
+  //                     const SizedBox(height: 16),
+  //                     _buildReviewsSection(context),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //             bottomNavigationBar: _buildBottomNavigationBar(
+  //               context,
+  //               onPressed1: () {
+  //                 BlocProvider.of<CartBloc>(context).add(AddToCartEvent(
+  //                     uuid: product.uuid,
+  //                     quantity: "$_quantity",
+  //                     colorId:
+  //                     product.isOption == 0 ? "" : "${selectedColorId ?? 1}",
+  //                     sizeId:
+  //                     product.isOption == 0 ? "" : "${product.sizes[0].id}"));
+  //                 textErrorCart();
+  //                 print("${errorText}");
+  //                 // SnackBarUtils.showSuccessSnackBar(context, message: "Thêm giỏ hàng thành công");
+  //               },
+  //               onPressed2: () {},
+  //             ),
+  //           );
+  //         }
+  //         return const Center(
+  //           child: CircularProgressIndicator(),
+  //         );
+  //       });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => ProductBlocBloc(restfulApiProvider: apiProvider)
-            ..add(ProductDetailBuyer(uuId: "${widget.product.uuid}")),
-        ),
-        BlocProvider(
-          create: (context) => CartBloc(),
-        ),
-      ],
+    return BlocListener<CartBloc, CartState>(
+      listener: (context, state) {
+        if (state is CartError) {
+          SnackBarUtils.showWarningSnackBar(context, message:"${state.message}");
+
+        }
+        if (state is CartSuccess) {
+          SnackBarUtils.showSuccessSnackBar(context, message: "Thêm giỏ hàng thành công");
+        }
+      },
       child: BlocBuilder<ProductBlocBloc, ProductBlocState>(
-          builder: (context, state) {
-        if (state is ProductLoading) {
-          return Scaffold(
+        builder: (context, state) {
+          if (state is ProductLoading) {
+            return Scaffold(
               appBar: AppBar(
                 backgroundColor: Styles.blue,
                 centerTitle: true,
@@ -94,178 +351,198 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   ),
                 ],
               ),
-              body: const Center(child: CircularProgressIndicator()));
-        }
-        if (state is ProductDetailLoadedState) {
-          final product = state.product;
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Styles.blue,
-              centerTitle: true,
-              leading: InkWell(
-                onTap: () => Navigator.pop(context),
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Styles.light,
-                ),
-              ),
-              title: Text(
-                'Chi tiết sản phẩm',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Styles.light,
-                    ),
-              ),
-              actions: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.shopping_cart_outlined,
+              body: const Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          if (state is ProductDetailLoadedState) {
+            final product = state.product;
+            _quantity = product.minOrder;
+
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Styles.blue,
+                centerTitle: true,
+                leading: InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: const Icon(
+                    Icons.arrow_back_ios,
                     color: Styles.light,
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ShoppingCartPage(),
-                      ),
-                    );
-                  },
                 ),
-              ],
-            ),
-            body:
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: context.height*0.4,
-                      child: Stack(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.4,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            padding: const EdgeInsets.only(bottom: 10),
-                            alignment: Alignment.bottomCenter,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(26),
-                              image: DecorationImage(
-                                image: NetworkImage(product.images[_currentPage]),
-                                fit: BoxFit.cover,
+                title: Text(
+                  'Chi tiết sản phẩm',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Styles.light,
+                      ),
+                ),
+                actions: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.shopping_cart_outlined,
+                      color: Styles.light,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ShoppingCartPage(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: context.height * 0.4,
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height * 0.4,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.9,
+                              padding: const EdgeInsets.only(bottom: 10),
+                              alignment: Alignment.bottomCenter,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(26),
+                                image: DecorationImage(
+                                  image:
+                                  NetworkImage(product.images[_currentPage]),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Expanded(
+                                    child: PageView.builder(
+                                      controller: _pageController,
+                                      itemCount: product.images.length,
+                                      itemBuilder: (context, index) {
+                                        return Container(
+                                          alignment: Alignment.bottomCenter,
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                            BorderRadius.circular(26),
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  "${NetworkConstants
+                                                      .urlImage}${product
+                                                      .images[index]}"),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                            children: List.generate(
+                                                product.images.length, (
+                                                index) {
+                                              return _buildImageIndicator(
+                                                  isActive:
+                                                  index == _currentPage);
+                                            }),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        product.name,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headlineLarge
+                            ?.copyWith(fontSize: 24),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Text(
+                            product.discountPrice,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(color: Colors.blue),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            product.originalPrice,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                              decoration: TextDecoration.lineThrough,
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Expanded(
-                                  child: PageView.builder(
-                                    controller: _pageController,
-                                    itemCount: product.images.length,
-                                    itemBuilder: (context, index) {
-                                      return Container(
-                                        alignment: Alignment.bottomCenter,
-                                        padding: const EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(26),
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                "${NetworkConstants.urlImage}${product.images[index]}"),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: List.generate(
-                                              product.images.length, (index) {
-                                            return _buildImageIndicator(
-                                                isActive: index == _currentPage);
-                                          }),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      product.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineLarge
-                          ?.copyWith(fontSize: 24),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Text(
-                          product.discountPrice,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineMedium
-                              ?.copyWith(color: Colors.blue),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          product.originalPrice,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall
-                              ?.copyWith(
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    _buildRatingsAndReviewCount(),
-                    const SizedBox(height: 16),
-                    const Divider(),
-                    _buildSellerInfo(
-                        context, product.store.image, product.store.name),
-                    const Divider(),
-                    const SizedBox(height: 16),
-                    _buildQuantitySelector(
-                        context, product.minOrder, product.maxOrder),
-                    const SizedBox(height: 16),
-                    _buildColorOptions(context, product.colors),
-                    const SizedBox(height: 10),
-                    _buildProductDescription(context),
-                    const SizedBox(height: 16),
-                    _buildReviewsSection(context),
-                  ],
+                      const SizedBox(height: 8),
+                      _buildRatingsAndReviewCount(),
+                      const SizedBox(height: 16),
+                      const Divider(),
+                      _buildSellerInfo(
+                          context, product.store.image, product.store.name),
+                      const Divider(),
+                      const SizedBox(height: 16),
+                      _buildQuantitySelector(
+                          context, product.minOrder, product.maxOrder),
+                      const SizedBox(height: 16),
+                      _buildColorOptions(context, product.colors),
+                      const SizedBox(height: 10),
+                      _buildProductDescription(context),
+                      const SizedBox(height: 16),
+                      _buildReviewsSection(context),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            bottomNavigationBar: _buildBottomNavigationBar(
-              context,
-              onPressed1: () {
-                BlocProvider.of<CartBloc>(context).add(AddToCartEvent(
+              bottomNavigationBar: _buildBottomNavigationBar(
+                context,
+                onPressed1: () {
+                  BlocProvider.of<CartBloc>(context).add(AddToCartEvent(
                     uuid: product.uuid,
                     quantity: "$_quantity",
-                    colorId: "${selectedColorId ?? 1}",
-                    sizeId: "${product.sizes[0].id}"));
-                SnackBarUtils.showSuccessSnackBar(context, message: "Thêm giỏ hàng thành công");
-              },
-              onPressed2: () {},
-            ),
-          );
-        }
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }),
+                    colorId:
+                        product.isOption == 0 ? "" : "${selectedColorId ?? 1}",
+                    sizeId:
+                        product.isOption == 0 ? "" : "${product.sizes[0].id}",
+                  ));
+                },
+                onPressed2: () {},
+              ),
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 

@@ -7,8 +7,8 @@ part of 'user_profile.dart';
 // **************************************************************************
 
 Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
-      id: json['uuid'] as String ,
-      image: json['image'] as String? ?? '',
+      id: json['uuid'] as String,
+      image: json['image'] as String?,
       name: json['name'] as String,
       email: json['email'] as String,
       phone: json['phone'] as String,

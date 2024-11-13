@@ -184,10 +184,10 @@ class RestfulApiProviderImpl {
       }
       return [];
     } catch (e) {
-      print(e);
-      throw Exception('Failed to load user');
+      throw Exception('Failed to load cart with error: $e');
     }
   }
+
   Future<Map<String, dynamic>> getAllPaymentMethods({
     required String token,
   }) async {

@@ -14,12 +14,11 @@ class GetCartSuccess extends CartState {
 }
 
 class CartError extends CartState {
-  final String message;
+  final String? error;
+  final String? message;
 
-  CartError({required this.message});
+  CartError({this.message,this.error});
 
-  @override
-  List<Object> get props => [message];
 }
 class CartLoading extends CartState {}
 

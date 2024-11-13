@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 
 import '../../model/cart.dart';
@@ -57,10 +58,13 @@ Future<void> _onGetCart(
     }
 
     final cart = await restfulApiProvider.getCart(token: token);
-
+    // SnackBarUtils.showSuccessSnackBar(context, message: "Thêm giỏ hàng thành công");
     emit(GetCartSuccess(carts: cart));
-  } catch (error) {
-    print('Error: $error');
-    emit(CartError(message: error.toString()));
+  }on DioException catch (e) {
+    final message = e.response?.data['message'];
+    CartError(message: message);
+    emit(CartInitial());
+  }  catch (error) {
+    emit(CartError(error: error.toString()));
   }
 }

@@ -92,7 +92,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                           return CartItem(
                             imageUrl: cartItem.images[0],
                             name: cartItem.name,
-                            type:"${cartItem.options.sizes[0].name},${cartItem.options.colors[0].name}",
+                            type:"${cartItem.options?.sizes[0].name},${cartItem.options?.colors[0].name}",
                             price: int.tryParse(cartItem.discountPrice) ?? 0,
                             isSelected: _isSelected[0],
                             amount: cartItem.quantity,
@@ -112,7 +112,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
           }
           if (state is CartError) {
             return Center(
-              child: Text("Đã xảy ra lỗi: ${state.message}"),
+              child: Text("Đã xảy ra lỗi: ${state.error}"),
             );
           }
           return const Center(
