@@ -28,113 +28,115 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
     BlocProvider.of<CartBloc>(context).add(FetchCartEvent());
   }
 
+  var totalPrice = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: InkWell(
-            onTap: () => Navigator.pop(context),
-            child: const Icon(Icons.arrow_back_ios)),
-        title: Text(
-          'Giỏ hàng',
-          style: context.theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
+        appBar: AppBar(
+          centerTitle: true,
+          leading: InkWell(
+              onTap: () => Navigator.pop(context),
+              child: const Icon(Icons.arrow_back_ios)),
+          title: Text(
+            'Giỏ hàng',
+            style: context.theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-        actions: [
-          IconButton(
-            icon: Image.asset(
-              Asset.iconMessage,
-              width: context.width * 0.06,
-            ),
-            onPressed: () {},
-          ),
-          const SizedBox(width: 10),
-        ],
-      ),
-      body: BlocBuilder<CartBloc, CartState>(
-        builder: (context, state) {
-          if (state is CartLoading) {
+        body: BlocBuilder<CartBloc, CartState>(
+          builder: (context, state) {
+            if (state is CartLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is GetCartSuccess) {
+              double totalAmount = 0;
+              totalPrice = state.carts.total;
+              return SingleChildScrollView(
+                child: Column(
+                  children: state.carts.stores.map((cart) {
+                    return SizedBox(
+                      height: context.height,
+                      child: Column(
+                        children: [
+                          Container(
+                            color: Colors.grey.shade100,
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    "${NetworkConstants.urlImage}${cart.image}", // Sửa để lấy hình ảnh cửa hàng
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  cart.name,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            children: cart.products.map((product) {
+                              return CartItem(
+                                imageUrl: product.image,
+                                name: product.name,
+                                type: "${product.size}, ${product.color}",
+                                price: product.discountPrice.split('.').first,
+                                isSelected: _isSelected[0],
+                                amount: product.quantity,
+                                onSelected: (bool? value) {
+                                  setState(() {
+                                    _isSelected[0] = value ?? false;
+                                  });
+                                },
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              );
+            }
+            if (state is CartError) {
+              return Center(
+                child: Text("Có lỗi xảy ra ${state.error}"),
+              );
+            }
             return const Center(
               child: CircularProgressIndicator(),
             );
-          }
-          if (state is GetCartSuccess) {
-            double totalAmount = 0;
-            for (var cart in state.carts) {
-              for (var cartItem in cart.cartItems) {
-                double price = double.parse(cartItem.discountPrice ?? cartItem.originalPrice);
-                totalAmount += price * cartItem.quantity;
-              }
+          },
+        ),
+        bottomNavigationBar: BlocBuilder<CartBloc, CartState>(
+          builder: (context, state) {
+            var totalPrice = 0;
+            if (state is GetCartSuccess) {
+              totalPrice = state.carts.total;
             }
-            return SingleChildScrollView(
-              child: Column(
-                children: state.carts.map((cart) {
-                  return Column(
-                    children: [
-                      Container(
-                        color: Colors.grey.shade100,
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                "${NetworkConstants.urlImage}${cart.store.image}",
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              cart.store.name,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        children: cart.cartItems.map((cartItem) {
-                          return CartItem(
-                            imageUrl: cartItem.images[0],
-                            name: cartItem.name,
-                            type:"${cartItem.options?.sizes[0].name},${cartItem.options?.colors[0].name}",
-                            price: cartItem.discountPrice,
-                            isSelected: _isSelected[0],
-                            amount: cartItem.quantity,
-                            onSelected: (bool? value) {
-                              setState(() {
-                                _isSelected[0] = value ?? false;
-                              });
-                            },
-                          );
-                        }).toList(),
-                      ),
-                     const SizedBox(height: 100,),
-                      SummarySection(price: "${totalAmount.toInt()}",),
-                    ],
-                  );
-                }).toList(),
+            return SizedBox(
+              height: 250,
+              child: SummarySection(
+                price: "$totalPrice",
               ),
             );
-          }
-          if (state is CartError) {
-            return Center(
-              child: Text("Đã xảy ra lỗi: ${state.error}"),
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
-    );
+          },
+        ));
   }
 }
 
 class SummarySection extends StatelessWidget {
   final String price;
+
   const SummarySection({super.key, required this.price});
 
   @override

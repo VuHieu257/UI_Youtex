@@ -1,118 +1,100 @@
 import 'dart:convert';
 
-import 'package:json_annotation/json_annotation.dart';
-
-part 'cart.g.dart';
-
-@JsonSerializable()
 class Cart {
-  final Store store;
-  @JsonKey(name: 'cart_items')
-  final List<CartItem> cartItems;
+  final String message;
+  final int quantity;
+  final int total;
+  final List<Store> stores;
 
-  Cart({required this.store, required this.cartItems});
+  Cart({
+    required this.message,
+    required this.quantity,
+    required this.total,
+    required this.stores,
+  });
 
-  factory Cart.fromJson(Map<String, dynamic> json) => _$CartFromJson(json);
-  Map<String, dynamic> toJson() => _$CartToJson(this);
+  factory Cart.fromJson(Map<String, dynamic> json) {
+    var storeList = json['stores'] as List;
+    List<Store> stores = storeList.map((i) => Store.fromJson(i)).toList();
+
+    return Cart(
+      message: json['message'],
+      quantity: json['quantity'],
+      total: json['total'],
+      stores: stores,
+    );
+  }
 }
 
-@JsonSerializable()
 class Store {
   final String uuid;
   final String name;
   final String image;
+  final int quantity;
+  final int total;
+  final List<Product> products;
 
-  Store({required this.uuid, required this.name, required this.image});
+  Store({
+    required this.uuid,
+    required this.name,
+    required this.image,
+    required this.quantity,
+    required this.total,
+    required this.products,
+  });
 
-  factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
-  Map<String, dynamic> toJson() => _$StoreToJson(this);
+  factory Store.fromJson(Map<String, dynamic> json) {
+    var productList = json['products'] as List;
+    List<Product> products = productList.map((i) => Product.fromJson(i)).toList();
+
+    return Store(
+      uuid: json['uuid'],
+      name: json['name'],
+      image: json['image'],
+      quantity: json['quantity'],
+      total: json['total'],
+      products: products,
+    );
+  }
 }
 
-@JsonSerializable()
-class CartItem {
+class Product {
   final int id;
+  final String uuid;
+  final String image;
   final String name;
+  final String size;
+  final String color;
   final int quantity;
-  @JsonKey(name: 'original_price')
   final String originalPrice;
-  @JsonKey(name: 'discount_price')
   final String discountPrice;
-  @JsonKey(name: 'discount_percentage')
   final String discountPercentage;
-  final String? size;
-  final String? color;
-  final List<String> images;
-  final Options? options;
 
-  CartItem({
+  Product({
     required this.id,
+    required this.uuid,
+    required this.image,
     required this.name,
+    required this.size,
+    required this.color,
     required this.quantity,
     required this.originalPrice,
     required this.discountPrice,
     required this.discountPercentage,
-    this.size,
-    this.color,
-    required this.images,
-    this.options,
   });
 
-  factory CartItem.fromJson(Map<String, dynamic> json) => _$CartItemFromJson(json);
-  Map<String, dynamic> toJson() => _$CartItemToJson(this);
-}
-
-@JsonSerializable()
-class Options {
-  @JsonKey(fromJson: _parseSizes)
-  final List<SizeOption> sizes;
-  @JsonKey(fromJson: _parseColors)
-  final List<ColorOption> colors;
-
-  Options({required this.sizes, required this.colors});
-
-  factory Options.fromJson(Map<String, dynamic> json) => _$OptionsFromJson(json);
-  Map<String, dynamic> toJson() => _$OptionsToJson(this);
-
-  // Custom parsing function for sizes
-  static List<SizeOption> _parseSizes(dynamic json) {
-    if (json is String) {
-      return (jsonDecode(json) as List)
-          .map((e) => SizeOption.fromJson(e as Map<String, dynamic>))
-          .toList();
-    }
-    return [];
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'],
+      uuid: json['uuid'],
+      image: json['image'],
+      name: json['name'],
+      size: json['size'],
+      color: json['color'],
+      quantity: json['quantity'],
+      originalPrice: json['original_price'],
+      discountPrice: json['discount_price'],
+      discountPercentage: json['discount_percentage'],
+    );
   }
-
-  static List<ColorOption> _parseColors(dynamic json) {
-    if (json is String) {
-      return (jsonDecode(json) as List)
-          .map((e) => ColorOption.fromJson(e as Map<String, dynamic>))
-          .toList();
-    }
-    return [];
-  }
-}
-
-@JsonSerializable()
-class SizeOption {
-  final int id;
-  final String name;
-
-  SizeOption({required this.id, required this.name});
-
-  factory SizeOption.fromJson(Map<String, dynamic> json) => _$SizeOptionFromJson(json);
-  Map<String, dynamic> toJson() => _$SizeOptionToJson(this);
-}
-
-@JsonSerializable()
-class ColorOption {
-  final int id;
-  final String name;
-  @JsonKey(name: 'hex_code')
-  final String hexCode;
-
-  ColorOption({required this.id, required this.name, required this.hexCode});
-
-  factory ColorOption.fromJson(Map<String, dynamic> json) => _$ColorOptionFromJson(json);
-  Map<String, dynamic> toJson() => _$ColorOptionToJson(this);
 }

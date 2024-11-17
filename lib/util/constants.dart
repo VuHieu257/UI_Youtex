@@ -4,14 +4,14 @@ class NetworkConstants {
   NetworkConstants._();
   static const String baseUrl =
       //server testing
-      "http://52.77.246.91/api/v1/";
+      "https://duclh.id.vn/api/v1/";
   //server testing image storage
 
-  static const String STORAGE_URL = 'http://52.77.246.91/storage/';
+  static const String STORAGE_URL = 'https://duclh.id.vn/storage/';
 
   static const String urlImage =
   //server testing
-      "http://52.77.246.91/storage/";
+      "https://duclh.id.vn/storage/";
   static const Duration receiveTimeout = Duration(milliseconds: 5000);
 
   static const Duration connectionTimeout = Duration(milliseconds: 5000);

@@ -13,32 +13,32 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
       video: json['video'] as String? ?? 'Chưa có video',
       name: json['name'] as String,
       description: json['description'] as String,
-      originalPrice: json['original_price'] as String,
-      discountPrice: json['discount_price'] as String,
-      discountPercentage: json['discount_percentage'] as String,
-      quantity: (json['quantity'] as num).toInt(),
-      soldQuantity: (json['sold_quantity'] as num).toInt(),
-      minOrder: (json['min_order'] as num).toInt(),
-      maxOrder: (json['max_order'] as num).toInt(),
-      sizeChart: json['size_chart'] as String,
-      isOption: (json['is_option'] as num).toInt(),
-      isWholesales: (json['is_wholesales'] as num).toInt(),
-      isPreOrder: (json['is_pre_order'] as num).toInt(),
-      status: json['status'] as String,
-      sku: json['sku'] as String,
+      originalPrice: json['original_price'] as String? ?? '0',
+      discountPrice: json['discount_price'] as String? ?? '0',
+      discountPercentage: json['discount_percentage'] as String? ?? '0',
+      quantity: (json['quantity'] as num?)?.toInt() ?? 0,
+      soldQuantity: (json['sold_quantity'] as num?)?.toInt() ?? 0,
+      minOrder: (json['min_order'] as num?)?.toInt() ?? 1,
+      maxOrder: (json['max_order'] as num?)?.toInt() ?? 100,
+      sizeChart: json['size_chart'] as String? ?? '',
+      isOption: (json['is_option'] as num?)?.toInt() ?? 0,
+      isWholesales: (json['is_wholesales'] as num?)?.toInt() ?? 0,
+      isPreOrder: (json['is_pre_order'] as num?)?.toInt() ?? 0,
+      status: json['status'] as String? ?? 'Unknown',
+      sku: json['sku'] as String? ?? 'N/A',
       store: StoreProductDetail.fromJson(json['store'] as Map<String, dynamic>),
       sizes: (json['sizes'] as List<dynamic>?)
               ?.map((e) => Sizes.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          const [],
+          [],
       colors: (json['colors'] as List<dynamic>?)
               ?.map((e) => ColorsProduct.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          const [],
+          [],
       options: (json['options'] as List<dynamic>?)
               ?.map((e) => Options.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          null,
+          [],
     );
 
 Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>

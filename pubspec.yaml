@@ -59,6 +59,7 @@ dependencies:
   flutter_sound: ^9.1.8
   #  just_audio: ^0.9.18
   audioplayers: ^6.1.0
+  firebase_database: ^10.5.7
     #  path: any
   #  flutter_sound: ^9.16.0
 #  permission_handler: ^11.3.1

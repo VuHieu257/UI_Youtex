@@ -165,7 +165,7 @@ class RestfulApiProviderImpl {
   ///******************************************************************
   ///---------------------------GET-----------------------------------
   ///******************************************************************
-  Future<List<Cart>> getCart({
+  Future<Cart> getCart({
     required String token,
   }) async {
     try {
@@ -176,13 +176,14 @@ class RestfulApiProviderImpl {
           'Authorization': 'Bearer $token',
         },
       );
-      if (response.data != null && response.data['carts'] != null) {
-        final data = (response.data['carts'] as List)
-            .map((json) => Cart.fromJson(json))
-            .toList();
-        return data;
+      if (response.statusCode ==200) {
+        // final data = (response.data['carts'] as List)
+        //     .map((json) => Cart.fromJson(json))
+        //     .toList();
+        return Cart.fromJson(response.data);
+      } else {
+        throw Exception('Failed to load cart data');
       }
-      return [];
     } catch (e) {
       throw Exception('Failed to load cart with error: $e');
     }

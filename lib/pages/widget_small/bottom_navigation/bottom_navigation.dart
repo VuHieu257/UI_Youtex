@@ -63,7 +63,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
               return const Center(child: CircularProgressIndicator());
             } else if (state is UserProfileError) {
               // return const Center(child: CircularProgressIndicator());
-              return Text(state.message);
+              return const Text("Có lỗi xảy ra");
             } else if (state is UserProfileLoaded) {
               // return Text(state.message);
               final user = state.user;

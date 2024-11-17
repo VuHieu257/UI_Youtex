@@ -7,7 +7,8 @@ final class CartInitial extends CartState {}
 
 class CartSuccess extends CartState {}
 class GetCartSuccess extends CartState {
-  final List<Cart> carts;
+  // final List<Cart> carts;
+  final Cart carts;
   GetCartSuccess({required this.carts});
   @override
   List<Object> get props => [carts];

@@ -1,33 +1,13 @@
 {
   "project_info": {
-    "project_number": "966122516663",
-    "firebase_url": "https://b-idea-b5e02-default-rtdb.firebaseio.com",
-    "project_id": "b-idea-b5e02",
-    "storage_bucket": "b-idea-b5e02.appspot.com"
+    "project_number": "154408670652",
+    "project_id": "youtextile-90dbc",
+    "storage_bucket": "youtextile-90dbc.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:966122516663:android:670e20e49319be6a325d32",
-        "android_client_info": {
-          "package_name": "com.example.blog_idea_app"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAa58C3JobxigKYnj-kfdDztCOZc-ycCQE"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:966122516663:android:9af90fab33266ced325d32",
+        "mobilesdk_app_id": "1:154408670652:android:9ffbe52d803e2ff3ed07b9",
         "android_client_info": {
           "package_name": "com.example.youtext_app"
         }
@@ -35,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAa58C3JobxigKYnj-kfdDztCOZc-ycCQE"
+          "current_key": "AIzaSyB5wk6mb440sCUyvRyZqgOMxY1GL3adLhE"
         }
       ],
       "services": {

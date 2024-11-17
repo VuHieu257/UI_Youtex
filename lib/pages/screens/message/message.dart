@@ -50,8 +50,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
               children: [
                 Container(
                   height: 90,
-                  padding:
-                      EdgeInsets.only(top: MediaQuery.of(context).padding.top+10,bottom: 10),
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top + 10, bottom: 10),
                   decoration: const BoxDecoration(
                     color: Styles.blue,
                   ),
@@ -115,25 +115,29 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           .map((snapshot) =>
                               snapshot.docs.map((doc) => doc.data()).toList()),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return const Center(
                             child: Text("Có lỗi xảy ra"),
                           );
-                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        } else if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty) {
                           return const Center(
                             child: Text("bạn chưa có bạn bè"),
                           );
                         }
                         final friendsList = snapshot.data!;
                         return ListView.builder(
+                          padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 5),
                           scrollDirection: Axis.horizontal,
                           itemCount: friendsList.length,
                           itemBuilder: (context, index) {
                             final friend = friendsList[index];
-                            return _buildOnlineFriend(
-                                friend['name'], Asset.bgImageAvatar);
+                            return _buildOnlineFriend(friend['name'],
+                                Asset.bgImageUser, friend['image']);
                           },
                         );
                       }),
@@ -167,7 +171,6 @@ class _MessagesScreenState extends State<MessagesScreen> {
                         itemBuilder: (context, index) {
                           var chat = chatDocs[index];
                           var participants = chat['participants'] as List;
-
                           String otherUserId = participants
                               .firstWhere((id) => id != currentUserId);
                           // String otherUserId =
@@ -180,7 +183,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
                             builder: (context,
                                 AsyncSnapshot<DocumentSnapshot> userSnapshot) {
                               if (!userSnapshot.hasData) {
-                                return const Center(child: CircularProgressIndicator(),);
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
                               }
                               if (!userSnapshot.hasData ||
                                   !userSnapshot.data!.exists) {
@@ -189,6 +194,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
                               var userData = userSnapshot.data!.data()
                                   as Map<String, dynamic>;
                               String otherUserName = userData['name'];
+                              String formattedTimestamp = chat['lastTimestamp'] != null
+                                  ? formatTimestamp(chat['lastTimestamp'])
+                                  : "No timestamp";
                               return Slidable(
                                   key: const ValueKey(0),
                                   endActionPane: ActionPane(
@@ -224,7 +232,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                                   child: _buildMessageTile(
                                     otherUserName,
                                     chat['lastMessage'],
-                                    formatTimestamp(chat['lastTimestamp']),
+                                    formattedTimestamp,
                                     () {
                                       Navigator.push(
                                         context,
@@ -263,9 +271,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
     return DateFormat('hh:mm a').format(dateTime); // dd/MM/yyyy hh:mm AM/PM
   }
 
-  Widget _buildOnlineFriend(String name, String imagePath) {
+  Widget _buildOnlineFriend(String name, String imagePath, String img) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -273,7 +281,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundImage: AssetImage(imagePath),
+                backgroundImage: img.isNotEmpty
+                    ? NetworkImage(img) as ImageProvider
+                    : AssetImage(imagePath),
               ),
               const Positioned(
                 right: 0,

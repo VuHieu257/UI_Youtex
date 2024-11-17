@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -64,17 +66,6 @@ class _ChatScreenState extends State<ChatScreen> {
   bool isPlaying = false;
 
   Future<void> playAudio(String url) async {
-    // if (isPlaying) {
-    //   await audioPlayer.stop();
-    //   setState(() {
-    //     isPlaying = false;
-    //   });
-    // } else {
-    //   await audioPlayer.play(UrlSource(url));
-    //   setState(() {
-    //     isPlaying = true;
-    //   });
-    // }
     if (isPlaying && _currentPlayingUrl == url) {
       await audioPlayer.stop();
       setState(() {
@@ -176,24 +167,6 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  // Future<void> loadImages() async {
-  //   final albums = await PhotoManager.getAssetPathList(type: RequestType.image);
-  //   final recentAlbum = albums.first;
-  //   final recentImages =
-  //       await recentAlbum.getAssetListRange(start: 0, end: 100);
-  //
-  //   // Tải thumbnail và lưu vào cache
-  //   List<Uint8List?> thumbnailDataList = await Future.wait(
-  //     recentImages.map((image) => image.thumbnailData).toList(),
-  //   );
-  //
-  //   setState(() {
-  //     images = recentImages;
-  //     thumbnails = thumbnailDataList;
-  //     selectedImages = List<bool>.filled(images.length, false);
-  //   });
-  // }
-
   void onImageTap(int index) {
     setState(() {
       selectedImages[index] = !selectedImages[index]; // Đổi trạng thái chọn
@@ -203,7 +176,9 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<String?> uploadImage(Uint8List imageData, String imageName) async {
     try {
       if (imageData.isEmpty) {
-        print("Image data is empty for image: $imageName");
+        if (kDebugMode) {
+          print("Image data is empty for image: $imageName");
+        }
         return null;
       }
 
@@ -212,14 +187,20 @@ class _ChatScreenState extends State<ChatScreen> {
       final uploadTask = storageRef.putData(imageData);
 
       final snapshot = await uploadTask.whenComplete(() {
-        print("Upload complete for: $imageName");
+        if (kDebugMode) {
+          print("Upload complete for: $imageName");
+        }
       });
 
       final downloadUrl = await snapshot.ref.getDownloadURL();
-      print("Download URL for $imageName: $downloadUrl");
+      if (kDebugMode) {
+        print("Download URL for $imageName: $downloadUrl");
+      }
       return downloadUrl;
     } catch (e) {
-      print("Error uploading image: $e");
+      if (kDebugMode) {
+        print("Error uploading image: $e");
+      }
       return null;
     }
   }
@@ -245,30 +226,62 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  // Future<String?> _uploadAudio() async {
+  //   if (_audioPath == null) return null;
+  //   try {
+  //     String fileName =
+  //         '${widget.currentUserId}_${DateTime.now().millisecondsSinceEpoch}_audio.aac';
+  //     final audioRef =
+  //         FirebaseStorage.instance.ref().child('chat_audio/$fileName');
+  //     UploadTask uploadTask = audioRef.putFile(File(_audioPath!));
+  //     TaskSnapshot snapshot = await uploadTask;
+  //     return await snapshot.ref.getDownloadURL();
+  //   } catch (e) {
+  //     print('Error uploading audio: $e');
+  //     return null;
+  //   }
+  // }
   Future<String?> _uploadAudio() async {
     if (_audioPath == null) return null;
+
     try {
-      String fileName =
-          '${widget.currentUserId}_${DateTime.now().millisecondsSinceEpoch}_audio.aac';
-      final audioRef =
-          FirebaseStorage.instance.ref().child('chat_audio/$fileName');
-      UploadTask uploadTask = audioRef.putFile(File(_audioPath!));
-      TaskSnapshot snapshot = await uploadTask;
-      return await snapshot.ref.getDownloadURL();
+      // Đọc file âm thanh dưới dạng byte
+      File audioFile = File(_audioPath!);
+      Uint8List audioBytes = await audioFile.readAsBytes();
+
+      // Chuyển byte thành base64 string
+      String base64Audio = base64Encode(audioBytes);
+
+      // Tạo dữ liệu để lưu vào Firebase
+      Map<String, dynamic> audioData = {
+        "senderId": widget.currentUserId,
+        "type": "audio",
+        "content": base64Audio,
+        "timestamp": DateTime.now().millisecondsSinceEpoch,
+      };
+
+      DatabaseReference messageRef =
+          FirebaseDatabase.instance.ref('voice/${widget.chatId}').push();
+      await messageRef.set(audioData);
+
+      return messageRef.key;
     } catch (e) {
-      print('Error uploading audio: $e');
+      if (kDebugMode) {
+        print('Error uploading audio: $e');
+      }
       return null;
     }
   }
 
   final ImagePicker _picker = ImagePicker();
 
-  // void _sendMessage(String path) async {
+  // void _sendMessage() async {
   //   String message = _messageController.text.trim();
   //   _messageController.clear();
   //
-  //   // Nếu không có tin nhắn và không có ảnh nào được chọn thì không thực hiện gì
-  //   if (message.isEmpty && _selectedImages.isEmpty) return;
+  //   if (message.isEmpty && _selectedImages.isEmpty && _audioPath == null) {
+  //     return;
+  //   }
   //
   //   String currentUserId = widget.currentUserId;
   //   var messageRef = _fireStore
@@ -280,44 +293,52 @@ class _ChatScreenState extends State<ChatScreen> {
   //   List<String> imageUrls = [];
   //
   //   for (XFile image in _selectedImages) {
-  //     String fileName =
-  //         '${currentUserId}_${DateTime
-  //         .now()
-  //         .millisecondsSinceEpoch}';
-  //     UploadTask uploadTask = FirebaseStorage.instance
-  //         .ref()
-  //         .child('chat_images/$fileName')
-  //         .putFile(File(image.path));
+  //     try {
+  //       String fileName =
+  //           '${currentUserId}_${DateTime.now().millisecondsSinceEpoch}';
+  //       UploadTask uploadTask = FirebaseStorage.instance
+  //           .ref()
+  //           .child('chat_images/$fileName')
+  //           .putFile(File(image.path));
   //
-  //     TaskSnapshot snapshot = await uploadTask;
-  //     String downloadUrl = await snapshot.ref.getDownloadURL();
-  //     imageUrls.add(downloadUrl);
+  //       TaskSnapshot snapshot = await uploadTask;
+  //       String downloadUrl = await snapshot.ref.getDownloadURL();
+  //       imageUrls.add(downloadUrl);
+  //     } catch (e) {
+  //       print('Error uploading image: $e');
+  //     }
   //   }
   //
-  //   // Gửi tin nhắn với thông tin ảnh và văn bản (nếu có)
+  //   String? audioUrl = await _uploadAudio();
+  //
   //   await messageRef.set({
   //     'senderId': currentUserId,
   //     'receiverId': widget.receiverId,
   //     'message': message,
   //     'imageUrls': imageUrls,
+  //     'audioUrl': audioUrl??"",
   //     'timestamp': FieldValue.serverTimestamp(),
   //   });
   //
   //   await _fireStore.collection('chats').doc(widget.chatId).update({
-  //     'lastMessage': message.isNotEmpty ? message : 'Đã gửi ảnh',
+  //     'lastMessage': message.isNotEmpty
+  //         ? message
+  //         : (audioUrl != null ? 'Đã gửi tin nhắn thoại' : 'Đã gửi ảnh'),
   //     'lastTimestamp': FieldValue.serverTimestamp(),
   //   });
+  //
   //   setState(() {
   //     _selectedImages = [];
+  //     _audioPath = null;
   //   });
   // }
-
   void _sendMessage() async {
     String message = _messageController.text.trim();
     _messageController.clear();
 
-    if (message.isEmpty && _selectedImages.isEmpty && _audioPath == null)
+    if (message.isEmpty && _selectedImages.isEmpty && _audioPath == null) {
       return;
+    }
 
     String currentUserId = widget.currentUserId;
     var messageRef = _fireStore
@@ -330,18 +351,27 @@ class _ChatScreenState extends State<ChatScreen> {
 
     for (XFile image in _selectedImages) {
       try {
-        String fileName =
-            '${currentUserId}_${DateTime.now().millisecondsSinceEpoch}';
-        UploadTask uploadTask = FirebaseStorage.instance
-            .ref()
-            .child('chat_images/$fileName')
-            .putFile(File(image.path));
+        File imageFile = File(image.path);
+        List<int> imageBytes = await imageFile.readAsBytes();
+        String base64Image = base64Encode(imageBytes);
 
-        TaskSnapshot snapshot = await uploadTask;
-        String downloadUrl = await snapshot.ref.getDownloadURL();
-        imageUrls.add(downloadUrl);
+        String imageId =
+            '${messageRef.id}_image_${DateTime.now().millisecondsSinceEpoch}';
+        DatabaseReference imageRef =
+            FirebaseDatabase.instance.ref().child('chat_images/$imageId');
+
+        await imageRef.set({
+          'base64': base64Image,
+          'fileName': image.name,
+          'senderId': currentUserId,
+          'timestamp': ServerValue.timestamp,
+        });
+
+        imageUrls.add(imageId);
       } catch (e) {
-        print('Error uploading image: $e');
+        if (kDebugMode) {
+          print('Error uploading image: $e');
+        }
       }
     }
 
@@ -352,7 +382,7 @@ class _ChatScreenState extends State<ChatScreen> {
       'receiverId': widget.receiverId,
       'message': message,
       'imageUrls': imageUrls,
-      'audioUrl': audioUrl,
+      'audioUrl': audioUrl ?? "",
       'timestamp': FieldValue.serverTimestamp(),
     });
 
@@ -487,7 +517,11 @@ class _ChatScreenState extends State<ChatScreen> {
                       icon:
                           const Icon(Icons.list_outlined, color: Colors.white),
                       onPressed: () {
-                        Navigator.push(context,  MaterialPageRoute(builder: (context) => const GroupChatSettings(),));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const GroupChatSettings(),
+                            ));
                         // showFeatureUnavailableDialog(context);
                       },
                     ),
@@ -497,6 +531,103 @@ class _ChatScreenState extends State<ChatScreen> {
             children: [
               // _buildMessageCard(context),
               Expanded(
+                // child: StreamBuilder(
+                //   stream: _fireStore
+                //       .collection('chats')
+                //       .doc(widget.chatId)
+                //       .collection('messages')
+                //       .orderBy('timestamp', descending: true)
+                //       .snapshots(),
+                //   builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                //     if (!snapshot.hasData) {
+                //       return const Center(child: CircularProgressIndicator());
+                //     }
+                //     var messages = snapshot.data!.docs;
+                //     return StreamBuilder(
+                //       stream: FirebaseDatabase.instance
+                //           .ref('chats/${widget.chatId}')
+                //           .orderByChild('timestamp')
+                //           .onValue,
+                //       builder: (context, snapshot) {
+                //         final data = Map<String, dynamic>.from(snapshot
+                //             .data!.snapshot.value as Map<dynamic, dynamic>);
+                //         final voicc = data.entries.toList()
+                //           ..sort((a, b) => b.value['timestamp']
+                //               .compareTo(a.value['timestamp']));
+                //
+                //         return ListView.builder(
+                //           reverse: true,
+                //           itemCount: messages.length + 1,
+                //           itemBuilder: (context, index) {
+                //             final voi = voicc[index].value;
+                //             // final messageId = voicc[index].key;
+                //             if (index == messages.length) {
+                //               return _buildMessageCard(context, widget.name);
+                //             }
+                //             var messageData = messages[index];
+                //             bool isMe =
+                //                 messageData['senderId'] == widget.currentUserId;
+                //             String messageId = messageData.id;
+                //
+                //             bool isSelected =
+                //                 selectedMessages.contains(messageId);
+                //             return !isSelecting
+                //                 ? Container(
+                //                     color: isSelected
+                //                         ? Colors.blue.withOpacity(0.5)
+                //                         : Colors.transparent,
+                //                     child: _buildChatRow(
+                //                       audioUrl:voi['content'],
+                //                       // messageData['audioUrl'],
+                //                       message: messageData['message'],
+                //                       img: List<String>.from(
+                //                           messageData['imageUrls'] ?? []),
+                //                       isMe: isMe,
+                //                       messageId: messageId,
+                //                     ),
+                //                   )
+                //                 : ListTile(
+                //                     leading: Checkbox(
+                //                       value: isSelected,
+                //                       onChanged: (bool? value) {
+                //                         setState(() {
+                //                           if (value == true) {
+                //                             selectedMessages.add(messageId);
+                //                           } else {
+                //                             selectedMessages.remove(messageId);
+                //                           }
+                //                         });
+                //                       },
+                //                     ),
+                //                     title: _buildChatRow(
+                //                       // audioUrl: messageData['audioUrl'],
+                //                       audioUrl:voi['content'],
+                //                       message: messageData['message'],
+                //                       img: List<String>.from(
+                //                           messageData['imageUrls'] ?? []),
+                //                       isMe: isMe,
+                //                       messageId: messageId,
+                //                     ),
+                //                     onTap: () {
+                //                       if (isSelecting) {
+                //                         setState(() {
+                //                           if (isSelected) {
+                //                             selectedMessages.remove(
+                //                                 messageId); // Bỏ chọn tin nhắn
+                //                           } else {
+                //                             selectedMessages.add(
+                //                                 messageId); // Chọn tin nhắn
+                //                           }
+                //                         });
+                //                       }
+                //                     },
+                //                   );
+                //           },
+                //         );
+                //       },
+                //     );
+                //   },
+                // ),
                 child: StreamBuilder(
                   stream: _fireStore
                       .collection('chats')
@@ -508,67 +639,69 @@ class _ChatScreenState extends State<ChatScreen> {
                     if (!snapshot.hasData) {
                       return const Center(child: CircularProgressIndicator());
                     }
+
                     var messages = snapshot.data!.docs;
+
                     return ListView.builder(
                       reverse: true,
-                      itemCount: messages.length + 1,
+                      itemCount: messages.length,
                       itemBuilder: (context, index) {
                         if (index == messages.length) {
                           return _buildMessageCard(context, widget.name);
                         }
+
                         var messageData = messages[index];
-                        bool isMe =
-                            messageData['senderId'] == widget.currentUserId;
+                        bool isMe = messageData['senderId'] == widget.currentUserId;
                         String messageId = messageData.id;
 
                         bool isSelected = selectedMessages.contains(messageId);
-                        return !isSelecting
-                            ? Container(
-                                color: isSelected
-                                    ? Colors.blue.withOpacity(0.5)
-                                    : Colors.transparent,
+
+                        String? audioId = messageData['audioUrl']; // Giả sử audioUrl chứa ID trong Realtime Database
+
+                        if (audioId == null) {
+                          return Container(
+                            color: isSelected ? Colors.blue.withOpacity(0.5) : Colors.transparent,
+                            child: _buildChatRow(
+                              audioUrl: '',
+                              message: messageData['message'],
+                              img: List<String>.from(messageData['imageUrls'] ?? []),
+                              isMe: isMe,
+                              messageId: messageId,
+                            ),
+                          );
+                        }
+                        // Tạo StreamBuilder để truy vấn Realtime Database bằng `audioId`
+                        return StreamBuilder(
+                          stream: FirebaseDatabase.instance.ref('voice/ffEgmSt7GMLGaKu0pcv4/$audioId').onValue,
+                          builder: (context, AsyncSnapshot<DatabaseEvent> audioSnapshot) {
+                            if (!audioSnapshot.hasData || audioSnapshot.data!.snapshot.value == null) {
+                              // Nếu không có dữ liệu voice, hiển thị tin nhắn bình thường
+                              return Container(
+                                color: isSelected ? Colors.blue.withOpacity(0.5) : Colors.transparent,
                                 child: _buildChatRow(
-                                  audioUrl: messageData['audioUrl'],
+                                  audioUrl: "",
                                   message: messageData['message'],
-                                  img: messageData['imageUrls'],
+                                  img: List<String>.from(messageData['imageUrls'] ?? []),
                                   isMe: isMe,
                                   messageId: messageId,
                                 ),
-                              )
-                            : ListTile(
-                                leading: Checkbox(
-                                  value: isSelected,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      if (value == true) {
-                                        selectedMessages.add(messageId);
-                                      } else {
-                                        selectedMessages.remove(messageId);
-                                      }
-                                    });
-                                  },
-                                ),
-                                title: _buildChatRow(
-                                  audioUrl: messageData['audioUrl'],
-                                  message: messageData['message'],
-                                  img: messageData['imageUrls'],
-                                  isMe: isMe,
-                                  messageId: messageId,
-                                ),
-                                onTap: () {
-                                  if (isSelecting) {
-                                    setState(() {
-                                      if (isSelected) {
-                                        selectedMessages.remove(
-                                            messageId); // Bỏ chọn tin nhắn
-                                      } else {
-                                        selectedMessages
-                                            .add(messageId); // Chọn tin nhắn
-                                      }
-                                    });
-                                  }
-                                },
                               );
+                            }
+                            final voiceData = Map<String, dynamic>.from(
+                              audioSnapshot.data!.snapshot.value as Map<dynamic, dynamic>,
+                            );
+                            return Container(
+                              color: isSelected ? Colors.blue.withOpacity(0.5) : Colors.transparent,
+                              child: _buildChatRow(
+                                audioUrl: voiceData['content']??"", // URL của voice từ Realtime Database
+                                message: messageData['message'], // Tin nhắn từ Firestore
+                                img: List<String>.from(messageData['imageUrls'] ?? []),
+                                isMe: isMe,
+                                messageId: messageId,
+                              ),
+                            );
+                          },
+                        );
                       },
                     );
                   },
@@ -661,8 +794,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   leading: const Icon(Icons.copy, color: Colors.blue),
                   title: const Text('Sao chép tin nhắn'),
                   onTap: () {
-                    Clipboard.setData(
-                        ClipboardData(text: messageData));
+                    Clipboard.setData(ClipboardData(text: messageData));
                     Navigator.pop(context);
                   },
                 ),
@@ -715,7 +847,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 onPressed: () {
                   setState(() {
                     showEmojis = !showEmojis;
-                    print(showEmojis);
                     _isRecording = false;
                     showImg = false;
                     _currentHeight = 0.3;

@@ -36,5 +36,8 @@ class Styles {
   hideKeyBoard() async {
     FocusManager.instance.primaryFocus?.unfocus();
   }
-// Add more color definitions as per your design requirements
+  static Color hexToColor(String hex) {
+    hex = hex.replaceFirst('#', ''); // Loại bỏ ký tự '#' nếu có
+    return Color(int.parse('FF$hex', radix: 16)); // Thêm 'FF' vào đầu để đảm bảo alpha = 100%
+  }
 }
