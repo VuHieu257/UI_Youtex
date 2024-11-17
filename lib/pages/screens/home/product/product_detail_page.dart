@@ -306,11 +306,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     return BlocListener<CartBloc, CartState>(
       listener: (context, state) {
         if (state is CartError) {
-          SnackBarUtils.showWarningSnackBar(context, message:"${state.message}");
-
+          SnackBarUtils.showWarningSnackBar(context,
+              message: "${state.message}");
         }
         if (state is CartSuccess) {
-          SnackBarUtils.showSuccessSnackBar(context, message: "Thêm giỏ hàng thành công");
+          SnackBarUtils.showSuccessSnackBar(context,
+              message: "Thêm giỏ hàng thành công");
         }
       },
       child: BlocBuilder<ProductBlocBloc, ProductBlocState>(
@@ -405,21 +406,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         child: Stack(
                           children: [
                             Container(
-                              height: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height * 0.4,
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width * 0.9,
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              width: MediaQuery.of(context).size.width * 0.9,
                               padding: const EdgeInsets.only(bottom: 10),
                               alignment: Alignment.bottomCenter,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(26),
                                 image: DecorationImage(
-                                  image:
-                                  NetworkImage(product.images[_currentPage]),
+                                  image: NetworkImage(
+                                      product.images[_currentPage]),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -439,24 +434,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                           padding: const EdgeInsets.all(10),
                                           decoration: BoxDecoration(
                                             borderRadius:
-                                            BorderRadius.circular(26),
+                                                BorderRadius.circular(26),
                                             image: DecorationImage(
                                               image: NetworkImage(
-                                                  "${NetworkConstants
-                                                      .urlImage}${product
-                                                      .images[index]}"),
+                                                  "${NetworkConstants.urlImage}${product.images[index]}"),
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                           child: Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                                MainAxisAlignment.center,
                                             children: List.generate(
-                                                product.images.length, (
-                                                index) {
+                                                product.images.length, (index) {
                                               return _buildImageIndicator(
                                                   isActive:
-                                                  index == _currentPage);
+                                                      index == _currentPage);
                                             }),
                                           ),
                                         );
@@ -472,8 +464,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       const SizedBox(height: 16),
                       Text(
                         product.name,
-                        style: Theme
-                            .of(context)
+                        style: Theme.of(context)
                             .textTheme
                             .headlineLarge
                             ?.copyWith(fontSize: 24),
@@ -483,8 +474,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         children: [
                           Text(
                             product.discountPrice,
-                            style: Theme
-                                .of(context)
+                            style: Theme.of(context)
                                 .textTheme
                                 .headlineMedium
                                 ?.copyWith(color: Colors.blue),
@@ -494,13 +484,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           ),
                           Text(
                             product.originalPrice,
-                            style: Theme
-                                .of(context)
+                            style: Theme.of(context)
                                 .textTheme
                                 .headlineSmall
                                 ?.copyWith(
-                              decoration: TextDecoration.lineThrough,
-                            ),
+                                  decoration: TextDecoration.lineThrough,
+                                ),
                           ),
                         ],
                       ),
@@ -617,6 +606,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       ),
     );
   }
+    
 
   Container _buildMessageButton(BuildContext context) {
     return Container(

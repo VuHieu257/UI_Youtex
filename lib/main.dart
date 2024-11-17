@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:ui_youtex/bloc/address_bloc/address_bloc.dart';
 import 'package:ui_youtex/bloc/cart_bloc/cart_bloc.dart';
 import 'package:ui_youtex/bloc/forgot_password_bloc/forgot_password_bloc.dart';
 import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
@@ -31,6 +32,7 @@ import 'package:ui_youtex/pages/screens/member_Vip/member_packagePayment.dart';
 import 'package:ui_youtex/pages/screens/message/group_chat_settings/group_chat_settings.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen%20copy.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
+import 'package:ui_youtex/pages/screens/voucher/Voucher_seller.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/forgotPass_Screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassDone_screen.dart';
@@ -98,6 +100,9 @@ void main() async {
             create: (context) => SellerAddressBloc(
               restfulApiProvider: apiProvider,
             ),
+          ),
+          BlocProvider(
+            create: (context) => AddressBloc(),
           ),
           BlocProvider(
             create: (context) => FetchUserByPhoneBloc(),
@@ -180,8 +185,8 @@ class MyApp extends StatelessWidget {
 
       home: const WelcomeApp(),
       // home: const CustomNavBar(),
-        // home: const GroupChatSettings(),
-       // home: const RegisterMallScreen(),
+      // home: const GroupChatSettings(),
+      // home: const RegisterMallScreen(),
       // home: const UploadImageScreen(),
       // home: const ImageGalleryScreen(),
       routes: {
@@ -199,6 +204,7 @@ class MyApp extends StatelessWidget {
         '/PaymentMethodScreen': (context) => const PaymentMethodScreen(),
         '/PaymentMethodPayScreen': (context) => const PaymentMethodPayScreen(),
         '/product_management': (context) => const ProductManagementScreen(),
+        '/discountCodeScreen': (context) => const VoucherSlScreen(),
       },
     );
   }

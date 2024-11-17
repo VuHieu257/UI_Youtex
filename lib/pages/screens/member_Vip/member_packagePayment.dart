@@ -141,7 +141,10 @@ class MembershipPaymentScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Image.asset(Asset.iconVisa,height: 100,),
+                  Image.asset(
+                    Asset.iconVisa,
+                    height: 100,
+                  ),
                   const SizedBox(
                     width: 5,
                   ),
@@ -183,7 +186,10 @@ class MembershipPaymentScreen extends StatelessWidget {
                   await showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return const CardAddedSuccessDialog();
+                      return const CustomDialog(
+                        title: 'Thành công',
+                        message: 'Mua thành công',
+                      );
                     },
                   );
                   // Khi dialog bị đóng, chuyển sang trang mới
@@ -239,7 +245,8 @@ class PaymentMethodButton extends StatelessWidget {
   final Color color;
   final VoidCallback onPressed;
 
-  const PaymentMethodButton({super.key, 
+  const PaymentMethodButton({
+    super.key,
     required this.icon,
     required this.label,
     required this.color,

@@ -29,7 +29,8 @@ class SellerRegisterIdentificationBlocBloc extends Bloc<
       } else {
         final token = await TokenManager.getToken();
 
-        final response = await restfulApiProvider.getidentification(token: token!);
+        final response =
+            await restfulApiProvider.getidentification(token: token!);
         if (response.statusCode == 200) {
           final identification =
               SellerIdentificationModel.fromJson(response.data);
@@ -44,7 +45,6 @@ class SellerRegisterIdentificationBlocBloc extends Bloc<
     }
   }
 
-  // Hàm xử lý sự kiện `post`
   Future<void> _onPostIdentification(
     SellerRegisterIdentificationPostEvent event,
     Emitter<SellerRegisterIdentificationBlocState> emit,
@@ -53,15 +53,16 @@ class SellerRegisterIdentificationBlocBloc extends Bloc<
     try {
       final token = await TokenManager.getToken();
 
-      final success =
-          await restfulApiProvider.postIdentification(event.identification,token: token!);
+      final success = await restfulApiProvider.postIdentification(
+        event.identification,
+        token: token!,
+      );
+
       if (success) {
         emit(SellerRegisterIdentificationLoaded(event.identification));
-      } else {
-        emit(SellerRegisterIdentificationError(
-            'Failed to update identification information'));
       }
     } catch (e) {
+      // Truyền thông báo lỗi từ API vào trạng thái
       emit(SellerRegisterIdentificationError(e.toString()));
     }
   }

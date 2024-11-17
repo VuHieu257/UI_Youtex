@@ -8,6 +8,7 @@ import 'package:ui_youtex/bloc_seller/seller_product_sales_bloc_bloc/seller_prod
 import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/model/productSales.dart';
+import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mall_product_seller/user_mail_shop_product_Extra.dart';
 import 'package:ui_youtex/pages/widget_small/appbar/custome_appbar_circle.dart';
 
@@ -28,7 +29,6 @@ class _ProductActiveScreenState extends State<ProductActiveSalesScreen> {
   final TextEditingController minOrderController = TextEditingController();
   final TextEditingController maxOrderController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
-
   String? sizeChartPath;
 
   @override
@@ -47,7 +47,6 @@ class _ProductActiveScreenState extends State<ProductActiveSalesScreen> {
         source: ImageSource.gallery,
         imageQuality: 80,
       );
-
       if (image != null) {
         setState(() {
           sizeChartPath = image.path;
@@ -127,7 +126,7 @@ class _ProductActiveScreenState extends State<ProductActiveSalesScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Chọn ảnh Size Chart',
+                        'Chọn ảnh cụ thể',
                         style: TextStyle(
                           color: Colors.grey.shade600,
                           fontSize: 14,
@@ -145,6 +144,26 @@ class _ProductActiveScreenState extends State<ProductActiveSalesScreen> {
     if (_formKey.currentState?.validate() ?? false) {
       if (sizeChartPath == null) {
         _showMessage('Lỗi', 'Vui lòng chọn ảnh Size Chart');
+        return;
+      }
+
+      final double? originalPrice =
+          double.tryParse(originalPriceController.text);
+      final double? discountPrice =
+          double.tryParse(discountPriceController.text);
+      final int? minOrder = int.tryParse(minOrderController.text);
+      final int? maxOrder = int.tryParse(maxOrderController.text);
+
+      // Validate logic for prices and orders
+      if (originalPrice != null &&
+          discountPrice != null &&
+          discountPrice > originalPrice) {
+        _showMessage('Lỗi', 'Giá giảm không thể lớn hơn giá gốc');
+        return;
+      }
+      if (minOrder != null && maxOrder != null && minOrder >= maxOrder) {
+        _showMessage(
+            'Lỗi', 'Số lượng tối thiểu không thể lớn hơn số lượng tối đa');
         return;
       }
 
@@ -271,9 +290,29 @@ class _ProductActiveScreenState extends State<ProductActiveSalesScreen> {
             child: BlocConsumer<SellerProductSalesBloc, ProductSalesState>(
               listener: (context, state) {
                 if (state is ProductSalesSuccess) {
-                  _showMessage('Thành Công', state.message);
+                  // Hiển thị dialog thành công
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomDialog(
+                        title: 'Thành Công',
+                        message: state.message,
+                      );
+                    },
+                  );
+                  Future.delayed(const Duration(seconds: 2), () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductActiveExtraScreen(
+                          productId: widget.productId,
+                        ),
+                      ),
+                    );
+                  });
                 } else if (state is ProductSalesError) {
-                  _showMessage('Lỗi', state.error);
+                  // Hiển thị thông báo lỗi
+                  _showMessage('Thông báo', state.error);
                 }
               },
               builder: (context, state) {
@@ -288,13 +327,15 @@ class _ProductActiveScreenState extends State<ProductActiveSalesScreen> {
                           const SizedBox(height: 10),
                           _buildTextField(
                             controller: originalPriceController,
-                            label: "Giá gốc",
+                            label: "Giá gốc (VND)",
                             hintText: "Điền thông tin tại đây",
                             validator: (value) {
                               if (value?.isEmpty ?? true) {
                                 return 'Vui lòng nhập giá gốc';
                               }
-                              if (double.tryParse(value!) == null) {
+                              final double? parsedValue =
+                                  double.tryParse(value!);
+                              if (parsedValue == null || parsedValue <= 0) {
                                 return 'Vui lòng nhập số hợp lệ';
                               }
                               return null;
@@ -302,13 +343,15 @@ class _ProductActiveScreenState extends State<ProductActiveSalesScreen> {
                           ),
                           _buildTextField(
                             controller: discountPriceController,
-                            label: "Giảm giá",
+                            label: "Giá giảm (VND)",
                             hintText: "Điền thông tin tại đây",
                             validator: (value) {
                               if (value?.isEmpty ?? true) {
                                 return 'Vui lòng nhập giá giảm';
                               }
-                              if (double.tryParse(value!) == null) {
+                              final double? parsedValue =
+                                  double.tryParse(value!);
+                              if (parsedValue == null || parsedValue < 0) {
                                 return 'Vui lòng nhập số hợp lệ';
                               }
                               return null;
@@ -316,49 +359,52 @@ class _ProductActiveScreenState extends State<ProductActiveSalesScreen> {
                           ),
                           _buildTextField(
                             controller: quantityController,
-                            label: "Số lượng",
+                            label: "Số lượng trong kho",
                             hintText: "Điền thông tin tại đây",
                             validator: (value) {
                               if (value?.isEmpty ?? true) {
                                 return 'Vui lòng nhập số lượng';
                               }
-                              if (int.tryParse(value!) == null) {
-                                return 'Vui lòng nhập số nguyên';
+                              final int? parsedValue = int.tryParse(value!);
+                              if (parsedValue == null || parsedValue <= 0) {
+                                return 'Vui lòng nhập số nguyên dương';
                               }
                               return null;
                             },
                           ),
                           _buildTextField(
                             controller: minOrderController,
-                            label: "Bán ít nhất",
+                            label: "Số lượng tối thiểu (Min)",
                             hintText: "Điền thông tin tại đây",
                             validator: (value) {
                               if (value?.isEmpty ?? true) {
                                 return 'Vui lòng nhập số lượng tối thiểu';
                               }
-                              if (int.tryParse(value!) == null) {
-                                return 'Vui lòng nhập số nguyên';
+                              final int? parsedValue = int.tryParse(value!);
+                              if (parsedValue == null || parsedValue <= 0) {
+                                return 'Vui lòng nhập số nguyên dương';
                               }
                               return null;
                             },
                           ),
                           _buildTextField(
                             controller: maxOrderController,
-                            label: "Bán nhiều nhất",
+                            label: "Số lượng tối đa (Max)",
                             hintText: "Điền thông tin tại đây",
                             validator: (value) {
                               if (value?.isEmpty ?? true) {
                                 return 'Vui lòng nhập số lượng tối đa';
                               }
-                              if (int.tryParse(value!) == null) {
-                                return 'Vui lòng nhập số nguyên';
+                              final int? parsedValue = int.tryParse(value!);
+                              if (parsedValue == null || parsedValue <= 0) {
+                                return 'Vui lòng nhập số nguyên dương';
                               }
                               return null;
                             },
                           ),
                           const SizedBox(height: 20),
                           _buildSizeChartSection(),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
                           _buildSubmitButton(state is ProductSalesLoading),
                         ],
                       ),

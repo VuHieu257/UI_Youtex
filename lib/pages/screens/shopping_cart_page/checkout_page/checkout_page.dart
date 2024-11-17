@@ -1,7 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
+import 'package:ui_youtex/pages/screens/home/home.dart';
+import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 
 import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
@@ -10,6 +12,7 @@ import '../../../widget_small/payment.dart';
 import '../../../widget_small/payment_method_button.dart';
 import '../../home/product/adress/adress_screen.dart';
 import '../payment_method_screen/payment_method_screen.dart';
+
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
 
@@ -26,14 +29,25 @@ class _CheckoutPageState extends State<CheckoutPage> {
       appBar: AppBar(
         backgroundColor: Styles.blue,
         centerTitle: true,
-        leading: InkWell(onTap: () => Navigator.pop(context),child: const Icon(Icons.arrow_back_ios,color: Styles.light,)),
-        title: Text('Giỏ hàng',style: context.theme.textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: Styles.light,
-        ),),
+        leading: InkWell(
+            onTap: () => Navigator.pop(context),
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Styles.light,
+            )),
+        title: Text(
+          'Giỏ hàng',
+          style: context.theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: Styles.light,
+          ),
+        ),
         actions: [
           IconButton(
-            icon:Image.asset(Asset.iconMessage,width: context.width*0.06,),
+            icon: Image.asset(
+              Asset.iconMessage,
+              width: context.width * 0.06,
+            ),
             onPressed: () {},
           ),
           const SizedBox(width: 10),
@@ -53,9 +67,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   style: context.theme.textTheme.headlineSmall,
                 ),
                 TextButton(
-                  onPressed: () {
-                  },
-                  child: Text('Thay đổi',style: context.theme.textTheme.titleMedium,),
+                  onPressed: () {},
+                  child: Text(
+                    'Thay đổi',
+                    style: context.theme.textTheme.titleMedium,
+                  ),
                 ),
               ],
             ),
@@ -66,10 +82,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Nhà riêng',style: context.theme.textTheme.titleMedium,),
+                    Text(
+                      'Nhà riêng',
+                      style: context.theme.textTheme.titleMedium,
+                    ),
                     Text(
                       'Vinhomes Grand Park, Nguyễn Xiển, Thủ Đức',
-                      style: context.theme.textTheme.titleMedium?.copyWith(color: Colors.grey),
+                      style: context.theme.textTheme.titleMedium
+                          ?.copyWith(color: Colors.grey),
                     ),
                   ],
                 ),
@@ -80,7 +100,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
             // Payment Method Section
             Text(
               'Payment Method',
-              style: context.theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              style: context.theme.textTheme.headlineSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Row(
@@ -127,39 +148,56 @@ class _CheckoutPageState extends State<CheckoutPage> {
             const SizedBox(height: 20),
 
             // Card Information (Shown only if Card is selected)
-            if (_selectedPaymentMethod == 'Card')
-              const CardInfoSection(),
+            if (_selectedPaymentMethod == 'Card') const CardInfoSection(),
             const SizedBox(height: 20),
             const Divider(),
 
             // Order Summary Section
             Text(
               'Tóm tắt đơn hàng',
-              style: context.theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: context.theme.textTheme.headlineMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
               // style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             const OrderSummaryRow(label: 'Tạm tính', value: '123,000đ'),
             const OrderSummaryRow(label: 'Phí vận chuyển', value: '0đ'),
-            SizedBox(height: context.height*0.01),
+            SizedBox(height: context.height * 0.01),
             const Divider(),
-            SizedBox(height: context.height*0.02),
+            SizedBox(height: context.height * 0.02),
             const OrderSummaryRow(
               label: 'Tổng cộng',
               value: '123,000đ',
               isBold: true,
             ),
             const Spacer(),
-            InkWell(onTap: () {                         Navigator.push(context, MaterialPageRoute(builder: (context) =>   const AddressScreen(),));
+            InkWell(
+                onTap: () async {
+                  // Show the dialog and wait for it to be closed
+                  await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const CustomDialog(
+                        title: 'Thành công',
+                        message: 'Thanh toán thành công',
+                      );
+                    },
+                  );
 
-            },child: const CusButton(text:"Thanh toán",color:Styles.blue)),
+                  // After the dialog is dismissed, navigate to the next screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CustomNavBar()),
+                  );
+                },
+                child: const CusButton(text: "Thanh toán", color: Styles.blue)),
           ],
         ),
       ),
     );
   }
 }
-
 
 // Card Information Section
 class CardInfoSection extends StatelessWidget {
@@ -168,7 +206,9 @@ class CardInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(border: Border.all(width: 1,color: Styles.grey),borderRadius: BorderRadius.circular(10)),
+      decoration: BoxDecoration(
+          border: Border.all(width: 1, color: Styles.grey),
+          borderRadius: BorderRadius.circular(10)),
       padding: const EdgeInsets.all(10),
       child: Row(
         children: [
@@ -178,14 +218,21 @@ class CardInfoSection extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('VISA **** **** **** 2512', style: TextStyle(fontSize: 16)),
+                Text('VISA **** **** **** 2512',
+                    style: TextStyle(fontSize: 16)),
               ],
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.edit_outlined,size: 30,),
+            icon: const Icon(
+              Icons.edit_outlined,
+              size: 30,
+            ),
             onPressed: () {
-            Navigator.push(context,MaterialPageRoute(builder: (context) => const PaymentMethodScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PaymentMethodScreen()));
             },
           ),
         ],

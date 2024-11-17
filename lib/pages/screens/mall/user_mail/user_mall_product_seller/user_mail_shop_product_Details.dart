@@ -51,9 +51,39 @@ class _ProductActiveScreenState extends State<ProductActiveDetailsScreen> {
     }
   }
 
+  bool validateFields() {
+    if (brandController.text.isEmpty) {
+      _showMessage('Lỗi', 'Thương hiệu không được để trống');
+      return false;
+    }
+    if (originController.text.isEmpty) {
+      _showMessage('Lỗi', 'Nguồn gốc không được để trống');
+      return false;
+    }
+    if (materialController.text.isEmpty) {
+      _showMessage('Lỗi', 'Vật liệu không được để trống');
+      return false;
+    }
+    if (occasionController.text.isEmpty) {
+      _showMessage('Lỗi', 'Dịp không được để trống');
+      return false;
+    }
+    if (manufacturerController.text.isEmpty) {
+      _showMessage('Lỗi', 'Tên nhà sản xuất không được để trống');
+      return false;
+    }
+    if (manufacturerAddressController.text.isEmpty) {
+      _showMessage('Lỗi', 'Địa chỉ nhà sản xuất không được để trống');
+      return false;
+    }
+    return true;
+  }
+
   void saveData(BuildContext context) {
+    if (!validateFields()) return;
+
     final productDetails = Productdetails(
-      productId: widget.productId ?? '', // Use an empty string as the default
+      productId: widget.productId ?? '',
       brand: brandController.text,
       gender: mapGenderToApiValue(selectedGender),
       origin: originController.text,
@@ -78,15 +108,21 @@ class _ProductActiveScreenState extends State<ProductActiveDetailsScreen> {
           Expanded(
             child: BlocConsumer<ProductDetailsBloc, ProductState>(
               listener: (context, state) async {
-                if (state is ProductLoaded) {
-                } else if (state is ProductSuccess) {
-                  // Hiển thị SnackBar bằng _showMessage
-                  _showMessage('Thành Công', state.message);
+                if (state is ProductSuccess) {
+                  // Hiển thị dialog thành công
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomDialog(
+                        title: 'Thành Công',
+                        message: state.message,
+                      );
+                    },
+                  );
 
-                  // Đợi một chút để đảm bảo người dùng nhìn thấy thông báo
+                  // Đợi 2 giây rồi chuyển sang màn hình mới
                   await Future.delayed(const Duration(seconds: 2));
 
-                  // Điều hướng đến màn hình ProductActiveSalesScreen
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -96,7 +132,16 @@ class _ProductActiveScreenState extends State<ProductActiveDetailsScreen> {
                     ),
                   );
                 } else if (state is ProductError) {
-                  _showMessage('Lỗi', state.error);
+                  // Hiển thị dialog lỗi
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomDialog(
+                        title: 'Thông báo',
+                        message: state.error,
+                      );
+                    },
+                  );
                 }
               },
               builder: (context, state) {
@@ -124,7 +169,7 @@ class _ProductActiveScreenState extends State<ProductActiveDetailsScreen> {
                         ),
                         CustomTextFieldNoIcon(
                           controller: originController,
-                          label: "Nơi Sản xuất",
+                          label: "Nguồn gốc",
                           hintText: "Điền thông tin tại đây",
                         ),
                         CustomTextFieldNoIcon(

@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 
-class CardAddedSuccessDialog extends StatelessWidget {
-  const CardAddedSuccessDialog({super.key});
+class CustomDialog extends StatelessWidget {
+  final String title;
+  final String message;
+  final VoidCallback? onClose;
+
+  const CustomDialog({
+    Key? key,
+    required this.title,
+    required this.message,
+    this.onClose,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,43 +21,40 @@ class CardAddedSuccessDialog extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Kích thước vừa đủ nội dung
+          mainAxisSize: MainAxisSize.min,
           children: [
-            // Icon checkmark
-            const Icon(
-              Icons.check_circle,
+            Icon(
+              title == 'Thành Công'
+                  ? Icons.check_circle // Thành công thì dùng check_circle
+                  : Icons.cancel, // Lỗi thì dùng icon cancel
               size: 60,
-              color: Colors.green, // Màu xanh của biểu tượng
+              color: title == 'Thành Công' ? Colors.green : Colors.red,
             ),
             const SizedBox(height: 20),
-            // Tiêu đề "Congratulations!"
-            const Text(
-              'Congratulations!',
+            Text(
+              title,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: title == 'Thành Công' ? Colors.green : Colors.red,
               ),
             ),
             const SizedBox(height: 10),
-            // Nội dung thông báo
-            const Text(
-              'Your new card has been added.',
-              style: TextStyle(
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.black54,
               ),
             ),
             const SizedBox(height: 30),
-            // Nút "Thanks"
             SizedBox(
-              width: double.infinity, // Nút full chiều ngang của hộp
+              width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // Đóng dialog khi bấm nút
-                },
+                onPressed: onClose ?? () => Navigator.of(context).pop(),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue, // Màu nền của nút
+                  backgroundColor: Colors.blue,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

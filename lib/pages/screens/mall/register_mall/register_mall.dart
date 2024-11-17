@@ -59,7 +59,6 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
           ),
         );
       } else if (state is SellerRegisterFailure) {
-        // Nếu có lỗi (không tìm thấy cửa hàng), hiển thị form đăng ký
         setState(() {
           isLoading = false;
         });
@@ -74,7 +73,7 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
       child: BlocConsumer<SellerRegisterBloc, SellerRegisterState>(
         listener: (context, state) {
           if (state is SellerRegisterSuccess) {
-            _showMessage("Thành Công", "Đăng ký thành công!");
+            _showMessage("Thành Công", "Đăng ký cửa hàng thành công!");
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -88,7 +87,7 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
               ),
             );
           } else if (state is SellerRegisterFailure) {
-            _showMessage("Lỗi", state.error);
+            _showMessage("Thông báo", state.error, useCustomDialog: true);
             setState(() {
               isLoading = false;
             });
@@ -262,13 +261,9 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
                                         if (_nameController.text.isEmpty ||
                                             _phoneController.text.isEmpty ||
                                             _emailController.text.isEmpty) {
-                                          // Hiển thị lỗi nếu các trường bắt buộc chưa được nhập
-                                          print(_nameController);
-                                          print(_phoneController);
-                                          print(_emailController);
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
-                                            SnackBar(
+                                            const SnackBar(
                                                 content: Text(
                                                     'Vui lòng điền đầy đủ tên cửa hàng, số điện thoại và email')),
                                           );
@@ -288,7 +283,7 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
                                             .showSnackBar(
                                           const SnackBar(
                                               content: Text(
-                                                  "Vui lòng chấp nhận điều khoản")),
+                                                  "Vui lòng điền đủ thông tin.")),
                                         );
                                       }
                                     },
@@ -320,21 +315,83 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
     );
   }
 
-  void _showMessage(String title, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-            Text(message),
-          ],
+  void _showMessage(String title, String message,
+      {bool useCustomDialog = false}) {
+    if (useCustomDialog) {
+      showDialog(
+        context: context,
+        builder: (context) => Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  title == 'Thành Công'
+                      ? Icons.check_circle // Thành công thì dùng check_circle
+                      : Icons.cancel, // Lỗi thì dùng icon cancel
+                  size: 60,
+                  color: title == 'Thành Công'
+                      ? Colors.green
+                      : Colors.red, // Đổi màu theo trạng thái
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: title == 'Thành Công'
+                        ? Colors.green
+                        : Colors.red, // Đổi màu tiêu đề
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  message,
+                  textAlign: TextAlign.center, // Căn giữa nội dung
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.black54,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: double.infinity, // Nút chiếm chiều ngang dialog
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Đóng dialog
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue, // Nút màu xanh
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Thanks',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-        backgroundColor: title == 'Thành Công' ? Colors.green : Colors.red,
-        duration: const Duration(seconds: 2),
-      ),
-    );
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: title == 'Thành Công' ? Colors.green : Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
   }
 }
 

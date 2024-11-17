@@ -129,7 +129,7 @@ class _RegisterMallinforShopScreenState
                     ),
                     CustomTextFieldNoIcon(
                       controller: settingsController,
-                      label: "Thông tin",
+                      label: "Thông tin bổ sung",
                       hintText: "Điền thông tin tại đây",
                       line: 1,
                     ),

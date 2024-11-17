@@ -146,7 +146,10 @@ class _EmployeeaddScreenState extends State<EmployeeaddScreen> {
             await showDialog(
               context: context,
               builder: (BuildContext context) {
-                return const CardAddedSuccessDialog();
+                return const CustomDialog(
+                  title: 'Thành công',
+                  message: 'Thêm thành công',
+                );
               },
             );
             Navigator.pop(context);

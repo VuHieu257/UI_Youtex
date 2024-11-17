@@ -120,16 +120,14 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> loadImages() async {
-    // Kiểm tra và yêu cầu quyền truy cập ảnh
-    var status = await Permission.photos.status;
+     var status = await Permission.photos.status;
 
     if (status.isDenied) {
-      // Yêu cầu quyền truy cập ảnh
-      status = await Permission.photos.request();
+       status = await Permission.photos.request();
     }
 
     if (status.isPermanentlyDenied) {
-      // Quyền bị từ chối vĩnh viễn, thông báo người dùng và chuyển đến cài đặt
+       
       await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -487,7 +485,11 @@ class _ChatScreenState extends State<ChatScreen> {
                       icon:
                           const Icon(Icons.list_outlined, color: Colors.white),
                       onPressed: () {
-                        Navigator.push(context,  MaterialPageRoute(builder: (context) => const GroupChatSettings(),));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const GroupChatSettings(),
+                            ));
                         // showFeatureUnavailableDialog(context);
                       },
                     ),
@@ -661,8 +663,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   leading: const Icon(Icons.copy, color: Colors.blue),
                   title: const Text('Sao chép tin nhắn'),
                   onTap: () {
-                    Clipboard.setData(
-                        ClipboardData(text: messageData));
+                    Clipboard.setData(ClipboardData(text: messageData));
                     Navigator.pop(context);
                   },
                 ),

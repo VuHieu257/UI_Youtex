@@ -376,16 +376,16 @@ class ProfileScreen extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => const VoucherScreen())),
                       ),
-                      _buildMenuItem(
-                        Icons.local_offer,
-                        'Mã giảm giá sl',
-                        context: context,
-                        color: const Color(0xff113A71),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const VoucherSlScreen())),
-                      ),
+                      // _buildMenuItem(
+                      //   Icons.local_offer,
+                      //   'Mã giảm giá sl',
+                      //   context: context,
+                      //   color: const Color(0xff113A71),
+                      //   onTap: () => Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => const VoucherSlScreen())),
+                      // ),
                       _buildMenuItem(
                         Icons.share,
                         'Chia sẻ App',

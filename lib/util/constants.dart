@@ -10,7 +10,7 @@ class NetworkConstants {
   static const String STORAGE_URL = 'http://52.77.246.91/storage/';
 
   static const String urlImage =
-  //server testing
+      //server testing
       "http://52.77.246.91/storage/";
   static const Duration receiveTimeout = Duration(milliseconds: 5000);
 
@@ -19,6 +19,7 @@ class NetworkConstants {
   static hideKeyBoard() async {
     FocusManager.instance.primaryFocus?.unfocus();
   }
+
   static String convertToUnaccentedNoSpace(String input) {
     const accents =
         'áàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ';
@@ -38,5 +39,4 @@ class NetworkConstants {
 
     return result;
   }
-
 }

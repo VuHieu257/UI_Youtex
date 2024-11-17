@@ -55,51 +55,67 @@ class CustomTextFieldNoIcon extends StatelessWidget {
   final bool? readOnly;
   final TextEditingController? controller;
 
-  const CustomTextFieldNoIcon({
-    super.key,
-    required this.hintText,
-    required this.label,
-    this.line,
-    this.controller, this.readOnly
-  });
+  const CustomTextFieldNoIcon(
+      {super.key,
+      required this.hintText,
+      required this.label,
+      this.line,
+      this.controller,
+      this.readOnly});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: context.theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w600
-          ),),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black26,
-                      offset: Offset(0, 4),
-                      blurRadius: 4)
-                ]),
-            child: TextField(
-              readOnly: readOnly??false,
-              controller:controller,
-              maxLines: line,
-              decoration: InputDecoration(
-                hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
-                hintText: hintText,
-                filled: true,
-                fillColor: Styles.colorF9F9F9,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: BorderSide.none),
-                ),
+      padding:
+          const EdgeInsets.only(bottom: 12.0), // Khoảng cách giữa các trường
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Styles.colorF9F9F9,
+        ),
+        child: TextField(
+          readOnly: readOnly ?? false,
+          controller: controller,
+          maxLines: line,
+          decoration: InputDecoration(
+            labelText: label, // Tiêu đề nằm bên trong TextField
+            labelStyle: const TextStyle(
+              color: Colors.black, // Màu chữ tiêu đề
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+            hintStyle: const TextStyle(
+                color: Color(0xFFB5B2B2),
+                fontSize: 14,
+                fontWeight: FontWeight.bold),
+            hintText: hintText,
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
+                width: 1,
               ),
             ),
-        ],
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: BorderSide(
+                color: Colors.grey.shade300,
+                width: 1,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(15),
+              borderSide: const BorderSide(
+                color: Colors.blue,
+                width: 1.5,
+              ),
+            ),
+            filled: true,
+            fillColor: Styles.colorF9F9F9,
+          ),
+        ),
       ),
     );
   }

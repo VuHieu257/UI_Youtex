@@ -7,6 +7,7 @@ import 'package:ui_youtex/core/model/store.info.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_employee.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_view.dart';
+import 'package:ui_youtex/pages/screens/voucher/Voucher_seller.dart';
 import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
 
@@ -292,8 +293,11 @@ class SettingsList extends StatelessWidget {
         children: [
           SettingsItem(
             icon: Icons.bar_chart,
-            text: 'Bảng thống kê',
-            onTap: () {},
+            text: 'Mã giảm giá ',
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const VoucherSlScreen())),
           ),
           SettingsItem(
             icon: Icons.shopping_bag_outlined,
