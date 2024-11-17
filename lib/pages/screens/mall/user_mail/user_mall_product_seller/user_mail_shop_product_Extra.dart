@@ -10,6 +10,7 @@ import 'package:ui_youtex/bloc_seller/seller_product_sales_bloc_bloc/seller_prod
 import 'package:ui_youtex/bloc_seller/seller_product_sales_bloc_bloc/seller_product_sales_bloc_state.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mall_product_seller/user_mail_shop_product_Shipping.dart';
 import 'package:ui_youtex/pages/widget_small/appbar/custome_appbar_circle.dart';
 
@@ -63,15 +64,31 @@ class _ProductActiveScreenState extends State<ProductActiveExtraScreen> {
     }
   }
 
-  void _saveData(BuildContext context) {
-    final productExtra = UpdateSellerProductExtraEvent(
-      productId: widget.productId ?? '', // Use an empty string as the default
-      isPreOrder: mapGenderToApiValue(selectedGender),
-      status: mapStatusToApiValue(selectedStatus),
-      sku: skuController.text,
-    );
+  String? _validateSku(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Vui lòng nhập mã SKU';
+    }
+    if (int.tryParse(value) == null) {
+      return 'Vui lòng nhập số nguyên hợp lệ';
+    }
+    return null;
+  }
 
-    context.read<SellerProductExtraBloc>().add(productExtra);
+  void _saveData(BuildContext context) {
+    // Kiểm tra xem form có hợp lệ không
+    if (_formKey.currentState?.validate() ?? false) {
+      // Nếu hợp lệ, gọi sự kiện
+      final productExtra = UpdateSellerProductExtraEvent(
+        productId: widget.productId ?? '',
+        isPreOrder: mapGenderToApiValue(selectedGender),
+        status: mapStatusToApiValue(selectedStatus),
+        sku: skuController.text,
+      );
+      context.read<SellerProductExtraBloc>().add(productExtra);
+    } else {
+      // Nếu không hợp lệ, không thực hiện gì
+      return;
+    }
   }
 
   Widget _buildTextField({
@@ -95,7 +112,7 @@ class _ProductActiveScreenState extends State<ProductActiveExtraScreen> {
 
   Widget _buildSubmitButton(bool isLoading) {
     return Container(
-      width: MediaQuery.sizeOf(context).width,
+      width: MediaQuery.of(context).size.width,
       height: 50,
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
@@ -133,23 +150,6 @@ class _ProductActiveScreenState extends State<ProductActiveExtraScreen> {
     );
   }
 
-  void _showMessage(String title, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-            Text(message),
-          ],
-        ),
-        backgroundColor: title == 'Thành Công' ? Colors.green : Colors.red,
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,29 +163,40 @@ class _ProductActiveScreenState extends State<ProductActiveExtraScreen> {
             child:
                 BlocConsumer<SellerProductExtraBloc, SellerProductExtraState>(
               listener: (context, state) {
-                print('Current state in listener: $state'); // Debug line
                 if (state is SellerProductExtraSuccess) {
-                  print('Success state triggered'); // Debug line
-                  _showMessage('Thành Công', state.message);
-                  Future.delayed(const Duration(milliseconds: 1500), () {
-                    // Pop về màn hình trước đó
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ProductActiveShipingScreen(
-                                  productId: widget.productId,
-                                )));
+                  // Hiển thị thông báo thành công bằng CustomDialog
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomDialog(
+                        title: 'Thành Công',
+                        message: state.message,
+                      );
+                    },
+                  );
 
-                    // Hoặc nếu muốn chuyển đến một màn hình cụ thể:
-                    // Navigator.of(context).pushReplacement(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => TargetScreen(),
-                    //   ),
-                    // );
+                  // Sau 1500ms, điều hướng đến màn hình ProductActiveShipingScreen
+                  Future.delayed(const Duration(milliseconds: 1500), () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductActiveShipingScreen(
+                          productId: widget.productId,
+                        ),
+                      ),
+                    );
                   });
                 } else if (state is SellerProductExtraError) {
-                  print('Error state triggered'); // Debug line
-                  _showMessage('Lỗi', state.error);
+                  // Hiển thị thông báo lỗi nếu có lỗi
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomDialog(
+                        title: 'Lỗi',
+                        message: state.error,
+                      );
+                    },
+                  );
                 }
               },
               builder: (context, state) {
@@ -230,17 +241,13 @@ class _ProductActiveScreenState extends State<ProductActiveExtraScreen> {
                           ),
                           _buildTextField(
                             controller: skuController,
-                            label: "Mã",
+                            label: "Mã SKU",
                             hintText: "Điền thông tin tại đây",
                             keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value?.isEmpty ?? true) {
                                 return 'Vui lòng nhập số lượng';
                               }
-                              if (int.tryParse(value!) == null) {
-                                return 'Vui lòng nhập số nguyên';
-                              }
-                              return null;
                             },
                           ),
                           _buildSubmitButton(
@@ -325,14 +332,16 @@ class CustomTextFieldNoIcon extends StatelessWidget {
   final String label;
   final String hintText;
   final TextEditingController controller;
+  final TextInputType keyboardType;
+  final String? Function(String?) validator;
 
   const CustomTextFieldNoIcon({
     Key? key,
     required this.hintText,
     required this.label,
     required this.controller,
-    required TextInputType keyboardType,
-    required String? Function(String? p1) validator,
+    required this.keyboardType,
+    required this.validator,
   }) : super(key: key);
 
   @override
@@ -360,7 +369,7 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                 ),
               ],
             ),
-            child: TextField(
+            child: TextFormField(
               controller: controller,
               decoration: InputDecoration(
                 hintStyle: const TextStyle(color: Color(0xFFB5B2B2)),
@@ -372,6 +381,8 @@ class CustomTextFieldNoIcon extends StatelessWidget {
                   borderSide: BorderSide.none,
                 ),
               ),
+              keyboardType: keyboardType,
+              validator: validator, // Ensure SKU validation
             ),
           ),
         ],

@@ -111,16 +111,14 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> loadImages() async {
-    // Kiểm tra và yêu cầu quyền truy cập ảnh
-    var status = await Permission.photos.status;
+     var status = await Permission.photos.status;
 
     if (status.isDenied) {
-      // Yêu cầu quyền truy cập ảnh
-      status = await Permission.photos.request();
+       status = await Permission.photos.request();
     }
 
     if (status.isPermanentlyDenied) {
-      // Quyền bị từ chối vĩnh viễn, thông báo người dùng và chuyển đến cài đặt
+       
       await showDialog(
         context: context,
         builder: (BuildContext context) {

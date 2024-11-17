@@ -45,7 +45,6 @@ abstract class ApiPath {
   static const String BuyeIndustrysGet = 'buyer/industries';
   static const String buyerGetCart = 'buyer/cart';
 
-
   static String buyerGetProductDetail(uuid) => 'buyer/product/$uuid';
   static String addCart(uuid) => 'buyer/product/$uuid/add-cart';
 
@@ -58,7 +57,6 @@ abstract class ApiPath {
   static const String sellerTaxPost = 'seller/tax';
   static const String selleridentificationPost = 'seller/identification';
   static const String sellershippingunitsPost = 'seller/shipping-unit';
-
 
   static const String sellerscategoriesPost = 'seller/category';
   static const String sellersproductsPost = 'seller/products';
@@ -300,6 +298,7 @@ class RestfulApiProviderImpl {
       rethrow;
     }
   }
+
   Future<List<ProductBuyer>> fetchProductBuyer({
     required String token,
   }) async {
@@ -370,9 +369,9 @@ class RestfulApiProviderImpl {
       final response = await dioClient.post(
         ApiPath.addCart(uuid),
         body: {
-          "quantity":quantity,
-          "size_id":sizeId,
-          "color_id":colorId,
+          "quantity": quantity,
+          "size_id": sizeId,
+          "color_id": colorId,
         },
         headers: {
           'Content-Type': 'application/json',
@@ -528,14 +527,6 @@ class RestfulApiProviderImpl {
         ),
       });
 
-      if (kDebugMode) {
-        print(
-            'Request URL: ${NetworkConstants.baseUrl}${ApiPath.sellerRegistorPost}');
-
-        print('Request Data: ${formData.fields}');
-      }
-
-      // Make the API request
       final response = await dioClient.post(
         ApiPath.sellerRegistorPost,
         body: formData,
@@ -544,58 +535,34 @@ class RestfulApiProviderImpl {
           'Accept': 'application/json',
         },
       );
-      if (kDebugMode) {
-        print('Response Status Code: ${response.statusCode}');
-        print('Response Data: ${response.data}');
-      }
 
+      // Log dữ liệu phản hồi
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Data: ${response.data}');
+
+      // Kiểm tra mã trạng thái
       if (response.statusCode == 200 || response.statusCode == 201) {
         return response;
+      } else {
+        final errorMessage =
+            response.data['message'] ?? 'Đăng ký cửa hàng thất bại';
+        throw errorMessage;
       }
-
-      throw Exception(
-        'Failed to register store. Status: ${response.statusCode}',
-      );
     } on DioException catch (e) {
-      if (kDebugMode) {
-        print('DioError Type: ${e.type}');
-        print('DioError Message: ${e.message}');
-        print('DioError Response: ${e.response?.data}');
-      }
+      // Log lỗi chi tiết
+      print('DioException Type: ${e.type}');
+      print('DioException Message: ${e.message}');
+      print('DioException Response: ${e.response?.data}');
 
-      if (e.response?.data != null && e.response?.data['errors'] != null) {
-        final errors = e.response?.data['errors'];
-        if (errors is Map) {
-          // Check all possible error fields
-          final firstError = errors.values
-              .whereType<List>()
-              .firstWhere((list) => list.isNotEmpty, orElse: () => [])
-              .firstOrNull;
-          if (firstError != null) {
-            throw firstError.toString();
-          }
-        }
-      }
-
-      switch (e.type) {
-        case DioExceptionType.connectionTimeout:
-        case DioExceptionType.sendTimeout:
-        case DioExceptionType.receiveTimeout:
-          throw 'Kết nối tới server bị timeout. Vui lòng thử lại.';
-        case DioExceptionType.badResponse:
-          if (e.response?.statusCode == 404) {
-            throw '${e.message}';
-          }
-          throw 'Lỗi từ server: ${e.response?.statusCode ?? "Unknown"}';
-        case DioExceptionType.cancel:
-          throw 'Yêu cầu đã bị hủy';
-        default:
-          throw 'Lỗi kết nối: ${e.message}';
+      // Xử lý lỗi theo mã lỗi
+      if (e.response?.statusCode == 403) {
+        final message = e.response?.data['message'] ?? 'Lỗi từ server: 403';
+        throw message;
+      } else {
+        throw 'Lỗi từ server: ${e.response?.statusCode ?? "Không rõ"}';
       }
     } catch (error) {
-      if (kDebugMode) {
-        print('General Error: $error');
-      }
+      print('General Error: $error');
       throw 'Đã xảy ra lỗi không xác định khi đăng ký cửa hàng';
     }
   }
@@ -608,7 +575,7 @@ class RestfulApiProviderImpl {
       final response = await dioClient.get(
         ApiPath.sellerRegistorGet,
         headers: {
-          'Authorization': 'Bearer $token',
+          'Authorization': '$authType $token',
           'Accept': 'application/json',
         },
       );
@@ -619,10 +586,20 @@ class RestfulApiProviderImpl {
       }
 
       if (response.statusCode == 201 || response.statusCode == 200) {
-        // Kiểm tra xem response.data có phải là Map không
+        // Kiểm tra nếu response chứa thông báo message
         if (response.data is Map<String, dynamic>) {
-          // Lấy thông tin store từ response
-          final storeData = response.data['store'] ?? response.data;
+          final data = response.data;
+
+          // Lấy nội dung mà không bao gồm message
+          if (data.containsKey('message')) {
+            if (kDebugMode) {
+              print('Message found: ${data['message']}');
+            }
+            data.remove('message'); // Bỏ trường message nếu không cần
+          }
+
+          // Lấy thông tin cửa hàng từ response
+          final storeData = data['store'] ?? data;
           return StoreInfo.fromJson(storeData);
         } else {
           throw const FormatException('Invalid response format');
@@ -648,7 +625,7 @@ class RestfulApiProviderImpl {
           throw 'Kết nối tới server bị timeout. Vui lòng thử lại.';
         case DioExceptionType.badResponse:
           if (e.response?.statusCode == 404) {
-            throw '${e.response}.';
+            throw '${e.response?.data['message'] ?? 'Không tìm thấy dữ liệu'}';
           } else if (e.response?.statusCode == 401) {
             throw 'Không có quyền truy cập. Vui lòng đăng nhập lại.';
           }
@@ -1307,7 +1284,7 @@ class RestfulApiProviderImpl {
       return response.statusCode == 200;
     } on DioException catch (e) {
       print('Error activating product: ${e.message}');
-       return false;
+      return false;
     }
   }
 

@@ -9,8 +9,6 @@ import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/pages/widget_small/appbar/custome_appbar_circle.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
 
-// Additional imports for your Bloc, Models, etc.
-
 class RegisterMallinforExhibitiScreen extends StatefulWidget {
   const RegisterMallinforExhibitiScreen({super.key});
 
@@ -22,7 +20,7 @@ class RegisterMallinforExhibitiScreen extends StatefulWidget {
 class _RegisterMallinforExhibitiScreenState
     extends State<RegisterMallinforExhibitiScreen> {
   final ImagePicker _picker = ImagePicker();
-  File? _selectedImage; // Variable to hold the selected image file
+  File? _selectedImage;
 
   // Text controllers for the form fields
   final TextEditingController taxTypeController = TextEditingController();
@@ -34,7 +32,6 @@ class _RegisterMallinforExhibitiScreenState
   @override
   void initState() {
     super.initState();
-    // Listen for state changes to update controller values
     context.read<SellerRegisterTaxBloc>().stream.listen((state) {
       if (state is SellerRegisterTaxLoaded) {
         _updateControllers(state.tax);
@@ -84,28 +81,19 @@ class _RegisterMallinforExhibitiScreenState
     );
   }
 
-  void _showMessage(String title, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-            Text(message),
-          ],
-        ),
-        backgroundColor: title == 'Thành Công' ? Colors.green : Colors.red,
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
-
   Widget _buildBlocContent(BuildContext context) {
     return BlocConsumer<SellerRegisterTaxBloc, SellerRegisterTaxBlocState>(
       listener: (context, state) {
         if (state is SellerRegisterTaxLoaded) {
-          _showMessage('Thành Công', 'Lấy thông tin Thuế thành công!');
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CustomDialog(
+                title: 'Thành Công',
+                message: 'Tải dữ liệu giấy tờ thành công.',
+              );
+            },
+          );
         }
       },
       builder: (context, state) {
@@ -116,7 +104,15 @@ class _RegisterMallinforExhibitiScreenState
         if (state is SellerRegisterTaxLoaded) {
           return _buildForm(context, state.tax);
         }
-
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CustomDialog(
+              title: 'Thông báo',
+              message: 'Bạn chưa cập nhật giấy tờ.',
+            );
+          },
+        );
         return _buildForm(context, null);
       },
     );
@@ -140,11 +136,11 @@ class _RegisterMallinforExhibitiScreenState
               value: selectedGroup,
               items: ['business', 'personal'],
               onChanged: isReadOnly
-                  ? null // If read-only, set onChanged to null
+                  ? null
                   : (value) => setState(() => selectedGroup = value!),
             ),
             CustomTextFieldNoIcon(
-              label: "Tên người sở hữu",
+              label: "Tên công ty",
               hintText: "Điền thông tin tại đây",
               controller: taxNameController,
               line: 1,
@@ -224,7 +220,7 @@ class _RegisterMallinforExhibitiScreenState
                   child: Text(item),
                 ))
             .toList(),
-        onChanged: onChanged, // If null, dropdown will be read-only
+        onChanged: onChanged,
         icon: const Icon(Icons.arrow_drop_down),
       ),
     );
@@ -235,7 +231,7 @@ class _RegisterMallinforExhibitiScreenState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Ảnh giấy tờ',
+          'Ảnh giấy phép kinh doanh',
           style: Theme.of(context)
               .textTheme
               .titleLarge
@@ -370,7 +366,7 @@ class CustomTextFieldNoIcon extends StatelessWidget {
             label,
             style: Theme.of(context)
                 .textTheme
-                .titleMedium
+                .bodyLarge
                 ?.copyWith(fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 8),

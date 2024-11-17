@@ -13,6 +13,7 @@ import 'package:ui_youtex/bloc_seller/seller_product_sales_bloc_bloc/seller_prod
 import 'package:ui_youtex/bloc_seller/seller_product_sales_bloc_bloc/seller_product_sales_bloc_state.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mall_product_seller/user_mail_shop_product.dart';
 import 'package:ui_youtex/pages/widget_small/appbar/custome_appbar_circle.dart';
 
@@ -56,7 +57,7 @@ class _ProductActiveScreenState extends State<ProductActiveShipingScreen> {
     final int? weightValue = int.tryParse(weightController.text);
 
     final productShiping = UpdateSellerProductShipingEvent(
-productId: widget.productId ?? '', // Use an empty string as the default
+      productId: widget.productId ?? '', // Use an empty string as the default
       dimension: mapGenderToApiValue(selectedGender),
       weight: weightValue, // Using the parsed int value
     );
@@ -153,17 +154,35 @@ productId: widget.productId ?? '', // Use an empty string as the default
             child: BlocConsumer<SellerProductShipingBloc,
                 SellerProductShipingState>(
               listener: (context, state) {
-                print('Current state in listener: $state'); // Debug line
                 if (state is SellerProductShipingSuccess) {
-                  print('Success state triggered'); // Debug line
-                  _showMessage('Thành Công', state.message);
-                  Navigator.pushReplacement(
+                  // Hiển thị dialog thành công
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomDialog(
+                        title: 'Thành Công',
+                        message: state.message,
+                      );
+                    },
+                  ).then((_) {
+                    // Sau khi dialog đóng, điều hướng đến ProductManagementScreen
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ProductManagementScreen()));
+                          builder: (context) => ProductManagementScreen()),
+                    );
+                  });
                 } else if (state is SellerProductShipingError) {
-                  print('Error state triggered'); // Debug line
-                  _showMessage('Lỗi', state.error);
+                  // Hiển thị dialog lỗi
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomDialog(
+                        title: 'Thông báo',
+                        message: state.error,
+                      );
+                    },
+                  );
                 }
               },
               builder: (context, state) {
@@ -193,7 +212,7 @@ productId: widget.productId ?? '', // Use an empty string as the default
                           ),
                           _buildTextField(
                             controller: weightController,
-                            label: "Weight",
+                            label: "Trọng lượng",
                             hintText: "Điền thông tin tại đây",
                             keyboardType: TextInputType.number,
                             validator: (value) {

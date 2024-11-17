@@ -93,7 +93,10 @@ class CardInputApppay extends StatelessWidget {
                 await showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const CardAddedSuccessDialog();
+                    return const CustomDialog(
+                      title: 'Thành công',
+                      message: 'Mua thành công',
+                    );
                   },
                 );
                 Navigator.push(

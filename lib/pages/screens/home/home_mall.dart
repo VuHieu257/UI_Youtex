@@ -149,7 +149,7 @@ class HomeMall extends StatelessWidget {
                       CircleAvatar(
                         radius: 40,
                         backgroundImage: NetworkImage(
-                            "${NetworkConstants.urlImage}/storage/${industries[index].image}"),
+                            "${NetworkConstants.urlImage}${industries[index].image}"),
                       ),
                       const SizedBox(height: 5),
                       SizedBox(

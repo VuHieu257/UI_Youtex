@@ -127,7 +127,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 color: Styles.light,
               )),
           title: Text(
-            'Chỉnh sửa tài khoản',
+            'Tài khoản và bảo mật',
             style: context.theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold, color: Styles.light, fontSize: 17),
           ),
@@ -250,28 +250,42 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
 Widget _buildSettingItem(String title, String content, VoidCallback onTap) {
   return Container(
-    margin: const EdgeInsets.only(bottom: 8, top: 4),
+    margin: const EdgeInsets.symmetric(vertical: 6), // Khoảng cách giữa các mục
     decoration: BoxDecoration(
       color: const Color(0xffF3F3F3),
       borderRadius: BorderRadius.circular(8),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.25),
-          blurRadius: 4,
-          offset: const Offset(0, 4),
-        ),
-      ],
     ),
-    child: ListTile(
-      title: Text(
-        title,
-        style: const TextStyle(fontSize: 16),
-      ),
-      subtitle: content.isNotEmpty
-          ? Text(content, style: const TextStyle(fontSize: 14))
-          : null,
-      trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+    child: InkWell(
+      borderRadius: BorderRadius.circular(8), // Tạo hiệu ứng click
       onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  content,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Icon(Icons.chevron_right, color: Colors.grey),
+              ],
+            ),
+          ],
+        ),
+      ),
     ),
   );
 }
@@ -311,44 +325,63 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Widget _buildGenderSelectionRadio() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Gender',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        RadioListTile<String>(
-          title: const Text('Male'),
-          value: 'male',
-          groupValue: _selectedGender,
-          onChanged: (value) {
-            setState(() {
-              _selectedGender = value!;
-            });
-          },
-        ),
-        RadioListTile<String>(
-          title: const Text('Female'),
-          value: 'female',
-          groupValue: _selectedGender,
-          onChanged: (value) {
-            setState(() {
-              _selectedGender = value!;
-            });
-          },
-        ),
-        RadioListTile<String>(
-          title: const Text('Other'),
-          value: 'other',
-          groupValue: _selectedGender,
-          onChanged: (value) {
-            setState(() {
-              _selectedGender = value!;
-            });
-          },
-        ),
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          const Text(
+            'Giới tính',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(width: 16),
+          Row(
+            children: [
+              Radio<String>(
+                value: 'male',
+                groupValue: _selectedGender,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedGender = value!;
+                  });
+                },
+              ),
+              const Text('Nam'),
+            ],
+          ),
+          Row(
+            children: [
+              Radio<String>(
+                value: 'female',
+                groupValue: _selectedGender,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedGender = value!;
+                  });
+                },
+              ),
+              const Text('Nữ'),
+            ],
+          ),
+          Row(
+            children: [
+              Radio<String>(
+                value: 'other',
+                groupValue: _selectedGender,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedGender = value!;
+                  });
+                },
+              ),
+              const Text('Khác'),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -388,10 +421,11 @@ class _EditProfileState extends State<EditProfile> {
 
     if (pickedDate != null) {
       setState(() {
-        _birthdayController.text = pickedDate.toString().split(' ')[0]; // Format as yyyy-MM-dd
+        _birthdayController.text = pickedDate.toString().split(' ')[0];
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -441,7 +475,7 @@ class _EditProfileState extends State<EditProfile> {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
                       onTap: () {
@@ -461,15 +495,18 @@ class _EditProfileState extends State<EditProfile> {
                                     : NetworkImage(
                                             "${NetworkConstants.urlImage}${widget.user.image}")
                                         as ImageProvider)),
-                        child: Container(
+                         child: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: const BoxDecoration(
-                              color: Colors.white, shape: BoxShape.circle,boxShadow: [
-                                BoxShadow(offset: Offset(0, 2),blurRadius: 4)
-                          ]),
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(offset: Offset(0, 2), blurRadius: 4)
+                              ]),
                           child: const Icon(Icons.add_a_photo_outlined),
                         ),
                       ),
+                      
                     ),
                     // const SizedBox(
                     //   width: 10,
@@ -479,7 +516,9 @@ class _EditProfileState extends State<EditProfile> {
                     //   child: const Text("Select Image"),
                     // ),
                   ],
+                  
                 ),
+                
                 CustomTextFieldNoIcon(
                     controller: _nameController,
                     hintText: 'Tên hiện tại:\t"${widget.user.name}"',
@@ -491,26 +530,32 @@ class _EditProfileState extends State<EditProfile> {
                   onTap: () => _selectDate(context),
                   child: AbsorbPointer(
                     child: CustomTextFieldNoIcon(
-                        controller: _birthdayController,
-                        hintText: "Nhập ngày dạng yyyy-MM-dd",
-                        label: "Ngày sinh",readOnly: true,),
+                      controller: _birthdayController,
+                      hintText: "Nhập ngày dạng yyyy-MM-dd",
+                      label: "Ngày sinh",
+                      readOnly: true,
+                    ),
                   ),
                 ),
                 _validate(error: birthdayError),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 12),
-                    backgroundColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                Spacer(),
+                Container(
+                  width: MediaQuery.sizeOf(context).width,
+                  height: 60,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 12),
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
-                  ),
-                  onPressed: () => _updateProfile(),
-                  child: const Text(
-                    'Thay đổi',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    onPressed: () => _updateProfile(),
+                    child: const Text(
+                      'Thay đổi',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
                   ),
                 ),
               ],

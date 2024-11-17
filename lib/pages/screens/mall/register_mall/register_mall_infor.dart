@@ -55,7 +55,7 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
             label: _labelController.text,
             name: _nameController.text,
             phone: _phoneController.text,
-            country: _countryController.text,
+            country: "Việt Nam",
             province: _provinceController.text,
             ward: _wardController.text,
             address: _addressController.text,
@@ -92,32 +92,36 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return const CardAddedSuccessDialog();
+                return CustomDialog(
+                  title: 'Thành Công',
+                  message: 'Tải dữ liệu doanh nghiệp thành công.',
+                );
               },
-            ).then((_) => Navigator.pop(context));
+            );
           } else if (state is SellerAddressError) {
-            _showMessage("Thông Báo", state.errorMessage);
+            // Hiển thị CustomDialog khi có lỗi
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return CustomDialog(
+                  title: 'Thông Báo',
+                  message: state.errorMessage,
+                );
+              },
+            );
             setState(() {
               isLoading = false;
             });
           }
-        },
-        builder: (context, state) {
-          if (state is SellerAddressLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
 
           if (state is SellerAddressGetSuccess) {
-            // Parse the response and check if addresses exist
             final Map<String, dynamic> response = state.data;
             if (response['addresses'] != null &&
                 response['addresses'].isNotEmpty) {
               hasExistingAddress = true;
-              final address = response['addresses'][0]; // Get first address
+              final address = response['addresses'][0];
 
-              // Fill the controllers with existing data
               _labelController.text = address['label'] ?? '';
-
               _nameController.text = address['name'] ?? '';
               _phoneController.text = address['phone'] ?? '';
               _countryController.text = address['country'] ?? '';
@@ -125,7 +129,22 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
               _wardController.text = address['ward'] ?? '';
               _addressController.text = address['address'] ?? '';
               isDefault = address['is_default'] == 1;
+
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CustomDialog(
+                    title: 'Thành Công',
+                    message: 'Tải dữ liệu doanh nghiệp thành công.',
+                  );
+                },
+              );
             }
+          }
+        },
+        builder: (context, state) {
+          if (state is SellerAddressLoading) {
+            return const Center(child: CircularProgressIndicator());
           }
 
           return Column(
@@ -145,48 +164,42 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
                       children: [
                         const SizedBox(height: 10),
                         CustomTextFieldNoIcon(
-                          label: "Nhãn Hàng",
+                          label: "Tên chủ sỡ hữu",
                           hintText: "Điền thông tin tại đây",
                           controller: _labelController,
                           readOnly: hasExistingAddress,
                         ),
                         CustomTextFieldNoIcon(
-                          label: "Tên Mall",
+                          label: "Tên Cửa hàng",
                           hintText: "Điền thông tin tại đây",
                           controller: _nameController,
                           readOnly: hasExistingAddress,
                         ),
                         CustomTextFieldNoIcon(
-                          label: "Phone",
+                          label: "Số điện thoại",
                           hintText: "Điền thông tin tại đây",
                           controller: _phoneController,
                           readOnly: hasExistingAddress,
                         ),
                         CustomTextFieldNoIcon(
-                          label: "Country",
-                          hintText: "Điền thông tin tại đây",
-                          controller: _countryController,
-                          readOnly: hasExistingAddress,
-                        ),
-                        CustomTextFieldNoIcon(
-                          label: "Province",
+                          label: "Khu vực",
                           hintText: "Điền thông tin tại đây",
                           controller: _provinceController,
                           readOnly: hasExistingAddress,
                         ),
                         CustomTextFieldNoIcon(
-                          label: "Ward",
+                          label: "Phường",
                           hintText: "Điền thông tin tại đây",
                           controller: _wardController,
                           readOnly: hasExistingAddress,
                         ),
                         CustomTextFieldNoIcon(
-                          label: "Address",
+                          label: "Địa chỉ cụ thể",
                           hintText: "Điền thông tin tại đây",
                           controller: _addressController,
                           readOnly: hasExistingAddress,
                         ),
-                        if (!hasExistingAddress) // Only show checkbox if no existing address
+                        if (!hasExistingAddress)
                           Row(
                             children: [
                               Checkbox(
@@ -204,7 +217,7 @@ class _RegisterMallinforScreenState extends State<RegisterMallinforScreen> {
                             ],
                           ),
                         const SizedBox(height: 30),
-                        if (!hasExistingAddress) // Only show submit button if no existing address
+                        if (!hasExistingAddress)
                           Row(
                             children: [
                               Expanded(

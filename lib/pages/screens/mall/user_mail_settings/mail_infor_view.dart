@@ -107,20 +107,20 @@ class SettingsList extends StatelessWidget {
                           const RegisterMallinforExhibitiScreen()));
             },
           ),
-          SettingsItem(
-            icon: Icons.notifications_none,
-            text: 'Ngân hàng',
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const RegisterMallinforbankingScreen()));
-            },
-          ),
+          // SettingsItem(
+          //   icon: Icons.notifications_none,
+          //   text: 'Ngân hàng',
+          //   onTap: () {
+          //     Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //             builder: (context) =>
+          //                 const RegisterMallinforbankingScreen()));
+          //   },
+          // ),
           SettingsItem(
             icon: Icons.people_outline,
-            text: 'Mô tả shop',
+            text: 'Thông tin vận chuyển',
             onTap: () {
               Navigator.push(
                   context,

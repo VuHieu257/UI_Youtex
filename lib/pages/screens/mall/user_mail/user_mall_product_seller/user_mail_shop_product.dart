@@ -289,22 +289,14 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
                                 onActive: () async {
                                   final shouldActivate = await showDialog<bool>(
                                     context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: const Text('Kích hoạt sản phẩm'),
-                                      content: const Text(
-                                          'Bạn đã bổ sung đủ thông tin sản phẩm yêu cầu chưa?'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, false),
-                                          child: const Text('Hủy'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, true),
-                                          child: const Text('Kích hoạt'),
-                                        ),
-                                      ],
+                                    builder: (context) => CustomDialogg(
+                                      title: 'Kích hoạt sản phẩm',
+                                      message:
+                                          'Bạn đã bổ sung đủ thông tin sản phẩm yêu cầu chưa?',
+                                      onConfirm: () => Navigator.pop(
+                                          context, true), // Đóng và xác nhận
+                                      onCancel: () => Navigator.pop(
+                                          context, false), // Đóng và hủy
                                     ),
                                   );
                                   if (shouldActivate == true &&
@@ -712,6 +704,86 @@ class ProductCard extends StatelessWidget {
             fontSize: 13,
             fontWeight: FontWeight.w600,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomDialogg extends StatelessWidget {
+  final String title;
+  final String message;
+  final VoidCallback? onConfirm;
+  final VoidCallback? onCancel;
+
+  const CustomDialogg({
+    Key? key,
+    required this.title,
+    required this.message,
+    this.onConfirm,
+    this.onCancel,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              title == 'Thành Công' ? Icons.check_circle : Icons.info,
+              size: 60,
+              color: title == 'Thành Công' ? Colors.green : Colors.blue,
+            ),
+            const SizedBox(height: 20),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: title == 'Thành Công' ? Colors.green : Colors.blue,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black54,
+              ),
+            ),
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  onPressed: onCancel ?? () => Navigator.of(context).pop(false),
+                  child: const Text('Hủy'),
+                ),
+                ElevatedButton(
+                  onPressed: onConfirm ?? () => Navigator.of(context).pop(true),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text(
+                    'Kích hoạt',
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

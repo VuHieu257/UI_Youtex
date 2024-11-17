@@ -40,7 +40,7 @@ class _SearchPageState extends State<SearchPage> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Search Bar
+            // Back button and search bar container
             Container(
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).padding.top + 10,
@@ -51,6 +51,16 @@ class _SearchPageState extends State<SearchPage> {
               color: Styles.blue,
               child: Row(
                 children: [
+                  // Back button
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context); // Go back when tapped
+                    },
+                    child: const Icon(Icons.arrow_back, color: Colors.white),
+                  ),
+                  SizedBox(
+                      width: 10), // Space between back button and search bar
+                  // Search bar
                   Expanded(
                     child: BlocBuilder<ProductBlocBloc, ProductBlocState>(
                       builder: (context, state) {

@@ -19,6 +19,7 @@ class NetworkConstants {
   static hideKeyBoard() async {
     FocusManager.instance.primaryFocus?.unfocus();
   }
+
   static String convertToUnaccentedNoSpace(String input) {
     const accents =
         'áàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ';
@@ -38,5 +39,4 @@ class NetworkConstants {
 
     return result;
   }
-
 }

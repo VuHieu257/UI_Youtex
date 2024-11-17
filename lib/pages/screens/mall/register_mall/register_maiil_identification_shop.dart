@@ -1,14 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_identification_bloc/seller_register_identification_bloc_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
-
-import '../../../../core/colors/color.dart';
-import '../../../widget_small/appbar/custome_appbar_circle.dart';
+import 'package:ui_youtex/pages/widget_small/appbar/custome_appbar_circle.dart';
 
 class RegisterMallIdentificationScreen extends StatefulWidget {
   const RegisterMallIdentificationScreen({super.key});
@@ -24,21 +23,101 @@ class _RegisterMallIdentificationScreenState
   final TextEditingController _unitController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _settingsController = TextEditingController();
+
   XFile? _image;
   XFile? _selfie;
 
-  Future<void> _pickImage(bool isSelfie) async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        if (isSelfie) {
-          _selfie = image;
-        } else {
-          _image = image;
-        }
-      });
+  Future<void> _pickImage({required bool isSelfie}) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? selectedImage =
+          await picker.pickImage(source: ImageSource.gallery);
+
+      if (selectedImage != null) {
+        setState(() {
+          if (isSelfie) {
+            _selfie = selectedImage;
+          } else {
+            _image = selectedImage;
+          }
+        });
+      }
+    } catch (e) {
+      debugPrint('Error picking image: $e');
     }
+  }
+
+  void _submitForm() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      if (_image == null || _selfie == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Vui lòng chọn đủ ảnh giấy tờ và ảnh chụp selfie."),
+          ),
+        );
+        return;
+      }
+
+      final identification = SellerIdentificationModel(
+        type: _unitController.text,
+        number: _descriptionController.text,
+        name: _settingsController.text,
+        image: _image!.path,
+        selfie: _selfie!.path,
+      );
+
+      context.read<SellerRegisterIdentificationBlocBloc>().add(
+          SellerRegisterIdentificationPostEvent(
+              identification: identification));
+
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const CustomDialog(
+            title: 'Thành công',
+            message: 'Thông tin xác thực đã được gửi thành công.',
+          );
+        },
+      );
+
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Vui lòng điền đầy đủ thông tin."),
+        ),
+      );
+    }
+  }
+
+  Widget _buildImagePicker({required String label, required bool isSelfie}) {
+    final XFile? selectedImage = isSelfie ? _selfie : _image;
+
+    return GestureDetector(
+      onTap: () => _pickImage(isSelfie: isSelfie),
+      child: Container(
+        height: 100,
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: selectedImage == null
+            ? Center(
+                child: Text(
+                  label,
+                  style: const TextStyle(color: Colors.grey, fontSize: 16),
+                ),
+              )
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.file(
+                  File(selectedImage.path),
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              ),
+      ),
+    );
   }
 
   @override
@@ -52,166 +131,74 @@ class _RegisterMallIdentificationScreenState
           ),
           Expanded(
             child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 10),
-                      CustomTextFieldNoIcon(
-                        controller: _unitController,
-                        label: "Type",
-                        hintText: "id_card",
-                        line: 1,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Loại giấy tờ là bắt buộc';
-                          }
-                          return null;
-                        },
-                      ),
-                      CustomTextFieldNoIcon(
-                        controller: _descriptionController,
-                        label: "number",
-                        hintText: "Điền thông tin tại đây",
-                        line: 7,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Số giấy tờ là bắt buộc';
-                          }
-                          return null;
-                        },
-                      ),
-                      CustomTextFieldNoIcon(
-                        controller: _settingsController,
-                        label: "name",
-                        hintText: "Điền thông tin tại đây",
-                        line: 1,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Tên trên giấy tờ là bắt buộc';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () => _pickImage(false),
-                        child: _image == null
-                            ? Container(
-                                height: 100,
-                                color: Colors.grey[200],
-                                child: const Center(child: Text("Chọn ảnh")),
-                              )
-                            : Image.file(
-                                File(_image!.path),
-                                height: 100,
-                                width: 100,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                      const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () => _pickImage(true),
-                        child: _selfie == null
-                            ? Container(
-                                height: 100,
-                                color: Colors.grey[200],
-                                child: const Center(
-                                    child: Text("Chọn ảnh Selfie")),
-                              )
-                            : Image.file(
-                                File(_selfie!.path),
-                                height: 100,
-                                width: 100,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                      const SizedBox(height: 30),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 20),
-                              decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xFF218FF2), // Light blue
-                                    Color(0xFF13538C), // Dark blue
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate() &&
-                                      _image != null &&
-                                      _selfie != null) {
-                                    final identification =
-                                        SellerIdentificationModel(
-                                      type: 'id_card',
-                                      number: _descriptionController.text,
-                                      name: _settingsController.text,
-                                      image: _image!.path,
-                                      selfie: _selfie!.path,
-                                    );
-
-                                    // Call the BLoC to post data
-                                    context
-                                        .read<
-                                            SellerRegisterIdentificationBlocBloc>()
-                                        .add(
-                                          SellerRegisterIdentificationPostEvent(
-                                              identification: identification),
-                                        );
-
-                                    await showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return const CardAddedSuccessDialog();
-                                      },
-                                    );
-                                    Navigator.pop(context);
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                            "Vui lòng điền đầy đủ thông tin và chọn ảnh"),
-                                      ),
-                                    );
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.transparent,
-                                  elevation: 0,
-                                  shadowColor: Colors.transparent,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 15),
-                                  child: Text(
-                                    'Lưu thay đổi',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+              padding: const EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    CustomTextFieldNoIcon(
+                      controller: _unitController,
+                      label: "Loại thẻ",
+                      hintText: "id_card",
+                      line: 1,
+                      validator: (value) => value?.isEmpty ?? true
+                          ? 'Loại thẻ là bắt buộc'
+                          : null,
+                    ),
+                    CustomTextFieldNoIcon(
+                      controller: _descriptionController,
+                      label: "Số thẻ",
+                      hintText: "Điền thông tin tại đây",
+                      line: 1,
+                      validator: (value) => value?.isEmpty ?? true
+                          ? 'Số giấy tờ là bắt buộc'
+                          : null,
+                    ),
+                    CustomTextFieldNoIcon(
+                      controller: _settingsController,
+                      label: "Tên chủ sở hữu",
+                      hintText: "Điền thông tin tại đây",
+                      line: 1,
+                      validator: (value) => value?.isEmpty ?? true
+                          ? 'Tên trên giấy tờ là bắt buộc'
+                          : null,
+                    ),
+                    const SizedBox(height: 20),
+                    _buildImagePicker(
+                      label: "Chọn ảnh giấy tờ",
+                      isSelfie: false,
+                    ),
+                    const SizedBox(height: 20),
+                    _buildImagePicker(
+                      label: "Chọn ảnh chụp cùng giấy tờ",
+                      isSelfie: true,
+                    ),
+                    const SizedBox(height: 30),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _submitForm,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                        ],
+                          backgroundColor: Colors.blue,
+                          elevation: 0,
+                        ),
+                        child: const Text(
+                          'Lưu thay đổi',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
