@@ -3,9 +3,13 @@ import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 
 import '../../../../core/assets.dart';
+import '../../../widget_small/showdialog/showdialog.dart';
 
 class GroupChatSettings extends StatelessWidget {
-  const GroupChatSettings({super.key});
+  final String name;
+
+  const GroupChatSettings({super.key, required this.name});
+
   // void _showMemberApproval(BuildContext context) {
   //   showModalBottomSheet(
   //     context: context,
@@ -130,7 +134,7 @@ class GroupChatSettings extends StatelessWidget {
   //     },
   //   );
   // }
-  void _showMemberApproval(BuildContext context,String title,String content) {
+  void _showMemberApproval(BuildContext context, String title, String content) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -184,9 +188,8 @@ class GroupChatSettings extends StatelessWidget {
                             children: [
                               Text(
                                 title,
-                                style: context.theme.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold
-                                ),
+                                style: context.theme.textTheme.titleMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(
                                 height: 10,
@@ -199,17 +202,19 @@ class GroupChatSettings extends StatelessWidget {
                           ),
                         ),
                         const Spacer(),
-                        title=="Link tham gia nhóm"? const Icon(Icons.copy)  : Switch(
-                          value: isSwitched,
-                          onChanged: (value) {
-                            setState(() {
-                              isSwitched = value;
-                            });
-                            updateMemberApproval(value);
-                          },
-                          activeColor: Colors.white,
-                          activeTrackColor: Colors.red,
-                        ),
+                        title == "Link tham gia nhóm"
+                            ? const Icon(Icons.copy)
+                            : Switch(
+                                value: isSwitched,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isSwitched = value;
+                                  });
+                                  updateMemberApproval(value);
+                                },
+                                activeColor: Colors.white,
+                                activeTrackColor: Colors.red,
+                              ),
                       ],
                     ),
                   ),
@@ -227,8 +232,19 @@ class GroupChatSettings extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        leading: const Icon(Icons.arrow_back_ios,color: Colors.white,),
-        title: Text('Tùy Chọn',style: context.theme.textTheme.headlineSmall?.copyWith(color: Colors.white,fontWeight: FontWeight.w500),),
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            )),
+        title: Text(
+          'Tùy Chọn',
+          style: context.theme.textTheme.headlineSmall
+              ?.copyWith(color: Colors.white, fontWeight: FontWeight.w500),
+        ),
       ),
       body: Column(
         children: [
@@ -238,19 +254,18 @@ class GroupChatSettings extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-              const  CircleAvatar(
+                const CircleAvatar(
                   radius: 30,
-                  backgroundImage: AssetImage(
-                      Asset.bgImageAvatar), // Đổi link ảnh
+                  backgroundImage: AssetImage(Asset.bgImageUser),
                 ),
                 const SizedBox(height: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                        'Martha Craig',
-                        style: context.theme.textTheme.headlineMedium?.copyWith(color: Colors.black87,fontWeight: FontWeight.bold)
-                    ),
+                    Text(name,
+                        style: context.theme.textTheme.headlineMedium?.copyWith(
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold)),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -258,48 +273,75 @@ class GroupChatSettings extends StatelessWidget {
                         Column(
                           children: [
                             CircleAvatar(
-                              backgroundColor: Colors.grey[200] ,
-                              child:   IconButton(
-                                icon: const Icon(Icons.search,color: Colors.black87),
-                                onPressed: () {},
+                              backgroundColor: Colors.grey[200],
+                              child: IconButton(
+                                icon: const Icon(Icons.search,
+                                    color: Colors.black87),
+                                onPressed: () {
+                                  showFeatureUnavailableDialog(context);
+                                },
                               ),
                             ),
-                            const SizedBox(height: 10,),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             Text("Tìm tin nhắn",
-                                style: context.theme.textTheme.titleMedium?.copyWith(color: Colors.black87,fontWeight: FontWeight.bold)
-                            )
+                                style: context.theme.textTheme.titleMedium
+                                    ?.copyWith(
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.bold))
                           ],
                         ),
-                        const SizedBox(width: 20,),
+                        const SizedBox(
+                          width: 20,
+                        ),
                         Column(
                           children: [
                             CircleAvatar(
-                              backgroundColor: Colors.grey[200] ,
-                              child:   IconButton(
-                                icon: const Icon(Icons.group_add,color: Colors.black87),
-                                onPressed: () {},
+                              backgroundColor: Colors.grey[200],
+                              child: IconButton(
+                                icon: const Icon(Icons.group_add,
+                                    color: Colors.black87),
+                                onPressed: () {
+                                  showFeatureUnavailableDialog(context);
+                                },
                               ),
                             ),
-                            const SizedBox(height: 10,),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             Text("Thêm thành viên",
-                                style: context.theme.textTheme.titleMedium?.copyWith(color: Colors.black87,fontWeight: FontWeight.bold)
-                            )
+                                style: context.theme.textTheme.titleMedium
+                                    ?.copyWith(
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.bold))
                           ],
                         ),
-                        const SizedBox(width: 20,),
+                        const SizedBox(
+                          width: 20,
+                        ),
                         Column(
                           children: [
                             CircleAvatar(
-                              backgroundColor: Colors.grey[200] ,
-                              child:   IconButton(
-                                icon: const Icon(Icons.notifications_none,color: Colors.black87,),
-                                onPressed: () {},
+                              backgroundColor: Colors.grey[200],
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.notifications_none,
+                                  color: Colors.black87,
+                                ),
+                                onPressed: () {
+                                  showFeatureUnavailableDialog(context);
+                                },
                               ),
                             ),
-                            const SizedBox(height: 10,),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             Text("Tắt thông báo",
-                                style: context.theme.textTheme.titleMedium?.copyWith(color: Colors.black87,fontWeight: FontWeight.bold)
-                            )
+                                style: context.theme.textTheme.titleMedium
+                                    ?.copyWith(
+                                        color: Colors.black87,
+                                        fontWeight: FontWeight.bold))
                           ],
                         ),
                       ],
@@ -316,18 +358,55 @@ class GroupChatSettings extends StatelessWidget {
           Expanded(
             child: ListView(
               children: [
-                _buildListItem(context,Icons.image_outlined, 'Xem hình ảnh, file và liên kết',),
-                _buildListItem(context,Icons.people, 'Xem thành viên (9218)'),
-                _buildListItem(context,Icons.report_problem_outlined, 'Báo cáo tin nhắn'),
-                _buildListItem(context,Icons.block, 'Chặn'),
-                _buildListItem(context,Icons.approval, 'Phê duyệt thành viên mới',onTap: () {
-                  _showMemberApproval(context,"Duyệt thành viên","Bất kỳ ai có link này đều có thể tham gia nhóm");
+                _buildListItem(
+                  context,
+                  Icons.image_outlined,
+                  'Xem hình ảnh, file và liên kết',
+                  onTap: () {
+                    showFeatureUnavailableDialog(context);
+                  },
+                ),
+                // _buildListItem(context, Icons.people, 'Xem thành viên (9218)',
+                // onTap: () {
+                //   showFeatureUnavailableDialog(context);
+                // },),
+                _buildListItem(
+                    context, Icons.report_problem_outlined, 'Báo cáo tin nhắn',onTap: () {
+                  showFeatureUnavailableDialog(context);
                 },),
-                _buildListItem(context,Icons.delete_outline, 'Xoá lịch sử trò chuyện'),
-                _buildListItem(context,Icons.add_link, 'Link tham gia nhóm',onTap: () {
-                  _showMemberApproval(context,"Link tham gia nhóm","Đặt link tham gia nhóm");
+                _buildListItem(context, Icons.block, 'Chặn',onTap: () {
+                  showFeatureUnavailableDialog(context);
                 },),
-                _buildListItem(context,Icons.exit_to_app, 'Rời nhóm', color: Colors.red),
+                // _buildListItem(
+                //   context,
+                //   Icons.approval,
+                //   'Phê duyệt thành viên mới',
+                //   onTap: () {
+                //     // _showMemberApproval(context, "Duyệt thành viên",
+                //     //     "Bất kỳ ai có link này đều có thể tham gia nhóm");
+                //     showFeatureUnavailableDialog(context);
+                //   },
+                // ),
+                _buildListItem(
+                    context, Icons.delete_outline, 'Xoá lịch sử trò chuyện',onTap: () {
+                  showFeatureUnavailableDialog(context);
+
+                },),
+                // _buildListItem(
+                //   context,
+                //   Icons.add_link,
+                //   'Link tham gia nhóm',
+                //   onTap: () {
+                //     // _showMemberApproval(context, "Link tham gia nhóm",
+                //     //     "Đặt link tham gia nhóm");
+                //     showFeatureUnavailableDialog(context);
+                //
+                //   },
+                // ),
+                // _buildListItem(context, Icons.exit_to_app, 'Rời nhóm',
+                //     color: Colors.red,onTap: () {
+                //     showFeatureUnavailableDialog(context);
+                //   },),
               ],
             ),
           )
@@ -336,15 +415,14 @@ class GroupChatSettings extends StatelessWidget {
     );
   }
 
-  Widget _buildListItem(BuildContext context,IconData icon, String title, {void Function()? onTap,Color? color}) {
+  Widget _buildListItem(BuildContext context, IconData icon, String title,
+      {void Function()? onTap, Color? color}) {
     return ListTile(
       leading: Icon(icon, color: color ?? Colors.black),
-      title: Text(
-          title,
-          style: context.theme.textTheme.titleMedium?.copyWith(color: Colors.black87,fontWeight: FontWeight.bold)
-      ),
+      title: Text(title,
+          style: context.theme.textTheme.titleMedium
+              ?.copyWith(color: Colors.black87, fontWeight: FontWeight.bold)),
       onTap: onTap,
     );
   }
 }
-
