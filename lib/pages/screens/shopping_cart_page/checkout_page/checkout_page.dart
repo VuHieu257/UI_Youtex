@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/bloc/cart_checkout_bloc/bloc/checkout_bloc.dart';
@@ -7,16 +9,14 @@ import 'package:ui_youtex/core/assets.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/model/address.dart';
 import 'package:ui_youtex/model/checkout.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
 import 'package:ui_youtex/pages/widget_small/custom_button.dart';
-import '../../../widget_small/custom_button.dart'
-    as custom_widget; // Thêm prefix
+import 'package:ui_youtex/util/show_snack_bar.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:ui_youtex/pages/widget_small/payment_method_button.dart';
-
 import '../../../../services/restful_api_provider.dart';
-import '../../../widget_small/bottom_navigation/bottom_navigation.dart';
-import '../../home/add_success/add_success.dart';
 import '../../user/add_address_screen/add_address_screen.dart';
 
 class CheckoutPage extends StatefulWidget {
@@ -27,7 +27,8 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
-  String _selectedPaymentMethod = 'Card';
+  String _selectedPaymentMethod = 'vnpay';
+  Address? selectedAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
               return const Center(child: CircularProgressIndicator());
             } else if (state is CheckoutLoaded) {
               final checkoutData = state.checkoutResponse;
-
               return SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -97,66 +97,75 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         children: [
                           Expanded(
                             child: PaymentMethodButton(
-                              label: 'Card',
+                              label: 'Vnpay',
                               icon: Icons.credit_card,
-                              isSelected: _selectedPaymentMethod == 'Card',
+                              isSelected: _selectedPaymentMethod == 'vnpay',
                               onTap: () {
                                 setState(() {
-                                  _selectedPaymentMethod = 'Card';
+                                  _selectedPaymentMethod = 'vnpay';
                                 });
                               },
                             ),
                           ),
                           Expanded(
                             child: PaymentMethodButton(
-                              label: 'Cash',
+                              label: 'Thanh toán khi nhận hàng',
                               icon: Icons.money,
-                              isSelected: _selectedPaymentMethod == 'Cash',
+                              isSelected:
+                                  _selectedPaymentMethod == 'cash_on_delivery',
                               onTap: () {
                                 setState(() {
-                                  _selectedPaymentMethod = 'Cash';
+                                  _selectedPaymentMethod = 'cash_on_delivery';
                                 });
                               },
                             ),
                           ),
-                          Expanded(
-                            child: PaymentMethodButton(
-                              label: 'Pay',
-                              icon: Icons.phone_iphone,
-                              isSelected: _selectedPaymentMethod == 'Pay',
-                              onTap: () {
-                                setState(() {
-                                  _selectedPaymentMethod = 'Pay';
-                                });
-                              },
-                            ),
-                          ),
+                          // Expanded(
+                          //   child: PaymentMethodButton(
+                          //     label: 'Pay',
+                          //     icon: Icons.phone_iphone,
+                          //     isSelected: _selectedPaymentMethod == 'Pay',
+                          //     onTap: () {
+                          //       setState(() {
+                          //         _selectedPaymentMethod = 'Pay';
+                          //       });
+                          //     },
+                          //   ),
+                          // ),
                         ],
                       ),
 
                       const SizedBox(height: 20),
-                      if (_selectedPaymentMethod == 'Card')
-                        const CardInfoSection(),
+                      // if (_selectedPaymentMethod == 'Card')
+                      //   const CardInfoSection(),
                       const SizedBox(height: 20),
                       const Divider(),
                       _buildOrderSummarySection(context, checkoutData),
 
                       InkWell(
                         onTap: () async {
-                          await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return CustomDialog(
-                                title: 'Thành Công',
-                                message: checkoutData.message,
-                              );
-                            },
-                          );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const CustomNavBar()),
-                          );
+                          if (selectedAddress?.id == null) {
+                            SnackBarUtils.showWarningSnackBar(context,
+                                message: "Vui Lòng chọn địa chỉ");
+                          } else {
+                            context.read<CheckoutBloc>().add(FetchPaymentUrl(
+                                "${selectedAddress?.id}",
+                                _selectedPaymentMethod));
+                          }
+                          // await showDialog(
+                          //   context: context,
+                          //   builder: (BuildContext context) {
+                          //     return CustomDialog(
+                          //       title: 'Thành Công',
+                          //       message: checkoutData.message,
+                          //     );
+                          //   },
+                          // );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => const CustomNavBar()),
+                          // );
                         },
                         child: const CusButton(
                           text: "Thanh toán",
@@ -167,72 +176,82 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
               );
+            } else if (state is PaymentSuccess) {
+              print(state.paymentUrl);
+              return WebViewScreen(url: state.paymentUrl);
             } else if (state is CheckoutError) {
-              return Center(child: Text('Error: ${state.message}'));
-            } else {
-              return const Center(child: Text('No data available.'));
+              return const Center(child: Text('Có lỗi xảy ra'));
             }
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),
     );
   }
-}
 
-Widget _buildAddressSection(BuildContext context) {
-  return Card(
-    elevation: 2,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    child: Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Địa chỉ giao hàng',
-                  style: context.theme.textTheme.titleMedium
-                      ?.copyWith(fontWeight: FontWeight.bold)),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
+  Widget _buildAddressSection(BuildContext context) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Địa chỉ giao hàng',
+                    style: context.theme.textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold)),
+                TextButton(
+                  onPressed: () async {
+                    var value = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const AddressScreenUser(),
-                      ));
-                },
-                child: Text('Thay đổi',
-                    style: context.theme.textTheme.bodyMedium
-                        ?.copyWith(color: Styles.blue)),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              const Icon(Icons.location_on_outlined,
-                  size: 24, color: Styles.blue),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Nhà riêng', style: context.theme.textTheme.bodyLarge),
-                    Text(
-                      'Vinhomes Grand Park, Nguyễn Xiển, Thủ Đức',
+                      ),
+                    );
+
+                    if (value != null && value is Address) {
+                      setState(() {
+                        selectedAddress = value;
+                      });
+                    }
+                  },
+                  child: Text('Thay đổi',
                       style: context.theme.textTheme.bodyMedium
-                          ?.copyWith(color: Colors.grey[600]),
-                    ),
-                  ],
+                          ?.copyWith(color: Styles.blue)),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                const Icon(Icons.location_on_outlined,
+                    size: 24, color: Styles.blue),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(selectedAddress?.name ?? "Chưa chọn",
+                          style: context.theme.textTheme.bodyLarge),
+                      Text(
+                        selectedAddress?.address ?? "Chưa có địa chỉ",
+                        style: context.theme.textTheme.bodyMedium
+                            ?.copyWith(color: Colors.grey[600]),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 Widget _buildOrderSummarySection(
@@ -270,7 +289,7 @@ Widget _buildOrderSummarySection(
 class StoreSection extends StatelessWidget {
   final Store store;
 
-  const StoreSection({Key? key, required this.store}) : super(key: key);
+  const StoreSection({super.key, required this.store});
 
   @override
   Widget build(BuildContext context) {
@@ -460,5 +479,78 @@ class OrderSummaryRow extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class WebViewScreen extends StatefulWidget {
+  final String url;
+
+  const WebViewScreen({super.key, required this.url});
+
+  @override
+  State<WebViewScreen> createState() => _WebViewScreenState();
+}
+
+class _WebViewScreenState extends State<WebViewScreen> {
+  WebViewController? webViewController;
+
+  @override
+  void initState() {
+    super.initState();
+    loadWebView();
+  }
+
+  loadWebView() {
+    webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.white)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (String url) {
+            log('Page started loading: $url');
+          },
+          onProgress: (int progress) {
+            log('WebView is loading (progress : $progress%)');
+          },
+          onPageFinished: (String url) {
+            log('Page finished loading: $url');
+          },
+          onWebResourceError: (WebResourceError error) {
+            log('Webview resource error $error');
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.contains("http:/")) {
+              log("first redirection ${request.url}");
+              return NavigationDecision.navigate;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(
+        Uri.parse(widget.url),
+      );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+        onWillPop: () async {
+          return true;
+        },
+        child: Scaffold(
+          body: SafeArea(
+            bottom: false,
+            child: Column(
+              children: [
+                Expanded(
+                  child: WebViewWidget(
+                    controller: webViewController!,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ));
   }
 }

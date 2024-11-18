@@ -4,6 +4,7 @@ part 'user_profile.g.dart';
 
 @JsonSerializable()
 class Profile {
+  @JsonKey(name: 'uuid',)
   final String id;
   final String? image;
   final String name;

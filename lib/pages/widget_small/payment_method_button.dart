@@ -35,7 +35,7 @@ class PaymentMethodButton extends StatelessWidget {
           children: [
             Icon(icon, size: 30, color: isSelected ? Colors.white : Colors.black),
             const SizedBox(width: 6,),
-            Text(label, style: TextStyle(color: isSelected ? Colors.white : Colors.black)),
+            SizedBox(width: 100,child: Text(label, style: TextStyle(color: isSelected ? Colors.white : Colors.black,overflow: TextOverflow.ellipsis))),
           ],
         ),
       ),

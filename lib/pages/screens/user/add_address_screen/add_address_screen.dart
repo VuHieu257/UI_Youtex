@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
+import 'package:ui_youtex/model/address.dart';
 
 import '../../../../bloc/address_bloc/address_bloc.dart';
 import '../../../../core/assets.dart';
@@ -21,6 +22,8 @@ class AddressScreenUser extends StatefulWidget {
 
 class _AddressScreenState extends State<AddressScreenUser> {
   int _selectedAddress = -1; // Track the selected address
+  String idAddress = ""; // Track the selected address
+  Address? addressSelect;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +101,8 @@ class _AddressScreenState extends State<AddressScreenUser> {
                                     onChanged: () {
                                       setState(() {
                                         _selectedAddress = index;
+                                        idAddress = "${address.id}";
+                                        addressSelect=address;
                                       });
                                     },
                                   );
@@ -179,13 +184,15 @@ class _AddressScreenState extends State<AddressScreenUser> {
               padding: const EdgeInsets.all(16.0),
               child: InkWell(
                 onTap: () {
-                  Navigator.pop(context);
+                  if(_selectedAddress!=-1){
+                    Navigator.pop(context, addressSelect);
+                  }
                 },
                 child: Container(
                   alignment: Alignment.center,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Styles.blue,
+                    color:_selectedAddress==-1? Styles.grey.withOpacity(0.7):Styles.blue,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: const Text(

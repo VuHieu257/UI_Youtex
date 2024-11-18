@@ -41,6 +41,7 @@ import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation
 import 'package:ui_youtex/services/restful_api_provider.dart';
 import 'bloc/edit_profile_bloc/edit_profile_bloc.dart';
 import 'bloc/login_bloc/login_bloc.dart';
+import 'bloc/order_bloc/order_bloc.dart';
 import 'bloc/register_bloc/register_bloc.dart';
 import 'bloc/search_user_bloc/fetch_user_by_phone_bloc.dart';
 import 'bloc/user_profile_bloc/user_profile_bloc.dart';
@@ -129,11 +130,9 @@ void main() async {
               restfulApiProvider: apiProvider,
             ),
           ),
-          // BlocProvider(
-          //   create: (context) => SellerRegisterAddressBloc(
-          //     restfulApiProvider: apiProvider,
-          //   ),
-          // ),SellerRegisterStatusBloc
+          BlocProvider(
+            create: (context) => OrderBloc(),
+          ),
           BlocProvider(
             create: (context) => SellerRegisterTaxBloc(
               restfulApiProvider: apiProvider,
@@ -182,8 +181,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       // home: const WelcomeApp(),
-      // home: const CustomNavBar(),
-      home: const AddressScreenUser(),
+      home: const CustomNavBar(),
+      // home: const GroupChatSettings(),
       // home: const RegisterMallScreen(),
       // home: const UploadImageScreen(),
       // home: const ImageGalleryScreen(),
