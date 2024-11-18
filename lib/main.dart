@@ -29,6 +29,7 @@ import 'package:ui_youtex/pages/screens/member_Vip/member_packagePayment.dart';
 import 'package:ui_youtex/pages/screens/message/group_chat_settings/group_chat_settings.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen%20copy.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
+import 'package:ui_youtex/pages/screens/user/add_address_screen/add_address_screen.dart';
 import 'package:ui_youtex/pages/screens/voucher/Voucher_seller.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/forgotPass_Screen.dart';
@@ -180,9 +181,9 @@ class MyApp extends StatelessWidget {
       theme: MyAppThemes.lightTheme,
       debugShowCheckedModeBanner: false,
 
-      home: const WelcomeApp(),
+      // home: const WelcomeApp(),
       // home: const CustomNavBar(),
-      // home: const GroupChatSettings(),
+      home: const AddressScreenUser(),
       // home: const RegisterMallScreen(),
       // home: const UploadImageScreen(),
       // home: const ImageGalleryScreen(),

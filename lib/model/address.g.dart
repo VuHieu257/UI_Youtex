@@ -14,7 +14,10 @@ Address _$AddressFromJson(Map<String, dynamic> json) => Address(
       province: json['province'] as String,
       ward: json['ward'] as String,
       address: json['address'] as String,
-      isDefault: (json['is_default'] as num).toInt(),
+      isDefault: Address._boolFromInt(json['is_default']),
+      label: json['label'] as String?,
+      longitude: json['longitude'] as String?,
+      latitude: json['latitude'] as String?,
     );
 
 Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
@@ -26,4 +29,7 @@ Map<String, dynamic> _$AddressToJson(Address instance) => <String, dynamic>{
       'ward': instance.ward,
       'address': instance.address,
       'is_default': instance.isDefault,
+      'label': instance.label,
+      'longitude': instance.longitude,
+      'latitude': instance.latitude,
     };

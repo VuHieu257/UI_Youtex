@@ -15,17 +15,29 @@ class AddAddress extends AddressEvent {
 }
 
 class UpdateAddress extends AddressEvent {
-  // final Address address;
+  final String label;
   final String name;
   final String phone;
   final String country;
   final String province;
   final String ward;
   final String address;
-  final int isDefault;
+  final String longitude;
+  final String latitude;
+  final bool isDefault;
 
-  UpdateAddress(this.address, this.name, this.phone, this.country,
-      this.province, this.ward, this.isDefault);
+  UpdateAddress({
+    required this.label,
+    required this.name,
+    required this.phone,
+    required this.country,
+    required this.province,
+    required this.ward,
+    required this.address,
+    required this.longitude,
+    required this.latitude,
+    required this.isDefault,
+  });
 }
 
 class DeleteAddress extends AddressEvent {

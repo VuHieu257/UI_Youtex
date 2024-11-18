@@ -3,19 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/bloc/cart_checkout_bloc/bloc/checkout_bloc.dart';
 import 'package:ui_youtex/bloc/cart_checkout_bloc/bloc/checkout_event.dart';
 import 'package:ui_youtex/bloc/cart_checkout_bloc/bloc/checkout_state.dart';
+import 'package:ui_youtex/core/assets.dart';
+import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/model/checkout.dart';
-import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
-import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
-import 'package:ui_youtex/services/restful_api_provider.dart';
+import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
+import 'package:ui_youtex/pages/widget_small/custom_button.dart';
+import '../../../widget_small/custom_button.dart'
+    as custom_widget; // Thêm prefix
+import 'package:ui_youtex/pages/widget_small/payment_method_button.dart';
 
-import '../../../../core/assets.dart';
-import '../../../../core/colors/color.dart';
-import '../../../widget_small/custom_button.dart';
-import '../../../widget_small/payment_method_button.dart';
+import '../../../../services/restful_api_provider.dart';
+import '../../../widget_small/bottom_navigation/bottom_navigation.dart';
+import '../../home/add_success/add_success.dart';
 import '../../user/add_address_screen/add_address_screen.dart';
-import '../payment_method_screen/payment_method_screen.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
@@ -157,7 +159,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           );
                         },
                         child: const CusButton(
-                            text: "Thanh toán", color: Styles.blue),
+                          text: "Thanh toán",
+                          color: Styles.blue,
+                        ),
                       ),
                     ],
                   ),

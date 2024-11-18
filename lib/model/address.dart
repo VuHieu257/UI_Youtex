@@ -11,8 +11,12 @@ class Address {
   final String province;
   final String ward;
   final String address;
-  @JsonKey(name: 'is_default')
-  final int isDefault;
+  @JsonKey(name: 'is_default', fromJson: _boolFromInt)
+  final bool isDefault;
+
+  final String? label;
+  final String? longitude;
+  final String? latitude;
 
   Address({
     required this.id,
@@ -23,9 +27,21 @@ class Address {
     required this.ward,
     required this.address,
     required this.isDefault,
+    this.label,
+    this.longitude,
+    this.latitude,
   });
 
-  // These methods will be generated automatically
-  factory Address.fromJson(Map<String, dynamic> json) => _$AddressFromJson(json);
+  // Convert integer to boolean
+  static bool _boolFromInt(dynamic value) {
+    if (value == null) return false;
+    if (value is bool) return value;
+    if (value is int) return value == 1;
+    if (value is String) return value == '1' || value.toLowerCase() == 'true';
+    return false;
+  }
+
+  factory Address.fromJson(Map<String, dynamic> json) =>
+      _$AddressFromJson(json);
   Map<String, dynamic> toJson() => _$AddressToJson(this);
 }

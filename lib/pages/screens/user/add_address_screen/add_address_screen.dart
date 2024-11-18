@@ -28,114 +28,177 @@ class _AddressScreenState extends State<AddressScreenUser> {
       appBar: AppBar(
         backgroundColor: Styles.blue,
         centerTitle: true,
-        leading: InkWell(
-            onTap: () {
-
-            }),
-            //     Navigator.push(context,MaterialPageRoute(builder: (context) =>  const AccountSettingsScreen(),)),
-            // child: const Icon(
-            //   Icons.arrow_back_ios,
-            //   color: Styles.light,
-            // )),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Styles.light),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: Text(
           'Địa Chỉ',
-          style: context.theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Styles.light,
-          ),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Styles.light,
+              ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SafeArea(
         child: Column(
           children: [
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Địa chỉ đã thêm',
-                ),
-              ],
-            ),
-
             Expanded(
-              child: BlocProvider(
-                create: (context) => AddressBloc()..add(FetchAddresses()),
-                child: BlocBuilder<AddressBloc, AddressState>(
-                  builder: (context, state) {
-                    if (state is AddressLoading) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (state is AddressLoaded) {
-                      return ListView.builder(
-                        itemCount: state.addresses.length,
-                        itemBuilder: (context, index) {
-                          final address = state.addresses[index];
-                          return GestureDetector(
-                            onLongPress: () {
-                              // _showDeleteConfirmationDialog(context, address.id);
-                            },
-                            child: AddressItem(
-                              label: address.name,
-                              address: address.address,
-                              isSelected: _selectedAddress == index,
-                              isDefault: address.isDefault == 1,
-                              onChanged: () {
-                                setState(() {
-                                  _selectedAddress = index;
-                                });
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    } else if (state is AddressError) {
-                      return Center(child: Text(state.message));
-                    }
-                    return const Center(child: Text('No addresses found.'));
-                  },
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Địa chỉ đã thêm',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Expanded(
+                      child: BlocProvider(
+                        create: (context) =>
+                            AddressBloc()..add(FetchAddresses()),
+                        child: BlocBuilder<AddressBloc, AddressState>(
+                          builder: (context, state) {
+                            if (state is AddressLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+
+                            if (state is AddressLoaded) {
+                              if (state.addresses.isEmpty) {
+                                return const Center(
+                                  child: Text('Chưa có địa chỉ nào được thêm'),
+                                );
+                              }
+
+                              return ListView.separated(
+                                itemCount: state.addresses.length,
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: 12),
+                                itemBuilder: (context, index) {
+                                  final address = state.addresses[index];
+                                  final fullAddress = [
+                                    address.address,
+                                    address.ward,
+                                    address.province,
+                                    address.country,
+                                  ].where((e) => e.isNotEmpty).join(', ');
+
+                                  return AddressItem(
+                                    key: ValueKey(address.id),
+                                    label: address.name,
+                                    address: fullAddress,
+                                    isSelected: _selectedAddress == index,
+                                    isDefault: address.isDefault,
+                                    onChanged: () {
+                                      setState(() {
+                                        _selectedAddress = index;
+                                      });
+                                    },
+                                  );
+                                },
+                              );
+                            }
+
+                            if (state is AddressError) {
+                              return Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      state.message,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(color: Colors.red),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        context
+                                            .read<AddressBloc>()
+                                            .add(FetchAddresses());
+                                      },
+                                      child: const Text('Thử lại'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+
+                            return const SizedBox.shrink();
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-
-            Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(width: 1, color: Styles.grey)),
-              child: TextButton.icon(
-                onPressed: () async {
-                  // Navigate to the AddAddressScreen and wait for the result
-                  // AddressScreen
-                  final result = await Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AddAddressScreen(),
-                    ),
-                        (route) => false,
-                  );
+                  border: Border.all(width: 1, color: Styles.grey),
+                ),
+                child: TextButton.icon(
+                  onPressed: () async {
+                    // Navigate to the AddAddressScreen and wait for the result
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddAddressScreen(),
+                      ),
+                    );
 
-                  if (result == true) {
-                    // Refresh addresses by adding FetchAddresses event
-                    context.read<AddressBloc>().add(FetchAddresses());
-                  }
-                },
-                icon: const Icon(Icons.add, color: Colors.black87),
-                label: Text(
-                  'Thêm địa chỉ mới',
-                  style: context.theme.textTheme.titleLarge?.copyWith(),
+                    if (result == true) {
+                      // Refresh addresses by adding FetchAddresses event
+                      context.read<AddressBloc>().add(FetchAddresses());
+                    }
+                  },
+                  icon: const Icon(Icons.add, color: Colors.black87),
+                  label: Text(
+                    'Thêm địa chỉ mới',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(color: Colors.black87),
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 20),
             // Save Button
-            InkWell(
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: InkWell(
                 onTap: () {
-                  Navigator.pop(
-                    context,
-                  );
+                  Navigator.pop(context);
                 },
-                child: const CusButton(text: "Lưu thay đổi", color: Styles.blue)),
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Styles.blue,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Text(
+                    "Lưu thay đổi",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

@@ -9,11 +9,11 @@ import '../../../../widget_small/custom_button.dart';
 import '../../../user/user_profile/user_profile_settings.dart';
 import 'adress_add_screen.dart';
 
-
 class AddressScreen extends StatefulWidget {
   const AddressScreen({super.key});
 
-  @override State<AddressScreen>createState() => _AddressScreenState();
+  @override
+  State<AddressScreen> createState() => _AddressScreenState();
 }
 
 class _AddressScreenState extends State<AddressScreen> {
@@ -26,7 +26,11 @@ class _AddressScreenState extends State<AddressScreen> {
         backgroundColor: Styles.blue,
         centerTitle: true,
         leading: InkWell(
-            onTap: () => Navigator.push(context,MaterialPageRoute(builder: (context) =>  const AccountSettingsScreen(),)),
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AccountSettingsScreen(),
+                )),
             child: const Icon(
               Icons.arrow_back_ios,
               color: Styles.light,
@@ -66,13 +70,14 @@ class _AddressScreenState extends State<AddressScreen> {
                           final address = state.addresses[index];
                           return GestureDetector(
                             onLongPress: () {
-                              _showDeleteConfirmationDialog(context, address.id);
+                              _showDeleteConfirmationDialog(
+                                  context, address.id);
                             },
                             child: AddressItem(
-                              label: address.name,
+                               label: address.name,
                               address: address.address,
                               isSelected: _selectedAddress == index,
-                              isDefault: address.isDefault == 1,
+                              isDefault: address.isDefault,
                               onChanged: () {
                                 setState(() {
                                   _selectedAddress = index;
@@ -99,8 +104,6 @@ class _AddressScreenState extends State<AddressScreen> {
                   border: Border.all(width: 1, color: Styles.grey)),
               child: TextButton.icon(
                 onPressed: () async {
-                  // Navigate to the AddAddressScreen and wait for the result
-                  // AddressScreen
                   final result = await Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
@@ -129,7 +132,8 @@ class _AddressScreenState extends State<AddressScreen> {
                     context,
                   );
                 },
-                child: const CusButton(text: "Lưu thay đổi", color: Styles.blue)),
+                child:
+                    const CusButton(text: "Lưu thay đổi", color: Styles.blue)),
           ],
         ),
       ),
@@ -137,7 +141,7 @@ class _AddressScreenState extends State<AddressScreen> {
   }
 }
 
-void _showDeleteConfirmationDialog(BuildContext context,int id) {
+void _showDeleteConfirmationDialog(BuildContext context, int id) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -154,9 +158,7 @@ void _showDeleteConfirmationDialog(BuildContext context,int id) {
           TextButton(
             child: const Text("Xóa"),
             onPressed: () {
-              context
-                  .read<AddressBloc>()
-                  .add(DeleteAddress(id));
+              context.read<AddressBloc>().add(DeleteAddress(id));
               context.read<AddressBloc>().add(FetchAddresses());
               Navigator.of(context).pop();
             },
@@ -175,59 +177,61 @@ class AddressItem extends StatelessWidget {
   final VoidCallback onChanged;
 
   const AddressItem({
-    super.key,
+    Key? key,
     required this.label,
     required this.address,
     required this.isSelected,
     required this.isDefault,
     required this.onChanged,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: const Color(0xffF3F3F3),
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.25),
-            blurRadius: 4,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+    return Card(
+      elevation: isSelected ? 4 : 1,
       child: ListTile(
-        leading: const Icon(Icons.location_on, color: Styles.blue),
-        title: Text(label),
-        subtitle: Text(
-          address,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        title: Row(
           children: [
-            if (isDefault)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Text(
-                  'Default',
-                  style: TextStyle(fontSize: 12),
+            Expanded(
+              child: Text(
+                label,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            Radio(
-              value: true,
-              groupValue: isSelected,
-              onChanged: (_) => onChanged(),
-              activeColor: Styles.blue,
             ),
+            if (isDefault)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade100,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Text(
+                  'Mặc định',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
           ],
+        ),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text(
+            address,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.black87,
+            ),
+          ),
+        ),
+        trailing: Radio<bool>(
+          value: true,
+          groupValue: isSelected,
+          onChanged: (_) => onChanged(),
         ),
       ),
     );

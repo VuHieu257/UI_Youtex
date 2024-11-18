@@ -18,18 +18,34 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     on<DeleteAddress>(_onDeleteAddress);
   }
 
-  final RestfulApiProviderImpl _restfulApiProviderImpl = RestfulApiProviderImpl();
+  final RestfulApiProviderImpl _restfulApiProviderImpl =
+      RestfulApiProviderImpl();
 
   Future<void> _onFetchAddresses(
       FetchAddresses event, Emitter<AddressState> emit) async {
     emit(AddressLoading());
     try {
       final token = await TokenManager.getToken();
+      if (token == null) {
+        emit(AddressError("Token không hợp lệ"));
+        return;
+      }
+
       final addresses =
-          await _restfulApiProviderImpl.fetchAddresses(token: "$token");
-      emit(AddressLoaded(addresses));
+          await _restfulApiProviderImpl.fetchAddresses(token: token);
+
+      // Debug logs
+      print('Bloc received addresses');
+      print('Addresses count: ${addresses.length}');
+
+      if (addresses.isEmpty) {
+        emit(AddressError("Bạn chưa có địa chỉ nào"));
+      } else {
+        emit(AddressLoaded(addresses));
+      }
     } catch (e) {
-      emit(AddressError("Bạn Chưa có địa chỉ nào"));
+      print('Error in bloc: $e'); // Debug log
+      emit(AddressError("Không thể tải địa chỉ. Vui lòng thử lại sau."));
     }
   }
 
@@ -37,18 +53,21 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       AddAddress event, Emitter<AddressState> emit) async {
     emit(AddressLoading());
     try {
-      // event.address
       final token = await TokenManager.getToken();
 
       await _restfulApiProviderImpl.addAddresses(
-          token: "$token",
-          name: event.address.name,
-          phone: event.address.phone,
-          country: event.address.country,
-          province: event.address.province,
-          ward: event.address.ward,
-          address: event.address.address,
-          isDefault: event.address.isDefault);
+        token: "$token",
+        label: event.address.label!,
+        name: event.address.name,
+        phone: event.address.phone,
+        country: event.address.country,
+        province: event.address.province,
+        ward: event.address.ward,
+        address: event.address.address,
+        longitude: event.address.longitude!,
+        latitude: event.address.latitude!,
+        isDefault: event.address.isDefault,
+      );
       add(FetchAddresses()); // Re-fetch addresses after adding
     } catch (e) {
       emit(AddressError("Bạn chưa có địa chỉ nào"));
@@ -62,14 +81,18 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       final token = await TokenManager.getToken();
 
       await _restfulApiProviderImpl.addAddresses(
-          token: "$token",
-          name: event.name,
-          phone: event.phone,
-          country: event.country,
-          province: event.province,
-          ward: event.ward,
-          address: event.address,
-          isDefault: event.isDefault);
+        token: "$token",
+        label: event.label,
+        name: event.name,
+        phone: event.phone,
+        country: event.country,
+        province: event.province,
+        ward: event.ward,
+        address: event.address,
+        longitude: event.longitude,
+        latitude: event.latitude,
+        isDefault: event.isDefault,
+      );
       add(FetchAddresses());
     } catch (e) {
       emit(AddressError("Failed to update address"));

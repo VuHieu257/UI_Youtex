@@ -177,7 +177,7 @@ class RestfulApiProviderImpl {
           'Authorization': 'Bearer $token',
         },
       );
-      if (response.statusCode ==200) {
+      if (response.statusCode == 200) {
         // final data = (response.data['carts'] as List)
         //     .map((json) => Cart.fromJson(json))
         //     .toList();
@@ -260,7 +260,7 @@ class RestfulApiProviderImpl {
           'Authorization': 'Bearer $token',
         },
       );
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         List<Address> listAddresses = (response.data['addresses'] as List)
             .map((json) => Address.fromJson(json))
             .toList();
@@ -771,7 +771,6 @@ class RestfulApiProviderImpl {
         body: requestBody,
         headers: {
           'Content-Type': 'application/json',
-
           'Authorization': 'Bearer $token',
           'Accept': 'application/json',
         },
@@ -1369,27 +1368,31 @@ class RestfulApiProviderImpl {
 
   Future addAddresses({
     required String token,
+    required String label,
     required String name,
     required String phone,
     required String country,
     required String province,
     required String ward,
     required String address,
-    required int isDefault,
+    required String longitude,
+    required String latitude,
+    required bool isDefault,
   }) async {
     try {
       final response = await dioClient.post(
         ApiPath.buyerAddAddress,
         body: {
-          "name": name,
-          "phone": phone,
-          "country": country,
-          "province": province,
-          "ward": ward,
-          "address": address,
-          "longitude": "20.1234567",
-          "latitude": "-20.1234567",
-          "is_default": true
+          'label': label,
+          'name': name,
+          'phone': phone,
+          'country': country,
+          'province': province,
+          'ward': ward,
+          'address': address,
+          'longitude': longitude,
+          'latitude': latitude,
+          'is_default': isDefault,
         },
         headers: {
           'Content-Type': 'application/json',
@@ -1397,15 +1400,12 @@ class RestfulApiProviderImpl {
         },
       );
       print(response);
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         return response;
       } else {
         throw Exception('Failed to fetch addresses');
       }
     } catch (error) {
-      if (kDebugMode) {
-        print('Error fetch addresses: $error');
-      }
       rethrow;
     }
   }
