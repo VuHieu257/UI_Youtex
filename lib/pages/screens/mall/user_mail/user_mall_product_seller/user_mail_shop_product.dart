@@ -261,30 +261,23 @@ class _ProductManagementScreenState extends State<ProductManagementScreen> {
                                 onDelete: () async {
                                   final shouldDelete = await showDialog<bool>(
                                     context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: const Text('Xác nhận xóa'),
-                                      content: const Text(
-                                          'Bạn có chắc chắn muốn xóa sản phẩm này?'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, false),
-                                          child: const Text('Hủy'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, true),
-                                          child: const Text('Xóa'),
-                                        ),
-                                      ],
+                                    builder: (context) => CustomDialogg(
+                                      title: 'Xóa sản phẩm',
+                                      message:
+                                          'Bạn chắc chắn muốn xóa sản phẩm này không?',
+                                      onConfirm: () => Navigator.pop(
+                                          context, true), // Đóng và xác nhận
+                                      onCancel: () => Navigator.pop(
+                                          context, false), // Đóng và hủy
                                     ),
                                   );
-                                  // if (shouldDelete == true && context.mounted) {
-                                  //   context
-                                  //       .read<SellerRegisterProductBloc>()
-                                  //       .add(SellerRegisterProductDeleteEvent(
-                                  //           product.id));
-                                  // }
+
+                                  if (shouldDelete == true && context.mounted) {
+                                    context
+                                        .read<SellerRegisterProductBloc>()
+                                        .add(SellerRegisterProductDeleteEvent(
+                                            product.id));
+                                  }
                                 },
                                 onActive: () async {
                                   final shouldActivate = await showDialog<bool>(
@@ -360,7 +353,7 @@ class ProductCard extends StatelessWidget {
   final VoidCallback onDelete;
   final bool status;
 
-  const ProductCard({
+  ProductCard({
     Key? key,
     this.imageUrl,
     required this.productName,
@@ -414,7 +407,6 @@ class ProductCard extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Enhanced Product Image
                     Stack(
                       children: [
                         Hero(
@@ -536,7 +528,7 @@ class ProductCard extends StatelessWidget {
                         children: [
                           SizedBox(
                             child: Text(
-                              productName,
+                              'Tên sản phẩm : $productName',
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -549,7 +541,7 @@ class ProductCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            'ID: $id',
+                            'Mã sản phẩm: $id',
                             style: TextStyle(
                               fontSize: 13,
                               color: Colors.grey[600],
@@ -561,7 +553,7 @@ class ProductCard extends StatelessWidget {
                           const SizedBox(height: 8),
                           SizedBox(
                             child: Text(
-                              description,
+                              'Chi tiết sản phẩm : $description',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[700],
@@ -618,7 +610,7 @@ class ProductCard extends StatelessWidget {
                             child: Row(
                               children: [
                                 Text(
-                                  formattedPrice.toString(),
+                                  formattedPriceVND(formattedOriginalPrice),
                                   style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.red[700],
@@ -628,7 +620,7 @@ class ProductCard extends StatelessWidget {
                                 if (discountPrice > 0) ...[
                                   const SizedBox(width: 8),
                                   Text(
-                                    formattedOriginalPrice.toString(),
+                                    formattedPriceVND(formattedPrice),
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.grey[500],
@@ -679,6 +671,12 @@ class ProductCard extends StatelessWidget {
     );
   }
 
+// Định nghĩa bộ định dạng tiền tệ
+  final NumberFormat currencyFormatter =
+      NumberFormat.currency(locale: 'vi_VN', symbol: 'VND');
+
+// Chuyển đổi giá trị tiền thành chuỗi định dạng VND
+  String formattedPriceVND(double price) => currencyFormatter.format(price);
   Widget _buildActionButton({
     required VoidCallback onPressed,
     required String label,

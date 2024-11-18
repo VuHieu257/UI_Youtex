@@ -74,7 +74,7 @@ class _RegisterMallIdentificationScreenState
         context: context,
         builder: (BuildContext context) {
           return const CustomDialog(
-            title: 'Thành công',
+            title: 'Thành Công',
             message: 'Thông tin xác thực đã được gửi thành công.',
           );
         },

@@ -17,6 +17,7 @@ class SellerRegisterProductBloc extends Bloc<SellerRegisterProductBlocEvent,
     on<SellerRegisterProductGetEvent>(_onGetProduct);
     on<SellerRegisterProductPostEvent>(_onPostProduct);
     on<SellerRegisterProductActivateEvent>(_onActivateProduct);
+    on<SellerRegisterProductDeleteEvent>(_onDeleteProduct);
   }
 
   Future<void> _onGetProduct(
@@ -103,6 +104,35 @@ class SellerRegisterProductBloc extends Bloc<SellerRegisterProductBlocEvent,
       print('Error activating product: $e');
       print(stackTrace);
       emit(SellerRegisterProductError('Đã xảy ra lỗi khi kích hoạt sản phẩm.'));
+    }
+  }
+
+  Future<void> _onDeleteProduct(
+    SellerRegisterProductDeleteEvent event,
+    Emitter<SellerRegisterProductBlocState> emit,
+  ) async {
+    try {
+      emit(SellerRegisterProductLoading());
+      final token = await TokenManager.getToken();
+
+      final success = await restfulApiProvider.deleteProduct(
+        token: token!,
+        uuid: event.uuid,
+      );
+
+      if (success) {
+        emit(SellerRegisterProductSuccess('Sản phẩm đã được xóa thành công!'));
+        add(SellerRegisterProductGetEvent()); // Cập nhật danh sách sản phẩm
+      } else {
+        emit(SellerRegisterProductError('Xóa sản phẩm thất bại'));
+      }
+    } on DioException catch (dioError) {
+      print('Dio error: ${dioError.message}');
+      emit(SellerRegisterProductError('Đã xảy ra lỗi khi kết nối với API.'));
+    } catch (e, stackTrace) {
+      print('Error deleting product: $e');
+      print(stackTrace);
+      emit(SellerRegisterProductError('Đã xảy ra lỗi khi xóa sản phẩm.'));
     }
   }
 }

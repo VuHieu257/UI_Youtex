@@ -10,6 +10,7 @@ import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/model/productSales.dart';
 import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mall_product_seller/user_mail_shop_product_Extra.dart';
+import 'package:ui_youtex/pages/screens/mall/user_mail/user_mall_product_seller/user_mail_shop_product_options.dart';
 import 'package:ui_youtex/pages/widget_small/appbar/custome_appbar_circle.dart';
 
 class ProductActiveSalesScreen extends StatefulWidget {
@@ -30,7 +31,10 @@ class _ProductActiveScreenState extends State<ProductActiveSalesScreen> {
   final TextEditingController maxOrderController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   String? sizeChartPath;
-
+  final dropdownController1 = TextEditingController();
+  final dropdownController2 = TextEditingController();
+  String? isOptionalProduct;
+  String? isForSale;
   @override
   void dispose() {
     originalPriceController.dispose();
@@ -55,6 +59,94 @@ class _ProductActiveScreenState extends State<ProductActiveSalesScreen> {
     } catch (e) {
       _showMessage('Lỗi', 'Không thể chọn ảnh. Vui lòng thử lại.');
     }
+  }
+
+  Widget _buildOptionalProductFields() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 10),
+        DropdownButtonFormField<String>(
+          decoration: const InputDecoration(
+            labelText: 'Sản phẩm tùy chọn?',
+            border: OutlineInputBorder(),
+          ),
+          value: isOptionalProduct,
+          items: const [
+            DropdownMenuItem(value: 'Có', child: Text('Có')),
+            DropdownMenuItem(value: 'Không', child: Text('Không')),
+          ],
+          onChanged: (String? value) async {
+            setState(() {
+              isOptionalProduct = value;
+            });
+
+            if (value == 'Có') {
+              // Navigate to the optional product creation page
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const OptionalProductCreationPage(),
+                ),
+              );
+
+              // Handle the result when returning from the creation page
+              if (result != null) {
+                // Update your form with the returned data if needed
+                setState(() {
+                  // Update relevant fields
+                });
+              }
+            }
+          },
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Vui lòng chọn một tùy chọn';
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 10),
+        Text(
+          'Xác định sản phẩm có tùy chọn như màu sắc, kích thước, v.v',
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.grey[600],
+          ),
+        ),
+        const SizedBox(height: 20),
+        DropdownButtonFormField<String>(
+          decoration: const InputDecoration(
+            labelText: 'Sản phẩm bán sỉ?',
+            border: OutlineInputBorder(),
+          ),
+          value: isForSale,
+          items: const [
+            DropdownMenuItem(value: 'Có', child: Text('Có')),
+            DropdownMenuItem(value: 'Không', child: Text('Không')),
+          ],
+          onChanged: (String? value) {
+            setState(() {
+              isForSale = value;
+            });
+          },
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Vui lòng chọn một tùy chọn';
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 10),
+        Text(
+          'Xác định sản phẩm có được bán sỉ hay không',
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.grey[600],
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildSizeChartSection() {
@@ -143,7 +235,7 @@ class _ProductActiveScreenState extends State<ProductActiveSalesScreen> {
   void _saveData(BuildContext context) {
     if (_formKey.currentState?.validate() ?? false) {
       if (sizeChartPath == null) {
-        _showMessage('Lỗi', 'Vui lòng chọn ảnh Size Chart');
+        _showMessage('Lỗi', 'Vui lòng chọn ảnh  ');
         return;
       }
 
@@ -402,6 +494,7 @@ class _ProductActiveScreenState extends State<ProductActiveSalesScreen> {
                               return null;
                             },
                           ),
+                          // _buildOptionalProductFields(),
                           const SizedBox(height: 20),
                           _buildSizeChartSection(),
                           const SizedBox(height: 20),

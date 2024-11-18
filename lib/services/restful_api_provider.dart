@@ -1292,8 +1292,6 @@ class RestfulApiProviderImpl {
       }
     } on DioException {
       throw 'Lỗi kết nối hoặc lỗi từ server';
-    } catch (error) {
-      throw 'Đã xảy ra lỗi không xác định khi lấy thông tin sản phẩm';
     }
   }
 
@@ -1310,6 +1308,24 @@ class RestfulApiProviderImpl {
       return response.statusCode == 200;
     } on DioException catch (e) {
       print('Error activating product: ${e.message}');
+      return false;
+    }
+  }
+
+  Future<bool> deleteProduct(
+      {required String token, required String uuid}) async {
+    try {
+      final response = await dioClient.delete(
+        'http://52.77.246.91/api/v1/seller/product/$uuid',
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Error deleting product: $e');
       return false;
     }
   }
