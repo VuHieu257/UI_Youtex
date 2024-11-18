@@ -8,6 +8,7 @@ import 'package:ui_youtex/util/token_manager.dart';
 part 'product_bloc_event.dart';
 
 part 'product_bloc_state.dart';
+
 class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
   final RestfulApiProviderImpl restfulApiProvider;
 
@@ -20,9 +21,9 @@ class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
   }
 
   Future<void> _onFetchProducts(
-      FetchProductsEvent event,
-      Emitter<ProductBlocState> emit,
-      ) async {
+    FetchProductsEvent event,
+    Emitter<ProductBlocState> emit,
+  ) async {
     try {
       emit(ProductLoadingState());
       final token = await TokenManager.getToken();
@@ -36,7 +37,7 @@ class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
 
       emit(ProductLoadedState(
         products: products,
-        filteredProducts: const [], // Để trống cho trang HomeMall
+        filteredProducts: const [],
         message: 'Lấy danh sách sản phẩm thành công!',
       ));
     } catch (error) {
@@ -45,23 +46,21 @@ class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
   }
 
   Future<void> _onSearchProducts(
-      SearchProductsEvent event,
-      Emitter<ProductBlocState> emit,
-      ) async {
+    SearchProductsEvent event,
+    Emitter<ProductBlocState> emit,
+  ) async {
     if (state is ProductLoadedState) {
       final currentState = state as ProductLoadedState;
       final query = event.searchQuery.toLowerCase();
 
-      // Nếu query rỗng, reset về trạng thái ban đầu
       if (query.isEmpty) {
         emit(currentState.copyWith(
-          filteredProducts: currentState.products, // Thay vì const []
+          filteredProducts: currentState.products,
           message: 'Hiển thị tất cả sản phẩm',
         ));
         return;
       }
 
-      // Lọc sản phẩm theo query
       final filtered = currentState.products
           .where((product) => product.name.toLowerCase().contains(query))
           .toList();
@@ -74,9 +73,9 @@ class ProductBlocBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
   }
 
   Future<void> _onFetchProductDetail(
-      ProductDetailBuyer event,
-      Emitter<ProductBlocState> emit,
-      ) async {
+    ProductDetailBuyer event,
+    Emitter<ProductBlocState> emit,
+  ) async {
     try {
       emit(ProductLoadingState());
       final token = await TokenManager.getToken();

@@ -25,8 +25,8 @@ class CustomDialog extends StatelessWidget {
           children: [
             Icon(
               title == 'Thành Công'
-                  ? Icons.check_circle // Thành công thì dùng check_circle
-                  : Icons.cancel, // Lỗi thì dùng icon cancel
+                  ? Icons.check_circle  
+                  : Icons.cancel,  
               size: 60,
               color: title == 'Thành Công' ? Colors.green : Colors.red,
             ),

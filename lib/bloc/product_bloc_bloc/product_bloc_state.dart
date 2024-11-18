@@ -17,8 +17,7 @@ class ProductLoadedState extends ProductBlocState {
   final String message;
 
   const ProductLoadedState({
-    // required this.products,
-    // required this.message,
+ 
     required this.products,
     required this.filteredProducts,
     required this.message,

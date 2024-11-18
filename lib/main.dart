@@ -1,9 +1,14 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:photo_manager/photo_manager.dart';
 import 'package:ui_youtex/bloc/address_bloc/address_bloc.dart';
 import 'package:ui_youtex/bloc/cart_bloc/cart_bloc.dart';
 import 'package:ui_youtex/bloc/forgot_password_bloc/forgot_password_bloc.dart';
@@ -28,7 +33,6 @@ import 'package:ui_youtex/pages/screens/message/group_chat_settings/group_chat_s
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen%20copy.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
 import 'package:ui_youtex/pages/screens/voucher/Voucher_seller.dart';
-import 'package:ui_youtex/pages/screens/voucher/Voucher_seller.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/RegisterScreen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/forgotPass_Screen.dart';
 import 'package:ui_youtex/pages/splash/Welcome/Register/resetPass/resetPassDone_screen.dart';
@@ -50,6 +54,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Platform.isAndroid
       ? await Firebase.initializeApp(
+          // options: const FirebaseOptions(
+          //     apiKey: 'AIzaSyCU66WlqitlSdBipwdwb_69uuRnJNupI0s',
+          //     appId: '1:57983356211:android:5fd331cd4ef5361fea4246',
+          //     messagingSenderId: '57983356211',
+          //     projectId: 'mangxahoi-sotavn',
+          //     storageBucket: "mangxahoi-sotavn.appspot.com"))
           options: const FirebaseOptions(
               apiKey: 'AIzaSyB5wk6mb440sCUyvRyZqgOMxY1GL3adLhE',
               appId: '1:154408670652:android:9ffbe52d803e2ff3ed07b9',
