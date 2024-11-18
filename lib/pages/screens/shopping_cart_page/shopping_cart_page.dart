@@ -58,58 +58,59 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               return SingleChildScrollView(
                 child: Column(
                   children: state.carts.stores.map((cart) {
-                    return SizedBox(
-                      height: context.height,
-                      child: Column(
-                        children: [
-                          Container(
-                            color: Colors.grey.shade100,
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    "${NetworkConstants.urlImage}${cart.image}", // Sửa để lấy hình ảnh cửa hàng
-                                  ),
+                    return Column(
+                      children: [
+                        Container(
+                          color: Colors.grey.shade100,
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  "${NetworkConstants.urlImage}${cart.image}", // Sửa để lấy hình ảnh cửa hàng
                                 ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  cart.name,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall
-                                      ?.copyWith(fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                cart.name,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
-                          Column(
-                            children: cart.products.map((product) {
-                              return CartItem(
-                                imageUrl: product.image,
-                                name: product.name,
-                                type: "${product.size}, ${product.color}",
-                                price: product.discountPrice.split('.').first,
-                                isSelected: _isSelected[0],
-                                amount: product.quantity,
-                                onSelected: (bool? value) {
-                                  setState(() {
-                                    _isSelected[0] = value ?? false;
-                                  });
-                                },
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      ),
+                        ),
+                        Column(
+                          children: cart.products.map((product) {
+                            return CartItem(
+                              imageUrl: product.image,
+                              name: product.name,
+                              type: "${product.size}, ${product.color}",
+                              price: product.discountPrice.split('.').first,
+                              isSelected: _isSelected[0],
+                              amount: product.quantity,
+                              onSelected: (bool? value) {
+                                setState(() {
+                                  _isSelected[0] = value ?? false;
+                                });
+                              },
+                              onTap: () {
+                                BlocProvider.of<CartBloc>(context)
+                                    .add(DeleteCartEvent(id: "${product.id}"));
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     );
                   }).toList(),
                 ),
               );
             }
             if (state is CartError) {
-              return Center(
-                child: Text("Có lỗi xảy ra ${state.error}"),
+              return  const Center(
+                child: Text("Bạn không có sản phẩm trong giỏ hàng"),
               );
             }
             return const Center(
@@ -120,13 +121,16 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
         bottomNavigationBar: BlocBuilder<CartBloc, CartState>(
           builder: (context, state) {
             var totalPrice = 0;
+            var carts = 0;
             if (state is GetCartSuccess) {
               totalPrice = state.carts.total;
+              carts = state.carts.stores.length;
             }
             return SizedBox(
               height: 250,
               child: SummarySection(
                 price: "$totalPrice",
+                checkout: carts,
               ),
             );
           },
@@ -136,8 +140,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
 
 class SummarySection extends StatelessWidget {
   final String price;
+  final int checkout;
 
-  const SummarySection({super.key, required this.price});
+  const SummarySection(
+      {super.key, required this.price, required this.checkout});
 
   @override
   Widget build(BuildContext context) {
@@ -180,11 +186,15 @@ class SummarySection extends StatelessWidget {
           ),
           SizedBox(height: context.height * 0.02),
           InkWell(
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CheckoutPage(),
-                  )),
+              onTap: () {
+                if (checkout > 0) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CheckoutPage(),
+                      ));
+                }
+              },
               child: const CusButton(text: "Mua hàng", color: Styles.blue)),
         ],
       ),

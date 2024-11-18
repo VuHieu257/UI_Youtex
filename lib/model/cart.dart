@@ -63,8 +63,8 @@ class Product {
   final String uuid;
   final String image;
   final String name;
-  final String size;
-  final String color;
+  final String? size;
+  final String? color;
   final int quantity;
   final String originalPrice;
   final String discountPrice;
@@ -86,15 +86,15 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       id: json['id'],
-      uuid: json['uuid'],
-      image: json['image'],
-      name: json['name'],
-      size: json['size'],
-      color: json['color'],
-      quantity: json['quantity'],
-      originalPrice: json['original_price'],
-      discountPrice: json['discount_price'],
-      discountPercentage: json['discount_percentage'],
+      uuid: json['uuid']??"",
+      image: json['image']??"",
+      name: json['name']??"",
+      size: json['size']??"",
+      color: json['color']??"",
+      quantity: json['quantity']??"",
+      originalPrice: json['original_price']??"",
+      discountPrice: json['discount_price']??"",
+      discountPercentage: json['discount_percentage']??"",
     );
   }
 }

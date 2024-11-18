@@ -7,23 +7,21 @@ import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/model/checkout.dart';
 import 'package:ui_youtex/pages/screens/home/add_success/add_success.dart';
-import 'package:ui_youtex/pages/screens/home/home.dart';
 import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
 
 import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
 import '../../../widget_small/custom_button.dart';
-import '../../../widget_small/payment.dart';
 import '../../../widget_small/payment_method_button.dart';
-import '../../home/product/adress/adress_screen.dart';
+import '../../user/add_address_screen/add_address_screen.dart';
 import '../payment_method_screen/payment_method_screen.dart';
 
 class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
 
   @override
-  _CheckoutPageState createState() => _CheckoutPageState();
+  State<CheckoutPage> createState() => _CheckoutPageState();
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
@@ -193,7 +191,13 @@ Widget _buildAddressSection(BuildContext context) {
                   style: context.theme.textTheme.titleMedium
                       ?.copyWith(fontWeight: FontWeight.bold)),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddressScreenUser(),
+                      ));
+                },
                 child: Text('Thay đổi',
                     style: context.theme.textTheme.bodyMedium
                         ?.copyWith(color: Styles.blue)),

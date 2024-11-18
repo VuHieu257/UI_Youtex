@@ -15,3 +15,8 @@ class AddToCartEvent extends CartEvent {
   List<Object> get props => [uuid];
 }
 class FetchCartEvent extends CartEvent {}
+class DeleteCartEvent extends CartEvent {
+  final String id;
+
+  DeleteCartEvent({required this.id});
+}

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/core/size/size.dart';
+import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/shopping_cart_page.dart';
 import 'package:ui_youtex/util/constants.dart';
 import 'package:ui_youtex/util/show_snack_bar.dart';
@@ -253,7 +254,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      _buildRatingsAndReviewCount(),
+                      Row(children: [
+                        Text("Số lượng:\t${product.quantity}",style: context.theme.textTheme.titleMedium,),
+                      ],),
+                      // _buildRatingsAndReviewCount(),
                       const SizedBox(height: 16),
                       const Divider(),
                       _buildSellerInfo(

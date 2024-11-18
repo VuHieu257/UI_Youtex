@@ -13,8 +13,9 @@ class CartItem extends StatelessWidget {
   final int amount;
   final bool isSelected;
   final ValueChanged<bool?> onSelected;
+  void Function() onTap;
 
-  const CartItem({
+   CartItem({
     super.key,
     required this.imageUrl,
     required this.name,
@@ -23,6 +24,7 @@ class CartItem extends StatelessWidget {
     required this.isSelected,
     required this.amount,
     required this.onSelected,
+    required this.onTap,
   });
 
   @override
@@ -37,13 +39,14 @@ class CartItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Checkbox(
-              value: isSelected,
-              onChanged: onSelected,
-            ),
+            // Checkbox(
+            //   value: isSelected,
+            //   onChanged: onSelected,
+            // ),
             Container(
               width: context.height * 0.1,
               height: context.height * 0.1,
+              margin: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(10),
@@ -108,14 +111,17 @@ class CartItem extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 1, color: Colors.grey.shade400),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: const Icon(Icons.delete_outline,
-                            color: Styles.blue),
+                      InkWell(
+                        onTap: onTap,
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 1, color: Colors.grey.shade400),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: const Icon(Icons.delete_outline,
+                              color: Styles.blue),
+                        ),
                       ),
                     ],
                   ),

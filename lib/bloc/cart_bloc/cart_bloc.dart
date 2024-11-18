@@ -15,6 +15,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(CartInitial()) {
     on<AddToCartEvent>(_onAddToCart);
     on<FetchCartEvent>(_onGetCart);
+    on<DeleteCartEvent>(_onDeleteCartItem);
   }
 }
 
@@ -60,6 +61,29 @@ Future<void> _onGetCart(
     final cart = await restfulApiProvider.getCart(token: token);
     // SnackBarUtils.showSuccessSnackBar(context, message: "Thêm giỏ hàng thành công");
     emit(GetCartSuccess(carts: cart));
+  }on DioException catch (e) {
+    final message = e.response?.data['message'];
+    CartError(message: message);
+    emit(CartInitial());
+  }  catch (error) {
+    emit(CartError(error: error.toString()));
+  }
+}
+Future<void> _onDeleteCartItem(
+    DeleteCartEvent event,
+    Emitter<CartState> emit,
+    ) async {
+  try {
+    emit(CartLoading());
+    final token = await TokenManager.getToken();
+
+    if (token == null) {
+      emit(CartError(message: 'Token not found'));
+      return;
+    }
+     await restfulApiProvider.deleteCart(token: token, id: event.id);
+    // SnackBarUtils.showSuccessSnackBar(context, message: "Thêm giỏ hàng thành công");
+    emit(DeleteCartSuccess());
   }on DioException catch (e) {
     final message = e.response?.data['message'];
     CartError(message: message);

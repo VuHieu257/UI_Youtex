@@ -49,6 +49,7 @@ abstract class ApiPath {
 
   static String buyerGetProductDetail(uuid) => 'buyer/product/$uuid';
   static String addCart(uuid) => 'buyer/product/$uuid/add-cart';
+  static String deleteCart(id) => 'buyer/cart/item/$id';
 
   ///*******************************ALL***********************************
   ///*******************************POST***********************************
@@ -769,7 +770,7 @@ class RestfulApiProviderImpl {
         ApiPath.sellerRAddressPost,
         body: requestBody,
         headers: {
-          'Content-Type': 'application/json', // Đảm bảo gửi dữ liệu JSON
+          'Content-Type': 'application/json',
 
           'Authorization': 'Bearer $token',
           'Accept': 'application/json',
@@ -1627,6 +1628,31 @@ class RestfulApiProviderImpl {
     } catch (error) {
       if (kDebugMode) {
         print('Error fetch addresses: $error');
+      }
+      rethrow;
+    }
+  }
+
+  Future deleteCart({
+    required String token,
+    required String id,
+  }) async {
+    try {
+      final response = await dioClient.delete(
+        ApiPath.deleteCart(id),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 201) {
+        return response;
+      } else {
+        throw Exception('Failed to delete cart');
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error delete cart: $error');
       }
       rethrow;
     }
