@@ -17,6 +17,12 @@ class SellerRegisterProductActivateEvent
   SellerRegisterProductActivateEvent(this.uuid);
 }
 
+class SellerRegisterProductDeleteEvent extends SellerRegisterProductBlocEvent {
+  final String uuid;
+
+  SellerRegisterProductDeleteEvent(this.uuid);
+}
+
 class SellerRegisterProductModel {
   final String id;
   final String image;
@@ -56,13 +62,14 @@ class SellerRegisterProductModel {
       id: json['uuid'],
       image: json['image'],
       name: json['name'],
-      // Chuyển đổi `status` sang `isActive` (giả định 'verified' là true)
       status: json['status'] == 'active',
-      quantity: json['quantity'],
-      soldQuantity: json['sold_quantity'],
-      originalPrice: (json['original_price'] as num).toDouble(),
-      discountPrice: (json['discount_price'] as num).toDouble(),
-      discountPercentage: json['discount_percentage'],
+      quantity: int.tryParse(json['quantity'].toString()) ??
+          0, // Chuyển đổi số nguyên
+      soldQuantity: int.tryParse(json['sold_quantity'].toString()) ?? 0,
+      originalPrice: double.tryParse(json['original_price'].toString()) ?? 0.0,
+      discountPrice: double.tryParse(json['discount_price'].toString()) ?? 0.0,
+      discountPercentage:
+          int.tryParse(json['discount_percentage'].toString()) ?? 0,
       description: json['description'],
     );
   }

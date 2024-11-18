@@ -83,7 +83,7 @@ class HomePage extends StatelessWidget {
                           vertical: 12, horizontal: 16),
                       color: Colors.lightBlue,
                       child: const Text(
-                        'KHAI TRUONG CHI NHÁNH THỨ 10 KHAI TRUONG CHI NHÁNH THỨ 10 KHAI TRUONG CHI NHÁNH THỨ 10',
+                        'KHAI TRUONG CHI NHÁNH THỨ 10  ',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 14,

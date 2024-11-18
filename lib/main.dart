@@ -1,21 +1,13 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:photo_manager/photo_manager.dart';
+
 import 'package:ui_youtex/bloc/address_bloc/address_bloc.dart';
 import 'package:ui_youtex/bloc/cart_bloc/cart_bloc.dart';
-import 'package:ui_youtex/bloc/cart_checkout_bloc/bloc/checkout_bloc.dart';
-import 'package:ui_youtex/bloc/cart_checkout_bloc/bloc/checkout_event.dart';
-import 'package:ui_youtex/bloc/cart_checkout_bloc/bloc/checkout_state.dart';
+
 import 'package:ui_youtex/bloc/forgot_password_bloc/forgot_password_bloc.dart';
 import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/bloc_seller_address_bloc/bloc_seller_address_bloc.dart';

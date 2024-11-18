@@ -57,8 +57,7 @@ class SellerRegisterBloc
       }
     } catch (error) {
       if (error is DioError) {
-        // Lấy thông báo lỗi từ phản hồi Dio
-        final message =
+         final message =
             error.response?.data['message'] ?? 'Lỗi không xác định từ server';
         emit(SellerRegisterFailure(error: message));
       } else {
