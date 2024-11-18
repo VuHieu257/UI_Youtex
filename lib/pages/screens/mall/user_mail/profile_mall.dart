@@ -10,6 +10,7 @@ import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_view.dart'
 import 'package:ui_youtex/pages/screens/voucher/Voucher_seller.dart';
 import 'package:ui_youtex/pages/widget_small/bottom_navigation/bottom_navigation.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
+import 'package:ui_youtex/util/constants.dart';
 
 import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
@@ -453,34 +454,37 @@ class UserStorageHeader extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 100,
-                height: 100,
-                padding: const EdgeInsets.all(3),
-                margin: const EdgeInsets.only(left: 10),
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xff3EB0FF),
-                      Color(0xFF113A71),
-                      Color(0xff3EB0FF),
-                      Color(0xff3EB0FF),
-                      Color(0xff3EB0FF),
-                      Color(0xFF113A71),
-                      Color(0xff3EB0FF),
-                      Color(0xffDAF5FF),
-                    ],
+                  width: 100,
+                  height: 100,
+                  padding: const EdgeInsets.all(3),
+                  margin: const EdgeInsets.only(left: 10),
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xff3EB0FF),
+                        Color(0xFF113A71),
+                        Color(0xff3EB0FF),
+                        Color(0xff3EB0FF),
+                        Color(0xff3EB0FF),
+                        Color(0xFF113A71),
+                        Color(0xff3EB0FF),
+                        Color(0xffDAF5FF),
+                      ],
+                    ),
                   ),
-                ),
-                child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage(
-                      Asset.bgImageAvatar,
-                    )),
-              ),
+                    backgroundImage: storeInfo.imagePath?.isEmpty ?? true
+                        ? const AssetImage(Asset.bgImageAvatar)
+                        : NetworkImage(
+                            "${NetworkConstants.urlImage}${storeInfo.imagePath}",
+                            scale: 1.0,
+                          ) as ImageProvider,
+                  )),
               const SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

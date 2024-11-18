@@ -105,12 +105,13 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
             const SizedBox(height: 20),
             // Save Button
             InkWell(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const CardInputApppay(),
-                ),
-              ),
+              onTap: () => Navigator.pop(context),
+              // onTap: () => Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => const CardInputApppay(),
+              //   ),
+              // ),
               child: const CusButton(text: "Save", color: Styles.blue),
             ),
           ],

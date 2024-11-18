@@ -49,14 +49,17 @@ class ProductBuyer extends Equatable {
   factory ProductBuyer.fromJson(Map<String, dynamic> json) {
     return ProductBuyer(
       uuid: json['uuid'],
-      image: json['image'],
-      name: json['name'],
-      description: json['description'],
-      quantity: json['quantity'],
-      soldQuantity: json['sold_quantity'],
-      originalPrice: double.parse(json['original_price']),
-      discountPrice: double.parse(json['discount_price']),
-      discountPercentage: double.parse(json['discount_percentage']),
+      image: json['image'] ?? '', // Nếu null trả về chuỗi rỗng
+      name: json['name'] ?? 'Unknown Product',
+      description: json['description'] ?? '',
+      quantity: json['quantity'] ?? 0,
+      soldQuantity: json['sold_quantity'] ?? 0,
+      originalPrice:
+          double.tryParse(json['original_price']?.toString() ?? '0') ?? 0,
+      discountPrice:
+          double.tryParse(json['discount_price']?.toString() ?? '0') ?? 0,
+      discountPercentage:
+          double.tryParse(json['discount_percentage']?.toString() ?? '0') ?? 0,
     );
   }
   String get fullImageUrl {

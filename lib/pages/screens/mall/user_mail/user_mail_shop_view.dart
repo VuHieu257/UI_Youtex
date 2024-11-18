@@ -8,6 +8,7 @@ import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/profile_mall.dart';
 import 'package:ui_youtex/pages/screens/mall/user_mail/user_mail_shop_analyst_view.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
+import 'package:ui_youtex/util/constants.dart';
 
 import '../../../../core/assets.dart';
 import '../../../widget_small/appbar/cus_appbar_background.dart';
@@ -134,34 +135,37 @@ class UserStorageHeader extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 100,
-                height: 100,
-                padding: const EdgeInsets.all(3),
-                margin: const EdgeInsets.only(left: 10),
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xff3EB0FF),
-                      Color(0xFF113A71),
-                      Color(0xff3EB0FF),
-                      Color(0xff3EB0FF),
-                      Color(0xff3EB0FF),
-                      Color(0xFF113A71),
-                      Color(0xff3EB0FF),
-                      Color(0xffDAF5FF),
-                    ],
+                  width: 100,
+                  height: 100,
+                  padding: const EdgeInsets.all(3),
+                  margin: const EdgeInsets.only(left: 10),
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xff3EB0FF),
+                        Color(0xFF113A71),
+                        Color(0xff3EB0FF),
+                        Color(0xff3EB0FF),
+                        Color(0xff3EB0FF),
+                        Color(0xFF113A71),
+                        Color(0xff3EB0FF),
+                        Color(0xffDAF5FF),
+                      ],
+                    ),
                   ),
-                ),
-                child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 50,
-                    backgroundImage: AssetImage(
-                      Asset.bgImageAvatar,
-                    )),
-              ),
+                    backgroundImage: storeInfo.imagePath?.isEmpty ?? true
+                        ? const AssetImage(Asset.bgImageAvatar)
+                        : NetworkImage(
+                            "${NetworkConstants.urlImage}${storeInfo.imagePath}",
+                            scale: 1.0,
+                          ) as ImageProvider,
+                  )),
               const SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,58 +278,107 @@ class OrderStatusSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: 12),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: Row(
+          padding: const EdgeInsets.only(bottom: 10, left: 8, right: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Đơn hàng",
-                style: context.theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Đơn hàng',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'Xem thêm',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              InkWell(
+                // onTap: () {
+                //   Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) => OrderManagementScreen()));
+                // },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(
+                      child: _buildOrderStatusItem(
+                          Icons.access_time, 'Chờ xác nhận', true),
+                    ),
+                    Expanded(
+                      child: _buildOrderStatusItem(
+                          Icons.inventory_2, 'Chờ giao hàng'),
+                    ),
+                    Expanded(
+                      child: _buildOrderStatusItem(
+                          Icons.local_shipping_outlined, 'Đã giao'),
+                    ),
+                    Expanded(
+                      child: _buildOrderStatusItem(
+                          Icons.cancel_outlined, 'Đã hủy'),
+                    ),
+                  ],
                 ),
               ),
-              const Spacer(),
-              TextButton(
-                onPressed: () {},
-                child: Text(
-                  "Đơn hàng",
-                  style: context.theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold, color: Colors.blue),
-                ),
-              )
             ],
           ),
-        ),
-        const SizedBox(height: 12),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            OrderStatusItem(
-              icon: Icons.access_time,
-              label: 'Chờ xác nhận',
-              count: 14,
-              color: Colors.orange,
-            ),
-            OrderStatusItem(
-              icon: Icons.local_shipping_outlined,
-              label: 'Chờ lấy hàng',
-              color: Colors.blue,
-            ),
-            OrderStatusItem(
-              icon: Icons.check_circle_outline,
-              label: 'Đã giao',
-              color: Colors.green,
-            ),
-            OrderStatusItem(
-              icon: Icons.cancel_outlined,
-              label: 'Đã hủy',
-              color: Colors.red,
-            ),
-          ],
         ),
       ],
     );
   }
+}
+
+Widget _buildOrderStatusItem(IconData icon, String label,
+    [bool hasNotification = false]) {
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Stack(
+        children: [
+          Icon(
+            icon,
+            size: 28,
+            color: const Color(0xff113A71),
+          ),
+          if (hasNotification)
+            Positioned(
+              right: 0,
+              top: 0,
+              child: Container(
+                width: 8,
+                height: 8,
+                decoration: const BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+        ],
+      ),
+      const SizedBox(height: 4),
+      Text(
+        label,
+        style: TextStyle(
+            fontSize: 14, color: Colors.grey[600], fontWeight: FontWeight.bold),
+      ),
+    ],
+  );
 }
 
 class OrderStatusItem extends StatelessWidget {

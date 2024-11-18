@@ -1,16 +1,21 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:ui_youtex/bloc/address_bloc/address_bloc.dart';
 import 'package:ui_youtex/bloc/cart_bloc/cart_bloc.dart';
+import 'package:ui_youtex/bloc/cart_checkout_bloc/bloc/checkout_bloc.dart';
+import 'package:ui_youtex/bloc/cart_checkout_bloc/bloc/checkout_event.dart';
+import 'package:ui_youtex/bloc/cart_checkout_bloc/bloc/checkout_state.dart';
 import 'package:ui_youtex/bloc/forgot_password_bloc/forgot_password_bloc.dart';
 import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/bloc_seller_address_bloc/bloc_seller_address_bloc.dart';
@@ -30,6 +35,7 @@ import 'package:ui_youtex/pages/screens/mall/user_mail/user_mall_product_seller/
 import 'package:ui_youtex/pages/screens/member_Vip/free_trail.dart';
 import 'package:ui_youtex/pages/screens/member_Vip/member_packagePayment.dart';
 import 'package:ui_youtex/pages/screens/message/group_chat_settings/group_chat_settings.dart';
+import 'package:ui_youtex/pages/screens/shopping_cart_page/checkout_page/checkout_page.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen%20copy.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/payment_method_screen/payment_method_screen.dart';
 import 'package:ui_youtex/pages/screens/voucher/Voucher_seller.dart';
@@ -182,9 +188,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: MyAppThemes.lightTheme,
       debugShowCheckedModeBanner: false,
-
-      home: const WelcomeApp(),
-      // home: const CustomNavBar(),
+//
+      // home: const CheckoutPage(),
+      home: const CustomNavBar(),
       // home: const GroupChatSettings(),
       // home: const RegisterMallScreen(),
       // home: const UploadImageScreen(),
@@ -318,3 +324,308 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
+
+// class CheckoutScreen extends StatelessWidget {
+//   const CheckoutScreen({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider(
+//       create: (context) => CheckoutBloc(restfulApiProvider),
+//       child: const CheckoutView(),
+//     );
+//   }
+// }
+
+// class CheckoutView extends StatelessWidget {
+//   const CheckoutView({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final bloc = BlocProvider.of<CheckoutBloc>(context);
+//     final currencyFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '₫');
+
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text(
+//           'Thanh Toán',
+//           style: TextStyle(fontWeight: FontWeight.bold),
+//         ),
+//         centerTitle: true,
+//         elevation: 0,
+//       ),
+//       body: BlocBuilder<CheckoutBloc, CheckoutState>(
+//         builder: (context, state) {
+//           if (state is CheckoutInitial) {
+//             bloc.add(FetchCheckoutEvent());
+//             return const Center(child: CircularProgressIndicator());
+//           } else if (state is CheckoutLoading) {
+//             return const Center(child: CircularProgressIndicator());
+//           } else if (state is CheckoutLoaded) {
+//             final checkout = state.checkoutResponse;
+//             return Column(
+//               children: [
+//                 Expanded(
+//                   child: ListView.builder(
+//                     padding: const EdgeInsets.all(16),
+//                     itemCount: checkout.stores.length,
+//                     itemBuilder: (context, storeIndex) {
+//                       final store = checkout.stores[storeIndex];
+//                       return Card(
+//                         margin: const EdgeInsets.only(bottom: 16),
+//                         elevation: 2,
+//                         shape: RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.circular(12),
+//                         ),
+//                         child: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             // Store Header
+//                             ListTile(
+//                               leading: CircleAvatar(
+//                                 backgroundImage: NetworkImage(store.image),
+//                                 backgroundColor: Colors.grey[200],
+//                               ),
+//                               title: Text(
+//                                 store.name,
+//                                 style: const TextStyle(
+//                                   fontWeight: FontWeight.bold,
+//                                   fontSize: 16,
+//                                 ),
+//                               ),
+//                               trailing: const Icon(Icons.chevron_right),
+//                             ),
+//                             const Divider(),
+
+//                             // Products List
+//                             ListView.builder(
+//                               shrinkWrap: true,
+//                               physics: const NeverScrollableScrollPhysics(),
+//                               itemCount: store.products.length,
+//                               itemBuilder: (context, productIndex) {
+//                                 final product = store.products[productIndex];
+//                                 return Padding(
+//                                   padding: const EdgeInsets.all(12),
+//                                   child: Row(
+//                                     crossAxisAlignment:
+//                                         CrossAxisAlignment.start,
+//                                     children: [
+//                                       // Product Image
+//                                       ClipRRect(
+//                                         borderRadius: BorderRadius.circular(8),
+//                                         child: Image.asset(
+//                                           // product.image,
+//                                           'assets/images/1523107190ffd3b67f393f0636a7ecc7.jpg',
+//                                           width: 80,
+//                                           height: 80,
+//                                           fit: BoxFit.cover,
+//                                         ),
+//                                       ),
+//                                       const SizedBox(width: 12),
+
+//                                       // Product Details
+//                                       Expanded(
+//                                         child: Column(
+//                                           crossAxisAlignment:
+//                                               CrossAxisAlignment.start,
+//                                           children: [
+//                                             Text(
+//                                               product.name,
+//                                               style: const TextStyle(
+//                                                 fontSize: 15,
+//                                                 fontWeight: FontWeight.w500,
+//                                               ),
+//                                             ),
+//                                             if (product.size != null ||
+//                                                 product.color != null)
+//                                               Padding(
+//                                                 padding: const EdgeInsets.only(
+//                                                     top: 4),
+//                                                 child: Text(
+//                                                   'Phân loại: ${[
+//                                                     if (product.size != null)
+//                                                       'Size ${product.size}',
+//                                                     if (product.color != null)
+//                                                       'Màu ${product.color}',
+//                                                   ].join(", ")}',
+//                                                   style: TextStyle(
+//                                                     color: Colors.grey[600],
+//                                                     fontSize: 13,
+//                                                   ),
+//                                                 ),
+//                                               ),
+//                                             const SizedBox(height: 8),
+//                                             Row(
+//                                               mainAxisAlignment:
+//                                                   MainAxisAlignment
+//                                                       .spaceBetween,
+//                                               children: [
+//                                                 Text(
+//                                                   currencyFormat.format(
+//                                                       product.discountPrice),
+//                                                   style: const TextStyle(
+//                                                     color: Colors.red,
+//                                                     fontWeight: FontWeight.bold,
+//                                                     fontSize: 15,
+//                                                   ),
+//                                                 ),
+//                                                 Text(
+//                                                   'x${product.quantity}',
+//                                                   style: const TextStyle(
+//                                                     fontSize: 14,
+//                                                     color: Colors.grey,
+//                                                   ),
+//                                                 ),
+//                                               ],
+//                                             ),
+//                                           ],
+//                                         ),
+//                                       ),
+//                                     ],
+//                                   ),
+//                                 );
+//                               },
+//                             ),
+
+//                             // Store Total
+//                             Container(
+//                               padding: const EdgeInsets.all(16),
+//                               decoration: BoxDecoration(
+//                                 color: Colors.grey[50],
+//                                 borderRadius: const BorderRadius.only(
+//                                   bottomLeft: Radius.circular(12),
+//                                   bottomRight: Radius.circular(12),
+//                                 ),
+//                               ),
+//                               child: Row(
+//                                 mainAxisAlignment:
+//                                     MainAxisAlignment.spaceBetween,
+//                                 children: [
+//                                   Text(
+//                                     '${store.quantity} sản phẩm',
+//                                     style: TextStyle(
+//                                       color: Colors.grey[600],
+//                                       fontSize: 14,
+//                                     ),
+//                                   ),
+//                                   Text(
+//                                     'Tổng: ${currencyFormat.format(store.total)}',
+//                                     style: const TextStyle(
+//                                       fontWeight: FontWeight.bold,
+//                                       fontSize: 16,
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       );
+//                     },
+//                   ),
+//                 ),
+
+//                 // Bottom Payment Summary
+//                 Container(
+//                   padding: EdgeInsets.only(
+//                     left: 16,
+//                     right: 16,
+//                     top: 16,
+//                     bottom: MediaQuery.of(context).padding.bottom + 16,
+//                   ),
+//                   decoration: BoxDecoration(
+//                     color: Colors.white,
+//                     boxShadow: [
+//                       BoxShadow(
+//                         color: Colors.black.withOpacity(0.05),
+//                         blurRadius: 10,
+//                         offset: const Offset(0, -5),
+//                       ),
+//                     ],
+//                   ),
+//                   child: SafeArea(
+//                     child: Column(
+//                       mainAxisSize: MainAxisSize.min,
+//                       children: [
+//                         Row(
+//                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                           children: [
+//                             const Text(
+//                               'Tổng thanh toán',
+//                               style: TextStyle(
+//                                 fontSize: 16,
+//                                 fontWeight: FontWeight.w500,
+//                               ),
+//                             ),
+//                             Text(
+//                               currencyFormat.format(checkout.total),
+//                               style: const TextStyle(
+//                                 color: Colors.red,
+//                                 fontSize: 18,
+//                                 fontWeight: FontWeight.bold,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                         const SizedBox(height: 16),
+//                         SizedBox(
+//                           width: double.infinity,
+//                           height: 48,
+//                           child: ElevatedButton(
+//                             onPressed: () {
+//                               // Handle payment
+//                             },
+//                             style: ElevatedButton.styleFrom(
+//                               backgroundColor: Colors.red,
+//                               shape: RoundedRectangleBorder(
+//                                 borderRadius: BorderRadius.circular(8),
+//                               ),
+//                             ),
+//                             child: const Text(
+//                               'Đặt Hàng',
+//                               style: TextStyle(
+//                                 fontSize: 16,
+//                                 fontWeight: FontWeight.bold,
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             );
+//           } else if (state is CheckoutError) {
+//             return Center(
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   const Icon(
+//                     Icons.error_outline,
+//                     color: Colors.red,
+//                     size: 48,
+//                   ),
+//                   const SizedBox(height: 16),
+//                   Text(
+//                     state.message,
+//                     style: const TextStyle(color: Colors.red),
+//                     textAlign: TextAlign.center,
+//                   ),
+//                   const SizedBox(height: 16),
+//                   ElevatedButton(
+//                     onPressed: () {
+//                       bloc.add(FetchCheckoutEvent());
+//                     },
+//                     child: const Text('Thử lại'),
+//                   ),
+//                 ],
+//               ),
+//             );
+//           }
+//           return const SizedBox();
+//         },
+//       ),
+//     );
+//   }
+// }

@@ -8,6 +8,7 @@ import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_r
 import 'package:ui_youtex/bloc_seller/seller_register_tax_get_bloc/seller_register_tax_get_bloc_bloc.dart';
 import 'package:ui_youtex/core/model/bank.dart';
 import 'package:ui_youtex/core/model/store.info.dart';
+import 'package:ui_youtex/model/checkout.dart';
 import 'package:ui_youtex/model/industry.dart';
 
 import '../core/base/base_dio.dart';
@@ -44,6 +45,7 @@ abstract class ApiPath {
   static const String BuyerUUIDproductsGet = 'buyer/products';
   static const String BuyeIndustrysGet = 'buyer/industries';
   static const String buyerGetCart = 'buyer/cart';
+  static const String buyerGetCartCheckout = 'buyer/cart/checkout';
 
   static String buyerGetProductDetail(uuid) => 'buyer/product/$uuid';
   static String addCart(uuid) => 'buyer/product/$uuid/add-cart';
@@ -272,6 +274,29 @@ class RestfulApiProviderImpl {
     }
   }
 
+  Future<CheckoutResponse> fetchCheckout({required String token}) async {
+    try {
+      final response = await dioClient.get(
+        ApiPath.buyerGetCartCheckout,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return CheckoutResponse.fromJson(response.data);
+      } else {
+        throw Exception('Failed to fetch checkout: ${response.statusCode}');
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error in fetchCheckout: $error');
+      }
+      rethrow;
+    }
+  }
+
   Future<ProductModel> fetchProductDetailBuyer({
     required String token,
     required String uuid,
@@ -320,7 +345,7 @@ class RestfulApiProviderImpl {
       }
     } catch (error) {
       if (kDebugMode) {
-        print('Error fetching product: $error');
+        print('Error fetching products: $error');
       }
       rethrow;
     }
