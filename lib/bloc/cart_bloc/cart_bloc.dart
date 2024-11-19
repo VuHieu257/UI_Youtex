@@ -22,9 +22,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 final RestfulApiProviderImpl restfulApiProvider = RestfulApiProviderImpl();
 
 Future<void> _onAddToCart(
-  AddToCartEvent event,
-  Emitter<CartState> emit,
-) async {
+    AddToCartEvent event,
+    Emitter<CartState> emit,
+    ) async {
   try {
     emit(CartLoading());
     final token = await TokenManager.getToken();
@@ -74,16 +74,14 @@ Future<void> _onDeleteCartItem(
     Emitter<CartState> emit,
     ) async {
   try {
-    emit(CartLoading());
     final token = await TokenManager.getToken();
 
     if (token == null) {
       emit(CartError(message: 'Token not found'));
       return;
     }
-     await restfulApiProvider.deleteCart(token: token, id: event.id);
-    // SnackBarUtils.showSuccessSnackBar(context, message: "Thêm giỏ hàng thành công");
-    emit(DeleteCartSuccess());
+    await restfulApiProvider.deleteCart(token: token, id: event.id);
+
   }on DioException catch (e) {
     final message = e.response?.data['message'];
     CartError(message: message);

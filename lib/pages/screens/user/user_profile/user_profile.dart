@@ -157,15 +157,19 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                   ),
                                   child: CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage: user.image?.isEmpty ??
-                                              true
-                                          ? const AssetImage(
-                                              Asset.bgImageAvatar,
-                                            )
-                                          : NetworkImage(
-                                                  "${NetworkConstants.urlImage}${user.image}")
-                                              as ImageProvider),
+                                    radius: 50,
+                                    backgroundImage: null,
+                                    child: Image.network(
+                                      "${NetworkConstants.urlImage}storage/${user.image}",
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return const CircleAvatar(
+                                          radius: 50,
+                                          backgroundImage: AssetImage(Asset.bgImageUser)
+                                        );
+                                      },
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
                                 const SizedBox(width: 12),
                                 Column(

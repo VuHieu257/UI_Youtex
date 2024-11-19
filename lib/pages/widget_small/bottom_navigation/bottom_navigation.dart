@@ -155,14 +155,19 @@ class _CustomNavBarState extends State<CustomNavBar> {
                   GButton(
                     icon: Icons.person,
                     // text: user.name,
-                    leading: CircleAvatar(
+                    leading:CircleAvatar(
                       radius: 15,
-                      backgroundImage: user.image != null &&
-                              user.image!.isNotEmpty
-                          ? NetworkImage(
-                                  "${NetworkConstants.urlImage}storage/${user.image}")
-                              as ImageProvider
-                          : const AssetImage(Asset.bgImageAvatar),
+                      backgroundImage: null,
+                      child: Image.network(
+                        "${NetworkConstants.urlImage}storage/${user.image}",
+                        errorBuilder: (context, error, stackTrace) {
+                          return const CircleAvatar(
+                              radius: 15,
+                              backgroundImage: AssetImage(Asset.bgImageUser)
+                          );
+                        },
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ],

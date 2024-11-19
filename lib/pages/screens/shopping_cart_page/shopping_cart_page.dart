@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:ui_youtex/bloc/cart_bloc/cart_bloc.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
@@ -67,7 +68,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                             children: [
                               CircleAvatar(
                                 backgroundImage: NetworkImage(
-                                  "${NetworkConstants.urlImage}${cart.image}", // Sửa để lấy hình ảnh cửa hàng
+                                  "${NetworkConstants.urlImage}${cart.image}",
                                 ),
                               ),
                               const SizedBox(width: 10),
@@ -87,7 +88,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                               imageUrl: product.image,
                               name: product.name,
                               type: "${product.size}, ${product.color}",
-                              price: product.discountPrice.split('.').first,
+                              price:NumberFormat("#,###").format(int.tryParse(product.discountPrice.split('.').first)) ,
                               isSelected: _isSelected[0],
                               amount: product.quantity,
                               onSelected: (bool? value) {
@@ -96,8 +97,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                 });
                               },
                               onTap: () {
-                                BlocProvider.of<CartBloc>(context)
+                               BlocProvider.of<CartBloc>(context)
                                     .add(DeleteCartEvent(id: "${product.id}"));
+                               BlocProvider.of<CartBloc>(context).add(FetchCartEvent());
+
                               },
                             );
                           }).toList(),
@@ -129,7 +132,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
             return SizedBox(
               height: 250,
               child: SummarySection(
-                price: "$totalPrice",
+                price: NumberFormat("#,###").format(totalPrice),
                 checkout: carts,
               ),
             );

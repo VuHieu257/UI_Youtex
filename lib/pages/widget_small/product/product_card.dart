@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import '../../../core/colors/color.dart';
@@ -112,7 +113,7 @@ class ProductCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text(
-                    '${product.discountPrice.toStringAsFixed(0)}₫',
+                    '${NumberFormat("#,###").format(int.tryParse(product.discountPrice.toStringAsFixed(0)))}\t₫',
                     style: context.theme.textTheme.headlineSmall?.copyWith(
                         color: Colors.blue, fontWeight: FontWeight.bold),
                   ),

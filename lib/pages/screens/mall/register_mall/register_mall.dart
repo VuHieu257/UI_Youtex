@@ -134,7 +134,7 @@ class _RegisterMallDetailScreenState extends State<RegisterMallDetailScreen> {
                             hintText: "Điển thông tin tại đây",
                           ),
                           Text(
-                            'Ảnh chụp cùng giấy tờ',
+                            'Ảnh MALL',
                             style: context.theme.textTheme.headlineMedium
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),

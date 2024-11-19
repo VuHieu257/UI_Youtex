@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/core/size/size.dart';
@@ -233,7 +234,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       Row(
                         children: [
                           Text(
-                            product.discountPrice,
+                            "${NumberFormat("#,###").format(int.tryParse(product.discountPrice.split('.').first))}\tđ",
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineMedium
@@ -243,7 +244,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             width: 10,
                           ),
                           Text(
-                            product.originalPrice,
+                            "${NumberFormat("#,###").format(int.tryParse(product.originalPrice.split('.').first))}\tđ",
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineSmall

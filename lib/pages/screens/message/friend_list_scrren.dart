@@ -288,7 +288,7 @@ class FriendCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Member ID: $id',
+                          'Member ID: $idOtherUser',
                           style: context.theme.textTheme.titleMedium?.copyWith(
                             fontSize: 10,
                           ),

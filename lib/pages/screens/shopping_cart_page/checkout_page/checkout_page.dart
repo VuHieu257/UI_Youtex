@@ -377,12 +377,12 @@ class ProductItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${product.discountPrice}đ',
+                          '${product.discountPrice.toInt()}\tđ',
                           style: context.theme.textTheme.titleMedium
                               ?.copyWith(color: Styles.blue),
                         ),
                         Text(
-                          '${product.originalPrice}đ',
+                          '${product.originalPrice.toInt()}\tđ',
                           style: context.theme.textTheme.bodyMedium?.copyWith(
                             decoration: TextDecoration.lineThrough,
                             color: Colors.grey,
