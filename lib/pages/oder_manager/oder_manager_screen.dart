@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
 import 'package:ui_youtex/pages/screens/shopping_cart_page/information_order/information_oder.dart';
+import 'package:ui_youtex/pages/widget_small/showdialog/showdialog.dart';
 import '../../../../core/assets.dart';
 import '../../../../core/colors/color.dart';
 
@@ -154,10 +155,11 @@ class OrderManagementScreen1 extends StatelessWidget {
                           const Divider(),
                           InkWell(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const HistoryOrder()));
+                              showFeatureUnavailableDialog(context);
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => const HistoryOrder()));
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,

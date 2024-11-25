@@ -25,25 +25,18 @@ class _ProductaddScreenState extends State<ProductaddScreen> {
 
   String selectedGroup = 'May Mặc';
   String selectedRole = 'Hàng Mới';
-  File? coverImageFile;
-  File? additionalImageFile;
+  List<File> productImages = [];
 
-  Future<void> _pickCoverImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
+  Future<void> _pickImages() async {
+    final pickedFiles = await ImagePicker().pickMultiImage();
+    if (pickedFiles != null) {
       setState(() {
-        coverImageFile = File(pickedFile.path);
-      });
-    }
-  }
-
-  Future<void> _pickAdditionalImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        additionalImageFile = File(pickedFile.path);
+        final newImages = pickedFiles.map((e) => File(e.path)).toList();
+        if (productImages.length + newImages.length > 6) {
+          _showMessage('Lỗi', 'Chỉ được chọn tối đa 6 ảnh');
+          return;
+        }
+        productImages.addAll(newImages);
       });
     }
   }
@@ -87,20 +80,85 @@ class _ProductaddScreenState extends State<ProductaddScreen> {
                       label: "Tên Sản phẩm",
                       hintText: "Điền thông tin tại đây",
                     ),
-                    GestureDetector(
-                      onTap: _pickCoverImage,
-                      child: ImagePickerField(
-                        label: "Hình ảnh bìa",
-                        imageFile: coverImageFile,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Hình ảnh sản phẩm (1-6 ảnh)",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          height: 200,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              if (productImages.length < 6)
+                                GestureDetector(
+                                  onTap: _pickImages,
+                                  child: Container(
+                                    width: 150,
+                                    margin: const EdgeInsets.only(right: 8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[200],
+                                      borderRadius: BorderRadius.circular(15),
+                                      border: Border.all(
+                                          color: Colors.grey.shade300),
+                                    ),
+                                    child: Center(
+                                      child: Icon(Icons.add_photo_alternate,
+                                          color: Colors.grey[500], size: 50),
+                                    ),
+                                  ),
+                                ),
+                              ...productImages.asMap().entries.map((entry) {
+                                return Stack(
+                                  children: [
+                                    Container(
+                                      width: 150,
+                                      margin: const EdgeInsets.only(right: 8),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: Image.file(
+                                          entry.value,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 5,
+                                      right: 13,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            productImages.removeAt(entry.key);
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: const BoxDecoration(
+                                            color: Colors.red,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: const Icon(
+                                            Icons.close,
+                                            color: Colors.white,
+                                            size: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }).toList(),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    // GestureDetector(
-                    //   // onTap: _pickAdditionalImage,
-                    //   child: ImagePickerField(
-                    //     label: "Hình ảnh/Video",
-                    //     imageFile: additionalImageFile,
-                    //   ),
-                    // ),
                     _buildDropdownSection(
                         "Loại hàng hóa", selectedGroup, ['May Mặc', 'Điện Tử'],
                         (value) {
@@ -178,7 +236,7 @@ class _ProductaddScreenState extends State<ProductaddScreen> {
 
     if (productName.isEmpty ||
         productDescription.isEmpty ||
-        coverImageFile == null) {
+        productImages.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text("Vui lòng nhập đầy đủ thông tin và chọn ảnh")),
@@ -186,24 +244,15 @@ class _ProductaddScreenState extends State<ProductaddScreen> {
       return;
     }
 
-    // Tạo model ProductPostModel từ dữ liệu người dùng
     final productModel = ProductPostModel(
       name: productName,
       description: productDescription,
-      images: [
-        coverImageFile!.path,
-        if (additionalImageFile != null) additionalImageFile!.path
-      ],
+      images: productImages.map((file) => file.path).toList(),
       video: '',
-      // Đặt giá trị industryId và categoryId từ lựa chọn của người dùng nếu có
-      industryId: selectedGroup == 'May Mặc'
-          ? 1
-          : 2, // Điều chỉnh ID tùy theo loại hàng hóa
-      categoryId:
-          selectedRole == 'Hàng Mới' ? 1 : 2, // Điều chỉnh ID tùy theo danh mục
+      industryId: selectedGroup == 'May Mặc' ? 1 : 2,
+      categoryId: selectedRole == 'Hàng Mới' ? 1 : 2,
     );
 
-    // Gửi sự kiện với ProductPostModel
     context.read<SellerRegisterProductBloc>().add(
           SellerRegisterProductPostEvent(model: productModel),
         );
@@ -262,53 +311,6 @@ class CustomTextFieldNoIcon extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class ImagePickerField extends StatelessWidget {
-  final String label;
-  final File? imageFile;
-
-  const ImagePickerField({super.key, required this.label, this.imageFile});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: Theme.of(context)
-              .textTheme
-              .headlineSmall
-              ?.copyWith(fontWeight: FontWeight.w600),
-        ),
-        Container(
-          height: 200,
-          width: double.infinity,
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: Colors.grey.shade300),
-          ),
-          child: imageFile != null
-              ? ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.file(
-                    imageFile!,
-                    width: double.infinity,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
-                )
-              : Center(
-                  child: Icon(Icons.add_photo_alternate,
-                      color: Colors.grey[500], size: 50),
-                ),
-        ),
-      ],
     );
   }
 }

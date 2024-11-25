@@ -14,7 +14,7 @@ class StoreInfo {
   factory StoreInfo.fromJson(Map<String, dynamic> json) {
     return StoreInfo(
       name: json['name'] ?? 'a',
-      imagePath: json['image_path'] ?? 'a',
+      imagePath: json['image'] ?? '',
       phone: json['phone'] ?? 'a',
       email: json['email'] ?? 'a',
     );

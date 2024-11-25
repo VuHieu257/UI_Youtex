@@ -476,15 +476,15 @@ class UserStorageHeader extends StatelessWidget {
                       ],
                     ),
                   ),
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: storeInfo.imagePath?.isEmpty ?? true
-                        ? const AssetImage(Asset.bgImageAvatar)
-                        : NetworkImage(
-                            "${NetworkConstants.urlImage}${storeInfo.imagePath}",
-                            scale: 1.0,
-                          ) as ImageProvider,
-                  )),
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: storeInfo.imagePath?.isEmpty ?? true
+                          ? const AssetImage(Asset.bgImageAvatar)
+                          : NetworkImage(
+                              "${NetworkConstants.urlImage}${storeInfo.imagePath}",
+                              scale: 1.0,
+                            ) as ImageProvider,
+                    )),
               const SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

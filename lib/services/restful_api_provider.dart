@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
+import 'package:ui_youtex/bloc/product_storage_bloc/product_store_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_identification_bloc/seller_register_identification_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_product_bloc_bloc/seller_register_product_bloc_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_register_tax_get_bloc/seller_register_tax_get_bloc_bloc.dart';
@@ -51,6 +52,8 @@ abstract class ApiPath {
   static const String buyerGetOrder = 'buyer/orders';
 
   static String buyerGetProductDetail(uuid) => 'buyer/product/$uuid';
+  static String buyerGetProductStore(uuid) => 'buyer/store/$uuid/products';
+
   static String addCart(uuid) => 'buyer/product/$uuid/add-cart';
   static String deleteCart(id) => 'buyer/cart/item/$id';
 
@@ -192,6 +195,7 @@ class RestfulApiProviderImpl {
       throw Exception('Failed to load cart with error: $e');
     }
   }
+
   Future<Cart> getCart({
     required String token,
   }) async {
@@ -379,6 +383,35 @@ class RestfulApiProviderImpl {
     }
   }
 
+  Future<List<ProductStore>> fetchProductStoreBuyer({
+    required String token,
+    required String uuid,
+  }) async {
+    try {
+      final response = await dioClient.get(
+        ApiPath.buyerGetProductStore(uuid),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final products = (response.data['products'] as List)
+            .map((productJson) => ProductStore.fromJson(productJson))
+            .toList();
+        return products;
+      } else {
+        throw Exception('Failed to fetch product  : ${response.statusMessage}');
+      }
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error fetching products Store: $error');
+      }
+      rethrow;
+    }
+  }
+
   Future<List<Industry>> fetchIndustryBuyer({
     required String token,
   }) async {
@@ -418,10 +451,7 @@ class RestfulApiProviderImpl {
     try {
       final response = await dioClient.post(
         ApiPath.buyerPayment,
-        body:{
-          "address_id": addressId,
-          "payment_method":paymentMethod
-        },
+        body: {"address_id": addressId, "payment_method": paymentMethod},
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -435,6 +465,7 @@ class RestfulApiProviderImpl {
       rethrow;
     }
   }
+
   Future addCart({
     required String uuid,
     required String token,

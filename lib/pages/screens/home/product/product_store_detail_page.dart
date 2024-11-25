@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
+import 'package:ui_youtex/bloc/product_storage_bloc/product_store_bloc.dart';
 import 'package:ui_youtex/core/colors/color.dart';
 import 'package:ui_youtex/core/size/size.dart';
 import 'package:ui_youtex/core/themes/theme_extensions.dart';
@@ -16,16 +17,16 @@ import '../../../../model/colors.dart';
 import '../../../../model/product_model.dart';
 import '../../../../services/restful_api_provider.dart';
 
-class ProductDetailPage extends StatefulWidget {
-  final ProductBuyer product;
+class ProductStoreDetailPage extends StatefulWidget {
+  final ProductStore product;
 
-  const ProductDetailPage({super.key, required this.product});
+  const ProductStoreDetailPage({super.key, required this.product});
 
   @override
-  State<ProductDetailPage> createState() => _ProductDetailPageState();
+  State<ProductStoreDetailPage> createState() => _ProductDetailPageState();
 }
 
-class _ProductDetailPageState extends State<ProductDetailPage> {
+class _ProductDetailPageState extends State<ProductStoreDetailPage> {
   final apiProvider = RestfulApiProviderImpl();
   final PageController _pageController = PageController();
   int _currentPage = 0;
@@ -76,7 +77,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               message: "Thêm giỏ hàng thành công");
         }
       },
-      child: BlocBuilder<ProductBlocBloc, ProductBlocState>(
+      child: BlocBuilder<ProductStoreBlocBloc, ProductStoreBlocState>(
         builder: (context, state) {
           if (state is ProductLoading) {
             return Scaffold(
@@ -117,7 +118,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               body: const Center(child: CircularProgressIndicator()),
             );
           }
-          if (state is ProductDetailLoadedState) {
+          if (state is ProductDetailStoreLoadedState) {
             final product = state.product;
             _quantity = product.minOrder;
 
@@ -267,8 +268,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       // _buildRatingsAndReviewCount(),
                       const SizedBox(height: 16),
                       const Divider(),
-                      _buildSellerInfo(
-                          context, product.store.image, product.store.name,product.store.uuid),
+                      _buildSellerInfo(context, product.store.image,
+                          product.store.name, product.store.uuid),
                       const Divider(),
                       const SizedBox(height: 16),
                       _buildQuantitySelector(

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ui_youtex/model/order.dart';
+import 'package:ui_youtex/pages/widget_small/showdialog/showdialog.dart';
 import 'package:ui_youtex/util/constants.dart';
 import '../../bloc/order_bloc/order_bloc.dart';
 import '../screens/shopping_cart_page/information_order/information_oder.dart';
 
 class OrderManagementScreen extends StatefulWidget {
-
   const OrderManagementScreen({super.key});
 
   @override
@@ -318,9 +318,11 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
   }
 
   Widget _buildOrderList(List<Order> orders, String status) {
-    final filteredOrders = orders.where((order) => order.orderStatus == status).toList();
+    final filteredOrders =
+        orders.where((order) => order.orderStatus == status).toList();
     if (filteredOrders.isEmpty) {
-      return const Center(child: Text("Không có đơn hàng trong trạng thái này."));
+      return const Center(
+          child: Text("Không có đơn hàng trong trạng thái này."));
     }
 
     return ListView.builder(
@@ -328,7 +330,8 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
       itemBuilder: (context, index) {
         final order = filteredOrders[index];
-        final store = order.stores[0]; // Assuming each order has at least one store
+        final store =
+            order.stores[0]; // Assuming each order has at least one store
         final product = store.product;
 
         return Container(
@@ -357,10 +360,13 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(image: NetworkImage("${NetworkConstants.urlImage}${product.image}"),fit: BoxFit.cover,)
-                      ),
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                "${NetworkConstants.urlImage}${product.image}"),
+                            fit: BoxFit.cover,
+                          )),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -435,12 +441,13 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HistoryOrder(),
-                          ),
-                        );
+                        showFeatureUnavailableDialog(context);
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const HistoryOrder(),
+                        //   ),
+                        // );
                       },
                       child: const Text(
                         'Xem tình trạng đơn hàng',

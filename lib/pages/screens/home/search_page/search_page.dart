@@ -6,8 +6,7 @@ import 'package:ui_youtex/pages/screens/home/product/product_detail_page.dart';
 import 'package:ui_youtex/pages/widget_small/product/product_card.dart';
 import 'package:ui_youtex/services/restful_api_provider.dart';
 
-import '../../../../core/assets.dart';
-import '../../../../core/colors/color.dart';
+ import '../../../../core/colors/color.dart';
 import '../../shopping_cart_page/shopping_cart_page.dart';
 
 class SearchPage extends StatefulWidget {
@@ -156,8 +155,7 @@ class _SearchPageState extends State<SearchPage> {
         mainAxisSpacing: 10,
         childAspectRatio: 0.75,
       ),
-      // Sử dụng filteredProducts thay vì products
-      itemCount: state.filteredProducts.length,
+       itemCount: state.filteredProducts.length,
       itemBuilder: (context, index) {
         final product = state.filteredProducts[index];
         return GestureDetector(
