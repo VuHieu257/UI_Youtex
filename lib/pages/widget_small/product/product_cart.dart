@@ -15,7 +15,7 @@ class CartItem extends StatelessWidget {
   final ValueChanged<bool?> onSelected;
   void Function() onTap;
 
-   CartItem({
+  CartItem({
     super.key,
     required this.imageUrl,
     required this.name,
@@ -48,11 +48,12 @@ class CartItem extends StatelessWidget {
               height: context.height * 0.1,
               margin: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: Colors.grey.shade200,
+                  color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(10),
                   image: DecorationImage(
-                      image: NetworkImage(
-                          "${NetworkConstants.urlImage}$imageUrl"),fit: BoxFit.fill)),
+                      image:
+                          NetworkImage("${NetworkConstants.urlImage}$imageUrl"),
+                      fit: BoxFit.fill)),
             ),
             const SizedBox(width: 10),
             Expanded(

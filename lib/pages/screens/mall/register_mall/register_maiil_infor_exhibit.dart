@@ -82,9 +82,13 @@ class _RegisterMallinforExhibitiScreenState
   }
 
   Widget _buildBlocContent(BuildContext context) {
+    bool dialogShown =
+        false; // Cờ để kiểm tra dialog đã được hiển thị hay chưa.
+
     return BlocConsumer<SellerRegisterTaxBloc, SellerRegisterTaxBlocState>(
       listener: (context, state) {
-        if (state is SellerRegisterTaxLoaded) {
+        if (state is SellerRegisterTaxLoaded && !dialogShown) {
+          dialogShown = true; // Đặt cờ khi dialog được hiển thị.
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -93,7 +97,22 @@ class _RegisterMallinforExhibitiScreenState
                 message: 'Tải dữ liệu giấy tờ thành công.',
               );
             },
-          );
+          ).then((_) {
+            dialogShown = false; // Đặt lại cờ sau khi dialog đóng.
+          });
+        } else if (state is SellerRegisterTaxError && !dialogShown) {
+          dialogShown = true; // Xử lý lỗi nếu có.
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CustomDialog(
+                title: 'Thông báo',
+                message: 'Bạn chưa cập nhật thông tin giấy tờ cửa hàng  .',
+              );
+            },
+          ).then((_) {
+            dialogShown = false; // Đặt lại cờ sau khi dialog đóng.
+          });
         }
       },
       builder: (context, state) {
@@ -104,15 +123,8 @@ class _RegisterMallinforExhibitiScreenState
         if (state is SellerRegisterTaxLoaded) {
           return _buildForm(context, state.tax);
         }
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return CustomDialog(
-              title: 'Thông báo',
-              message: 'Bạn chưa cập nhật giấy tờ.',
-            );
-          },
-        );
+
+        // Khi trạng thái không phù hợp, hiển thị form mặc định.
         return _buildForm(context, null);
       },
     );

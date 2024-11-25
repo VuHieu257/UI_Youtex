@@ -154,8 +154,7 @@ class _AddressScreenState extends State<AddressScreenUser> {
                 ),
                 child: TextButton.icon(
                   onPressed: () async {
-                    // Navigate to the AddAddressScreen and wait for the result
-                    final result = await Navigator.push(
+                     final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const AddAddressScreen(),
@@ -163,8 +162,7 @@ class _AddressScreenState extends State<AddressScreenUser> {
                     );
 
                     if (result == true) {
-                      // Refresh addresses by adding FetchAddresses event
-                      context.read<AddressBloc>().add(FetchAddresses());
+                       context.read<AddressBloc>().add(FetchAddresses());
                     }
                   },
                   icon: const Icon(Icons.add, color: Colors.black87),
@@ -179,8 +177,7 @@ class _AddressScreenState extends State<AddressScreenUser> {
               ),
             ),
             const SizedBox(height: 20),
-            // Save Button
-            Padding(
+             Padding(
               padding: const EdgeInsets.all(16.0),
               child: InkWell(
                 onTap: () {

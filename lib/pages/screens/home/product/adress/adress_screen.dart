@@ -74,7 +74,7 @@ class _AddressScreenState extends State<AddressScreen> {
                                   context, address.id);
                             },
                             child: AddressItem(
-                               label: address.name,
+                              label: address.name,
                               address: address.address,
                               isSelected: _selectedAddress == index,
                               isDefault: address.isDefault,

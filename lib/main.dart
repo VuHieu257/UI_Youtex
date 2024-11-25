@@ -10,6 +10,7 @@ import 'package:ui_youtex/bloc/cart_bloc/cart_bloc.dart';
 
 import 'package:ui_youtex/bloc/forgot_password_bloc/forgot_password_bloc.dart';
 import 'package:ui_youtex/bloc/product_bloc_bloc/product_bloc_bloc.dart';
+import 'package:ui_youtex/bloc/product_storage_bloc/product_store_bloc.dart';
 import 'package:ui_youtex/bloc_seller/bloc_seller_address_bloc/bloc_seller_address_bloc.dart';
 import 'package:ui_youtex/bloc_seller/bloc_seller_register_status_bloc.dart/seller_register_status_bloc.dart';
 import 'package:ui_youtex/bloc_seller/seller_product_Shiping_bloc_bloc/seller_product_extra_bloc_bloc.dart';
@@ -163,6 +164,11 @@ void main() async {
               restfulApiProvider: apiProvider,
             ),
           ),
+          BlocProvider(
+            create: (context) => ProductStoreBlocBloc(
+              restfulApiProvider: apiProvider,
+            ),
+          ),
         ],
         child: const MyApp(),
       ),
@@ -180,8 +186,8 @@ class MyApp extends StatelessWidget {
       theme: MyAppThemes.lightTheme,
       debugShowCheckedModeBanner: false,
 
-      // home: const WelcomeApp(),
-      home: const CustomNavBar(),
+      home: const WelcomeApp(),
+      // home: const CustomNavBar(),
       // home: const GroupChatSettings(),
       // home: const RegisterMallScreen(),
       // home: const UploadImageScreen(),
