@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +12,7 @@ import 'package:ui_youtex/util/constants.dart';
 import 'package:ui_youtex/util/show_snack_bar.dart';
 
 import '../../../../bloc/cart_bloc/cart_bloc.dart';
+import '../../../../bloc/user_profile_bloc/user_profile_bloc.dart';
 import '../../../../bloc_seller/seller_product_details_bloc_bloc/seller_product_details_bloc_bloc.dart';
 import '../../../../model/colors.dart';
 import '../../../../model/product_model.dart';
@@ -267,8 +269,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       // _buildRatingsAndReviewCount(),
                       const SizedBox(height: 16),
                       const Divider(),
-                      _buildSellerInfo(
-                          context, product.store.image, product.store.name,product.store.uuid),
+                      _buildSellerInfo(context, product.store.image,
+                          product.store.name, product.store.uuid),
                       const Divider(),
                       const SizedBox(height: 16),
                       _buildQuantitySelector(
@@ -278,7 +280,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       const SizedBox(height: 10),
                       _buildProductDescription(context),
                       const SizedBox(height: 16),
-                      // _buildReviewsSection(context),
+                      ProductReviews(
+                        productId: product.uuid,
+                      ),
                     ],
                   ),
                 ),
@@ -353,21 +357,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     );
   }
 
-  Row _buildRatingsAndReviewCount() {
-    return const Row(
-      children: [
-        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-        Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-        Icon(Icons.star_half, color: Styles.nearPrimary, size: 16),
-        SizedBox(width: 8),
-        Text('4.7 (143 Reviews)'),
-        SizedBox(width: 8),
-        Text('Đã bán: 63'),
-      ],
-    );
-  }
+  // Row _buildRatingsAndReviewCount() {
+  //   return const Row(
+  //     children: [
+  //       Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+  //       Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+  //       Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+  //       Icon(Icons.star, color: Styles.nearPrimary, size: 16),
+  //       Icon(Icons.star_half, color: Styles.nearPrimary, size: 16),
+  //       SizedBox(width: 8),
+  //       Text('4.7 (143 Reviews)'),
+  //       SizedBox(width: 8),
+  //       Text('Đã bán: 63'),
+  //     ],
+  //   );
+  // }
 
   Row _buildSellerInfo(
       BuildContext context, String img, String name, String storeUuid) {
@@ -556,53 +560,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     );
   }
 
-  Column _buildReviewsSection(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Đánh giá',
-          style: Theme.of(context)
-              .textTheme
-              .headlineSmall
-              ?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const Divider(),
-        const Row(
-          children: [
-            CircleAvatar(
-              backgroundImage: AssetImage(
-                  'assets/images/avatar.png'), // Placeholder for user image
-              radius: 15,
-            ),
-            SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("User1"),
-                Row(
-                  children: [
-                    Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-                    Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-                    Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-                    Icon(Icons.star, color: Styles.nearPrimary, size: 16),
-                    Icon(Icons.star_half, color: Styles.nearPrimary, size: 16),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Text(
-          'Hàng giao đúng mô tả, chất lượng tuyệt vời!',
-          textAlign: TextAlign.justify,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-      ],
-    );
-  }
-
   Container _buildBottomNavigationBar(BuildContext context,
       {required void Function() onPressed1,
       required void Function() onPressed2}) {
@@ -668,6 +625,216 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               fontWeight: FontWeight.bold,
             ),
       ),
+    );
+  }
+}
+
+class ProductReviews extends StatefulWidget {
+  final String productId; // ID sản phẩm
+  const ProductReviews({super.key, required this.productId});
+
+  @override
+  State<ProductReviews> createState() => _ProductReviewsState();
+}
+
+class _ProductReviewsState extends State<ProductReviews> {
+  final databaseRef =
+      FirebaseDatabase.instance.ref(); // Tham chiếu tới Firebase
+  final TextEditingController commentController = TextEditingController();
+  int userRating = 5; // Mặc định rating là 5
+  List<Map<String, dynamic>> comments = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchComments();
+  }
+
+  void fetchComments() {
+    databaseRef.child('comments/${widget.productId}').onValue.listen((event) {
+      final data = event.snapshot.value as Map<dynamic, dynamic>?;
+
+      if (data != null) {
+        final fetchedComments = data.entries.map((e) {
+          return {
+            "userName": e.value["userName"],
+            "avatarUrl": e.value["avatarUrl"],
+            "rating": e.value["rating"],
+            "comment": e.value["comment"],
+            "timestamp": e.value["timestamp"],
+          };
+        }).toList();
+
+        setState(() {
+          comments = fetchedComments;
+        });
+      }
+    });
+  }
+
+  void addComment({required String userName, required String avatarUrl}) async {
+    if (commentController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Vui lòng nhập nội dung đánh giá.')),
+      );
+      return;
+    }
+
+    final newComment = {
+      "userName": userName,
+      "avatarUrl": avatarUrl,
+      "rating": userRating.toDouble(),
+      "comment": commentController.text,
+      "timestamp": DateTime.now().toIso8601String(),
+    };
+
+    await databaseRef
+        .child('comments/${widget.productId}')
+        .push()
+        .set(newComment);
+
+    commentController.clear(); // Xóa nội dung TextField sau khi gửi
+    setState(() {
+      userRating = 5; // Reset rating
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Gửi đánh giá thành công!')),
+    );
+  }
+
+  Widget buildStarRating() {
+    return Row(
+      children: List.generate(5, (index) {
+        return IconButton(
+          icon: Icon(
+            index < userRating ? Icons.star : Icons.star_border,
+            color: Colors.amber,
+            size: 30,
+          ),
+          onPressed: () {
+            setState(() {
+              userRating = index + 1; // Cập nhật số sao
+            });
+          },
+        );
+      }),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Đánh giá',
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        BlocBuilder<UserProfileBloc, UserProfileState>(
+            builder: (context, state) {
+          if (state is UserProfileLoaded) {
+            final user = state.user;
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: commentController,
+                    decoration: const InputDecoration(
+                      hintText: 'Viết đánh giá của bạn...',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                InkWell(
+                  onTap: () => addComment(
+                      userName: user.name, avatarUrl: "${NetworkConstants.urlImage}${user.image}"),
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(width: 1, color: Colors.blue)),
+                    child: const Text(
+                      "Gửi",
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+          return const Center(
+            child: Text("Có lỗi xảy ra"),
+          );
+        }),
+
+        const SizedBox(height: 8),
+        // Star Rating UI
+        Row(
+          children: [
+            Text(
+              'Chọn số sao:',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(width: 8),
+            buildStarRating(),
+          ],
+        ),
+
+        const Divider(),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: comments.length,
+          itemBuilder: (context, index) {
+            final comment = comments[index];
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(comment["avatarUrl"]),
+                      radius: 15,
+                    ),
+                    const SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(comment["userName"]),
+                        Row(
+                          children: List.generate(5, (i) {
+                            return Icon(
+                              i < comment["rating"]
+                                  ? Icons.star
+                                  : Icons.star_border,
+                              color: Colors.amber,
+                              size: 16,
+                            );
+                          }),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  comment["comment"],
+                  textAlign: TextAlign.justify,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const Divider(),
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 }
